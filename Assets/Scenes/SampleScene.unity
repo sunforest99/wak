@@ -3463,6 +3463,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be4953e6a2a03754ba3cc249884165f9, type: 3}
+--- !u!1 &1057817601597544266 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6497088700713569372, guid: be4953e6a2a03754ba3cc249884165f9, type: 3}
+  m_PrefabInstance: {fileID: 1057817601597544265}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1057817601597544267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057817601597544266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8900998619968148b71e8f035829a72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 8059918478446525730}
+  moveSpeed: 0.3
+  bossName: "\uADC0\uC0C1\uC5B4\uB450"
+  startHp: 14242442
+  berserk: 0
+  isAnnihilation: 0
+  bossnameText: {fileID: 431860756}
+  bosshpText: {fileID: 1649848345}
+  hpbar: {fileID: 1249505382}
 --- !u!1001 &1119895474476533118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3666,3 +3692,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dcf147926bd7c8141843b2e1c7ad36cd, type: 3}
+--- !u!4 &8059918478446525730 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8059918478736161878, guid: dcf147926bd7c8141843b2e1c7ad36cd, type: 3}
+  m_PrefabInstance: {fileID: 8059918478446525729}
+  m_PrefabAsset: {fileID: 0}
