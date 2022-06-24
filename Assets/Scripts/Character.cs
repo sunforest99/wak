@@ -13,6 +13,10 @@ public class Character : MonoBehaviour
     int footprintIdx = 0;
     bool isMoving = false;
 
+    // µ¥¹ÌÁö Mesh Pro
+    [SerializeField]
+    Transform damagePopup;
+
     void Start()
     {
     }
@@ -25,47 +29,77 @@ public class Character : MonoBehaviour
     void inputKey()
     {
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             transform.rotation = Quaternion.Euler(Vector3.zero);
             startMoving();
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
             startMoving();
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
         {
             startMoving();
         }
-        else if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow))
+        else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S))
         {
             _anim.SetBool("Move", false);
 
             isMoving = false;
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
             transform.position += new Vector3(0.01f, 0, 0);
             isMoving = true;
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.A))
         {
             transform.position -= new Vector3(0.01f, 0, 0);
             isMoving = true;
         }
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.W))
         {
             transform.position += new Vector3(0, 0.01f, 0);
             isMoving = true;
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.S))
         {
             transform.position -= new Vector3(0, 0.01f, 0);
             isMoving = true;
+        }
+
+
+        if (Input.GetKey(KeyCode.Q))
+        {
+
+        }
+        else if (Input.GetKey(KeyCode.E))
+        {
+
+        }
+        else if (Input.GetKey(KeyCode.Z))
+        {
+
+        }
+        else if (Input.GetKey(KeyCode.X))
+        {
+
+        }
+        else if (Input.GetKey(KeyCode.C))
+        {
+
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            createDamage(
+                UnityEngine.Camera.main.ScreenToWorldPoint(Input.mousePosition),
+                300
+            );
         }
     }
 
@@ -90,5 +124,12 @@ public class Character : MonoBehaviour
 
         if (isMoving)
             StartCoroutine(showFootprint());
+    }
+
+    void createDamage(Vector2 pos, int damage)
+    {
+        Transform damageObj = Instantiate(damagePopup, pos, Quaternion.identity);
+        Damage dmg = damageObj.GetComponent<Damage>();
+        dmg.set(damage);
     }
 }
