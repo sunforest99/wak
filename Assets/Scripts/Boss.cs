@@ -6,21 +6,28 @@ public class Boss : MonoBehaviour
 {
     [SerializeField] protected Transform target;        // <! 나중에 4명 추가하는걸루
     [SerializeField] protected float moveSpeed;
-    protected Vector3 dir;
+    protected Vector3 dir;      // <! 보스와 타겟과으 방향
 
-    [SerializeField] protected string bossName;
+    protected string bossName;      // <! 보스이름
 
-    [SerializeField] protected int startHp;
+    protected float radetime;       // <! 레이드 시간
+
+    protected int startHp;          // <! 보스 총 체력
     protected int currentHp;        // <! 헌제 체력
     
     [SerializeField] protected bool berserk;        // <! 광폭화
 
-    [SerializeField] protected bool isAnnihilation;     // <! 전멸기를 사용중인지 사용중이면 무적
-    [SerializeField] protected const int annihilation = 99999;    // <! 전멸기
+    protected const int annihilation = 99999;    // <! 전멸기
 
-    [SerializeField] protected UnityEngine.UI.Text bossnameText;
-    [SerializeField] protected UnityEngine.UI.Text bosshpText;
     [SerializeField] protected UnityEngine.UI.Image hpbar;
+    [SerializeField] protected TMPro.TextMeshProUGUI bosshpText;
+    [SerializeField] protected TMPro.TextMeshProUGUI bossnameText;
+    [SerializeField] protected TMPro.TextMeshProUGUI timer;
+
+    private float min;      // <! 분
+    private float sec;      // <! 초
+
+    protected void SetHpText() => bosshpText.text = string.Format("{0} / {1}", 0, startHp);
 
     protected void ChangeHpText()
     {
@@ -32,12 +39,20 @@ public class Boss : MonoBehaviour
         hpbar.fillAmount = (float)currentHp / startHp;
     }
 
+    protected void RaidTimer()
+    {
+        radetime -= Time.deltaTime;
+        min = radetime / 60;
+        sec = radetime % 60;
+        timer.text = string.Format("{0} : {1}", Mathf.Floor(min), Mathf.Floor(sec));
+    }
+
     /**
      * @brief 보스 이동
      */
     protected void BossMove()
     {
-        currentHp -= 100;
+        currentHp -= 1000;
         dir = target.transform.localPosition - this.transform.localPosition;
 
         if (dir.x > 0)
