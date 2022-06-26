@@ -14,7 +14,7 @@ public class Boss : MonoBehaviour
 
     protected int startHp;          // <! 보스 총 체력
     protected int currentHp;        // <! 헌제 체력
-    
+
     [SerializeField] protected bool berserk;        // <! 광폭화
 
     protected const int annihilation = 99999;    // <! 전멸기
@@ -23,6 +23,10 @@ public class Boss : MonoBehaviour
     [SerializeField] protected TMPro.TextMeshProUGUI bosshpText;
     [SerializeField] protected TMPro.TextMeshProUGUI bossnameText;
     [SerializeField] protected TMPro.TextMeshProUGUI timer;
+
+    [SerializeField] MCamera _camera;
+
+    [SerializeField] GameObject _eff;
 
     private float min;      // <! 분
     private float sec;      // <! 초
@@ -67,6 +71,15 @@ public class Boss : MonoBehaviour
         if (Vector2.Distance(target.localPosition, this.transform.localPosition) > 2f)
         {
             this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, target.localPosition, moveSpeed * Time.deltaTime);
+        }
+    }
+    
+     private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Weapon"))
+        {
+            _camera.Shake();
+            Instantiate(_eff, other.ClosestPoint(transform.position) + new Vector2(0, 1f), Quaternion.identity);
         }
     }
 }

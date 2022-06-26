@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    [SerializeField] Animator _anim;
+    [SerializeField]
+    Animator _anim;
 
-    [SerializeField] GameObject[] footprints;
+    [SerializeField]
+    GameObject[] footprints;
 
     int footprintIdx = 0;
     bool isMoving = false;
 
-    // ??©ö??? Mesh Pro
-    [SerializeField] Transform damagePopup;
-
-    [SerializeField] private UnityEngine.UI.Image[] skillImg = new UnityEngine.UI.Image[5];
-    
-    [SerializeField] private TMPro.TextMeshProUGUI[] coolTime = new TMPro.TextMeshProUGUI[5];
+    // µ¥¹ÌÁö Mesh Pro
+    [SerializeField]
+    Transform damagePopup;
 
     void Start()
     {
@@ -29,6 +28,7 @@ public class Character : MonoBehaviour
 
     void inputKey()
     {
+
         if (Input.GetKeyDown(KeyCode.A))
         {
             transform.rotation = Quaternion.Euler(Vector3.zero);
@@ -96,12 +96,14 @@ public class Character : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            _anim.SetTrigger("Attack");
             createDamage(
                 UnityEngine.Camera.main.ScreenToWorldPoint(Input.mousePosition),
                 300
             );
         }
     }
+
 
     void startMoving()
     {
