@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Damage : MonoBehaviour
 {
-    const float DISAPPEAR_TIME = .5f;
-    const float MOVE_SPEED = .7f;
+    const float DISAPPEAR_TIME = .4f;
+    const float MOVE_SPEED = .3f;
 
     [SerializeField]
     TMPro.TextMeshPro resourceText;
     
     private Color textColor;
     private float disappearTime = 0;
-    private bool show = false;          // ∫∏ø©¡≥¥¬¡ˆ, Set¿ª ≈Î«ÿ ∫∏ø©¡Ææﬂ«‘
+    private bool show = false;          // Î≥¥Ïó¨Ï°åÎäîÏßÄ, SetÏùÑ ÌÜµÌï¥ Î≥¥Ïó¨Ï†∏ÏïºÌï®
 
     void Update()
     {
@@ -20,6 +20,17 @@ public class Damage : MonoBehaviour
             return;
 
         transform.position += new Vector3(0, MOVE_SPEED) * Time.deltaTime;
+        if (disappearTime > DISAPPEAR_TIME / 3)
+        {
+            // ÌÅ¨Î¶¨Ìã∞Ïª¨ ÏïàÌÑ∞ÏßÄÎ©¥
+            transform.localScale += new Vector3(MOVE_SPEED * 2, MOVE_SPEED * 2, 0) * Time.deltaTime;
+            // ÌÅ¨Î¶¨Ìã∞Ïª¨ ÌÑ∞ÏßÄÎ©¥
+            //transform.localScale += new Vector3(MOVE_SPEED * 4, MOVE_SPEED * 4, 0) * Time.deltaTime;
+        }
+        else
+        {
+            transform.localScale -= new Vector3(MOVE_SPEED, MOVE_SPEED, 0) * Time.deltaTime;
+        }
 
         disappearTime -= Time.deltaTime;
         if (disappearTime < 0)

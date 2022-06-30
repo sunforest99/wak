@@ -6,80 +6,60 @@ using System.Linq;
 
 public class Npcdata : MonoBehaviour
 {
-    [SerializeField] private int npcid;
-    [SerializeField] private string npcname;
-    [SerializeField] private int dialog_count;
+    [HideInInspector] public bool isDailog;
+    [SerializeField] protected string npcname;
 
-    [SerializeField] private GameObject[] ui = new GameObject[2];
-    [SerializeField] TMPro.TextMeshProUGUI npcname_ui;
-    [SerializeField] TMPro.TextMeshProUGUI dialog_ui;
-    [SerializeField] TMPro.TextMeshProUGUI player_dialog_ui;
+    public GameObject tempDialog;     // <! 이름 바꾸기
 
-    [SerializeField] List<string> playerdialog = new List<string>();
-    [SerializeField] Dictionary<int, string> dialog = new Dictionary<int, string>();
-
-    void Start()
-    {
-        LoadJsonData();
-    }
+    protected IEnumerator dialogs;
 
     void Update()
     {
-        // if (Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     if (dialog_count < dialog.Count)
-        //     {
-        //         npcname_ui.text = npcname;
-        //         if (dialog[dialog_count].FirstOrDefault() == '$')
-        //         {
-        //             ui[1].SetActive(true);
-        //             ui[0].SetActive(false);
-        //             player_dialog_ui.text = dialog[dialog_count].Remove(0, 1);
-        //         }
-        //         else
-        //         {
-        //             ui[1].SetActive(false);
-        //             ui[0].SetActive(true);
-        //             dialog_ui.text = dialog[dialog_count];
-        //         }
-        //         dialog_count++;
-        //     }
-        //     else
-        //     {
-        //         for(int i = 0; i < ui.Length; i++)
-        //         {
-        //             ui[i].SetActive(false);
-        //         }
-        //         dialog_count = 0;
-        //     }
-        // }
-    }
-
-    void LoadJsonData()
-    {
-        try
+        if (isDailog)
         {
-            object jsonStr = Resources.Load("Npc_data");
-            JsonData jsondata = JsonMapper.ToObject(jsonStr.ToString());
-
-            int temp = 0;
-            for (int i = 0; i < jsondata.Count; i++)
+            if (Input.GetMouseButtonDown(1) && !GameMng.I.dailogUI.SelectBtn.activeSelf)
             {
-                if (int.Parse(jsondata[i]["npc_id"].ToString()) == npcid)
-                {
-                    npcname = jsondata[i]["npc_name"].ToString();
-                    temp = 0;
-                    foreach (var str in jsondata[i]["dialog"])
-                    {
-                        dialog.Add(temp, str.ToString());
-                        temp++;
-                    }
-                }
+                NextDialog();
             }
         }
-        catch
-        {
-            Debug.LogError("Json Data load fail");
-        }
     }
+
+    public void NextDialog()
+    {
+        if (dialogs.MoveNext() == true)
+        {
+            GameMng.I.dailogUI.setNpcText = npcname;
+            GameMng.I.dailogUI.setPlayerName = "Player";        // <! 나중에 닉네임 넣기
+            if (dialogs.Current.ToString().FirstOrDefault() == '$')
+            {
+                GameMng.I.dailogUI.setPlayerText = dialogs.Current.ToString().Remove(0, 1);
+                GameMng.I.dailogUI.ui[0].SetAsFirstSibling();
+                GameMng.I.dailogUI.ui[1].SetAsLastSibling();
+            }
+            else
+            {
+                GameMng.I.dailogUI.setNpcText = dialogs.Current.ToString();
+                GameMng.I.dailogUI.ui[0].SetAsLastSibling();
+                GameMng.I.dailogUI.ui[1].SetAsFirstSibling();
+            }
+        }
+        else
+        {
+            ExitDialog();
+        }
+
+    }
+
+    void ExitDialog()
+    {
+        Destroy(tempDialog);
+        isDailog = false;
+        GameMng.I.dailogUI = null;
+    }
+
+    protected virtual IEnumerator NpcDialog()
+    {
+        yield return null;
+    }
+
 }

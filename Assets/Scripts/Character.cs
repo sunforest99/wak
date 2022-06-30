@@ -2,16 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+enum CHARACTER_STATE
+{
+    IDLE,                   // 일반 상태, 움직이거나 스킬 사용이 가능한 상태
+    CANT_ANYTHING,          // 스킬 쓰는 상태, 아무것도 못함
+    CAN_MOVE                // 스킬 쓰는 상태, 캔슬이 가능한 상태
+}
+
 public class Character : MonoBehaviour
 {
     [SerializeField] Animator _anim;
+    CHARACTER_STATE _state;
 
     [SerializeField] GameObject[] footprints;
 
     int footprintIdx = 0;
     bool isMoving = false;
 
-    // ������ Mesh Pro
+    // 占쏙옙占쏙옙占쏙옙 Mesh Pro
     [SerializeField] Transform damagePopup;
 
     [SerializeField] private Transform skill;
@@ -20,8 +28,10 @@ public class Character : MonoBehaviour
     private List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
     private bool[] checkSkill = new bool[5];
 
+
     void Start()
     {
+        _state = CHARACTER_STATE.IDLE;
         for (int i = 0; i < skill.transform.childCount; i++)
         {
             skill_Img.Add(skill.GetChild(i).transform.GetChild(0).GetComponent<UnityEngine.UI.Image>());
@@ -34,7 +44,7 @@ public class Character : MonoBehaviour
         inputKey();
     }
 
-    IEnumerator SkillCoolDown(int skillnum, float cooltime)        // <! ���߿� �ٲٱ�
+    IEnumerator SkillCoolDown(int skillnum, float cooltime)        // <! 나중에 바꾸기
     {
         checkSkill[skillnum] = true;
         float time = 0.0f;
@@ -84,84 +94,86 @@ public class Character : MonoBehaviour
 
     void inputKey()
     {
+        if (_state != CHARACTER_STATE.IDLE)
+            return;
 
-        if (Input.GetKeyDown(KeyCode.A))
+        // 이동
+        if (Input.GetAxisRaw("Horizontal") < 0)
         {
+            isMoving = true;
             transform.rotation = Quaternion.Euler(Vector3.zero);
-            startMoving();
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetAxisRaw("Horizontal") > 0)
         {
+            isMoving = true;
             transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
-            startMoving();
         }
-        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
-        {
-            startMoving();
-        }
-        else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S))
-        {
-            _anim.SetBool("Move", false);
+        transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * 3 * Time.deltaTime;
 
+        // 이동 애니메이션 관리
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        {
+            startMoving();
+        }
+        else
+        {
             isMoving = false;
+            _anim.SetBool("Move", false);
         }
 
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.position += new Vector3(0.01f, 0, 0);
-            isMoving = true;
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            transform.position -= new Vector3(0.01f, 0, 0);
-            isMoving = true;
-        }
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.position += new Vector3(0, 0.01f, 0);
-            isMoving = true;
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            transform.position -= new Vector3(0, 0.01f, 0);
-            isMoving = true;
-        }
-
-
-        if (Input.GetKey(KeyCode.Q))
+        // 스킬
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             if (!checkSkill[0])
                 StartCoroutine(SkillCoolDown(0, 15));
         }
-        else if (Input.GetKey(KeyCode.E))
+        else if (Input.GetKeyDown(KeyCode.E))
         {
             if (!checkSkill[1])
                 StartCoroutine(SkillCoolDown(1, 10));
         }
-        else if (Input.GetKey(KeyCode.R))
+        else if (Input.GetKeyDown(KeyCode.R))
         {
             if (!checkSkill[2])
                 StartCoroutine(SkillCoolDown(2, 15));
         }
-        else if (Input.GetKey(KeyCode.LeftShift))
+        else if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             if (!checkSkill[3])
                 StartCoroutine(SkillCoolDown(3, 15));
         }
-        else if (Input.GetKey(KeyCode.F))
+        else if (Input.GetKeyDown(KeyCode.F))
         {
             if (!checkSkill[4])
                 StartCoroutine(SkillCoolDown(4, 15));
         }
 
+        // 마우스 좌클릭 - 일반 공격
         if (Input.GetMouseButtonDown(0))
         {
+            // 좌우 반전
+            if (Input.mousePosition.x < Screen.width / 2)
+                transform.rotation = Quaternion.Euler(Vector3.zero);
+            else
+                transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+
+            _state = CHARACTER_STATE.CANT_ANYTHING;
             _anim.SetTrigger("Attack");
+
             createDamage(
                 UnityEngine.Camera.main.ScreenToWorldPoint(Input.mousePosition),
                 300
             );
         }
+        // 마우스 우클릭 - 상호작용
+        else if (Input.GetMouseButtonDown(1))
+        {
+            GameMng.I.mouseRaycast(this.transform.localPosition);
+        }
+    }
+
+    void endAct()
+    {
+        _state = CHARACTER_STATE.IDLE;
     }
 }

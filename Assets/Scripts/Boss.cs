@@ -78,7 +78,7 @@ public class Boss : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Weapon"))
         {
-            _camera.Shake();
+            _camera.shake();
             Instantiate(_eff, other.ClosestPoint(transform.position) + new Vector2(0, 1f), Quaternion.identity);
         }
     }

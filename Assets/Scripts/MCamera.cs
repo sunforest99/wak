@@ -22,21 +22,17 @@ public class MCamera : MonoBehaviour
         {
             transform.position = myCharacter.transform.position - new Vector3(0, 0, 10);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            Shake();
-        }
     }
 
 
-    public void Shake()
+    public void shake()
     {
         isFocusing = false;
-        InvokeRepeating("StartShake", 0, 0.005f);
-        Invoke("StopShake", duration);
+        InvokeRepeating("startShake", 0, 0.005f);
+        Invoke("stopShake", duration);
     }
 
-    void StartShake()
+    void startShake()
     {
         float cameraPosX = Random.value * shakeRange * 2 - shakeRange;
         float cameraPosY = Random.value * shakeRange * 2 - shakeRange;
@@ -46,14 +42,9 @@ public class MCamera : MonoBehaviour
         this.transform.position = cameraPos;
     }
 
-    void StopShake()
+    void stopShake()
     {
-        CancelInvoke("StartShake");
+        CancelInvoke("startShake");
         isFocusing = true;
-    }
-
-    public void AAA()
-    {
-        Debug.Log("@@@@@@@@@@@@@@@@@@@@");
     }
 }
