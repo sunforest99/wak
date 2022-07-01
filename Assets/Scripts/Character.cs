@@ -165,6 +165,12 @@ public class Character : MonoBehaviour
                 300
             );
         }
+        // 핑
+        else if (Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.LeftControl))
+        {
+            Debug.Log("@@@@@@@@@@@@@");
+            GameMng.I.createPing(UnityEngine.Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        }
         // 마우스 우클릭 - 상호작용
         else if (Input.GetMouseButtonDown(1))
         {

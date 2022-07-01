@@ -8,6 +8,8 @@ public class GameMng : MonoBehaviour
 
     public GameObject dialogPrefab;
     public Transform uiCanvas;
+    [SerializeField]
+    GameObject pingPrefab;
 
     public DailogUI dailogUI;
     public Npcdata npcData;
@@ -57,5 +59,10 @@ public class GameMng : MonoBehaviour
                 temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             }
         }
+    }
+
+    public void createPing(Vector2 pos)
+    {
+        Instantiate(pingPrefab, pos += new Vector2(0, 0.65f), Quaternion.identity);
     }
 }
