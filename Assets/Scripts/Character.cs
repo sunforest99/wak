@@ -19,7 +19,6 @@ public class Character : MonoBehaviour
     int footprintIdx = 0;
     bool isMoving = false;
 
-    // 占쏙옙占쏙옙占쏙옙 Mesh Pro
     [SerializeField] Transform damagePopup;
 
     [SerializeField] private Transform skill;
@@ -149,7 +148,7 @@ public class Character : MonoBehaviour
         }
 
         // 마우스 좌클릭 - 일반 공격
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && GameMng.I.dailogUI == null)
         {
             // 좌우 반전
             if (Input.mousePosition.x < Screen.width / 2)
