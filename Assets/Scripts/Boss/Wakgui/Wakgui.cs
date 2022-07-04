@@ -26,6 +26,7 @@ public class Wakgui : Boss
         public GameObject knife;        // <! 칼날 공격
         public GameObject waves;        // <! 파도 공격
         public GameObject cristal;      // <! 닷지류 수정 생성
+        public GameObject poo;
     }
 
     public WAKGUI_ACTION action;
@@ -36,40 +37,35 @@ public class Wakgui : Boss
 
     [SerializeField] pattenObj patten;      // <! 패턴 프리팹 담는 구조체
 
+    float pooSpawnTime;
+
     void Start()
     {
-        nesting = 120;
-        radetime = 10.0f;
-        bossName = "귀상어두";
-        moveSpeed = 0.3f;
-        startHp = 14242442;
-        baseUI.bossnameText.text = bossName;
-        currentHp = startHp;
-        nestingCount = nesting;
+        base.BossInitialize(100, 10.0f, "귀상어두", 0.3f, 14242442);
         StartCoroutine(Think());
-        
+
         StartCoroutine(t());
     }
 
     void Update()
     {
-        if (currentHp >= 0)
+        if (_currentHp >= 0)
         {
+            base.ChangeHpbar();
             base.RaidTimer();
             base.ChangeHpText();
-            base.ChangeHpbar();
             base.BossMove();
         }
         else
         {
-            base.SetZeroHpText();
+            base.SetZeroHp();
         }
     }
 
     IEnumerator t()
     {
-        yield return new WaitForSeconds(.5f);
-        nestingHp -= 600000;
+        yield return new WaitForSeconds(.2f);
+        _nestingHp -= 569696;
         StartCoroutine(t());
     }
 
@@ -109,13 +105,12 @@ public class Wakgui : Boss
         else
         {
             pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_1, (int)WAKGUI_ACTION.PATTERN_6 + 1);
-            // pattern_rand = (int)WAKGUI_ACTION.PATTERN_4;
+            // pattern_rand = (int)WAKGUI_ACTION.PATTERN_1;
 
             switch (pattern_rand)
             {
                 case (int)WAKGUI_ACTION.PATTERN_1:
-                    baseAttackCount = 0;
-                    StartCoroutine(Think());
+                    StartCoroutine(Patten_1());
                     break;
                 case (int)WAKGUI_ACTION.PATTERN_2:
                     StartCoroutine(Patten_2());
@@ -161,6 +156,17 @@ public class Wakgui : Boss
     {
         action = WAKGUI_ACTION.BASE_ATTACK_4;
         yield return new WaitForSeconds(1.0f);
+        StartCoroutine(Think());
+    }
+
+    IEnumerator Patten_1()
+    {
+        action = WAKGUI_ACTION.PATTERN_1;
+        yield return new WaitForSeconds(2.0f);
+        Instantiate(patten.poo, _target.localPosition, Quaternion.identity);
+
+        yield return new WaitForSeconds(1.0f);
+        baseAttackCount = 0;
         StartCoroutine(Think());
     }
 
