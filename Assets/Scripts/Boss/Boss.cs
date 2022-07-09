@@ -10,52 +10,82 @@ public struct bossbaseUI
     public TMPro.TextMeshProUGUI nestingHp;        // <! 보스 체력 중첩
     public TMPro.TextMeshProUGUI bossnameText;      // <! 보스 이름
     public TMPro.TextMeshProUGUI timer;     // <! 레이드 시간
+    public Color[] barColor;
 }
 
 public class Boss : MonoBehaviour
 {
-    [SerializeField] protected Transform target;        // <! 나중에 4명 추가하는걸루
-    [SerializeField] protected float moveSpeed;
-    protected Vector3 dir;      // <! 보스와 타겟 방향
+    [SerializeField] protected Transform _target;        // <! 나중에 4명 추가하는걸루
+    [SerializeField] protected float _moveSpeed;
+    protected Vector3 _dir;      // <! 보스와 타겟 방향
 
-    protected string bossName;      // <! 보스이름
+    protected string _bossName;      // <! 보스이름
 
-    protected float radetime;       // <! 레이드 시간
+    protected float _radetime;       // <! 레이드 시간
 
-    [SerializeField] protected int startHp;          // <! 보스 총 체력
-    [SerializeField] protected int nestingHp;        // <! 중첩 체력
-    protected int currentHp;      // <! 헌제 체력
-    
-    [SerializeField] protected bool isBerserk;        // <! 광폭화
+    [SerializeField] protected int _startHp;          // <! 보스 총 체력
+    [SerializeField] protected int _nestingHp;        // <! 중첩 체력
+    protected int _currentHp;      // <! 헌제 체력
 
-    protected const int annihilation = 99999;    // <! 전멸기
+    [SerializeField] protected bool _isBerserk;        // <! 광폭화
 
-    [SerializeField] protected bossbaseUI baseUI;       // <! 보스의 기본 UI 담는 구조체
+    protected const int _annihilation = 99999;    // <! 전멸기
+
+    [SerializeField] protected bossbaseUI _baseUI;       // <! 보스의 기본 UI 담는 구조체
 
     [SerializeField] MCamera _camera;
 
     [SerializeField] GameObject _eff;
 
-    [SerializeField] protected int nesting;       // <! 체력바 중첩
-    protected int nestingCount;
+    [SerializeField] protected int _maxNesting;       // <! 체력바 중첩
+    [SerializeField] protected int _currentNesting;     // <! 지금 체력바
     private float min;      // <! 분
     private float sec;      // <! 초
-    private bool change;    // <! 체력바 앞뒤 바꾸기
 
     private int merginDmg;
 
     public int getOnebarHp
     {
-        get { return startHp / nesting; }
+        get { return _startHp / _maxNesting; }
+    }
+
+    protected int _frontBarIndex;
+    protected int _backBarIndex;
+    protected int _StartBarindex
+    {
+        get
+        {
+            if (_maxNesting % (_baseUI.barColor.Length) == 0)
+                return 5;
+            else
+                return _maxNesting % (_baseUI.barColor.Length) - 1;
+        }
+    }
+
+    protected void BossInitialize(int nesting, float radetime, string bossName, float moveSpeed, int startHp)
+    {
+        this._maxNesting = nesting;
+        this._radetime = radetime;
+        this._bossName = bossName;
+        this._moveSpeed = moveSpeed;
+        this._startHp = startHp;
+        this._baseUI.bossnameText.text = _bossName;
+        this._currentHp = _startHp;
+
+        _currentNesting = _maxNesting;
+
+        _frontBarIndex = _StartBarindex;
+        _backBarIndex = _backBarIndex - 1;
     }
 
     /**
      * @brief 보스 체력이 0 이하일때 음수 표현 하지 않기 위한 함수
      */
-    protected void SetZeroHpText()
+    protected void SetZeroHp()
     {
-        baseUI.bosshpText.text = string.Format("{0} / {1}", 0, startHp);
-        baseUI.nestingHp.text = string.Format("X {0}", 0);
+        StartCoroutine(ZeroHpbar());
+        _baseUI.bosshpText.text = string.Format("{0} / {1}", 0, _startHp);
+        _baseUI.nestingHp.text = string.Format("X {0}", 0);
     }
 
     /**
@@ -63,9 +93,9 @@ public class Boss : MonoBehaviour
      */
     protected void ChangeHpText()
     {
-        currentHp = startHp - (getOnebarHp * (nesting - nestingCount) - nestingHp);
-        baseUI.bosshpText.text = string.Format("{0} / {1}", currentHp, startHp);
-        baseUI.nestingHp.text = string.Format("X {0}", nestingCount);
+        _currentHp = _startHp - (getOnebarHp * (_maxNesting - _currentNesting) - _nestingHp);
+        _baseUI.bosshpText.text = string.Format("{0} / {1}", _currentHp, _startHp);
+        _baseUI.nestingHp.text = string.Format("X {0}", _currentNesting + 1);
     }
 
     /**
@@ -73,30 +103,37 @@ public class Boss : MonoBehaviour
      */
     protected void ChangeHpbar()
     {
-        if(nestingHp <= 0)
+        if (_nestingHp <= 0)
         {
-            nestingCount--;
-            merginDmg = nestingHp;
-            nestingHp = getOnebarHp + merginDmg;
-            change = change ? false : true;
+            if (_currentNesting - 1 <= 0)
+            {
+                _baseUI.hpbar[0].color = _baseUI.barColor[0];
+                _baseUI.hpbar[1].enabled = false;
+            }
+            else
+            {
+                _baseUI.hpbar[0].color = _baseUI.barColor[_frontBarIndex];
+                _baseUI.hpbar[1].color = _baseUI.barColor[_backBarIndex];
+            }
+            merginDmg = _nestingHp;
+            _nestingHp = getOnebarHp + merginDmg;
+
+            _frontBarIndex--;
+            _backBarIndex--;
+
+            if (_backBarIndex < 0)
+            {
+                _backBarIndex = _baseUI.barColor.Length - 1;
+            }
+            else if (_frontBarIndex < 0)
+            {
+                _frontBarIndex = _baseUI.barColor.Length - 1;
+            }
+
+            _currentNesting--;
         }
 
-        void Changebar(int index)
-        {
-            baseUI.hpbar[index].rectTransform.SetSiblingIndex(0);
-            baseUI.hpbar[index].fillAmount = 1;
-        }
-
-        if(!change)
-        {
-            Changebar(1);
-            baseUI.hpbar[0].fillAmount = Mathf.Lerp(baseUI.hpbar[0].fillAmount, (float) nestingHp / getOnebarHp, 10f * Time.deltaTime);     // <! 속도조절 하기
-        }
-        else
-        {
-            Changebar(0);
-            baseUI.hpbar[1].fillAmount =  Mathf.Lerp(baseUI.hpbar[1].fillAmount, (float) nestingHp / getOnebarHp,10f * Time.deltaTime);     // <! 속도조절 하기
-        }
+        _baseUI.hpbar[0].fillAmount = Mathf.Lerp(_baseUI.hpbar[0].fillAmount, (float)_nestingHp / getOnebarHp, 10f * Time.deltaTime);
     }
 
     /**
@@ -104,13 +141,16 @@ public class Boss : MonoBehaviour
      */
     protected void RaidTimer()
     {
-        radetime -= Time.deltaTime;
-        min = radetime / 60;
-        sec = radetime % 60;
-        baseUI.timer.text = string.Format("{0} : {1}", Mathf.Floor(min), Mathf.Floor(sec));
+        _radetime -= Time.deltaTime;
+        min = _radetime / 60;
+        sec = _radetime % 60;
+        _baseUI.timer.text = string.Format("{0} : {1}", Mathf.Floor(min), Mathf.Floor(sec));
 
-        if(min <= 0 && sec <= 0)
-            isBerserk = true;
+        if (min <= 0 && sec <= 0 && !_isBerserk)
+        {
+            _isBerserk = true;
+            Berserk();
+        }
     }
 
     /**
@@ -118,17 +158,17 @@ public class Boss : MonoBehaviour
      */
     protected void Berserk()
     {
-
+        _moveSpeed *= 2f;         // <! 이속
     }
 
     /**
      * @brief 보스 이동
      */
-    protected void  BossMove()
+    protected void BossMove()
     {
-        dir = target.transform.localPosition - this.transform.localPosition;
+        _dir = _target.transform.localPosition - this.transform.localPosition;
 
-        if (dir.x > 0)
+        if (_dir.x > 0)
         {
             this.transform.localRotation = Quaternion.Euler(0, 180, 0);
         }
@@ -137,9 +177,18 @@ public class Boss : MonoBehaviour
             this.transform.localRotation = Quaternion.identity;
         }
 
-        if (Vector2.Distance(target.localPosition, this.transform.localPosition) > 2f)
+        if (Vector2.Distance(_target.localPosition, this.transform.localPosition) > 2f)
         {
-            this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, target.localPosition, moveSpeed * Time.deltaTime);
+            this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, _target.localPosition, _moveSpeed * Time.deltaTime);
+        }
+    }
+
+    IEnumerator ZeroHpbar()
+    {
+        while (_baseUI.hpbar[0].fillAmount >= 0)
+        {
+            yield return new WaitForEndOfFrame();
+            _baseUI.hpbar[0].fillAmount = Mathf.Lerp(_baseUI.hpbar[0].fillAmount, 0, 5 * Time.deltaTime);
         }
     }
 
