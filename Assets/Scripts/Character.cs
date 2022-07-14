@@ -124,12 +124,20 @@ public class Character : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (!checkSkill[0])
+            {
                 StartCoroutine(SkillCoolDown(0, 15));
+                _state = CHARACTER_STATE.CANT_ANYTHING;
+                _anim.SetTrigger("Skill_Gal");
+            }
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
             if (!checkSkill[1])
+            {
                 StartCoroutine(SkillCoolDown(1, 10));
+                _state = CHARACTER_STATE.CAN_MOVE;
+                _anim.SetTrigger("Skill_AGDZ");
+            }
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
