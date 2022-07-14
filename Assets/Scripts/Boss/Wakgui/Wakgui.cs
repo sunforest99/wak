@@ -39,6 +39,8 @@ public class Wakgui : Boss
 
     float pooSpawnTime;
 
+    [SerializeField] private Animator animator = null;
+
     void Start()
     {
         base.BossInitialize(100, 10.0f, "귀상어두", 0.3f, 14242442);
@@ -51,7 +53,7 @@ public class Wakgui : Boss
     {
         if (_currentHp >= 0)
         {
-            base.ChangeHpbar();
+            // base.ChangeHpbar();
             base.RaidTimer();
             base.ChangeHpText();
             base.BossMove();
@@ -76,7 +78,7 @@ public class Wakgui : Boss
 
         if (baseAttackCount < 4)
         {
-            pattern_rand = Random.Range((int)WAKGUI_ACTION.NONE, (int)WAKGUI_ACTION.BASE_ATTACK_4 + 1);
+            pattern_rand = Random.Range((int)WAKGUI_ACTION.NONE, (int)WAKGUI_ACTION.BASE_ATTACK_3 + 1);
 
             switch (pattern_rand)
             {
@@ -84,19 +86,19 @@ public class Wakgui : Boss
                     baseAttackCount++;
                     StartCoroutine(Think());
                     break;
-                case (int)WAKGUI_ACTION.BASE_ATTACK_1:
+                case (int)WAKGUI_ACTION.BASE_ATTACK_1:      // <! 찌르기
                     baseAttackCount++;
                     StartCoroutine(BaseAttack1());
                     break;
-                case (int)WAKGUI_ACTION.BASE_ATTACK_2:
+                case (int)WAKGUI_ACTION.BASE_ATTACK_2:      // <! 내려찍기
                     baseAttackCount++;
                     StartCoroutine(BaseAttack2());
                     break;
-                case (int)WAKGUI_ACTION.BASE_ATTACK_3:
+                case (int)WAKGUI_ACTION.BASE_ATTACK_3:      // <! 포효
                     baseAttackCount++;
                     StartCoroutine(BaseAttack3());
                     break;
-                case (int)WAKGUI_ACTION.BASE_ATTACK_4:
+                case (int)WAKGUI_ACTION.BASE_ATTACK_4:      // <! 돌진
                     baseAttackCount++;
                     StartCoroutine(BaseAttack4());
                     break;
@@ -109,23 +111,23 @@ public class Wakgui : Boss
 
             switch (pattern_rand)
             {
-                case (int)WAKGUI_ACTION.PATTERN_1:
+                case (int)WAKGUI_ACTION.PATTERN_1:      // <! 똥 생성
                     StartCoroutine(Patten_1());
                     break;
-                case (int)WAKGUI_ACTION.PATTERN_2:
+                case (int)WAKGUI_ACTION.PATTERN_2:      // <! 칼날 찌르기
                     StartCoroutine(Patten_2());
                     break;
-                case (int)WAKGUI_ACTION.PATTERN_3:
+                case (int)WAKGUI_ACTION.PATTERN_3:      // <! 땅속 등장 공격
                     baseAttackCount = 0;
                     StartCoroutine(Think());
                     break;
-                case (int)WAKGUI_ACTION.PATTERN_4:
+                case (int)WAKGUI_ACTION.PATTERN_4:      // <! 수정 생성
                     StartCoroutine(Patten_4());
                     break;
-                case (int)WAKGUI_ACTION.PATTERN_5:
+                case (int)WAKGUI_ACTION.PATTERN_5:      // <! 파도
                     StartCoroutine(Patten_5());
                     break;
-                case (int)WAKGUI_ACTION.PATTERN_6:
+                case (int)WAKGUI_ACTION.PATTERN_6:      // <! 반격기
                     baseAttackCount = 0;
                     StartCoroutine(Think());
                     break;
@@ -134,24 +136,57 @@ public class Wakgui : Boss
 
     }
 
+    /**
+     * @brief 기본공격 찌르기
+     */
     IEnumerator BaseAttack1()
     {
         action = WAKGUI_ACTION.BASE_ATTACK_1;
         yield return new WaitForSeconds(1.0f);
+        animator.SetBool("isStap", true);
+        while (false == animator.IsInTransition(0))
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        animator.SetBool("isStap", false);
         StartCoroutine(Think());
     }
+    
+    /**
+     * @brief 기본공격 내려찍기
+     */
     IEnumerator BaseAttack2()
     {
         action = WAKGUI_ACTION.BASE_ATTACK_2;
         yield return new WaitForSeconds(1.0f);
+        animator.SetBool("isSlash", true);
+        while (false == animator.IsInTransition(0))
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        animator.SetBool("isSlash", false);
         StartCoroutine(Think());
     }
+
+    /**
+     * @brief 기본공격 포효
+     */
     IEnumerator BaseAttack3()
     {
         action = WAKGUI_ACTION.BASE_ATTACK_3;
         yield return new WaitForSeconds(1.0f);
+        animator.SetBool("isRoar", true);
+        while (false == animator.IsInTransition(0))
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        animator.SetBool("isRoar", false);
         StartCoroutine(Think());
     }
+    
+    /**
+     * @brief 기본공격 돌진
+     */
     IEnumerator BaseAttack4()
     {
         action = WAKGUI_ACTION.BASE_ATTACK_4;
@@ -159,6 +194,9 @@ public class Wakgui : Boss
         StartCoroutine(Think());
     }
 
+    /**
+     * @brief 패턴 똥 생성
+     */
     IEnumerator Patten_1()
     {
         action = WAKGUI_ACTION.PATTERN_1;
@@ -170,6 +208,9 @@ public class Wakgui : Boss
         StartCoroutine(Think());
     }
 
+    /**
+     * @brief 패턴 칼날 찌르기
+     */
     IEnumerator Patten_2()
     {
         // int randcount = Random.Range(1, 8);
@@ -185,6 +226,9 @@ public class Wakgui : Boss
         StartCoroutine(Think());
     }
 
+    /**
+     * @brief 패턴 수정 생성
+     */
     IEnumerator Patten_4()
     {
         action = WAKGUI_ACTION.PATTERN_4;
@@ -197,6 +241,9 @@ public class Wakgui : Boss
         StartCoroutine(Think());
     }
 
+    /**
+     * @brief 패턴 파도
+     */
     IEnumerator Patten_5()
     {
         action = WAKGUI_ACTION.PATTERN_5;
