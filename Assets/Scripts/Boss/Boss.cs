@@ -75,7 +75,7 @@ public class Boss : MonoBehaviour
         _currentNesting = _maxNesting;
 
         _frontBarIndex = _StartBarindex;
-        _backBarIndex = _backBarIndex - 1;
+        _backBarIndex = _frontBarIndex - 1;
     }
 
     /**
