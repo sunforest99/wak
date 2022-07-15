@@ -146,13 +146,19 @@ public class Character : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            if (!checkSkill[3])
+            if (!checkSkill[3]){
                 StartCoroutine(SkillCoolDown(3, 15));
+                _state = CHARACTER_STATE.CANT_ANYTHING;
+                _anim.SetTrigger("Skill_SG");
+            }
         }
         else if (Input.GetKeyDown(KeyCode.F))
         {
-            if (!checkSkill[4])
+            if (!checkSkill[4]){
                 StartCoroutine(SkillCoolDown(4, 15));
+                _state = CHARACTER_STATE.CANT_ANYTHING;
+                _anim.SetTrigger("Skill_JH");
+            }
         }
 
         // 마우스 좌클릭 - 일반 공격
