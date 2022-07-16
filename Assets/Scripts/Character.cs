@@ -16,6 +16,11 @@ public class Character : MonoBehaviour
 
     [SerializeField] GameObject[] footprints;
 
+    const float MAX_DASH_TIME = 0.1f;
+    public float curDashTime = 0.1f;
+    const float DASH_SPEED = 20;
+    //public float dashStoppingSpeed = 0.1f;
+
     int footprintIdx = 0;
     bool isMoving = false;
 
@@ -109,6 +114,21 @@ public class Character : MonoBehaviour
         }
         transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * 3 * Time.deltaTime;
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            curDashTime = 0.0f;
+
+            _anim.SetTrigger("Dash");
+            transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * 3 * Time.deltaTime;
+        }
+
+        // 대시 이동
+        if (curDashTime < MAX_DASH_TIME)
+        {
+            curDashTime += Time.deltaTime;
+            transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * DASH_SPEED * Time.deltaTime;
+        }
+
         // 이동 애니메이션 관리
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
@@ -124,12 +144,20 @@ public class Character : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (!checkSkill[0])
-                StartCoroutine(SkillCoolDown(0, 15));
+            {
+                //StartCoroutine(SkillCoolDown(0, 15));
+                _state = CHARACTER_STATE.CANT_ANYTHING;
+                _anim.SetTrigger("Skill_Gal");
+            }
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
             if (!checkSkill[1])
+            {
                 StartCoroutine(SkillCoolDown(1, 10));
+                _state = CHARACTER_STATE.CAN_MOVE;
+                _anim.SetTrigger("Skill_AGDZ");
+            }
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
@@ -138,13 +166,19 @@ public class Character : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            if (!checkSkill[3])
+            if (!checkSkill[3]){
                 StartCoroutine(SkillCoolDown(3, 15));
+                _state = CHARACTER_STATE.CANT_ANYTHING;
+                _anim.SetTrigger("Skill_SG");
+            }
         }
         else if (Input.GetKeyDown(KeyCode.F))
         {
-            if (!checkSkill[4])
+            if (!checkSkill[4]){
                 StartCoroutine(SkillCoolDown(4, 15));
+                _state = CHARACTER_STATE.CANT_ANYTHING;
+                _anim.SetTrigger("Skill_JH");
+            }
         }
 
         // 마우스 좌클릭 - 일반 공격
