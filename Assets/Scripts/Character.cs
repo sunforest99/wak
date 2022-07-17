@@ -30,7 +30,7 @@ public class Character : MonoBehaviour
 
     private List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
     private List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
-    private bool[] checkSkill = new bool[5];
+    private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
 
 
     void Start()
@@ -50,6 +50,10 @@ public class Character : MonoBehaviour
 
     IEnumerator SkillCoolDown(int skillnum, float cooltime)        // <! 나중에 바꾸기
     {
+        if (skillnum == 5) {
+            skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
+        }
+
         checkSkill[skillnum] = true;
         float time = 0.0f;
         skill_Img[skillnum].color = Color.gray;
@@ -66,6 +70,11 @@ public class Character : MonoBehaviour
         cooltime_UI[skillnum].gameObject.SetActive(false);
         skill_Img[skillnum].color = Color.white;
         checkSkill[skillnum] = false;
+        
+        if (skillnum == 5) {
+            skill_Img[skillnum].transform.parent.gameObject.SetActive(false);
+        }
+        
     }
 
     void startMoving()
@@ -98,7 +107,19 @@ public class Character : MonoBehaviour
 
     void inputKey()
     {
-        if (_state != CHARACTER_STATE.IDLE)
+        if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[5])
+        {
+            curDashTime = 0.0f;
+
+            _anim.SetTrigger("Dash");
+            transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * 3 * Time.deltaTime;
+
+            _state = CHARACTER_STATE.CAN_MOVE;
+            StartCoroutine(SkillCoolDown(5, 6));
+        }
+
+        // 아무것도 아닌 상태가 아닌 경우는 이동이 가능한 상태
+        if (_state == CHARACTER_STATE.CANT_ANYTHING)
             return;
 
         // 이동
@@ -113,14 +134,6 @@ public class Character : MonoBehaviour
             transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
         }
         transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * 3 * Time.deltaTime;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            curDashTime = 0.0f;
-
-            _anim.SetTrigger("Dash");
-            transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * 3 * Time.deltaTime;
-        }
 
         // 대시 이동
         if (curDashTime < MAX_DASH_TIME)
@@ -140,12 +153,16 @@ public class Character : MonoBehaviour
             _anim.SetBool("Move", false);
         }
 
+        // 모든 스킬은 IDLE 상태에서만 가능하기 때문에 체크함
+        if (_state != CHARACTER_STATE.IDLE)
+            return;
+
         // 스킬
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (!checkSkill[0])
             {
-                //StartCoroutine(SkillCoolDown(0, 15));
+                StartCoroutine(SkillCoolDown(0, 3));
                 _state = CHARACTER_STATE.CANT_ANYTHING;
                 _anim.SetTrigger("Skill_Gal");
             }
@@ -154,20 +171,23 @@ public class Character : MonoBehaviour
         {
             if (!checkSkill[1])
             {
-                StartCoroutine(SkillCoolDown(1, 10));
-                _state = CHARACTER_STATE.CAN_MOVE;
+                StartCoroutine(SkillCoolDown(1, 5));
+                _state = CHARACTER_STATE.CANT_ANYTHING;
                 _anim.SetTrigger("Skill_AGDZ");
             }
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
-            if (!checkSkill[2])
-                StartCoroutine(SkillCoolDown(2, 15));
+            if (!checkSkill[2]) {
+                StartCoroutine(SkillCoolDown(2, 6));
+                _state = CHARACTER_STATE.CAN_MOVE;
+                _anim.SetTrigger("Skill_Bigrr");
+            }
         }
         else if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             if (!checkSkill[3]){
-                StartCoroutine(SkillCoolDown(3, 15));
+                StartCoroutine(SkillCoolDown(3, 7));
                 _state = CHARACTER_STATE.CANT_ANYTHING;
                 _anim.SetTrigger("Skill_SG");
             }
@@ -175,10 +195,16 @@ public class Character : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.F))
         {
             if (!checkSkill[4]){
-                StartCoroutine(SkillCoolDown(4, 15));
+                StartCoroutine(SkillCoolDown(4, 8));
                 _state = CHARACTER_STATE.CANT_ANYTHING;
                 _anim.SetTrigger("Skill_JH");
             }
+        }
+        // 임시 기절 키
+        else if (Input.GetKeyDown(KeyCode.Y))
+        {
+                _state = CHARACTER_STATE.CANT_ANYTHING;
+                _anim.SetTrigger("Sleep");
         }
 
         // 마우스 좌클릭 - 일반 공격
