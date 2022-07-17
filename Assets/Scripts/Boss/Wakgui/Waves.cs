@@ -21,22 +21,22 @@ public class Waves : DestroySelf
         {
             case (int)POS.DOWN:
                 this.transform.localPosition = new Vector3(Random.Range(-13, 13), 8, 0);
-                this.transform.localRotation = Quaternion.identity;
+                this.transform.localRotation = Quaternion.Euler(0, 0, 90.0f);
                 break;
 
             case (int)POS.UP:
                 this.transform.localPosition = new Vector3(Random.Range(-13, 13), -8, 0);
-                this.transform.localRotation = Quaternion.Euler(0, 0, 180.0f);
+                this.transform.localRotation = Quaternion.Euler(0, 0, -90.0f);
                 break;
 
             case (int)POS.RIGHT:
                 this.transform.localPosition = new Vector3(-13, Random.Range(-7, 8), 0);
-                this.transform.localRotation = Quaternion.Euler(0, 0, 90.0f);
+                this.transform.localRotation = Quaternion.Euler(0, 0, 180.0f);
                 break;
 
             case (int)POS.LEFT:
                 this.transform.localPosition = new Vector3(13, Random.Range(-7, 8), 0);
-                this.transform.localRotation = Quaternion.Euler(0, 0, -90.0f);
+                this.transform.localRotation = Quaternion.identity;
                 break;
         }
     }
