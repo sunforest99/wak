@@ -45,15 +45,13 @@ public class Wakgui : Boss
     {
         base.BossInitialize(100, 10.0f, "귀상어두", 0.3f, 14242442);
         StartCoroutine(Think());
-
-        StartCoroutine(t());
     }
 
     void Update()
     {
         if (_currentHp >= 0)
         {
-            // base.ChangeHpbar();
+            base.ChangeHpbar();
             base.RaidTimer();
             base.ChangeHpText();
             base.BossMove();
@@ -62,13 +60,6 @@ public class Wakgui : Boss
         {
             base.SetZeroHp();
         }
-    }
-
-    IEnumerator t()
-    {
-        yield return new WaitForSeconds(.2f);
-        _nestingHp -= 569696;
-        StartCoroutine(t());
     }
 
     IEnumerator Think()

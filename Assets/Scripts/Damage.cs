@@ -46,7 +46,7 @@ public class Damage : MonoBehaviour
 
     public void set(int dmg)
     {
-        resourceText.text = dmg.ToString();
+        resourceText.text = string.Format("{0:#,###}", dmg);
         textColor = resourceText.color;
         disappearTime = DISAPPEAR_TIME;
         show = true;

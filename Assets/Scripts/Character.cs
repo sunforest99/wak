@@ -24,8 +24,6 @@ public class Character : MonoBehaviour
     int footprintIdx = 0;
     bool isMoving = false;
 
-    [SerializeField] Transform damagePopup;
-
     [SerializeField] private Transform skill;
 
     private List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
@@ -96,13 +94,6 @@ public class Character : MonoBehaviour
 
         if (isMoving)
             StartCoroutine(showFootprint());
-    }
-
-    void createDamage(Vector2 pos, int damage)
-    {
-        Transform damageObj = Instantiate(damagePopup, pos, Quaternion.identity);
-        Damage dmg = damageObj.GetComponent<Damage>();
-        dmg.set(damage);
     }
 
     void inputKey()
@@ -218,11 +209,6 @@ public class Character : MonoBehaviour
 
             _state = CHARACTER_STATE.CANT_ANYTHING;
             _anim.SetTrigger("Attack");
-
-            createDamage(
-                UnityEngine.Camera.main.ScreenToWorldPoint(Input.mousePosition),
-                300
-            );
         }
         // 핑
         else if (Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.LeftControl))
