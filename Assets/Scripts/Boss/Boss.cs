@@ -10,43 +10,40 @@ public struct bossbaseUI
     public TMPro.TextMeshProUGUI nestingHp;        // <! 보스 체력 중첩
     public TMPro.TextMeshProUGUI bossnameText;      // <! 보스 이름
     public TMPro.TextMeshProUGUI timer;     // <! 레이드 시간
-    public Color[] barColor;
 }
 
 public class Boss : MonoBehaviour
 {
     [SerializeField] protected Transform _target;        // <! 나중에 4명 추가하는걸루
-    [SerializeField] protected float _moveSpeed;
     protected Vector3 _dir;      // <! 보스와 타겟 방향
 
-    protected string _bossName;      // <! 보스이름
-
-    protected float _radetime;       // <! 레이드 시간
-
-    [SerializeField] protected int _startHp;          // <! 보스 총 체력
-    [SerializeField] protected int _nestingHp;        // <! 중첩 체력
     protected int _currentHp;      // <! 헌제 체력
 
-    [SerializeField] protected bool _isBerserk;        // <! 광폭화
+    public int _nestingHp;        // <! 중첩 체력
 
     protected const int _annihilation = 99999;    // <! 전멸기
 
     [SerializeField] protected bossbaseUI _baseUI;       // <! 보스의 기본 UI 담는 구조체
 
-    [SerializeField] MCamera _camera;
-
-    [SerializeField] GameObject _eff;
-
-    [SerializeField] protected int _maxNesting;       // <! 체력바 중첩
     [SerializeField] protected int _currentNesting;     // <! 지금 체력바
+
+    [SerializeField] private float _radetime;       // <! 레이드 시간
+
+    [SerializeField] private bool _isBerserk;        // <! 광폭화
+
     private float min;      // <! 분
     private float sec;      // <! 초
 
     private int merginDmg;
 
+    bool isLFlip = false;
+    bool isRFlip = false;
+
+    [SerializeField] protected BossData bossdata;
+
     public int getOnebarHp
     {
-        get { return _startHp / _maxNesting; }
+        get { return bossdata.startHp / bossdata.maxNesting; }
     }
 
     protected int _frontBarIndex;
@@ -55,24 +52,20 @@ public class Boss : MonoBehaviour
     {
         get
         {
-            if (_maxNesting % (_baseUI.barColor.Length) == 0)
+            if (bossdata.maxNesting % (bossdata.barColor.Length) == 0)
                 return 5;
             else
-                return _maxNesting % (_baseUI.barColor.Length) - 1;
+                return bossdata.maxNesting % (bossdata.barColor.Length) - 1;
         }
     }
 
     protected void BossInitialize(int nesting, float radetime, string bossName, float moveSpeed, int startHp)
     {
-        this._maxNesting = nesting;
-        this._radetime = radetime;
-        this._bossName = bossName;
-        this._moveSpeed = moveSpeed;
-        this._startHp = startHp;
-        this._baseUI.bossnameText.text = _bossName;
-        this._currentHp = _startHp;
+        this._radetime = bossdata.radetime;
+        this._baseUI.bossnameText.text = bossdata.bossName;
+        this._currentHp = bossdata.startHp;
 
-        _currentNesting = _maxNesting;
+        _currentNesting = bossdata.maxNesting;
 
         _frontBarIndex = _StartBarindex;
         _backBarIndex = _frontBarIndex - 1;
@@ -84,7 +77,7 @@ public class Boss : MonoBehaviour
     protected void SetZeroHp()
     {
         StartCoroutine(ZeroHpbar());
-        _baseUI.bosshpText.text = string.Format("{0} / {1}", 0, _startHp);
+        _baseUI.bosshpText.text = string.Format("{0} / {1}", 0, bossdata.startHp);
         _baseUI.nestingHp.text = string.Format("X {0}", 0);
     }
 
@@ -93,8 +86,8 @@ public class Boss : MonoBehaviour
      */
     protected void ChangeHpText()
     {
-        _currentHp = _startHp - (getOnebarHp * (_maxNesting - _currentNesting) - _nestingHp);
-        _baseUI.bosshpText.text = string.Format("{0} / {1}", _currentHp, _startHp);
+        _currentHp = bossdata.startHp - (getOnebarHp * (bossdata.maxNesting - _currentNesting) - _nestingHp);
+        _baseUI.bosshpText.text = string.Format("{0} / {1}", _currentHp, bossdata.startHp);
         _baseUI.nestingHp.text = string.Format("X {0}", _currentNesting + 1);
     }
 
@@ -107,13 +100,13 @@ public class Boss : MonoBehaviour
         {
             if (_currentNesting - 1 <= 0)
             {
-                _baseUI.hpbar[0].color = _baseUI.barColor[0];
+                _baseUI.hpbar[0].color = bossdata.barColor[0];
                 _baseUI.hpbar[1].enabled = false;
             }
             else
             {
-                _baseUI.hpbar[0].color = _baseUI.barColor[_frontBarIndex];
-                _baseUI.hpbar[1].color = _baseUI.barColor[_backBarIndex];
+                _baseUI.hpbar[0].color = bossdata.barColor[_frontBarIndex];
+                _baseUI.hpbar[1].color = bossdata.barColor[_backBarIndex];
             }
             merginDmg = _nestingHp;
             _nestingHp = getOnebarHp + merginDmg;
@@ -123,11 +116,11 @@ public class Boss : MonoBehaviour
 
             if (_backBarIndex < 0)
             {
-                _backBarIndex = _baseUI.barColor.Length - 1;
+                _backBarIndex = bossdata.barColor.Length - 1;
             }
             else if (_frontBarIndex < 0)
             {
-                _frontBarIndex = _baseUI.barColor.Length - 1;
+                _frontBarIndex = bossdata.barColor.Length - 1;
             }
 
             _currentNesting--;
@@ -144,8 +137,7 @@ public class Boss : MonoBehaviour
         _radetime -= Time.deltaTime;
         min = _radetime / 60;
         sec = _radetime % 60;
-        _baseUI.timer.text = string.Format("{0} : {1}", Mathf.Floor(min), Mathf.Floor(sec));
-
+        _baseUI.timer.text = string.Format("{0:00} : {1:00}", Mathf.Floor(min), Mathf.Floor(sec));
         if (min <= 0 && sec <= 0 && !_isBerserk)
         {
             _isBerserk = true;
@@ -158,7 +150,7 @@ public class Boss : MonoBehaviour
      */
     protected void Berserk()
     {
-        _moveSpeed *= 2f;         // <! 이속
+        // bossdata.moveSpeed = 2f;         // <! 이속
     }
 
     /**
@@ -168,19 +160,25 @@ public class Boss : MonoBehaviour
     {
         _dir = _target.transform.localPosition - this.transform.localPosition;
 
-        if (_dir.x > 0)
+        if (_dir.x > 1f && !isRFlip)
         {
+            isRFlip = true;
+            isLFlip = false;
             this.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            this.transform.position += new Vector3(1.8f, 0, 0);
         }
-        else
+        else if (_dir.x < -1f && !isLFlip)
         {
+            isLFlip = true;
+            isRFlip = false;
             this.transform.localRotation = Quaternion.identity;
+            this.transform.position -= new Vector3(1.8f, 0, 0);
         }
 
-        if (Vector2.Distance(_target.localPosition, this.transform.localPosition) > 2f)
-        {
-            this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, _target.localPosition, _moveSpeed * Time.deltaTime);
-        }
+        // if (Vector2.Distance(_target.localPosition, this.transform.localPosition) > 2f)
+        // {
+        this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3(_target.localPosition.x, _target.localPosition.y - 1.0f, _target.localPosition.z), bossdata.moveSpeed * Time.deltaTime);
+        // }
     }
 
     IEnumerator ZeroHpbar()
@@ -189,15 +187,6 @@ public class Boss : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
             _baseUI.hpbar[0].fillAmount = Mathf.Lerp(_baseUI.hpbar[0].fillAmount, 0, 5 * Time.deltaTime);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Weapon"))
-        {
-            _camera.shake();
-            Instantiate(_eff, other.ClosestPoint(transform.position) + new Vector2(0, 1f), Quaternion.identity);
         }
     }
 }
