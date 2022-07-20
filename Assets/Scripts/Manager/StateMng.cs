@@ -45,7 +45,7 @@ public class StateMng : MonoBehaviour
                 fShieldPos[i] = PartyHPImg[i].rectTransform.anchoredPosition.x + (fImageSize * PartyHPImg[i].rectTransform.localScale.x);
                 PartyShieldImg[i].rectTransform.pivot = new Vector2(0.0f, 0.5f);
             }
-            else{
+            else{       // <! 풀체력보다 클때
                 PartyShieldImg[i].rectTransform.pivot = new Vector2(1.0f, 0.5f);
                 fShieldPos[i] = fImageSize / 2;
             }
