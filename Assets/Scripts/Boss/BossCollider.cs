@@ -47,11 +47,11 @@ public class BossCollider : MonoBehaviour
         }
     }
 
-    void createDamage(Vector2 pos, int damage)
+    void createDamage(Vector2 pos, int damage, bool isCritical)
     {
         Transform damageObj = Instantiate(damagePopup, pos, Quaternion.identity);
         Damage dmg = damageObj.GetComponent<Damage>();
-        dmg.set(damage);
+        dmg.set(damage, isCritical);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -61,9 +61,21 @@ public class BossCollider : MonoBehaviour
             StartCoroutine(HitBlink());
             _camera.shake();
             Instantiate(_eff, other.ClosestPoint(transform.position) + new Vector2(0, 1f), Quaternion.identity);
+
+            int dmg = 0;
+            bool isCritical = false;
+            if (Random.Range(0, 5) == 0) {
+                isCritical = true;
+                dmg = Random.Range(3000000, 6000000);
+            }
+            else {
+                dmg = Random.Range(2000000, 4000000);
+            }
+
             createDamage(
                 other.ClosestPoint(transform.position) + new Vector2(0, 3f),
-                3192856
+                dmg,
+                isCritical
            );
            boss._nestingHp -= 3192856;
         }
