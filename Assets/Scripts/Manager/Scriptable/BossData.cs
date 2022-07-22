@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Boss", menuName = "Boss/BossData")]
+[CreateAssetMenu(fileName = "New Boss", menuName = "Custom/BossData")]
 public class BossData : ScriptableObject
 {
     [SerializeField] private int _startHp;          // <! 보스 총 체력
@@ -14,14 +14,22 @@ public class BossData : ScriptableObject
     [SerializeField] private string _bossName;      // <! 보스이름
     public string bossName { get { return _bossName; } }
 
-    [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _moveSpeed;      // <! 보스 이동
     public float moveSpeed { get { return _moveSpeed; } }
 
-    [SerializeField] private Color[] _barColor = new Color[6];
+    [SerializeField] private Color[] _barColor = new Color[6];      // <! 체력바 색
     public Color[] barColor { get { return _barColor; } }
 
     [SerializeField] private int _maxNesting;       // <! 체력바 중첩
     public int maxNesting { get { return _maxNesting; } }
+
+    [SerializeField] private int _maxKnife;       // <! 칼 최대 개수
+    public int maxKnife { get { return _maxKnife; } }
+    [SerializeField] private int _maxCristal;       // <! 수정 최대 개수
+    public int maxCristal { get { return _maxCristal; } }
+
+    [SerializeField] private int _maxWave;       // <! 파도 최대 개수
+    public int maxWave { get { return _maxWave; } }
 
     private Color color;
 

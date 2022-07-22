@@ -7,9 +7,9 @@ public struct bossbaseUI
 {
     public UnityEngine.UI.Image[] hpbar;      // <! 보스 체력바
     public TMPro.TextMeshProUGUI bosshpText;        // <! 보스 체력이 얼마나 남았는지
-    public TMPro.TextMeshProUGUI nestingHp;        // <! 보스 체력 중첩
     public TMPro.TextMeshProUGUI bossnameText;      // <! 보스 이름
     public TMPro.TextMeshProUGUI timer;     // <! 레이드 시간
+    public TMPro.TextMeshProUGUI nestingHp;        // <! 보스 체력 중첩
 }
 
 public class Boss : MonoBehaviour
@@ -19,15 +19,15 @@ public class Boss : MonoBehaviour
 
     protected int _currentHp;      // <! 헌제 체력
 
-    public int _nestingHp;        // <! 중첩 체력
+    [HideInInspector] public int _nestingHp;        // <! 중첩 체력
 
     protected const int _annihilation = 99999;    // <! 전멸기
 
     [SerializeField] protected bossbaseUI _baseUI;       // <! 보스의 기본 UI 담는 구조체
 
-    [SerializeField] protected int _currentNesting;     // <! 지금 체력바
+    protected int _currentNesting;     // <! 지금 체력바
 
-    [SerializeField] private float _radetime;       // <! 레이드 시간
+    private float _radetime;       // <! 레이드 시간
 
     [SerializeField] private bool _isBerserk;        // <! 광폭화
 
@@ -59,7 +59,7 @@ public class Boss : MonoBehaviour
         }
     }
 
-    protected void BossInitialize(int nesting, float radetime, string bossName, float moveSpeed, int startHp)
+    protected void BossInitialize()
     {
         this._radetime = bossdata.radetime;
         this._baseUI.bossnameText.text = bossdata.bossName;

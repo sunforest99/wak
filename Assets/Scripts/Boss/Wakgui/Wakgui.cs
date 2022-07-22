@@ -4,17 +4,17 @@ using UnityEngine;
 
 public enum WAKGUI_ACTION
 {
-    NONE,
-    BASE_ATTACK_1,
-    BASE_ATTACK_2,
-    BASE_ATTACK_3,
-    BASE_ATTACK_4,
-    PATTERN_1,
-    PATTERN_2,
-    PATTERN_3,
-    PATTERN_4,
-    PATTERN_5,
-    PATTERN_6,
+    IDLE,
+    BASE_STAP,
+    BASE_SLASH,
+    BASE_ROAR,
+    BASE_RUSH,
+    PATTERN_POO,
+    PATTERN_KNIFE,
+    PATTERN_JUMP,
+    PATTERN_CRISTAL,
+    PATTERN_WAVE,
+    PATTERN_COUNTER,
     ANNIHILATION
 }
 
@@ -43,7 +43,7 @@ public class Wakgui : Boss
 
     void Start()
     {
-        base.BossInitialize(100, 10.0f, "귀상어두", 0.3f, 14242442);
+        base.BossInitialize();
         StartCoroutine(Think());
     }
 
@@ -64,187 +64,210 @@ public class Wakgui : Boss
 
     IEnumerator Think()
     {
-        action = WAKGUI_ACTION.NONE;
+        action = WAKGUI_ACTION.IDLE;
         yield return new WaitForSeconds(1.0f);
 
         if (baseAttackCount < 4)
         {
-            pattern_rand = Random.Range((int)WAKGUI_ACTION.NONE, (int)WAKGUI_ACTION.BASE_ATTACK_3 + 1);
-
+            // pattern_rand = Random.Range((int)WAKGUI_ACTION.IDLE, (int)WAKGUI_ACTION.BASE_ROAR + 1);
+            pattern_rand = (int)WAKGUI_ACTION.BASE_RUSH;
             switch (pattern_rand)
             {
-                case (int)WAKGUI_ACTION.NONE:
-                    baseAttackCount++;
+                case (int)WAKGUI_ACTION.IDLE:
+                    _target = GameMng.I.targetList[GameMng.I.targetCount];
                     StartCoroutine(Think());
                     break;
-                case (int)WAKGUI_ACTION.BASE_ATTACK_1:      // <! 찌르기
+                case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기
                     baseAttackCount++;
-                    StartCoroutine(BaseAttack1());
+                    StartCoroutine(Base_Stap());
                     break;
-                case (int)WAKGUI_ACTION.BASE_ATTACK_2:      // <! 내려찍기
+                case (int)WAKGUI_ACTION.BASE_SLASH:      // <! 내려찍기
                     baseAttackCount++;
-                    StartCoroutine(BaseAttack2());
+                    StartCoroutine(Base_Slash());
                     break;
-                case (int)WAKGUI_ACTION.BASE_ATTACK_3:      // <! 포효
+                case (int)WAKGUI_ACTION.BASE_ROAR:      // <! 포효
                     baseAttackCount++;
-                    StartCoroutine(BaseAttack3());
+                    StartCoroutine(Base_Roar());
                     break;
-                case (int)WAKGUI_ACTION.BASE_ATTACK_4:      // <! 돌진
+                case (int)WAKGUI_ACTION.BASE_RUSH:      // <! 돌진
                     baseAttackCount++;
-                    StartCoroutine(BaseAttack4());
+                    StartCoroutine(Base_Rush());
                     break;
             }
         }
+
         else
         {
-            pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_1, (int)WAKGUI_ACTION.PATTERN_6 + 1);
-            // pattern_rand = (int)WAKGUI_ACTION.PATTERN_1;
+            // pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
+            pattern_rand = (int)WAKGUI_ACTION.PATTERN_JUMP;
 
             switch (pattern_rand)
             {
-                case (int)WAKGUI_ACTION.PATTERN_1:      // <! 똥 생성
-                    StartCoroutine(Patten_1());
+                case (int)WAKGUI_ACTION.PATTERN_POO:      // <! 똥 생성
+                    StartCoroutine(Pattern_Poo());
                     break;
-                case (int)WAKGUI_ACTION.PATTERN_2:      // <! 칼날 찌르기
-                    StartCoroutine(Patten_2());
+                case (int)WAKGUI_ACTION.PATTERN_KNIFE:      // <! 칼날 찌르기
+                    StartCoroutine(Pattern_Knife());
                     break;
-                case (int)WAKGUI_ACTION.PATTERN_3:      // <! 땅속 등장 공격
-                    baseAttackCount = 0;
-                    StartCoroutine(Think());
+                case (int)WAKGUI_ACTION.PATTERN_JUMP:      // <! 점프 공격
+                    StartCoroutine(Pattern_Jump());
                     break;
-                case (int)WAKGUI_ACTION.PATTERN_4:      // <! 수정 생성
-                    StartCoroutine(Patten_4());
+                case (int)WAKGUI_ACTION.PATTERN_CRISTAL:      // <! 수정 생성
+                    StartCoroutine(Pattern_Cristal());
                     break;
-                case (int)WAKGUI_ACTION.PATTERN_5:      // <! 파도
-                    StartCoroutine(Patten_5());
+                case (int)WAKGUI_ACTION.PATTERN_WAVE:      // <! 파도
+                    StartCoroutine(Pattern_Wave());
                     break;
-                case (int)WAKGUI_ACTION.PATTERN_6:      // <! 반격기
-                    baseAttackCount = 0;
+                case (int)WAKGUI_ACTION.PATTERN_COUNTER:      // <! 반격기
                     StartCoroutine(Think());
                     break;
             }
         }
-
     }
 
     /**
      * @brief 기본공격 찌르기
      */
-    IEnumerator BaseAttack1()
+    IEnumerator Base_Stap()
     {
-        action = WAKGUI_ACTION.BASE_ATTACK_1;
+        action = WAKGUI_ACTION.BASE_STAP;
+        yield return new WaitForSeconds(2.0f);
+        animator.SetTrigger("Stap");
         yield return new WaitForSeconds(1.0f);
-        animator.SetBool("isStap", true);
-        while (false == animator.IsInTransition(0))
-        {
-            yield return new WaitForEndOfFrame();
-        }
-        animator.SetBool("isStap", false);
+
         StartCoroutine(Think());
     }
-    
+
     /**
      * @brief 기본공격 내려찍기
      */
-    IEnumerator BaseAttack2()
+    IEnumerator Base_Slash()
     {
-        action = WAKGUI_ACTION.BASE_ATTACK_2;
+        action = WAKGUI_ACTION.BASE_SLASH;
+        yield return new WaitForSeconds(2.0f);
+        animator.SetTrigger("Slash");
         yield return new WaitForSeconds(1.0f);
-        animator.SetBool("isSlash", true);
-        while (false == animator.IsInTransition(0))
-        {
-            yield return new WaitForEndOfFrame();
-        }
-        animator.SetBool("isSlash", false);
+
         StartCoroutine(Think());
     }
 
     /**
      * @brief 기본공격 포효
      */
-    IEnumerator BaseAttack3()
+    IEnumerator Base_Roar()
     {
-        action = WAKGUI_ACTION.BASE_ATTACK_3;
+        action = WAKGUI_ACTION.BASE_ROAR;
+        yield return new WaitForSeconds(2.0f);
+        animator.SetTrigger("Roar");
         yield return new WaitForSeconds(1.0f);
-        animator.SetBool("isRoar", true);
-        while (false == animator.IsInTransition(0))
-        {
-            yield return new WaitForEndOfFrame();
-        }
-        animator.SetBool("isRoar", false);
+
         StartCoroutine(Think());
     }
-    
+
     /**
      * @brief 기본공격 돌진
      */
-    IEnumerator BaseAttack4()
+    IEnumerator Base_Rush()
     {
-        action = WAKGUI_ACTION.BASE_ATTACK_4;
+        action = WAKGUI_ACTION.BASE_RUSH;
+        yield return new WaitForSeconds(2.0f);
+        animator.SetTrigger("Rush");
         yield return new WaitForSeconds(1.0f);
+        // baseAttackCount = 0;
         StartCoroutine(Think());
     }
 
     /**
      * @brief 패턴 똥 생성
      */
-    IEnumerator Patten_1()
+    IEnumerator Pattern_Poo()
     {
-        action = WAKGUI_ACTION.PATTERN_1;
+        action = WAKGUI_ACTION.PATTERN_POO;
         yield return new WaitForSeconds(2.0f);
+        animator.SetTrigger("Poo");
+        yield return new WaitForSeconds(2.0f);
+
         Instantiate(patten.poo, _target.localPosition, Quaternion.identity);
 
-        yield return new WaitForSeconds(1.0f);
         baseAttackCount = 0;
         StartCoroutine(Think());
     }
 
     /**
-     * @brief 패턴 칼날 찌르기
+     * @brief 패턴 칼날 생성
+     * @TODO 칼날 생성 위치조정
      */
-    IEnumerator Patten_2()
+    IEnumerator Pattern_Knife()
     {
-        // int randcount = Random.Range(1, 8);
+        action = WAKGUI_ACTION.PATTERN_KNIFE;
+        yield return new WaitForSeconds(2.0f);
+        animator.SetTrigger("Knife");
 
-        action = WAKGUI_ACTION.PATTERN_2;
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < bossdata.maxKnife; i++)
         {
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(1.0f);
             Instantiate(patten.knife, new Vector3(Random.Range(-12, 12), Random.Range(-7, 7), 0), Quaternion.Euler(0, 0, Random.Range(0, 360)));
         }
-        yield return new WaitForSeconds(1.0f);
+
         baseAttackCount = 0;
         StartCoroutine(Think());
     }
 
     /**
      * @brief 패턴 수정 생성
+     * @TODO 수정 생성 위치조정
      */
-    IEnumerator Patten_4()
+    IEnumerator Pattern_Jump()
     {
-        action = WAKGUI_ACTION.PATTERN_4;
-        for (int i = 0; i < 4; i++)
+        action = WAKGUI_ACTION.PATTERN_JUMP;
+        animator.SetTrigger("Jump");
+
+        baseAttackCount = 0;
+        yield return new WaitForSeconds(2.0f);
+        StartCoroutine(Think());
+
+    }
+
+    /**
+     * @brief 패턴 수정 생성
+     * @TODO 수정 생성 위치조정
+     */
+    IEnumerator Pattern_Cristal()
+    {
+        action = WAKGUI_ACTION.PATTERN_CRISTAL;
+        yield return new WaitForSeconds(2.0f);
+        animator.SetTrigger("Cristal");
+        for (int i = 0; i < bossdata.maxCristal; i++)
         {
             Instantiate(patten.cristal, new Vector3(Random.Range(-12, 12), Random.Range(-7, 7), 0), Quaternion.identity);
         }
-        yield return new WaitForSeconds(1.0f);
+
         baseAttackCount = 0;
         StartCoroutine(Think());
+        yield return null;
     }
 
     /**
      * @brief 패턴 파도
+     * @TODO 파도 생성 위치조정
      */
-    IEnumerator Patten_5()
+    IEnumerator Pattern_Wave()
     {
-        action = WAKGUI_ACTION.PATTERN_5;
-        for (int i = 0; i < 8; i++)
+        action = WAKGUI_ACTION.PATTERN_WAVE;
+        yield return new WaitForSeconds(2.0f);
+        animator.SetTrigger("Wave");
+        for (int i = 0; i < bossdata.maxWave; i++)
         {
             yield return new WaitForSeconds(2.0f);
             Instantiate(patten.waves, Vector3.zero, Quaternion.identity);
         }
-        yield return new WaitForSeconds(1.0f);
-        baseAttackCount = 0;
+
         StartCoroutine(Think());
+    }
+
+    void SetJumpPostion()
+    {
+        Debug.Log("Asdf");
+        this.transform.localPosition = _target.transform.localPosition;
     }
 }

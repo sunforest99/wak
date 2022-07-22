@@ -18,6 +18,9 @@ public class GameMng : MonoBehaviour
     
     private static GameMng _instance = null;
 
+    public List<Transform> targetList;
+
+    public int targetCount => Random.Range(0, targetList.Count);
     public static GameMng I
     {
         get
