@@ -33,6 +33,7 @@ public class Character : MonoBehaviour
 
     void Start()
     {
+        GameMng.I.targetList.Add(this.transform);
         _state = CHARACTER_STATE.IDLE;
         for (int i = 0; i < skill.transform.childCount; i++)
         {
@@ -77,23 +78,27 @@ public class Character : MonoBehaviour
 
     void startMoving()
     {
-        _anim.SetBool("Move", true);
-        if (!isMoving)
+        if (!isMoving) {
+            _anim.SetBool("Move", true);
+            isMoving = true;
             StartCoroutine(showFootprint());
+        }
     }
 
     IEnumerator showFootprint()
     {
         footprints[footprintIdx].SetActive(true);
-        footprints[footprintIdx].transform.position = transform.position - new Vector3(0, 0.55f, 0);
-
-        yield return new WaitForSeconds(0.25f);
-
-        footprints[footprintIdx].SetActive(false);
+        footprints[footprintIdx].transform.position = transform.position - new Vector3(0, 0.65f, 0);
         footprintIdx = footprintIdx >= 2 ? 0 : footprintIdx + 1;
 
+        yield return new WaitForSeconds(0.4f);
+        
+        if (_state == CHARACTER_STATE.CANT_ANYTHING)
+            isMoving = false;
+            
         if (isMoving)
             StartCoroutine(showFootprint());
+        
     }
 
     void inputKey()
@@ -116,12 +121,10 @@ public class Character : MonoBehaviour
         // 이동
         if (Input.GetAxisRaw("Horizontal") < 0)
         {
-            isMoving = true;
             transform.rotation = Quaternion.Euler(Vector3.zero);
         }
         else if (Input.GetAxisRaw("Horizontal") > 0)
         {
-            isMoving = true;
             transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
         }
         transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * 3 * Time.deltaTime;

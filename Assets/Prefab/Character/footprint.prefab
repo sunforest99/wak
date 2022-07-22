@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3467868007052589770}
   - component: {fileID: 6535701013890820217}
   - component: {fileID: 8732790260328916607}
+  - component: {fileID: 2515276591871130069}
   m_Layer: 0
   m_Name: footprint
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 346173956140761065}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.162, y: -1.102, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -71,15 +72,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 119143655ac5131469dd3b236a7f3744, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_SortingLayerID: 1755676117
+  m_SortingLayer: 1
+  m_SortingOrder: 1217
+  m_Sprite: {fileID: 21300000, guid: 6822c3c8dc6b7924aab65ed35786bcc5, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.4, y: 0.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -105,3 +106,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2515276591871130069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346173956140761065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39590032a8246984c9914bd34982ae1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

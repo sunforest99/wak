@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Wakgui
   m_EditorClassIdentifier: 
   _startHp: 1424244246
-  _radetime: 610
+  _radetime: 600
   _bossName: "\uADC0\uC0C1\uC5B4\uB450"
   _moveSpeed: 0.3
   _barColor:
@@ -23,4 +23,7 @@ MonoBehaviour:
   - {r: 0.6156863, g: 0.84705883, b: 0.29411766, a: 1}
   - {r: 0, g: 0.6392157, b: 0.8235294, a: 1}
   - {r: 0.54509807, g: 0, b: 1, a: 1}
-  _maxNesting: 100
+  _maxNesting: 128
+  _maxKnife: 8
+  _maxCristal: 4
+  _maxWave: 8

@@ -80,4 +80,9 @@ public class BossCollider : MonoBehaviour
            boss._nestingHp -= 3192856;
         }
     }
+
+    void SetJumpPostion()
+    {
+        this.transform.parent.localPosition = GameMng.I.targetList[GameMng.I.targetCount].localPosition;
+    }
 }
