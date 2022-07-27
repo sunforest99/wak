@@ -2222,7 +2222,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &779284660
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2565,6 +2565,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 346173956140761065, guid: 1be025d5f35ce2643834fdc75ac8232a, type: 3}
   m_PrefabInstance: {fileID: 1238327198}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1007059635 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3118497356243538722, guid: c3e8238499ddaa346bde3aecc4e1a991, type: 3}
+  m_PrefabInstance: {fileID: 2377867240323538554}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8900998619968148b71e8f035829a72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1026160057
 GameObject:
   m_ObjectHideFlags: 0
@@ -3801,6 +3812,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1532084513 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6692531133567866779, guid: c3e8238499ddaa346bde3aecc4e1a991, type: 3}
+  m_PrefabInstance: {fileID: 2377867240323538554}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1532084515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532084513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17ac30924a37fd74085bbbb403d93244, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wakgui: {fileID: 1007059635}
 --- !u!1 &1603241887
 GameObject:
   m_ObjectHideFlags: 0
@@ -5349,11 +5378,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 358140185, guid: c3e8238499ddaa346bde3aecc4e1a991, type: 3}
       propertyPath: m_Size.x
-      value: 3
+      value: 1.33
       objectReference: {fileID: 0}
     - target: {fileID: 358140185, guid: c3e8238499ddaa346bde3aecc4e1a991, type: 3}
       propertyPath: m_Size.y
-      value: 1
+      value: 1.18
       objectReference: {fileID: 0}
     - target: {fileID: 358140185, guid: c3e8238499ddaa346bde3aecc4e1a991, type: 3}
       propertyPath: m_Sprite

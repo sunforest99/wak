@@ -15,9 +15,8 @@ public enum WAKGUI_ACTION
     PATTERN_CRISTAL,
     PATTERN_WAVE,
     PATTERN_COUNTER,
-    ANNIHILATION
+    PATTERN_CIRCLE
 }
-
 public class Wakgui : Boss
 {
     [System.Serializable]
@@ -49,12 +48,18 @@ public class Wakgui : Boss
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            bossdata.moveSpeed = 5.0f;
+        }
+
         if (_currentHp >= 0)
         {
             base.ChangeHpbar();
             base.RaidTimer();
             base.ChangeHpText();
-            base.BossMove();
+            if(action == WAKGUI_ACTION.IDLE)
+                base.BossMove();
         }
         else
         {
@@ -64,13 +69,12 @@ public class Wakgui : Boss
 
     IEnumerator Think()
     {
-        action = WAKGUI_ACTION.IDLE;
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(3.0f);
 
-        if (baseAttackCount < 4)
+        if (baseAttackCount < 4 && action == WAKGUI_ACTION.IDLE)
         {
-            // pattern_rand = Random.Range((int)WAKGUI_ACTION.IDLE, (int)WAKGUI_ACTION.BASE_ROAR + 1);
-            pattern_rand = (int)WAKGUI_ACTION.BASE_RUSH;
+            pattern_rand = Random.Range((int)WAKGUI_ACTION.IDLE, (int)WAKGUI_ACTION.BASE_ROAR + 1);
+            // pattern_rand = (int)WAKGUI_ACTION.BASE_RUSH;
             switch (pattern_rand)
             {
                 case (int)WAKGUI_ACTION.IDLE:
@@ -79,19 +83,19 @@ public class Wakgui : Boss
                     break;
                 case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기
                     baseAttackCount++;
-                    StartCoroutine(Base_Stap());
+                    Base_Stap();
                     break;
                 case (int)WAKGUI_ACTION.BASE_SLASH:      // <! 내려찍기
                     baseAttackCount++;
-                    StartCoroutine(Base_Slash());
+                    Base_Slash();
                     break;
                 case (int)WAKGUI_ACTION.BASE_ROAR:      // <! 포효
                     baseAttackCount++;
-                    StartCoroutine(Base_Roar());
+                    Base_Roar();
                     break;
                 case (int)WAKGUI_ACTION.BASE_RUSH:      // <! 돌진
                     baseAttackCount++;
-                    StartCoroutine(Base_Rush());
+                    Base_Rush();
                     break;
             }
         }
@@ -104,7 +108,7 @@ public class Wakgui : Boss
             switch (pattern_rand)
             {
                 case (int)WAKGUI_ACTION.PATTERN_POO:      // <! 똥 생성
-                    StartCoroutine(Pattern_Poo());
+                    Pattern_Poo();
                     break;
                 case (int)WAKGUI_ACTION.PATTERN_KNIFE:      // <! 칼날 찌르기
                     StartCoroutine(Pattern_Knife());
@@ -113,7 +117,7 @@ public class Wakgui : Boss
                     StartCoroutine(Pattern_Jump());
                     break;
                 case (int)WAKGUI_ACTION.PATTERN_CRISTAL:      // <! 수정 생성
-                    StartCoroutine(Pattern_Cristal());
+                    Pattern_Cristal();
                     break;
                 case (int)WAKGUI_ACTION.PATTERN_WAVE:      // <! 파도
                     StartCoroutine(Pattern_Wave());
@@ -128,64 +132,45 @@ public class Wakgui : Boss
     /**
      * @brief 기본공격 찌르기
      */
-    IEnumerator Base_Stap()
+    void Base_Stap()
     {
-        action = WAKGUI_ACTION.BASE_STAP;
-        yield return new WaitForSeconds(2.0f);
         animator.SetTrigger("Stap");
-        yield return new WaitForSeconds(1.0f);
-
         StartCoroutine(Think());
     }
 
     /**
      * @brief 기본공격 내려찍기
      */
-    IEnumerator Base_Slash()
+    void Base_Slash()
     {
-        action = WAKGUI_ACTION.BASE_SLASH;
-        yield return new WaitForSeconds(2.0f);
         animator.SetTrigger("Slash");
-        yield return new WaitForSeconds(1.0f);
-
         StartCoroutine(Think());
     }
 
     /**
      * @brief 기본공격 포효
      */
-    IEnumerator Base_Roar()
+    void Base_Roar()
     {
-        action = WAKGUI_ACTION.BASE_ROAR;
-        yield return new WaitForSeconds(2.0f);
         animator.SetTrigger("Roar");
-        yield return new WaitForSeconds(1.0f);
-
         StartCoroutine(Think());
     }
 
     /**
      * @brief 기본공격 돌진
      */
-    IEnumerator Base_Rush()
+    void Base_Rush()
     {
-        action = WAKGUI_ACTION.BASE_RUSH;
-        yield return new WaitForSeconds(2.0f);
         animator.SetTrigger("Rush");
-        yield return new WaitForSeconds(1.0f);
-        // baseAttackCount = 0;
         StartCoroutine(Think());
     }
 
     /**
      * @brief 패턴 똥 생성
      */
-    IEnumerator Pattern_Poo()
+    void Pattern_Poo()
     {
-        action = WAKGUI_ACTION.PATTERN_POO;
-        yield return new WaitForSeconds(2.0f);
         animator.SetTrigger("Poo");
-        yield return new WaitForSeconds(2.0f);
 
         Instantiate(patten.poo, _target.localPosition, Quaternion.identity);
 
@@ -199,8 +184,6 @@ public class Wakgui : Boss
      */
     IEnumerator Pattern_Knife()
     {
-        action = WAKGUI_ACTION.PATTERN_KNIFE;
-        yield return new WaitForSeconds(2.0f);
         animator.SetTrigger("Knife");
 
         for (int i = 0; i < bossdata.maxKnife; i++)
@@ -214,12 +197,10 @@ public class Wakgui : Boss
     }
 
     /**
-     * @brief 패턴 수정 생성
-     * @TODO 수정 생성 위치조정
+     * @brief 패턴 점프
      */
     IEnumerator Pattern_Jump()
     {
-        action = WAKGUI_ACTION.PATTERN_JUMP;
         animator.SetTrigger("Jump");
 
         baseAttackCount = 0;
@@ -232,10 +213,8 @@ public class Wakgui : Boss
      * @brief 패턴 수정 생성
      * @TODO 수정 생성 위치조정
      */
-    IEnumerator Pattern_Cristal()
+    void Pattern_Cristal()
     {
-        action = WAKGUI_ACTION.PATTERN_CRISTAL;
-        yield return new WaitForSeconds(2.0f);
         animator.SetTrigger("Cristal");
         for (int i = 0; i < bossdata.maxCristal; i++)
         {
@@ -244,7 +223,6 @@ public class Wakgui : Boss
 
         baseAttackCount = 0;
         StartCoroutine(Think());
-        yield return null;
     }
 
     /**
@@ -253,8 +231,6 @@ public class Wakgui : Boss
      */
     IEnumerator Pattern_Wave()
     {
-        action = WAKGUI_ACTION.PATTERN_WAVE;
-        yield return new WaitForSeconds(2.0f);
         animator.SetTrigger("Wave");
         for (int i = 0; i < bossdata.maxWave; i++)
         {
@@ -265,9 +241,17 @@ public class Wakgui : Boss
         StartCoroutine(Think());
     }
 
-    void SetJumpPostion()
+    /**
+     * @brief 패턴 반격
+     */
+    IEnumerator Patteron_Counter()
     {
-        Debug.Log("Asdf");
-        this.transform.localPosition = _target.transform.localPosition;
+        animator.SetTrigger("Counter");
+        while(action == WAKGUI_ACTION.PATTERN_COUNTER)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        StartCoroutine(Think());
     }
 }

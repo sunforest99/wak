@@ -15,7 +15,7 @@ public class BossData : ScriptableObject
     public string bossName { get { return _bossName; } }
 
     [SerializeField] private float _moveSpeed;      // <! 보스 이동
-    public float moveSpeed { get { return _moveSpeed; } }
+    public float moveSpeed { get { return _moveSpeed; } set { _moveSpeed = value;}}
 
     [SerializeField] private Color[] _barColor = new Color[6];      // <! 체력바 색
     public Color[] barColor { get { return _barColor; } }
