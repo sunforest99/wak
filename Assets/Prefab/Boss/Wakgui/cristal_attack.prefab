@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3404429404524190604}
   - component: {fileID: 294487884695233356}
   - component: {fileID: 1137490785432974334}
-  - component: {fileID: 201829142020722070}
   m_Layer: 0
   m_Name: cristal_attack
   m_TagString: Untagged
@@ -75,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 167111025
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 15547827d64dec24c91aabf9bc9b6385, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -234,14 +233,3 @@ TrailRenderer:
   m_MinVertexDistance: 1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!210 &201829142020722070
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3098892713799647088}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1

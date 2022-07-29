@@ -17,9 +17,9 @@ public class Boss : MonoBehaviour
     [SerializeField] protected Transform _target;        // <! 나중에 4명 추가하는걸루
     protected Vector3 _dir;      // <! 보스와 타겟 방향
 
-    protected int _currentHp;      // <! 헌제 체력
+    [SerializeField] protected int _currentHp;      // <! 헌제 체력
 
-    [HideInInspector] public int _nestingHp;        // <! 중첩 체력
+     public int _nestingHp;        // <! 중첩 체력
 
     protected const int _annihilation = 99999;    // <! 전멸기
 

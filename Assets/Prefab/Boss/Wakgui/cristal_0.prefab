@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 3645903444284595894}
   - component: {fileID: 4149327133582245270}
   - component: {fileID: 6591396108108393034}
+  - component: {fileID: 1180048575363733508}
   m_Layer: 0
   m_Name: cristal_0
   m_TagString: Untagged
@@ -105,8 +106,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -833444747
+  m_SortingLayer: 3
   m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: 9bec04e3aa1313248af79f2357223490, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -179,3 +180,14 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 3}
   m_EdgeRadius: 0
+--- !u!210 &1180048575363733508
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645903444284595895}
+  m_Enabled: 1
+  m_SortingLayerID: -833444747
+  m_SortingLayer: 3
+  m_SortingOrder: 0

@@ -74,10 +74,10 @@ public class BossCollider : MonoBehaviour
 
             createDamage(
                 other.ClosestPoint(transform.position) + new Vector2(0, 3f),
-                dmg,
+                GameMng.I.testDmg,
                 isCritical
            );
-           boss._nestingHp -= 3192856;
+           boss._nestingHp -= GameMng.I.testDmg;
         }
     }
 

@@ -13,12 +13,14 @@ public class GameMng : MonoBehaviour
 
     public DailogUI dailogUI;
     public Npcdata npcData;
-
+    public int charactorDmg;
     private float npcDistance = 3.0f;       // <! npc와의 최대 거리
     
     private static GameMng _instance = null;
-
+    
     public List<Transform> targetList;
+
+    public int testDmg;
 
     public int targetCount => Random.Range(0, targetList.Count);
     public static GameMng I
