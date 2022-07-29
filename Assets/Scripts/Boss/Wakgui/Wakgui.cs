@@ -40,6 +40,8 @@ public class Wakgui : Boss
 
     [SerializeField] private Animator animator = null;
 
+    public int accumulateDmg;
+
     void Start()
     {
         base.BossInitialize();
@@ -48,7 +50,7 @@ public class Wakgui : Boss
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             bossdata.moveSpeed = 5.0f;
         }
@@ -58,7 +60,7 @@ public class Wakgui : Boss
             base.ChangeHpbar();
             base.RaidTimer();
             base.ChangeHpText();
-            if(action == WAKGUI_ACTION.IDLE)
+            if (action == WAKGUI_ACTION.IDLE)
                 base.BossMove();
         }
         else
@@ -103,7 +105,7 @@ public class Wakgui : Boss
         else
         {
             // pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
-            pattern_rand = (int)WAKGUI_ACTION.PATTERN_JUMP;
+            pattern_rand = (int)WAKGUI_ACTION.PATTERN_COUNTER;
 
             switch (pattern_rand)
             {
@@ -123,7 +125,7 @@ public class Wakgui : Boss
                     StartCoroutine(Pattern_Wave());
                     break;
                 case (int)WAKGUI_ACTION.PATTERN_COUNTER:      // <! 반격기
-                    StartCoroutine(Think());
+                    StartCoroutine(Patteron_Counter());
                     break;
             }
         }
@@ -246,12 +248,21 @@ public class Wakgui : Boss
      */
     IEnumerator Patteron_Counter()
     {
+        int tempDmg = _currentHp;
         animator.SetTrigger("Counter");
-        while(action == WAKGUI_ACTION.PATTERN_COUNTER)
+        yield return new WaitForSeconds(1.0f);
+        while (action == WAKGUI_ACTION.PATTERN_COUNTER)
         {
-            yield return new WaitForEndOfFrame();
-        }
+            if (tempDmg - _currentHp > 1000000)
+            {
+                animator.SetTrigger("Annihilate");
+                break;
+            }
 
+            yield return null;
+        }
+        
+        baseAttackCount = 0;
         StartCoroutine(Think());
     }
 }

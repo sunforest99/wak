@@ -55,7 +55,7 @@ public class Character : MonoBehaviour
 
         checkSkill[skillnum] = true;
         float time = 0.0f;
-        skill_Img[skillnum].color = Color.gray;
+        skill_Img[skillnum].color = new Color32(175, 175, 175, 255);
         cooltime_UI[skillnum].gameObject.SetActive(true);
 
         while (time < cooltime)
@@ -168,6 +168,7 @@ public class Character : MonoBehaviour
                 StartCoroutine(SkillCoolDown(1, 5));
                 _state = CHARACTER_STATE.CANT_ANYTHING;
                 _anim.SetTrigger("Skill_AGDZ");
+                GameMng.I.testDmg = 200000;
             }
         }
         else if (Input.GetKeyDown(KeyCode.R))
@@ -176,6 +177,7 @@ public class Character : MonoBehaviour
                 StartCoroutine(SkillCoolDown(2, 6));
                 _state = CHARACTER_STATE.CAN_MOVE;
                 _anim.SetTrigger("Skill_Bigrr");
+                GameMng.I.testDmg = 100000;
             }
         }
         else if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -184,6 +186,7 @@ public class Character : MonoBehaviour
                 StartCoroutine(SkillCoolDown(3, 7));
                 _state = CHARACTER_STATE.CANT_ANYTHING;
                 _anim.SetTrigger("Skill_SG");
+                GameMng.I.testDmg = 2000000;
             }
         }
         else if (Input.GetKeyDown(KeyCode.F))
@@ -192,6 +195,7 @@ public class Character : MonoBehaviour
                 StartCoroutine(SkillCoolDown(4, 8));
                 _state = CHARACTER_STATE.CANT_ANYTHING;
                 _anim.SetTrigger("Skill_JH");
+                GameMng.I.testDmg = 500000;
             }
         }
         // 임시 기절 키
