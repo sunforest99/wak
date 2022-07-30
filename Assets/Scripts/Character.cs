@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 enum CHARACTER_STATE
 {
@@ -208,6 +209,9 @@ public class Character : MonoBehaviour
         // 마우스 좌클릭 - 일반 공격
         if (Input.GetMouseButtonDown(0) && GameMng.I.dailogUI == null)
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
             // 좌우 반전
             if (Input.mousePosition.x < Screen.width / 2)
                 transform.rotation = Quaternion.Euler(Vector3.zero);
