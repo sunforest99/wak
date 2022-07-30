@@ -29,11 +29,17 @@ public class Character : MonoBehaviour
 
     private List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
     private List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
-    private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
 
+
+    [SerializeField] private SkillData[] skilldatas = new SkillData[5];
+
+    public SkillData usingSkill;
+
+    private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
 
     void Start()
     {
+        GameMng.I.character = this;
         GameMng.I.targetList.Add(this.transform);
         _state = CHARACTER_STATE.IDLE;
         for (int i = 0; i < skill.transform.childCount; i++)
@@ -48,10 +54,17 @@ public class Character : MonoBehaviour
         inputKey();
     }
 
-    IEnumerator SkillCoolDown(int skillnum, float cooltime)        // <! 나중에 바꾸기
+    IEnumerator SkillCoolDown(int skillnum)        // <! 나중에 바꾸기
     {
+        float cooltime = 0;
         if (skillnum == 5) {
             skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
+            cooltime = 6;
+        }
+        else
+        {
+            usingSkill = skilldatas[skillnum];
+            cooltime = usingSkill.getColldown;
         }
 
         checkSkill[skillnum] = true;
@@ -112,7 +125,7 @@ public class Character : MonoBehaviour
             transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * 3 * Time.deltaTime;
 
             _state = CHARACTER_STATE.CAN_MOVE;
-            StartCoroutine(SkillCoolDown(5, 6));
+            StartCoroutine(SkillCoolDown(5));
         }
 
         // 아무것도 아닌 상태가 아닌 경우는 이동이 가능한 상태
@@ -157,7 +170,7 @@ public class Character : MonoBehaviour
         {
             if (!checkSkill[0])
             {
-                StartCoroutine(SkillCoolDown(0, 3));
+                StartCoroutine(SkillCoolDown(0));
                 _state = CHARACTER_STATE.CANT_ANYTHING;
                 _anim.SetTrigger("Skill_Gal");
             }
@@ -166,37 +179,33 @@ public class Character : MonoBehaviour
         {
             if (!checkSkill[1])
             {
-                StartCoroutine(SkillCoolDown(1, 5));
+                StartCoroutine(SkillCoolDown(1));
                 _state = CHARACTER_STATE.CANT_ANYTHING;
                 _anim.SetTrigger("Skill_AGDZ");
-                GameMng.I.testDmg = 200000;
             }
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
             if (!checkSkill[2]) {
-                StartCoroutine(SkillCoolDown(2, 6));
+                StartCoroutine(SkillCoolDown(2));
                 _state = CHARACTER_STATE.CAN_MOVE;
                 _anim.SetTrigger("Skill_Bigrr");
-                GameMng.I.testDmg = 100000;
             }
         }
         else if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             if (!checkSkill[3]){
-                StartCoroutine(SkillCoolDown(3, 7));
+                StartCoroutine(SkillCoolDown(3));
                 _state = CHARACTER_STATE.CANT_ANYTHING;
                 _anim.SetTrigger("Skill_SG");
-                GameMng.I.testDmg = 2000000;
             }
         }
         else if (Input.GetKeyDown(KeyCode.F))
         {
             if (!checkSkill[4]){
-                StartCoroutine(SkillCoolDown(4, 8));
+                StartCoroutine(SkillCoolDown(4));
                 _state = CHARACTER_STATE.CANT_ANYTHING;
                 _anim.SetTrigger("Skill_JH");
-                GameMng.I.testDmg = 500000;
             }
         }
         // 임시 기절 키
@@ -237,5 +246,6 @@ public class Character : MonoBehaviour
     void endAct()
     {
         _state = CHARACTER_STATE.IDLE;
+        usingSkill = null;
     }
 }

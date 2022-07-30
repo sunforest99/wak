@@ -20,9 +20,11 @@ public class GameMng : MonoBehaviour
     
     public List<Transform> targetList;
 
-    public int testDmg;
+    public Character character = null;
+    public int gatDamage() => character.usingSkill.CalcSkillDamage();
 
     public int targetCount => Random.Range(0, targetList.Count);
+    
     public static GameMng I
     {
         get

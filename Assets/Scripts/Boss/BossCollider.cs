@@ -74,20 +74,20 @@ public class BossCollider : MonoBehaviour
 
             int dmg = 0;
             bool isCritical = false;
-            if (Random.Range(0, 5) == 0) {
-                isCritical = true;
-                dmg = Random.Range(3000000, 6000000);
-            }
-            else {
-                dmg = Random.Range(2000000, 4000000);
-            }
+            // if (Random.Range(0, 5) == 0) {
+            //     isCritical = true;
+            //     dmg = Random.Range(3000000, 6000000);
+            // }
+            // else {
+            //     dmg = Random.Range(2000000, 4000000);
+            // }
 
             createDamage(
                 other.ClosestPoint(transform.position) + new Vector2(0, 3f),
-                GameMng.I.testDmg,
+                GameMng.I.gatDamage(),
                 isCritical
            );
-           boss._nestingHp -= GameMng.I.testDmg;
+           boss._nestingHp -= GameMng.I.gatDamage();
         }
     }
 
