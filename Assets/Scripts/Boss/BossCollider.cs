@@ -72,7 +72,7 @@ public class BossCollider : MonoBehaviour
             else
                 Instantiate(_eff, other.ClosestPoint(transform.position) + new Vector2(Random.Range(-0.1f, 0.1f), Random.Range(1f, 1.2f)), Quaternion.identity);
 
-            int dmg = 0;
+            //int dmg = 0;
             bool isCritical = false;
             // if (Random.Range(0, 5) == 0) {
             //     isCritical = true;

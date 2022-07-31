@@ -7,6 +7,7 @@ enum CHARACTER_STATE
 {
     IDLE,                   // 일반 상태, 움직이거나 스킬 사용이 가능한 상태
     CANT_ANYTHING,          // 스킬 쓰는 상태, 아무것도 못함
+    SLEEP_CANT_ANYTHING,    // 기절 상태, 기상기 외에는 아무것도 못함
     CAN_MOVE                // 스킬 쓰는 상태, 캔슬이 가능한 상태
 }
 
@@ -57,10 +58,18 @@ public class Character : MonoBehaviour
     IEnumerator SkillCoolDown(int skillnum)        // <! 나중에 바꾸기
     {
         float cooltime = 0;
+
+        // 대쉬
         if (skillnum == 5) {
             skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
             cooltime = 6;
         }
+        // 기상기
+        else if (skillnum == 6) {
+            skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
+            cooltime = 10;
+        }
+        // 스킬
         else
         {
             usingSkill = skilldatas[skillnum];
@@ -84,7 +93,7 @@ public class Character : MonoBehaviour
         skill_Img[skillnum].color = Color.white;
         checkSkill[skillnum] = false;
         
-        if (skillnum == 5) {
+        if (skillnum == 5 || skillnum == 6) {
             skill_Img[skillnum].transform.parent.gameObject.SetActive(false);
         }
         
@@ -117,7 +126,15 @@ public class Character : MonoBehaviour
 
     void inputKey()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[5])
+        if (Input.GetKeyDown(KeyCode.Space)&& !checkSkill[6] && _state == CHARACTER_STATE.SLEEP_CANT_ANYTHING )
+        {
+            _anim.SetTrigger("Wakeup");
+
+            _state = CHARACTER_STATE.CAN_MOVE;
+
+            StartCoroutine(SkillCoolDown(6));
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[5] && _state != CHARACTER_STATE.SLEEP_CANT_ANYTHING )
         {
             curDashTime = 0.0f;
 
@@ -129,7 +146,7 @@ public class Character : MonoBehaviour
         }
 
         // 아무것도 아닌 상태가 아닌 경우는 이동이 가능한 상태
-        if (_state == CHARACTER_STATE.CANT_ANYTHING)
+        if (_state == CHARACTER_STATE.CANT_ANYTHING || _state == CHARACTER_STATE.SLEEP_CANT_ANYTHING)
             return;
 
         // 이동
@@ -211,7 +228,7 @@ public class Character : MonoBehaviour
         // 임시 기절 키
         else if (Input.GetKeyDown(KeyCode.Y))
         {
-                _state = CHARACTER_STATE.CANT_ANYTHING;
+                _state = CHARACTER_STATE.SLEEP_CANT_ANYTHING;
                 _anim.SetTrigger("Sleep");
         }
 
