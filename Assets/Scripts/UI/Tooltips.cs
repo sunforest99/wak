@@ -29,8 +29,8 @@ public class Tooltips : MonoBehaviour
         if(split[0] == "Buff"){
             tooltipImg.sprite = StatMngSc.BuffSp[int.Parse(split[1])];
             switch(split[1]){
-                case "0" : tooltipSetting("적중된 적에게 N초동안 ‘꾸짖음’을 남깁니다. ‘꾸짖음’이 남은 적은 치명타 적중률이 10% 상승된 상태로 피해를 입습니다.", "갈"); break; 
-                case "1" : tooltipSetting("주님, 오늘도 정의로운 도둑이 되는 걸 허락해주세요. 파티원 모두에게 자신의 체력 (10%/20%/30%)에 해당하는 보호막을 (2초/3초/4초) 동안 생성합니다. ", "정의로운 도둑"); break;      
+                case "0" : tooltipSetting("적중된 적에게 N초동안 ‘꾸짖음’을 남깁니다.\n‘꾸짖음’이 남은 적은 치명타 적중률이\n10% 상승된 상태로 피해를 입습니다.", "갈"); break; 
+                case "1" : tooltipSetting("주님, 오늘도 정의로운 도둑이 되는 걸 허락해주세요.\n파티원 모두에게 자신의 체력 (10%/20%/30%)에 해당하는\n보호막을 (2초/3초/4초) 동안 생성합니다. ", "정의로운 도둑"); break;      
             }
         }
         else if(split[0] == "Debuff"){
