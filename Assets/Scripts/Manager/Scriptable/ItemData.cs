@@ -8,5 +8,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="New ItemData", menuName = "Custom/ItemData")]
 public class ItemData : ScriptableObject
 {
-    [SerializeField] private ITEM itemType;
+    [SerializeField] private ITEM_TYPE itemType;
+
+    [SerializeField] private int cost;
+
 }
