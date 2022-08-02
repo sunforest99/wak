@@ -15,16 +15,27 @@ public class GameMng : MonoBehaviour
     public Npcdata npcData;
     public int charactorDmg;
     private float npcDistance = 3.0f;       // <! npc와의 최대 거리
-    
+
     private static GameMng _instance = null;
-    
+
     public List<Transform> targetList;
 
     public Character character = null;
-    public int gatDamage() => character.usingSkill.CalcSkillDamage();
+    public int gatDamage(bool isBackAttack)
+    {
+
+        if (character.usingSkill)        // <! 스킬 대미지
+            return character.usingSkill.CalcSkillDamage(isBackAttack);
+        else        // <! 평타 데미지
+            return 20000;
+
+    }
 
     public int targetCount => Random.Range(0, targetList.Count);
-    
+
+    public Vector2 mapRightTop;
+    public Vector2 mapLeftBotton;
+
     public static GameMng I
     {
         get
@@ -50,7 +61,7 @@ public class GameMng : MonoBehaviour
         Ray2D ray = new Ray2D(pos, Vector2.zero);
 
         hit = Physics2D.Raycast(ray.origin, ray.direction);
-        
+
         if (hit.collider != null && hit.collider.CompareTag("Npc") && Vector2.Distance(hit.collider.transform.localPosition, charPos) <= npcDistance)
         {
             npcData = hit.collider.gameObject.GetComponent<Npcdata>();
