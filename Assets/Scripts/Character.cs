@@ -31,8 +31,7 @@ public class Character : MonoBehaviour
     private List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
     private List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
 
-
-    [SerializeField] private SkillData[] skilldatas = new SkillData[5];
+    public SkillData[] skilldatas = new SkillData[5];
 
     public SkillData usingSkill;
 

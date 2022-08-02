@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu (fileName = "New SkillData", menuName = "ScriptableObject/SkillData")]
+[CreateAssetMenu(fileName = "New SkillData", menuName = "ScriptableObject/SkillData")]
 public class SkillData : ScriptableObject
 {
-    [SerializeField] private int _code;
+    [SerializeField] private string _name;
+    public string getSkillName { get { return _name; } }
     [SerializeField] private int _minSkillDamage;
 
     [SerializeField] private int _maxSkillDamage;
@@ -17,10 +18,21 @@ public class SkillData : ScriptableObject
 
     [SerializeField] private int critical;
 
+    [SerializeField] private Sprite _skillImg;
+    public Sprite getSkllImg { get { return _skillImg; } }
 
-    public int CalcSkillDamage()
+    public int skillLevel;
+
+    public int CalcSkillDamage(bool isBackAttack)
     {
-        return Random.Range(_minSkillDamage, _maxSkillDamage + 1);
+        if (isBackAttack)
+        {
+            return (int)((float)Random.Range(_minSkillDamage, _maxSkillDamage + 1) * 1.5f) * skillLevel;
+        }
+        else
+        {
+            return Random.Range(_minSkillDamage, _maxSkillDamage + 1) * skillLevel;
+        }
     }
-    
+
 }

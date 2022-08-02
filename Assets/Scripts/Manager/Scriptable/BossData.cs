@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Boss", menuName = "Custom/BossData")]
+[CreateAssetMenu(fileName = "New Boss", menuName = "ScriptableObject/BossData")]
 public class BossData : ScriptableObject
 {
     [SerializeField] private int _startHp;          // <! 보스 총 체력

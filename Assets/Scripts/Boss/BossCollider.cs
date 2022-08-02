@@ -17,6 +17,8 @@ public class BossCollider : MonoBehaviour
     [SerializeField] GameObject _eff;
     [SerializeField] GameObject _backEff;
 
+    bool isBackAttack;
+
     SpriteRenderer temp;
     void Start()
     {
@@ -59,18 +61,32 @@ public class BossCollider : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Weapon"))
         {
+            if (GameMng.I.character.usingSkill != null && GameMng.I.character.usingSkill.getSkillName.Equals("갈!"))
+            {
+                Debug.Log("디버프");
+            }
+
             StartCoroutine(HitBlink());
             _camera.shake();
-            
+
             // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남
-            if (this.transform.localRotation.y == 180  &&  this.transform.position.x + 1 > other.transform.parent.transform.position.x)
-                Instantiate(_backEff, new Vector2(transform.position.x + Random.Range(-2f, 1f),  other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f)  ) , Quaternion.identity);
+            if (this.transform.localRotation.y == 180 && this.transform.position.x + 1 > other.transform.parent.transform.position.x)
+            {
+                Instantiate(_backEff, new Vector2(transform.position.x + Random.Range(-2f, 1f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f)), Quaternion.identity);
+                isBackAttack = true;
+            }
             // 보스 좌측 바라보는 상태에서  콜리더가 우측에서 일어남
-            else if (this.transform.localRotation.y == 0  &&  this.transform.position.x + 1 < other.transform.parent.transform.position.x)
-                Instantiate(_backEff, new Vector2(transform.position.x + Random.Range(1.2f, 2.2f),  other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f)  ) , Quaternion.identity);
+            else if (this.transform.localRotation.y == 0 && this.transform.position.x + 1 < other.transform.parent.transform.position.x)
+            {
+                Instantiate(_backEff, new Vector2(transform.position.x + Random.Range(1.2f, 2.2f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f)), Quaternion.identity);
+                isBackAttack = true;
+            }
             // 일반 공격
             else
+            {
                 Instantiate(_eff, other.ClosestPoint(transform.position) + new Vector2(Random.Range(-0.1f, 0.1f), Random.Range(1f, 1.2f)), Quaternion.identity);
+                isBackAttack = false;
+            }
 
             //int dmg = 0;
             bool isCritical = false;
@@ -84,10 +100,10 @@ public class BossCollider : MonoBehaviour
 
             createDamage(
                 other.ClosestPoint(transform.position) + new Vector2(0, 3f),
-                GameMng.I.gatDamage(),
+                GameMng.I.gatDamage(isBackAttack),
                 isCritical
            );
-           boss._nestingHp -= GameMng.I.gatDamage();
+            boss._nestingHp -= GameMng.I.gatDamage(isBackAttack);
         }
     }
 

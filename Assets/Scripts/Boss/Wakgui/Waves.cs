@@ -20,22 +20,22 @@ public class Waves : DestroySelf
         switch (rand)
         {
             case (int)POS.DOWN:
-                this.transform.localPosition = new Vector3(Random.Range(-13, 13), 8, 0);
+                this.transform.position = new Vector3(Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x), GameMng.I.mapRightTop.y, 0);
                 this.transform.localRotation = Quaternion.Euler(0, 0, 90.0f);
                 break;
 
             case (int)POS.UP:
-                this.transform.localPosition = new Vector3(Random.Range(-13, 13), -8, 0);
+                this.transform.position = new Vector3(Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x), GameMng.I.mapLeftBotton.y, 0);
                 this.transform.localRotation = Quaternion.Euler(0, 0, -90.0f);
                 break;
 
             case (int)POS.RIGHT:
-                this.transform.localPosition = new Vector3(-13, Random.Range(-7, 8), 0);
+                this.transform.position = new Vector3(GameMng.I.mapLeftBotton.x, Random.Range(GameMng.I.mapLeftBotton.y, GameMng.I.mapRightTop.y), 0);
                 this.transform.localRotation = Quaternion.Euler(0, 0, 180.0f);
                 break;
 
             case (int)POS.LEFT:
-                this.transform.localPosition = new Vector3(13, Random.Range(-7, 8), 0);
+                this.transform.position = new Vector3(GameMng.I.mapRightTop.x, Random.Range(GameMng.I.mapLeftBotton.y, GameMng.I.mapRightTop.y), 0);
                 this.transform.localRotation = Quaternion.identity;
                 break;
         }
@@ -43,6 +43,6 @@ public class Waves : DestroySelf
 
     void Update()
     {
-        this.transform.Translate(Vector3.down * 3.0f * Time.deltaTime);
+        this.transform.Translate(Vector3.left * 3.0f * Time.deltaTime);
     }
 }

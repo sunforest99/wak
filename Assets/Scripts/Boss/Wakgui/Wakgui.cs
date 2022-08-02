@@ -104,8 +104,8 @@ public class Wakgui : Boss
 
         else
         {
-            // pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
-            pattern_rand = (int)WAKGUI_ACTION.PATTERN_COUNTER;
+            pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
+            // pattern_rand = (int)WAKGUI_ACTION.PATTERN_WAVE;
 
             switch (pattern_rand)
             {
@@ -191,7 +191,7 @@ public class Wakgui : Boss
         for (int i = 0; i < bossdata.maxKnife; i++)
         {
             yield return new WaitForSeconds(1.0f);
-            Instantiate(patten.knife, new Vector3(Random.Range(-12, 12), Random.Range(-7, 7), 0), Quaternion.Euler(0, 0, Random.Range(0, 360)));
+            Instantiate(patten.knife, new Vector3(Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x), Random.Range(GameMng.I.mapLeftBotton.y, GameMng.I.mapRightTop.y), 0), Quaternion.Euler(0, 0, Random.Range(0, 360)));
         }
 
         baseAttackCount = 0;
@@ -220,7 +220,7 @@ public class Wakgui : Boss
         animator.SetTrigger("Cristal");
         for (int i = 0; i < bossdata.maxCristal; i++)
         {
-            Instantiate(patten.cristal, new Vector3(Random.Range(-12, 12), Random.Range(-7, 7), 0), Quaternion.identity);
+            Instantiate(patten.cristal, new Vector3(Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x), Random.Range(GameMng.I.mapLeftBotton.y, GameMng.I.mapRightTop.y), 0), Quaternion.identity);
         }
 
         baseAttackCount = 0;
