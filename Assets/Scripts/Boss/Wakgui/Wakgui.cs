@@ -105,7 +105,7 @@ public class Wakgui : Boss
         else
         {
             pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
-            // pattern_rand = (int)WAKGUI_ACTION.PATTERN_WAVE;
+            // pattern_rand = (int)WAKGUI_ACTION.PATTERN_POO;
 
             switch (pattern_rand)
             {
@@ -174,7 +174,10 @@ public class Wakgui : Boss
     {
         animator.SetTrigger("Poo");
 
-        Instantiate(patten.poo, _target.localPosition, Quaternion.identity);
+        // 나중에 살아 있는 플레이어 들에게 모두 쏘기
+        GameObject poo = Instantiate(patten.poo,  Vector3.zero, Quaternion.identity) as GameObject;
+        poo.transform.SetParent(_target);
+        poo.transform.localPosition = new Vector3(0, -2.5f, 0);
 
         baseAttackCount = 0;
         StartCoroutine(Think());
