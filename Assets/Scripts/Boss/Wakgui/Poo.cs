@@ -7,9 +7,10 @@ public class Poo : DestroySelf
     [SerializeField] float waitingTime;
     [SerializeField] float maintainTime;
     [SerializeField] Animator _anim;
-
+    int damage;
     void Start()
     {
+        damage = GameMng.I.bossData.getPatternDmg((int)WAKGUI_ACTION.PATTERN_POO);
         StartCoroutine(Remove());
     }
     

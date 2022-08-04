@@ -45,16 +45,12 @@ public class Wakgui : Boss
     void Start()
     {
         base.BossInitialize();
+        GameMng.I.bossData = this.bossdata;
         StartCoroutine(Think());
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            bossdata.moveSpeed = 5.0f;
-        }
-
         if (_currentHp >= 0)
         {
             base.ChangeHpbar();
@@ -76,6 +72,7 @@ public class Wakgui : Boss
         if (baseAttackCount < 4 && action == WAKGUI_ACTION.IDLE)
         {
             pattern_rand = Random.Range((int)WAKGUI_ACTION.IDLE, (int)WAKGUI_ACTION.BASE_ROAR + 1);
+            bossdata.setBossAction = pattern_rand;
             // pattern_rand = (int)WAKGUI_ACTION.BASE_RUSH;
             switch (pattern_rand)
             {
@@ -105,7 +102,8 @@ public class Wakgui : Boss
         else
         {
             pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
-            // pattern_rand = (int)WAKGUI_ACTION.PATTERN_POO;
+            bossdata.setBossAction = pattern_rand;
+            // pattern_rand = (int)WAKGUI_ACTION.PATTERN_KNIFE;
 
             switch (pattern_rand)
             {
@@ -243,6 +241,7 @@ public class Wakgui : Boss
             Instantiate(patten.waves, Vector3.zero, Quaternion.identity);
         }
 
+        baseAttackCount = 0;
         StartCoroutine(Think());
     }
 

@@ -15,7 +15,7 @@ public class BossData : ScriptableObject
     public string bossName { get { return _bossName; } }
 
     [SerializeField] private float _moveSpeed;      // <! 보스 이동
-    public float moveSpeed { get { return _moveSpeed; } set { _moveSpeed = value;}}
+    public float moveSpeed { get { return _moveSpeed; } set { _moveSpeed = value; } }
 
     [SerializeField] private Color[] _barColor = new Color[6];      // <! 체력바 색
     public Color[] barColor { get { return _barColor; } }
@@ -31,8 +31,14 @@ public class BossData : ScriptableObject
     [SerializeField] private int _maxWave;       // <! 파도 최대 개수
     public int maxWave { get { return _maxWave; } }
 
-    private Color color;
+    [SerializeField] private int _bossAction;
+    public int setBossAction { set { _bossAction = value; } }
+    [SerializeField] private int[] _patternDmg;
+    public int getPatternDmg() =>_patternDmg[_bossAction];
+    public int getPatternDmg(int action) => _patternDmg[action];
 
+    private Color color;
+    
     void Awake()
     {
         ColorUtility.TryParseHtmlString("#9B111E", out color);

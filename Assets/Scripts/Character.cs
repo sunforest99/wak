@@ -14,6 +14,8 @@ enum CHARACTER_STATE
 public class Character : MonoBehaviour
 {
     [SerializeField] Animator _anim;
+    public void setTriggerSleep() => _anim.SetTrigger("Sleep");
+    
     CHARACTER_STATE _state;
 
     [SerializeField] GameObject[] footprints;
@@ -21,7 +23,10 @@ public class Character : MonoBehaviour
     const float MAX_DASH_TIME = 0.1f;
     public float curDashTime = 0.1f;
     const float DASH_SPEED = 20;
+    const float MOVE_SPEED = 5;
     //public float dashStoppingSpeed = 0.1f;
+
+    [SerializeField] Rigidbody2D _rigidBody;
 
     int footprintIdx = 0;
     bool isMoving = false;
@@ -36,6 +41,9 @@ public class Character : MonoBehaviour
     public SkillData usingSkill;
 
     private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
+
+    // float _moveDir.x, _moveDir.y;
+    Vector3 _moveDir;
 
     void Start()
     {
@@ -53,6 +61,12 @@ public class Character : MonoBehaviour
     {
         inputKey();
     }
+    
+    void FixedUpdate()
+    {
+        inputMove();
+    }
+
 
     IEnumerator SkillCoolDown(int skillnum)        // <! 나중에 바꾸기
     {
@@ -122,6 +136,30 @@ public class Character : MonoBehaviour
             StartCoroutine(showFootprint());
         
     }
+    
+    void inputMove()
+    {
+        Vector3 moveDist = _moveDir.normalized * Time.deltaTime;
+        _rigidBody.MovePosition(transform.position + moveDist * MOVE_SPEED);
+
+        // 대시 이동
+        if (curDashTime < MAX_DASH_TIME)
+        {
+            curDashTime += Time.deltaTime;
+            _rigidBody.MovePosition(transform.position + moveDist * DASH_SPEED);
+        }
+
+        // 이동 애니메이션 관리
+        if (_moveDir.x != 0 || _moveDir.y != 0)
+        {
+            startMoving();
+        }
+        else
+        {
+            isMoving = false;
+            _anim.SetBool("Move", false);
+        }
+    }
 
     void inputKey()
     {
@@ -133,49 +171,33 @@ public class Character : MonoBehaviour
 
             StartCoroutine(SkillCoolDown(6));
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[5] && _state != CHARACTER_STATE.SLEEP_CANT_ANYTHING )
+
+        if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[5] && _state != CHARACTER_STATE.SLEEP_CANT_ANYTHING )
         {
             curDashTime = 0.0f;
 
             _anim.SetTrigger("Dash");
-            transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * 3 * Time.deltaTime;
 
             _state = CHARACTER_STATE.CAN_MOVE;
             StartCoroutine(SkillCoolDown(5));
         }
 
         // 아무것도 아닌 상태가 아닌 경우는 이동이 가능한 상태
-        if (_state == CHARACTER_STATE.CANT_ANYTHING || _state == CHARACTER_STATE.SLEEP_CANT_ANYTHING)
+        if (_state == CHARACTER_STATE.CANT_ANYTHING || _state == CHARACTER_STATE.SLEEP_CANT_ANYTHING) {
+            _moveDir.x = 0;
+            _moveDir.y = 0;
             return;
+        }
 
         // 이동
-        if (Input.GetAxisRaw("Horizontal") < 0)
-        {
+        _moveDir.x = Input.GetAxisRaw("Horizontal");
+        _moveDir.y = Input.GetAxisRaw("Vertical");
+
+        // 방향
+        if (_moveDir.x < 0)
             transform.rotation = Quaternion.Euler(Vector3.zero);
-        }
-        else if (Input.GetAxisRaw("Horizontal") > 0)
-        {
+        else if (_moveDir.x > 0)
             transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
-        }
-        transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * 3 * Time.deltaTime;
-
-        // 대시 이동
-        if (curDashTime < MAX_DASH_TIME)
-        {
-            curDashTime += Time.deltaTime;
-            transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) * DASH_SPEED * Time.deltaTime;
-        }
-
-        // 이동 애니메이션 관리
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-        {
-            startMoving();
-        }
-        else
-        {
-            isMoving = false;
-            _anim.SetBool("Move", false);
-        }
 
         // 모든 스킬은 IDLE 상태에서만 가능하기 때문에 체크함
         if (_state != CHARACTER_STATE.IDLE)

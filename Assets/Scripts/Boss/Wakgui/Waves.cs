@@ -12,10 +12,11 @@ enum POS
 public class Waves : DestroySelf
 {
     int rand;
-
+    int damage;
     [SerializeField] POS pos;
     void Start()
-    {
+    { 
+        damage = GameMng.I.bossData.getPatternDmg((int)WAKGUI_ACTION.PATTERN_WAVE);
         rand = Random.Range(0, 4);
         switch (rand)
         {
@@ -44,5 +45,13 @@ public class Waves : DestroySelf
     void Update()
     {
         this.transform.Translate(Vector3.left * 3.0f * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) 
+    {
+        if(other.CompareTag("Player"))
+        {
+            Debug.Log("파도 데미지 : " + damage);
+        }
     }
 }

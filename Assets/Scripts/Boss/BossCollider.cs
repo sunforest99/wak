@@ -98,12 +98,12 @@ public class BossCollider : MonoBehaviour
             //     dmg = Random.Range(2000000, 4000000);
             // }
 
-            createDamage(
-                other.ClosestPoint(transform.position) + new Vector2(0, 3f),
-                GameMng.I.gatDamage(isBackAttack),
-                isCritical
-           );
-            boss._nestingHp -= GameMng.I.gatDamage(isBackAttack);
+        //     createDamage(
+        //         other.ClosestPoint(transform.position) + new Vector2(0, 3f),
+        //         // GameMng.I.gatCharecterDamage(isBackAttack),
+        //         isCritical
+        //    );
+            // boss._nestingHp -= GameMng.I.gatCharecterDamage(isBackAttack);
         }
     }
 

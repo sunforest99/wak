@@ -9,43 +9,45 @@ public class StateMng : MonoBehaviour
     const int BuffCount = 2;
     const int DeBuffCount = 4;
 
-    [SerializeField] GameObject[] PlayerBuffGams = new GameObject[BuffCount];
-    [SerializeField] GameObject[] PlayerDeBuffGams = new GameObject[DeBuffCount];
+    public Buff[] BuffSc = new Buff[BuffCount];
+    public Buff[] DeBuffSc = new Buff[DeBuffCount];
 
-    [SerializeField] Transform PlayerBuffSlot;
+    public List<Buff> BuffStatus;                            // 현재 가지고있는 버프
+    public List<Buff> DeBuffStatus;                          // 현재 가지고있는 디버프
+
+    public GameObject[] PlayerBuffGams = new GameObject[BuffCount];               // 좌측 UI 버프, 디버프 게임오브젝트
+    public GameObject[] PlayerDeBuffGams = new GameObject[DeBuffCount];
+
+    [SerializeField] Transform PlayerBuffSlot;                                              // 좌측 UI 플레이어 버프 슬롯
     [SerializeField] Transform PlayerDeBuffSlot;
 
-    [SerializeField] GameObject[] BuffGams = new GameObject[BuffCount];
+    [SerializeField] GameObject[] BuffGams = new GameObject[BuffCount];                     // 중하단 UI 플레이어 버프 게임오브젝트
     [SerializeField] GameObject[] DeBuffGams = new GameObject[DeBuffCount];
 
-    [SerializeField] Image[] PartyHPImg = new Image[4];
+    [SerializeField] Image[] PartyHPImg = new Image[4];                                     // 좌측 UI 플레이어들 체력이미지
     [SerializeField] Image[] PartyShieldImg = new Image[4];
-    [SerializeField] Image PlayerHPImg;
+    [SerializeField] Image PlayerHPImg;                                                     // 중하단 플레이어 체력 이미지
     [SerializeField] Image PlayerShieldImg;
-    [SerializeField] TextMeshProUGUI PlayerHPText;
-    [SerializeField] TextMeshProUGUI[] PlayerDebuffCountText = new TextMeshProUGUI[DeBuffCount];
+    [SerializeField] TextMeshProUGUI PlayerHPText;                                          // 중하단 플레이어 체력 텍스트
+    [SerializeField] TextMeshProUGUI[] PlayerDebuffCountText = new TextMeshProUGUI[DeBuffCount];    // 중하단 플레이어 디버프 갯수 텍스트
 
-    public Sprite[] BuffSp = new Sprite[BuffCount];
+    public Sprite[] BuffSp = new Sprite[BuffCount];                                         // 버프 스프라이트
     public Sprite[] DeBuffSp = new Sprite[DeBuffCount];
 
-    [SerializeField] float[] fFullPartyHP = new float[4];
+    [SerializeField] float[] fFullPartyHP = new float[4];                                   // 좌측 플레이어들 최대 체력
     [SerializeField] float[] fFullPartyShield = new float[4];
     [SerializeField] float[] fPartyHP = new float[4];
     [SerializeField] float[] fPartyShield = new float[4];
     [SerializeField] float[] fShieldPos = new float[4];
-    [SerializeField] float fPlayerFullHP;
+    [SerializeField] float fPlayerFullHP;                                                   // 플레이어의 최대 체력
     [SerializeField] float fPlayerHP;
     [SerializeField] float fPlayerShield;
     float fPlayerShieldPos;
 
-    int nPlayerBuffCount;
+    int nPlayerBuffCount;                                                                   // 플레이어의 버프 갯수
     int nPlayerDeBuffCount;
 
-    int[] nBuffKind = new int[BuffCount];
-    int[] nDeBuffKind = new int[DeBuffCount];
-
-
-    bool[] bBuffKind = new bool[BuffCount];
+    bool[] bBuffKind = new bool[BuffCount];                                                 // 어떤 버프가 켜져 있는지
     bool[] bDeBuffKind = new bool[DeBuffCount];
 
     float fImageSize;
@@ -124,52 +126,61 @@ public class StateMng : MonoBehaviour
             int kind = Random.Range(0, 2);
             if (kind == 0)
             {
-                int buffkind = Random.Range(0, bBuffKind.Length);
+                int buffkind = Random.Range(0, BuffCount);
                 bBuffKind[buffkind] = true;
                 ActiveBuff(buffkind);
             }
             else if (kind == 1)
             {
-                int debuffkind = Random.Range(0, bDeBuffKind.Length);
+                int debuffkind = Random.Range(0, DeBuffCount);
                 bDeBuffKind[debuffkind] = true;
                 ActiveDeBuff(debuffkind);
             }
         }
-
-        PlayerDeBuffSlot.transform.localPosition = new Vector3(16.0f * nPlayerBuffCount, 0.0f, 0.0f);
     }
 
     void ActiveBuff(int kind)
     {
         if (bBuffKind[kind])
         {
-            if (nBuffKind[kind] == 0)
+            if (BuffSc[kind].count == 0)                                                       // 해당 버프가 지금 있나
             {
                 BuffGams[kind].SetActive(true);
-                BuffGams[kind].transform.localPosition = new Vector3(21.1f * nPlayerBuffCount, -330.0f, 0.0f);
                 PlayerBuffGams[kind].SetActive(true);
-                PlayerBuffGams[kind].transform.localPosition = new Vector3(16.0f * nPlayerBuffCount, -8.5f, 0.0f);
                 nPlayerBuffCount++;
+                BuffStatus.Add(BuffGams[kind].GetComponent<Buff>());
+                BuffStatus[BuffStatus.Count - 1].count++;
+            }
+            else
+            {
+                Buff tmp = BuffStatus.Find(name => name.BuffKind == (BUFF)kind);            // 버프의 이름을 확인하여 중첩 가능한 버프면 중첩 수 증가
+                if(tmp.check_nesting)
+                    tmp.count++;
             }
             bBuffKind[kind] = false;
-            nBuffKind[kind]++;
         }
     }
+
     void ActiveDeBuff(int kind)
     {
         if (bDeBuffKind[kind])
         {
-            if (nDeBuffKind[kind] == 0)
+            if (DeBuffSc[kind].count == 0)                                                     // 해당 디버프가 지금 있나
             {
                 DeBuffGams[kind].SetActive(true);
-                DeBuffGams[kind].transform.localPosition = new Vector3(21.1f * nPlayerDeBuffCount, -310.0f, 0.0f);
-                PlayerDeBuffGams[kind].SetActive(true);
-                PlayerDeBuffGams[kind].transform.localPosition = new Vector3(16.0f * nPlayerDeBuffCount, -8.5f, 0.0f);
+                PlayerDeBuffGams[kind].SetActive(true);;
                 nPlayerDeBuffCount++;
+                DeBuffStatus.Add(DeBuffGams[kind].GetComponent<Buff>());
+                DeBuffStatus[DeBuffStatus.Count - 1].count++;
+            }
+            else
+            {
+                Buff tmp = DeBuffStatus.Find(name => name.DeBuffKind == (DEBUFF)kind);        // 디버프의 이름을 확인하여 중첩 가능한 버프면 중첩 수 증가
+                if(tmp.check_nesting)
+                    tmp.count++;
             }
             bDeBuffKind[kind] = false;
-            nDeBuffKind[kind]++;
-            PlayerDebuffCountText[kind].text = 'x' + nDeBuffKind[kind].ToString();
+            //PlayerDebuffCountText[kind].text = 'x' + nDeBuffKind[kind].ToString();
         }
     }
 }

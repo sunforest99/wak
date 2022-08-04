@@ -183,6 +183,7 @@ public class Boss : MonoBehaviour
 
     IEnumerator ZeroHpbar()
     {
+         _baseUI.hpbar[0].enabled = false;
         while (_baseUI.hpbar[0].fillAmount >= 0)
         {
             yield return new WaitForEndOfFrame();
