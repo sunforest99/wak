@@ -138,7 +138,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -232,6 +232,7 @@ GameObject:
   - component: {fileID: 4366125831947515913}
   - component: {fileID: 1225628421210170635}
   - component: {fileID: 8037872073571415328}
+  - component: {fileID: 462497282393953502}
   m_Layer: 0
   m_Name: knife
   m_TagString: Untagged
@@ -274,7 +275,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -332,6 +333,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5842512, y: 3.26}
   m_EdgeRadius: 0
+--- !u!114 &462497282393953502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6327540794102053109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cb8162b59a3c6c479524818e11185f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossdata: {fileID: 11400000, guid: d96ce92a9f8f110478f793a5fcd7357e, type: 2}
+  damage: 0
+  animator: {fileID: 5081268575539120845}
 --- !u!1 &7578800598515329737
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,9 +372,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7578800598515329737}
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.02, y: 2.33, z: 0}
-  m_LocalScale: {x: 1, y: 0, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.16, z: 0}
+  m_LocalScale: {x: 1, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7453690991315510316}
@@ -415,7 +431,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!1 &7722266466619245020
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +443,6 @@ GameObject:
   - component: {fileID: 7453690991315510316}
   - component: {fileID: 2988340006983552309}
   - component: {fileID: 5081268575539120845}
-  - component: {fileID: 7713158224561571134}
   - component: {fileID: 7961860646656624179}
   m_Layer: 0
   m_Name: knife_portal
@@ -526,19 +541,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7713158224561571134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7722266466619245020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cb8162b59a3c6c479524818e11185f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 5081268575539120845}
 --- !u!210 &7961860646656624179
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -547,6 +549,6 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7722266466619245020}
   m_Enabled: 1
-  m_SortingLayerID: 167111025
-  m_SortingLayer: 3
+  m_SortingLayerID: -1230730215
+  m_SortingLayer: 2
   m_SortingOrder: 0

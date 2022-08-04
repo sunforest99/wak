@@ -21,15 +21,16 @@ public class GameMng : MonoBehaviour
     public List<Transform> targetList;
 
     public Character character = null;
-    public int gatDamage(bool isBackAttack)
+    
+    public int getCharecterDamage(bool isBackAttack)        // <! 캐릭터 데미지 가져오기
     {
-
         if (character.usingSkill)        // <! 스킬 대미지
             return character.usingSkill.CalcSkillDamage(isBackAttack);
         else        // <! 평타 데미지
             return 20000;
-
     }
+
+    public BossData bossData = null;
 
     public int targetCount => Random.Range(0, targetList.Count);
 
