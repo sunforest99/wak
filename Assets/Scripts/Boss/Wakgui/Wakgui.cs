@@ -49,6 +49,8 @@ public class Wakgui : Boss
 
     public List<Marble> marblelist;
     bool Checkcircle = false;           // !< 구슬부시기 패턴 채크
+    bool Checkoutcast = false;          // !< 왕따 패턴 체크
+    bool Checkpatern = false;
     public GameObject[] getCircle { get { return patten.circle; } }
 
     float pooSpawnTime;
@@ -56,6 +58,7 @@ public class Wakgui : Boss
     [SerializeField] private Animator animator = null;
 
     public int accumulateDmg;
+    public int circle_answer;
 
     void Start()
     {
@@ -76,16 +79,18 @@ public class Wakgui : Boss
             if (action == WAKGUI_ACTION.IDLE)
                 base.BossMove();
 
-            // if (base._currentNesting < 90 && action == WAKGUI_ACTION.IDLE && !Checkcircle)
-            // {
-            //     Teleport(true);
-            //     Checkcircle = true;
-            //     StopCoroutine(Think());
-            // }
-            if (base._currentNesting < 90 && action == WAKGUI_ACTION.IDLE && !Checkcircle)      // TODO : 몇줄에 패턴 시작하는지 구현 위에 참고해서
+            if (!Checkpatern && !Checkcircle && base._currentNesting < 90 && action == WAKGUI_ACTION.IDLE)
+            {
+                Teleport(true);
+                Checkpatern = true;
+                Checkcircle = true;
+                StopCoroutine(Think());
+            }
+            else if (Checkcircle && !Checkoutcast && base._currentNesting < 50 && action == WAKGUI_ACTION.IDLE)
             {
                 Teleport(false);
-                Checkcircle = true;
+                Checkpatern = true;
+                Checkoutcast = true;
                 StopCoroutine(Think());
             }
         }
@@ -213,7 +218,6 @@ public class Wakgui : Boss
 
     /**
      * @brief 패턴 칼날 생성
-     * @TODO 칼날 생성 위치조정
      */
     IEnumerator Pattern_Knife()
     {
@@ -244,7 +248,6 @@ public class Wakgui : Boss
 
     /**
      * @brief 패턴 수정 생성
-     * @TODO 수정 생성 위치조정
      */
     void Pattern_Cristal()
     {
@@ -260,7 +263,6 @@ public class Wakgui : Boss
 
     /**
      * @brief 패턴 파도
-     * @TODO 파도 생성 위치조정
      */
     IEnumerator Pattern_Wave()
     {
@@ -317,36 +319,13 @@ public class Wakgui : Boss
     public IEnumerator Petern_Circle()
     {
         marblelist.Clear();
-        int rand = Random.Range(0, 6);
-        animator.SetInteger("randCircle", rand);
+        circle_answer = Random.Range(0, 6);
+        animator.SetInteger("randCircle", circle_answer);
 
-        yield return new WaitForSeconds(10.0f);
-
-        switch (rand)
-        {
-            case 0:
-                marblelist[2].answer = true;        // 빨 파 초 주
-                break;
-            case 1:
-                marblelist[3].answer = true;
-                break;
-            case 2:
-                marblelist[0].answer = true;
-                break;
-            case 3:
-                marblelist[1].answer = true;
-                break;
-            case 4:
-                marblelist[3].answer = true;
-                break;
-            case 5:
-                marblelist[0].answer = true;
-                break;
-        }
-
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(15.0f);
         action = WAKGUI_ACTION.IDLE;
         StartCoroutine(Think());
+        Checkpatern = false;
         yield return null;
     }
 
