@@ -18,7 +18,7 @@ public class GameMng : MonoBehaviour
 
     private static GameMng _instance = null;
 
-    public List<Transform> targetList;
+    public List<Character> targetList;
 
     public Character character = null;
     
@@ -35,6 +35,7 @@ public class GameMng : MonoBehaviour
     public int targetCount => Random.Range(0, targetList.Count);
 
     public Vector2 mapRightTop;
+    public Vector2 mapCenter;
     public Vector2 mapLeftBotton;
 
     public static GameMng I

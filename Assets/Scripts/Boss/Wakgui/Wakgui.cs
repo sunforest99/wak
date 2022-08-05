@@ -15,7 +15,9 @@ public enum WAKGUI_ACTION
     PATTERN_CRISTAL,
     PATTERN_WAVE,
     PATTERN_COUNTER,
-    PATTERN_CIRCLE
+    PATTERN_CIRCLE,
+    TELEPORT,
+    TELEPORT_SPAWN
 }
 public class Wakgui : Boss
 {
@@ -26,8 +28,9 @@ public class Wakgui : Boss
         public GameObject waves;        // <! 파도 공격
         public GameObject cristal;      // <! 닷지류 수정 생성
         public GameObject poo;
+        public GameObject[] circle;
     }
-
+    public List<Marble> marblelist;
     public WAKGUI_ACTION action;
 
     [SerializeField] private int baseAttackCount;       // <! 기본패턴 몇번 후 패턴 사용할 것인지 (나중에 바꿀듯)
@@ -35,6 +38,7 @@ public class Wakgui : Boss
     private int pattern_rand;       // <! 패턴 랜덤값
 
     [SerializeField] pattenObj patten;      // <! 패턴 프리팹 담는 구조체
+    public GameObject[] getCircle { get { return patten.circle; } }
 
     float pooSpawnTime;
 
@@ -47,6 +51,8 @@ public class Wakgui : Boss
         base.BossInitialize();
         GameMng.I.bossData = this.bossdata;
         StartCoroutine(Think());
+
+        // StartCoroutine(Teleport("Petern_Circle"));
     }
 
     void Update()
@@ -68,6 +74,12 @@ public class Wakgui : Boss
     IEnumerator Think()
     {
         yield return new WaitForSeconds(3.0f);
+        if (base._currentNesting < 90 && action == WAKGUI_ACTION.IDLE)
+        {
+            Debug.Log("여기임?");
+            Teleport();
+            yield return null;
+        }
 
         if (baseAttackCount < 4 && action == WAKGUI_ACTION.IDLE)
         {
@@ -77,7 +89,7 @@ public class Wakgui : Boss
             switch (pattern_rand)
             {
                 case (int)WAKGUI_ACTION.IDLE:
-                    _target = GameMng.I.targetList[GameMng.I.targetCount];
+                    _target = GameMng.I.targetList[GameMng.I.targetCount].transform;
                     StartCoroutine(Think());
                     break;
                 case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기
@@ -99,7 +111,7 @@ public class Wakgui : Boss
             }
         }
 
-        else
+        else if (action == WAKGUI_ACTION.IDLE)
         {
             pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
             bossdata.setBossAction = pattern_rand;
@@ -123,7 +135,7 @@ public class Wakgui : Boss
                     StartCoroutine(Pattern_Wave());
                     break;
                 case (int)WAKGUI_ACTION.PATTERN_COUNTER:      // <! 반격기
-                    StartCoroutine(Patteron_Counter());
+                    StartCoroutine(Pattern_Counter());
                     break;
             }
         }
@@ -173,7 +185,7 @@ public class Wakgui : Boss
         animator.SetTrigger("Poo");
 
         // 나중에 살아 있는 플레이어 들에게 모두 쏘기
-        GameObject poo = Instantiate(patten.poo,  Vector3.zero, Quaternion.identity) as GameObject;
+        GameObject poo = Instantiate(patten.poo, Vector3.zero, Quaternion.identity) as GameObject;
         poo.transform.SetParent(_target);
         poo.transform.localPosition = new Vector3(0, -2.5f, 0);
 
@@ -248,7 +260,7 @@ public class Wakgui : Boss
     /**
      * @brief 패턴 반격
      */
-    IEnumerator Patteron_Counter()
+    IEnumerator Pattern_Counter()
     {
         int tempDmg = _currentHp;
         animator.SetTrigger("Counter");
@@ -263,8 +275,47 @@ public class Wakgui : Boss
 
             yield return null;
         }
-        
+
         baseAttackCount = 0;
         StartCoroutine(Think());
+    }
+
+    void Teleport()
+    {
+        animator.SetTrigger("Teleporting");
+        animator.SetBool("CheckCircle", true);        
+        StartCoroutine(Petern_Circle());
+    }
+    
+    public IEnumerator Petern_Circle()
+    {
+        marblelist.Clear();
+        int rand = Random.Range(0, 6);
+        animator.SetInteger("randCircle",rand);
+        
+        yield return new WaitForSeconds(10.0f);
+
+        switch(rand) 
+        {
+            case 0:
+            marblelist[2].answer = true;        // 빨 파 초 주
+            break;
+            case 1:
+            marblelist[3].answer = true;
+            break;
+            case 2:
+            marblelist[0].answer = true;
+            break;
+            case 3:
+            marblelist[1].answer = true;
+            break;
+            case 4:
+            marblelist[3].answer = true;
+            break;
+            case 5:
+            marblelist[0].answer = true;
+            break;
+        }
+        yield return null;
     }
 }

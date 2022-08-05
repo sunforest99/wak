@@ -100,15 +100,15 @@ public class BossCollider : MonoBehaviour
 
         //     createDamage(
         //         other.ClosestPoint(transform.position) + new Vector2(0, 3f),
-        //         // GameMng.I.gatCharecterDamage(isBackAttack),
+        //         GameMng.I.gatCharecterDamage(isBackAttack),
         //         isCritical
         //    );
-            // boss._nestingHp -= GameMng.I.gatCharecterDamage(isBackAttack);
+            boss._nestingHp -= 10000000;
         }
     }
 
     void SetJumpPostion()
     {
-        this.transform.parent.localPosition = GameMng.I.targetList[GameMng.I.targetCount].localPosition;
+        this.transform.parent.localPosition = GameMng.I.targetList[GameMng.I.targetCount].transform.localPosition;
     }
 }

@@ -19,11 +19,14 @@ public class Boss : MonoBehaviour
 
     [SerializeField] protected int _currentHp;      // <! 헌제 체력
 
-     public int _nestingHp;        // <! 중첩 체력
+    public int _nestingHp;        // <! 중첩 체력
 
     protected const int _annihilation = 99999;    // <! 전멸기
 
     [SerializeField] protected bossbaseUI _baseUI;       // <! 보스의 기본 UI 담는 구조체
+    public GameObject[] bossBuff;           // 보스에게 적용될 버프 목록
+    public BossBuff[] bossBuffSc;
+    public BuffData[] bufflist;             // 버프 목록
 
     protected int _currentNesting;     // <! 지금 체력바
 
@@ -183,11 +186,24 @@ public class Boss : MonoBehaviour
 
     IEnumerator ZeroHpbar()
     {
-         _baseUI.hpbar[0].enabled = false;
+        _baseUI.hpbar[0].enabled = false;
         while (_baseUI.hpbar[0].fillAmount >= 0)
         {
             yield return new WaitForEndOfFrame();
             _baseUI.hpbar[0].fillAmount = Mathf.Lerp(_baseUI.hpbar[0].fillAmount, 0, 5 * Time.deltaTime);
+        }
+    }
+
+    public void bossActivBuff(bool kind, int num)                      // 보스한테 버프를 묻히는 함수 (kind = true : 디버프(유저한테는 버프)) num 버프 번호
+    {
+        if (kind)
+        {
+            bossBuffSc[num].kind = num;
+            bossBuff[num].SetActive(true);
+        }
+        else
+        {
+            bossBuff[num + 2].SetActive(true);          // num + 2에서 2는 현재 구현된 버프의 갯수 나중에 변경
         }
     }
 }

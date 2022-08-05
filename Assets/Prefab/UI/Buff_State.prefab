@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 3514095203313909187}
   - component: {fileID: 3514095203313909188}
   - component: {fileID: 3514095203313909189}
-  - component: {fileID: 3514095203313909190}
+  - component: {fileID: 3021963130930896491}
   - component: {fileID: 3514095203313909186}
   m_Layer: 5
-  m_Name: Debuff_3
+  m_Name: Debuff_SHIELD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,7 +106,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 20, y: 20}
   m_EdgeRadius: 0
---- !u!114 &3514095203313909190
+--- !u!114 &3021963130930896491
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,14 +115,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3514095203313909192}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66b8d69c04626834ead71262915bf15e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c1e6367681e86641b3957dac3e588c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tooltip: {fileID: 0}
   tooltipText: {fileID: 0}
   buffNameText: {fileID: 0}
   tooltipImg: {fileID: 0}
-  StatMngSc: {fileID: 0}
+  BuffSc: {fileID: 0}
 --- !u!114 &3514095203313909186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,14 +135,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3fc508e0ee1cbe4daba641acdd8ba79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffData: {fileID: 0}
   StateMngSc: {fileID: 0}
-  BuffKind: 2
-  DeBuffKind: 3
   Mount: {fileID: 0}
-  duration: 10
-  numerical: 0
+  BuffImg: {fileID: 3514095203313909188}
+  kind: 0
+  apply_count: 0
   count: 0
-  check_nesting: 0
+  isApply: 0
 --- !u!1 &3514095203876820650
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,10 +193,10 @@ GameObject:
   - component: {fileID: 3514095203900588721}
   - component: {fileID: 3514095203900588722}
   - component: {fileID: 3514095203900588723}
-  - component: {fileID: 3514095203900588724}
+  - component: {fileID: 499796923716809327}
   - component: {fileID: 3514095203900588720}
   m_Layer: 5
-  m_Name: Buff_0
+  m_Name: Buff_GAL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -286,7 +286,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 20, y: 20}
   m_EdgeRadius: 0
---- !u!114 &3514095203900588724
+--- !u!114 &499796923716809327
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,14 +295,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3514095203900588726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66b8d69c04626834ead71262915bf15e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c1e6367681e86641b3957dac3e588c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tooltip: {fileID: 0}
   tooltipText: {fileID: 0}
   buffNameText: {fileID: 0}
   tooltipImg: {fileID: 0}
-  StatMngSc: {fileID: 0}
+  BuffSc: {fileID: 0}
 --- !u!114 &3514095203900588720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,14 +315,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3fc508e0ee1cbe4daba641acdd8ba79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffData: {fileID: 0}
   StateMngSc: {fileID: 0}
-  BuffKind: 0
-  DeBuffKind: 4
   Mount: {fileID: 0}
-  duration: 10
-  numerical: 0
+  BuffImg: {fileID: 3514095203900588722}
+  kind: 0
+  apply_count: 0
   count: 0
-  check_nesting: 0
+  isApply: 0
 --- !u!1 &3514095204035867762
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,10 +335,10 @@ GameObject:
   - component: {fileID: 3514095204035867757}
   - component: {fileID: 3514095204035867758}
   - component: {fileID: 3514095204035867759}
-  - component: {fileID: 3514095204035867760}
+  - component: {fileID: 5163401005618007996}
   - component: {fileID: 3514095204035867756}
   m_Layer: 5
-  m_Name: Buff_1
+  m_Name: Buff_THIEF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -428,7 +428,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 20, y: 20}
   m_EdgeRadius: 0
---- !u!114 &3514095204035867760
+--- !u!114 &5163401005618007996
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -437,14 +437,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3514095204035867762}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66b8d69c04626834ead71262915bf15e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c1e6367681e86641b3957dac3e588c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tooltip: {fileID: 0}
   tooltipText: {fileID: 0}
   buffNameText: {fileID: 0}
   tooltipImg: {fileID: 0}
-  StatMngSc: {fileID: 0}
+  BuffSc: {fileID: 0}
 --- !u!114 &3514095204035867756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,14 +457,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3fc508e0ee1cbe4daba641acdd8ba79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffData: {fileID: 0}
   StateMngSc: {fileID: 0}
-  BuffKind: 1
-  DeBuffKind: 4
   Mount: {fileID: 0}
-  duration: 10
-  numerical: 0
+  BuffImg: {fileID: 3514095204035867758}
+  kind: 0
+  apply_count: 0
   count: 0
-  check_nesting: 0
+  isApply: 0
 --- !u!1 &3514095204066703073
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,10 +477,10 @@ GameObject:
   - component: {fileID: 3514095204066703068}
   - component: {fileID: 3514095204066703069}
   - component: {fileID: 3514095204066703070}
-  - component: {fileID: 3514095204066703071}
+  - component: {fileID: 2339581297516788977}
   - component: {fileID: 3514095204066703067}
   m_Layer: 5
-  m_Name: Debuff_2
+  m_Name: Debuff_JAMSIK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -571,7 +571,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 20, y: 20}
   m_EdgeRadius: 0
---- !u!114 &3514095204066703071
+--- !u!114 &2339581297516788977
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -580,14 +580,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 3514095204066703073}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66b8d69c04626834ead71262915bf15e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c1e6367681e86641b3957dac3e588c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tooltip: {fileID: 0}
   tooltipText: {fileID: 0}
   buffNameText: {fileID: 0}
   tooltipImg: {fileID: 0}
-  StatMngSc: {fileID: 0}
+  BuffSc: {fileID: 0}
 --- !u!114 &3514095204066703067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,14 +600,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3fc508e0ee1cbe4daba641acdd8ba79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffData: {fileID: 0}
   StateMngSc: {fileID: 0}
-  BuffKind: 2
-  DeBuffKind: 2
   Mount: {fileID: 3514095204741641041}
-  duration: 10
-  numerical: 0
+  BuffImg: {fileID: 3514095204066703069}
+  kind: 0
+  apply_count: 0
   count: 0
-  check_nesting: 1
+  isApply: 0
 --- !u!1 &3514095204585125573
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,10 +1157,10 @@ GameObject:
   - component: {fileID: 7985679333533123936}
   - component: {fileID: 7985679333533123939}
   - component: {fileID: 7985679333533123934}
-  - component: {fileID: 7985679333533123935}
+  - component: {fileID: 5769956854473410785}
   - component: {fileID: 7985679333533123933}
   m_Layer: 5
-  m_Name: Debuff_1
+  m_Name: Debuff_CHIMSIK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1251,7 +1251,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 20, y: 20}
   m_EdgeRadius: 0
---- !u!114 &7985679333533123935
+--- !u!114 &5769956854473410785
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1260,14 +1260,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7985679333533123965}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66b8d69c04626834ead71262915bf15e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c1e6367681e86641b3957dac3e588c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tooltip: {fileID: 0}
   tooltipText: {fileID: 0}
   buffNameText: {fileID: 0}
   tooltipImg: {fileID: 0}
-  StatMngSc: {fileID: 0}
+  BuffSc: {fileID: 0}
 --- !u!114 &7985679333533123933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1280,14 +1280,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3fc508e0ee1cbe4daba641acdd8ba79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffData: {fileID: 0}
   StateMngSc: {fileID: 0}
-  BuffKind: 2
-  DeBuffKind: 1
   Mount: {fileID: 7985679333024779412}
-  duration: 10
-  numerical: 0
+  BuffImg: {fileID: 7985679333533123939}
+  kind: 0
+  apply_count: 0
   count: 0
-  check_nesting: 1
+  isApply: 0
 --- !u!1 &7985679334348037102
 GameObject:
   m_ObjectHideFlags: 0
@@ -1435,10 +1435,10 @@ GameObject:
   - component: {fileID: 7985679334463747022}
   - component: {fileID: 7985679334463747017}
   - component: {fileID: 7985679334463747014}
-  - component: {fileID: 7985679334463747015}
+  - component: {fileID: 8052714421162791108}
   - component: {fileID: 7985679334463747013}
   m_Layer: 5
-  m_Name: Debuff_0
+  m_Name: Debuff_BUPAE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1529,7 +1529,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 20, y: 20}
   m_EdgeRadius: 0
---- !u!114 &7985679334463747015
+--- !u!114 &8052714421162791108
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1538,14 +1538,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7985679334463747019}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66b8d69c04626834ead71262915bf15e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c1e6367681e86641b3957dac3e588c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tooltip: {fileID: 0}
   tooltipText: {fileID: 0}
   buffNameText: {fileID: 0}
   tooltipImg: {fileID: 0}
-  StatMngSc: {fileID: 0}
+  BuffSc: {fileID: 0}
 --- !u!114 &7985679334463747013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1558,11 +1558,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3fc508e0ee1cbe4daba641acdd8ba79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffData: {fileID: 0}
   StateMngSc: {fileID: 0}
-  BuffKind: 2
-  DeBuffKind: 0
   Mount: {fileID: 7985679334348037100}
-  duration: 10
-  numerical: 0
+  BuffImg: {fileID: 7985679334463747017}
+  kind: 0
+  apply_count: 0
   count: 0
-  check_nesting: 1
+  isApply: 0

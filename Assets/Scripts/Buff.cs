@@ -1,45 +1,87 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Buff : MonoBehaviour
 {
-
+    public BuffData buffData;
     public StateMng StateMngSc;
-    public BUFF BuffKind;                       // 버프 종류                NOT_BUFF일시 디버프
-    public DEBUFF DeBuffKind;                   // 디버프 종류              NOT_DEBUFF일시 버프
+    [SerializeField] TextMeshProUGUI Mount;
 
-    [SerializeField] TMPro.TextMeshProUGUI Mount;
+    public UnityEngine.UI.Image BuffImg;
 
-    public float duration;                       // 지속시간
-    public float numerical;                     // 수치
-
+    public int kind;
+    public int apply_count;                     // 버프가 유지된 카운트
     public int count;                           // 중첩 갯수
 
-    public bool check_nesting;                  // 중첩 여부
+    public bool isApply;
 
     void OnEnable()
     {
+        buffData = StateMngSc.bufflist[kind];
+        apply_count = buffData.duration;
         StartCoroutine(cool());
     }
 
-    IEnumerator cool(){
-        yield return new WaitForSeconds(duration);
-
-        if(count > 1)
+    IEnumerator cool()
+    {
+        yield return new WaitForSeconds(1.0f);
+        if (apply_count == 3)
+        {
+            apply_count--;
             StartCoroutine(cool());
-        else if(count <= 1)
+            StartCoroutine(Blink(0.5f));
+        }
+        else if (apply_count >= 1)
+        {
+            apply_count--;
+            StartCoroutine(cool());
+        }
+        else
         {
             gameObject.SetActive(false);
-            if(DeBuffKind == DEBUFF.NOT_DEBUFF)
-                StateMngSc.PlayerBuffGams[(int)BuffKind].SetActive(false);
-            if(BuffKind == BUFF.NOT_BUFF)
-                StateMngSc.PlayerDeBuffGams[(int)DeBuffKind].SetActive(false);
+
+            StateMngSc.userBuff[(int)buffData.BuffKind].SetActive(false);
+            StateMngSc.PlayerBuffGams[(int)buffData.BuffKind].SetActive(false);
+
+            isApply = false;
+            count = 0;
         }
-        count--;
-        
-        if(BuffKind == BUFF.NOT_BUFF && check_nesting)
+        if (!buffData.check_buff && buffData.check_nesting)
             Mount.text = 'x' + count.ToString();
     }
 
+    public IEnumerator Blink(float time)
+    {
+        Color color = BuffImg.color;
+        while (color.a > 0.5f)
+        {
+            if (apply_count > 3)
+            {
+                color.a = 1;
+                BuffImg.color = color;
+                break;
+            }
+            color.a -= Time.deltaTime / time;
+            BuffImg.color = color;
+            yield return null;
+        }
+        while (color.a < 1f)
+        {
+            if (apply_count > 3)
+            {
+                color.a = 1;
+                BuffImg.color = color;
+                break;
+            }
+            color.a += Time.deltaTime / time;
+            BuffImg.color = color;
+            yield return null;
+        }
+        if (apply_count > 3)
+            yield return null;
+        else if (apply_count >= 0)
+            StartCoroutine(Blink(0.5f));
+    }
 }
