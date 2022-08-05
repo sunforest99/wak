@@ -45,6 +45,7 @@ public class Totem : DestroySelf
                 }
                 break;
         }
+        Destroy(GameMng.I.character.transform.GetChild(0).gameObject);
         destroySelf();
         yield return null;
     }

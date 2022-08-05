@@ -63,6 +63,30 @@ public class ChangeAction : MonoBehaviour
             GameObject temp = Instantiate(wakgui.getCircle[i], circlevec[visit[i]], Quaternion.identity);
             wakgui.marblelist.Add(temp.GetComponent<Marble>());
         }
+        
+        switch (wakgui.circle_answer)
+        {
+            case 0:
+                wakgui.marblelist[2].answer = true;        // 빨 파 초 주
+                break;
+            case 1:
+                wakgui.marblelist[3].answer = true;
+                break;
+            case 2:
+                wakgui.marblelist[0].answer = true;
+                break;
+            case 3:
+                wakgui.marblelist[1].answer = true;
+                break;
+            case 4:
+                wakgui.marblelist[3].answer = true;
+                break;
+            case 5:
+                wakgui.marblelist[0].answer = true;
+                break;
+        }
+
+
     }
 
     void SetOutcast() => wakgui.action = WAKGUI_ACTION.PATTERN_OUTCAST;

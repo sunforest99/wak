@@ -35,25 +35,34 @@ public class OutCast : DestroySelf
         }
     }
 
+    void figureSetting(GameObject figure, Collider2D user)
+    {
+        figure.transform.SetParent(user.transform.parent);
+        figure.transform.SetAsFirstSibling();
+        figure.transform.localPosition = new Vector2(user.transform.localPosition.x, user.transform.localPosition.y + 5.0f);
+        destroySelf();
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
+            if (other.transform.parent.GetChild(0).name == "Triangle" || other.transform.parent.GetChild(0).name == "Rect")
+            {
+                destroySelf();
+                return;
+            }
             if (checkFigure)
             {
-                GameObject temp = Instantiate(triangle, Vector3.zero, Quaternion.identity);     // TODO: 이거 함수로 합쳐주기 그리고 플레이어 자식 가져와서 이름 비교해서 있으면 그냥 디스트로이
-                temp.transform.SetParent(other.transform.parent);
-                temp.transform.SetAsFirstSibling();
-                temp.transform.localPosition = new Vector2(other.transform.localPosition.x, other.transform.localPosition.y + 5.0f);
-                destroySelf();
+                GameObject temp = Instantiate(triangle, Vector3.zero, Quaternion.identity);
+                temp.name = "Triangle";
+                figureSetting(temp, other);
             }
             else
             {
                 GameObject temp = Instantiate(rect, Vector3.zero, Quaternion.identity);
-                temp.transform.SetParent(other.transform.parent);
-                temp.transform.SetAsFirstSibling();
-                temp.transform.localPosition = new Vector2(other.transform.localPosition.x, other.transform.localPosition.y + 5.0f);
-                destroySelf();
+                temp.name = "Rect";
+                figureSetting(temp, other);
             }
         }
     }
