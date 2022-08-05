@@ -14,14 +14,8 @@ public enum BUFF
 {
     BUFF_GAL = 0,
     BUFF_THIEF,
-    NOT_BUFF                    // 버프 아님(디버프)
-}
-
-public enum DEBUFF
-{
-    DEBUFF_BUPAE = 0,
+    DEBUFF_BUPAE,
     DEBUFF_CHIMSIK,
     DEBUFF_JAMSIK,
-    DEBUFF_SHIELD,
-    NOT_DEBUFF                  // 디버프 아님(버프)
+    DEBUFF_SHIELD
 }

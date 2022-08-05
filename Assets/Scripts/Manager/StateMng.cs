@@ -4,183 +4,150 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public struct Player_HP_Numerical
+{          // 체력에 필요한 수치 구조체
+    public float fullHp;                    // 최대 체력
+    public float fullShield;                // 최대 쉴드 << 필요한지 모르겠음
+    public float Hp;                        // 현재 체력
+    public float Shield;                    // 현재 쉴드
+    public float Shield_Pos;                // 쉴드 위치
+}
+
+// struct Player_HP_UI{
+//     public Image HP_Img;
+//     public Image Shield_Img;
+// }
+
 public class StateMng : MonoBehaviour
 {
-    const int BuffCount = 2;
-    const int DeBuffCount = 4;
+    public BuffData[] bufflist;
+    const int BuffCount = 6;
 
     public Buff[] BuffSc = new Buff[BuffCount];
-    public Buff[] DeBuffSc = new Buff[DeBuffCount];
 
-    public List<Buff> BuffStatus;                            // 현재 가지고있는 버프
-    public List<Buff> DeBuffStatus;                          // 현재 가지고있는 디버프
-
-    public GameObject[] PlayerBuffGams = new GameObject[BuffCount];               // 좌측 UI 버프, 디버프 게임오브젝트
-    public GameObject[] PlayerDeBuffGams = new GameObject[DeBuffCount];
-
-    [SerializeField] Transform PlayerBuffSlot;                                              // 좌측 UI 플레이어 버프 슬롯
-    [SerializeField] Transform PlayerDeBuffSlot;
-
-    [SerializeField] GameObject[] BuffGams = new GameObject[BuffCount];                     // 중하단 UI 플레이어 버프 게임오브젝트
-    [SerializeField] GameObject[] DeBuffGams = new GameObject[DeBuffCount];
+    public GameObject[] userBuff = new GameObject[BuffCount];                               // 중하단 UI 플레이어 버프 게임오브젝트
+    public GameObject[] PlayerBuffGams = new GameObject[BuffCount];                         // 좌측 UI 버프, 디버프 게임오브젝트
 
     [SerializeField] Image[] PartyHPImg = new Image[4];                                     // 좌측 UI 플레이어들 체력이미지
     [SerializeField] Image[] PartyShieldImg = new Image[4];
     [SerializeField] Image PlayerHPImg;                                                     // 중하단 플레이어 체력 이미지
     [SerializeField] Image PlayerShieldImg;
     [SerializeField] TextMeshProUGUI PlayerHPText;                                          // 중하단 플레이어 체력 텍스트
-    [SerializeField] TextMeshProUGUI[] PlayerDebuffCountText = new TextMeshProUGUI[DeBuffCount];    // 중하단 플레이어 디버프 갯수 텍스트
+    public Player_HP_Numerical[] Party_HP_Numerical = new Player_HP_Numerical[4]; // 좌측 UI 플레이어 수치
+    public Player_HP_Numerical user_HP_Numerical;
 
-    public Sprite[] BuffSp = new Sprite[BuffCount];                                         // 버프 스프라이트
-    public Sprite[] DeBuffSp = new Sprite[DeBuffCount];
-
-    [SerializeField] float[] fFullPartyHP = new float[4];                                   // 좌측 플레이어들 최대 체력
-    [SerializeField] float[] fFullPartyShield = new float[4];
-    [SerializeField] float[] fPartyHP = new float[4];
-    [SerializeField] float[] fPartyShield = new float[4];
-    [SerializeField] float[] fShieldPos = new float[4];
-    [SerializeField] float fPlayerFullHP;                                                   // 플레이어의 최대 체력
-    [SerializeField] float fPlayerHP;
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    [SerializeField] float fPlayerHP;                                                   // 플레이어 체력 시각 효과를 위한 변수 나중에 꼭 지우기
     [SerializeField] float fPlayerShield;
-    float fPlayerShieldPos;
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
     int nPlayerBuffCount;                                                                   // 플레이어의 버프 갯수
     int nPlayerDeBuffCount;
 
     bool[] bBuffKind = new bool[BuffCount];                                                 // 어떤 버프가 켜져 있는지
-    bool[] bDeBuffKind = new bool[DeBuffCount];
 
     float fImageSize;
     float fPlayerImgSize;
 
-    // Start is called before the first frame update
     void Start()
     {
         fImageSize = 148.0f;
         fPlayerImgSize = 295.0f;
-        fPartyHP[0] = fFullPartyHP[0] = fFullPartyShield[0] = fPlayerFullHP = fPlayerHP = 95959;
-        fPartyShield[0] = fPlayerShield = 50000;
+        Party_HP_Numerical[0].fullHp = Party_HP_Numerical[0].fullShield = Party_HP_Numerical[0].Hp = user_HP_Numerical.fullHp = user_HP_Numerical.Hp = 95959;
+        Party_HP_Numerical[0].Shield = user_HP_Numerical.Shield = 50000;
+        fPlayerHP = 95959;
+        fPlayerShield = 50000;
         for (int i = 1; i < 4; i++)
         {
-            fFullPartyHP[i] = 100;
-            fFullPartyShield[i] = 100;
-            fPartyHP[i] = 100;
-            fPartyShield[i] = 10;
+            Party_HP_Numerical[i].fullHp = 100;
+            Party_HP_Numerical[i].fullShield = 100;
+            Party_HP_Numerical[i].Hp = 100;
+            Party_HP_Numerical[i].Shield = 10;
         }
         nPlayerBuffCount = 0;
         nPlayerDeBuffCount = 0;
     }
 
-    // Update is called once per frame
     void Update()
     {
         ShieldPos();
         PlayerHP();
         PlayerBuffMng();
+        user_HP_Numerical.Hp = fPlayerHP;
+        user_HP_Numerical.Shield = fPlayerShield;
     }
 
     void ShieldPos()
     {
         for (int i = 0; i < 4; i++)
         {
-            PartyHPImg[i].rectTransform.localScale = new Vector3(fPartyHP[i] / fFullPartyHP[i], 1.0f, 1.0f);
-            PartyShieldImg[i].rectTransform.localScale = new Vector3(fPartyShield[i] / fFullPartyShield[i], 1.0f, 1.0f);
-            if (fPartyHP[i] + fPartyShield[i] <= fFullPartyHP[i])
+            PartyHPImg[i].rectTransform.localScale = new Vector3(Party_HP_Numerical[i].Hp / Party_HP_Numerical[i].fullHp, 1.0f, 1.0f);
+            PartyShieldImg[i].rectTransform.localScale = new Vector3(Party_HP_Numerical[i].Shield / Party_HP_Numerical[i].fullShield, 1.0f, 1.0f);
+            if (Party_HP_Numerical[i].Hp + Party_HP_Numerical[i].Shield <= Party_HP_Numerical[i].fullHp)
             {
-                fShieldPos[i] = PartyHPImg[i].rectTransform.anchoredPosition.x + (fImageSize * PlayerHPImg.rectTransform.localScale.x);
+                Party_HP_Numerical[i].Shield_Pos = PartyHPImg[i].rectTransform.anchoredPosition.x + (fImageSize * PlayerHPImg.rectTransform.localScale.x);
                 PartyShieldImg[i].rectTransform.pivot = new Vector2(0.0f, 0.5f);
             }
             else
             {       // <! 풀체력보다 클때
                 PartyShieldImg[i].rectTransform.pivot = new Vector2(1.0f, 0.5f);
-                fShieldPos[i] = fImageSize / 2;
+                Party_HP_Numerical[i].Shield_Pos = fImageSize / 2;
             }
-            PartyShieldImg[i].rectTransform.anchoredPosition = new Vector2(fShieldPos[i], 0.0f);
+            PartyShieldImg[i].rectTransform.anchoredPosition = new Vector2(Party_HP_Numerical[i].Shield_Pos, 0.0f);
         }
     }
 
     void PlayerHP()
     {
-        PlayerHPText.text = fPlayerHP.ToString() + " / " + fPlayerFullHP.ToString();
-        fPartyHP[0] = fPlayerHP;
-        fPartyShield[0] = fPlayerShield;
-        PlayerHPImg.rectTransform.localScale = new Vector3(fPlayerHP / fPlayerFullHP, 1.0f, 1.0f);
-        PlayerShieldImg.rectTransform.localScale = new Vector3(fPlayerShield / fPlayerFullHP, 1.0f, 1.0f);
-        if (fPlayerHP + fPlayerShield <= fPlayerFullHP)
+        PlayerHPText.text = user_HP_Numerical.Hp.ToString() + " / " + user_HP_Numerical.fullHp.ToString();
+        Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp;
+        Party_HP_Numerical[0].Shield = user_HP_Numerical.Shield;
+        PlayerHPImg.rectTransform.localScale = new Vector3(user_HP_Numerical.Hp / user_HP_Numerical.fullHp, 1.0f, 1.0f);
+        PlayerShieldImg.rectTransform.localScale = new Vector3(user_HP_Numerical.Shield / user_HP_Numerical.fullHp, 1.0f, 1.0f);
+        if (user_HP_Numerical.Hp + user_HP_Numerical.Shield <= user_HP_Numerical.fullHp)
         {
-            fPlayerShieldPos = PlayerHPImg.rectTransform.anchoredPosition.x + (fPlayerImgSize * PlayerHPImg.rectTransform.localScale.x);
+            user_HP_Numerical.Shield_Pos = PlayerHPImg.rectTransform.anchoredPosition.x + (fPlayerImgSize * PlayerHPImg.rectTransform.localScale.x);
             PlayerShieldImg.rectTransform.pivot = new Vector2(0.0f, 0.5f);
         }
         else
         {       // <! 풀체력보다 클때
             PlayerShieldImg.rectTransform.pivot = new Vector2(1.0f, 0.5f);
-            fPlayerShieldPos = fPlayerImgSize / 2;
+            user_HP_Numerical.Shield_Pos = fPlayerImgSize / 2;
         }
-        PlayerShieldImg.rectTransform.anchoredPosition = new Vector2(fPlayerShieldPos, 0.0f);
+        PlayerShieldImg.rectTransform.anchoredPosition = new Vector2(user_HP_Numerical.Shield_Pos, 0.0f);
     }
 
-    void PlayerBuffMng()
+    void PlayerBuffMng(/*bool kind, int num*/)                      // 버프가 다 구현되면 호출할 함수 kind = 버프인지 디버프인지, num 버프 종류
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            int kind = Random.Range(0, 2);
-            if (kind == 0)
-            {
-                int buffkind = Random.Range(0, BuffCount);
-                bBuffKind[buffkind] = true;
-                ActiveBuff(buffkind);
-            }
-            else if (kind == 1)
-            {
-                int debuffkind = Random.Range(0, DeBuffCount);
-                bDeBuffKind[debuffkind] = true;
-                ActiveDeBuff(debuffkind);
-            }
+            int buffkind = Random.Range(0, BuffCount);
+            bBuffKind[buffkind] = true;
+            ActiveBuff(buffkind);
         }
     }
 
-    void ActiveBuff(int kind)
+    void ActiveBuff(int num)
     {
-        if (bBuffKind[kind])
+        if (bBuffKind[num])
         {
-            if (BuffSc[kind].count == 0)                                                       // 해당 버프가 지금 있나
+            if (!BuffSc[num].isApply)                                                       // 해당 버프가 지금 있나
             {
-                BuffGams[kind].SetActive(true);
-                PlayerBuffGams[kind].SetActive(true);
+                userBuff[num].SetActive(true);
+                PlayerBuffGams[num].SetActive(true);
                 nPlayerBuffCount++;
-                BuffStatus.Add(BuffGams[kind].GetComponent<Buff>());
-                BuffStatus[BuffStatus.Count - 1].count++;
+                BuffSc[num].kind = num;
+                BuffSc[num].count++;
+                BuffSc[num].isApply = true;
+                BuffSc[num].BuffImg.enabled = true;
             }
             else
             {
-                Buff tmp = BuffStatus.Find(name => name.BuffKind == (BUFF)kind);            // 버프의 이름을 확인하여 중첩 가능한 버프면 중첩 수 증가
-                if(tmp.check_nesting)
-                    tmp.count++;
+                if (BuffSc[num].buffData.check_nesting)
+                    BuffSc[num].count++;
+                BuffSc[num].apply_count = BuffSc[num].buffData.duration;
             }
-            bBuffKind[kind] = false;
-        }
-    }
-
-    void ActiveDeBuff(int kind)
-    {
-        if (bDeBuffKind[kind])
-        {
-            if (DeBuffSc[kind].count == 0)                                                     // 해당 디버프가 지금 있나
-            {
-                DeBuffGams[kind].SetActive(true);
-                PlayerDeBuffGams[kind].SetActive(true);;
-                nPlayerDeBuffCount++;
-                DeBuffStatus.Add(DeBuffGams[kind].GetComponent<Buff>());
-                DeBuffStatus[DeBuffStatus.Count - 1].count++;
-            }
-            else
-            {
-                Buff tmp = DeBuffStatus.Find(name => name.DeBuffKind == (DEBUFF)kind);        // 디버프의 이름을 확인하여 중첩 가능한 버프면 중첩 수 증가
-                if(tmp.check_nesting)
-                    tmp.count++;
-            }
-            bDeBuffKind[kind] = false;
-            //PlayerDebuffCountText[kind].text = 'x' + nDeBuffKind[kind].ToString();
+            bBuffKind[num] = false;
         }
     }
 }

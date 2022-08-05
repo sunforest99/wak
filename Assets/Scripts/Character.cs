@@ -48,7 +48,7 @@ public class Character : MonoBehaviour
     void Start()
     {
         GameMng.I.character = this;
-        GameMng.I.targetList.Add(this.transform);
+        GameMng.I.targetList.Add(this);
         _state = CHARACTER_STATE.IDLE;
         for (int i = 0; i < skill.transform.childCount; i++)
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Tooltips : MonoBehaviour
+public class ToolTip : MonoBehaviour
 {
     [SerializeField] private GameObject tooltip = null;
     [SerializeField] private TextMeshProUGUI tooltipText;
@@ -29,4 +29,6 @@ public class Tooltips : MonoBehaviour
         buffNameText.text = BuffSc.buffData.buffname;
         tooltipText.text = BuffSc.buffData.buffcontent;
     }
+
+
 }
