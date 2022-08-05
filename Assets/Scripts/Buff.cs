@@ -40,13 +40,15 @@ public class Buff : MonoBehaviour
         }
         else
         {
-            gameObject.SetActive(false);
-
             StateMngSc.userBuff[(int)buffData.BuffKind].SetActive(false);
             StateMngSc.PlayerBuffGams[(int)buffData.BuffKind].SetActive(false);
-
+            
+            if(!buffData.check_buff)
+                StateMngSc.nPlayerDeBuffCount--;
+            StateMngSc.nPlayerBuffCount--;
             isApply = false;
             count = 0;
+            gameObject.SetActive(false);
         }
         if (!buffData.check_buff && buffData.check_nesting)
             Mount.text = 'x' + count.ToString();
