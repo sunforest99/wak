@@ -16,9 +16,12 @@ public enum WAKGUI_ACTION
     PATTERN_WAVE,
     PATTERN_COUNTER,
     PATTERN_CIRCLE,
+    PATTERN_OUTCAST,
     TELEPORT,
     TELEPORT_SPAWN
 }
+
+// TODO : 보스 action 바꿔주기 ( OutCast 끝나면 )
 public class Wakgui : Boss
 {
     [System.Serializable]
@@ -29,8 +32,9 @@ public class Wakgui : Boss
         public GameObject cristal;      // <! 닷지류 수정 생성
         public GameObject poo;
         public GameObject[] circle;
+        public GameObject outcast;
+        public GameObject[] totem;
     }
-    public List<Marble> marblelist;
     public WAKGUI_ACTION action;
 
     [SerializeField] private int baseAttackCount;       // <! 기본패턴 몇번 후 패턴 사용할 것인지 (나중에 바꿀듯)
@@ -38,6 +42,13 @@ public class Wakgui : Boss
     private int pattern_rand;       // <! 패턴 랜덤값
 
     [SerializeField] pattenObj patten;      // <! 패턴 프리팹 담는 구조체
+
+    public List<OutCast> outCasts;
+    public GameObject getOutcast { get { return patten.outcast; } }
+    public GameObject[] getTotem { get { return patten.totem; } }
+
+    public List<Marble> marblelist;
+    bool Checkcircle = false;           // !< 구슬부시기 패턴 채크
     public GameObject[] getCircle { get { return patten.circle; } }
 
     float pooSpawnTime;
@@ -64,6 +75,19 @@ public class Wakgui : Boss
             base.ChangeHpText();
             if (action == WAKGUI_ACTION.IDLE)
                 base.BossMove();
+
+            // if (base._currentNesting < 90 && action == WAKGUI_ACTION.IDLE && !Checkcircle)
+            // {
+            //     Teleport(true);
+            //     Checkcircle = true;
+            //     StopCoroutine(Think());
+            // }
+            if (base._currentNesting < 90 && action == WAKGUI_ACTION.IDLE && !Checkcircle)      // TODO : 몇줄에 패턴 시작하는지 구현 위에 참고해서
+            {
+                Teleport(false);
+                Checkcircle = true;
+                StopCoroutine(Think());
+            }
         }
         else
         {
@@ -74,12 +98,6 @@ public class Wakgui : Boss
     IEnumerator Think()
     {
         yield return new WaitForSeconds(3.0f);
-        if (base._currentNesting < 90 && action == WAKGUI_ACTION.IDLE)
-        {
-            Debug.Log("여기임?");
-            Teleport();
-            yield return null;
-        }
 
         if (baseAttackCount < 4 && action == WAKGUI_ACTION.IDLE)
         {
@@ -280,42 +298,61 @@ public class Wakgui : Boss
         StartCoroutine(Think());
     }
 
-    void Teleport()
+    void Teleport(bool pettern_check)
     {
         animator.SetTrigger("Teleporting");
-        animator.SetBool("CheckCircle", true);        
-        StartCoroutine(Petern_Circle());
+
+        if (pettern_check)
+        {
+            animator.SetBool("CheckCircle", true);
+            StartCoroutine(Petern_Circle());
+        }
+        else
+        {
+            animator.SetBool("CheckCircle", false);
+            StartCoroutine(Petern_Outcast());
+        }
     }
-    
+
     public IEnumerator Petern_Circle()
     {
         marblelist.Clear();
         int rand = Random.Range(0, 6);
-        animator.SetInteger("randCircle",rand);
-        
+        animator.SetInteger("randCircle", rand);
+
         yield return new WaitForSeconds(10.0f);
 
-        switch(rand) 
+        switch (rand)
         {
             case 0:
-            marblelist[2].answer = true;        // 빨 파 초 주
-            break;
+                marblelist[2].answer = true;        // 빨 파 초 주
+                break;
             case 1:
-            marblelist[3].answer = true;
-            break;
+                marblelist[3].answer = true;
+                break;
             case 2:
-            marblelist[0].answer = true;
-            break;
+                marblelist[0].answer = true;
+                break;
             case 3:
-            marblelist[1].answer = true;
-            break;
+                marblelist[1].answer = true;
+                break;
             case 4:
-            marblelist[3].answer = true;
-            break;
+                marblelist[3].answer = true;
+                break;
             case 5:
-            marblelist[0].answer = true;
-            break;
+                marblelist[0].answer = true;
+                break;
         }
+
+        yield return new WaitForSeconds(5.0f);
+        action = WAKGUI_ACTION.IDLE;
+        StartCoroutine(Think());
+        yield return null;
+    }
+
+    public IEnumerator Petern_Outcast()
+    {
+        Debug.Log("ASDfasdfasd");
         yield return null;
     }
 }

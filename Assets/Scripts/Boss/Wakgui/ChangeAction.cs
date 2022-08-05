@@ -41,7 +41,7 @@ public class ChangeAction : MonoBehaviour
     void SetTelePortSpawn() => wakgui.action = WAKGUI_ACTION.TELEPORT_SPAWN;
 
     void SetJumpPostion() => this.transform.parent.localPosition = GameMng.I.targetList[GameMng.I.targetCount].transform.localPosition;
-    void SetTelePortPostion() => this.transform.parent.position = GameMng.I.mapCenter;
+    void SetTelePortPostion() => this.transform.parent.position = new Vector2(GameMng.I.mapCenter.x, GameMng.I.mapCenter.y - 1.0f);
 
     void CreateCircle()
     {
@@ -62,6 +62,34 @@ public class ChangeAction : MonoBehaviour
         {
             GameObject temp = Instantiate(wakgui.getCircle[i], circlevec[visit[i]], Quaternion.identity);
             wakgui.marblelist.Add(temp.GetComponent<Marble>());
+        }
+    }
+
+    void SetOutcast() => wakgui.action = WAKGUI_ACTION.PATTERN_OUTCAST;
+
+    void CreateOutcast()
+    {
+        int rand = Random.Range(0, 4);
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject temp = Instantiate(wakgui.getOutcast, GameMng.I.mapCenter, Quaternion.identity);
+            wakgui.outCasts.Add(temp.GetComponent<OutCast>());
+            wakgui.outCasts[i].distance = 4;
+        }
+        wakgui.outCasts[rand].checkFigure = true;
+    }
+
+    void CreateTotem()
+    {
+        Instantiate(wakgui.getTotem[0], new Vector2(-11.0f, GameMng.I.mapCenter.y), Quaternion.identity);
+        Instantiate(wakgui.getTotem[1], new Vector2(11.0f, GameMng.I.mapCenter.y), Quaternion.identity);
+    }
+
+    void StartMoveOutcast()
+    {
+        for (int i = 0; i < wakgui.outCasts.Count; i++)
+        {
+            wakgui.outCasts[i].distance = i;
         }
     }
 }

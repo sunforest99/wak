@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 167111025
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 760f215e381b357429ea4c6504fc4303, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -155,7 +155,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 167111025
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 0e2cf71e51af0904f975fe2ef7557d4e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 184166412811604294}
   - component: {fileID: 184166412811604295}
   - component: {fileID: 5677145794006566382}
+  - component: {fileID: -4662283020492215360}
   m_Layer: 0
   m_Name: Marble_outcast
   m_TagString: Untagged
@@ -244,7 +245,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 167111025
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 3f2ddd664be52844ca91f89faa89a881, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -303,6 +304,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 1.2}
   m_EdgeRadius: 0
+--- !u!114 &-4662283020492215360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 184166412811604288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d6f82df61d85064895f84c9ec205541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 3
+  checkFigure: 0
+  rect: {fileID: 7770503471623425151, guid: 161c317d761744143a89be28254bbccb, type: 3}
+  triangle: {fileID: 7957547230439201710, guid: 484e10b886982da4c97a74d9c72a1e1d, type: 3}
 --- !u!1 &184166413003450099
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,7 +391,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 167111025
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: bae580eddfcf1684bbc03fd496cf9c4e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

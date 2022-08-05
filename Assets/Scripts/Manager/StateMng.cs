@@ -36,15 +36,15 @@ public class StateMng : MonoBehaviour
     public Player_HP_Numerical[] Party_HP_Numerical = new Player_HP_Numerical[4]; // 좌측 UI 플레이어 수치
     public Player_HP_Numerical user_HP_Numerical;
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    [SerializeField] float fPlayerHP;                                                   // 플레이어 체력 시각 효과를 위한 변수 나중에 꼭 지우기
-    [SerializeField] float fPlayerShield;
-    ///////////////////////////////////////////////////////////////////////////////////////////
+    // ///////////////////////////////////////////////////////////////////////////////////////////
+    // [SerializeField] float fPlayerHP;                                                   // 플레이어 체력 시각 효과를 위한 변수 나중에 꼭 지우기
+    // [SerializeField] float fPlayerShield;
+    // ///////////////////////////////////////////////////////////////////////////////////////////
 
-    int nPlayerBuffCount;                                                                   // 플레이어의 버프 갯수
-    int nPlayerDeBuffCount;
+    public int nPlayerBuffCount;                                                                   // 플레이어의 버프 갯수
+    public int nPlayerDeBuffCount;
 
-    bool[] bBuffKind = new bool[BuffCount];                                                 // 어떤 버프가 켜져 있는지
+    bool[] bBuffKind = new bool[BuffCount];                                                 // 나중에 지우기 (랜덤으로 켜기 위해 있는 것)
 
     float fImageSize;
     float fPlayerImgSize;
@@ -53,10 +53,9 @@ public class StateMng : MonoBehaviour
     {
         fImageSize = 148.0f;
         fPlayerImgSize = 295.0f;
-        Party_HP_Numerical[0].fullHp = Party_HP_Numerical[0].fullShield = Party_HP_Numerical[0].Hp = user_HP_Numerical.fullHp = user_HP_Numerical.Hp = 95959;
-        Party_HP_Numerical[0].Shield = user_HP_Numerical.Shield = 50000;
-        fPlayerHP = 95959;
-        fPlayerShield = 50000;
+        Party_HP_Numerical[0].fullHp = Party_HP_Numerical[0].fullShield = user_HP_Numerical.fullHp = 95959;
+        Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp = 10000;
+        Party_HP_Numerical[0].Shield = user_HP_Numerical.Shield = 0;
         for (int i = 1; i < 4; i++)
         {
             Party_HP_Numerical[i].fullHp = 100;
@@ -73,8 +72,6 @@ public class StateMng : MonoBehaviour
         ShieldPos();
         PlayerHP();
         PlayerBuffMng();
-        user_HP_Numerical.Hp = fPlayerHP;
-        user_HP_Numerical.Shield = fPlayerShield;
     }
 
     void ShieldPos()
@@ -99,6 +96,9 @@ public class StateMng : MonoBehaviour
 
     void PlayerHP()
     {
+        Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp;
+        Party_HP_Numerical[0].Shield = user_HP_Numerical.Shield;
+
         PlayerHPText.text = user_HP_Numerical.Hp.ToString() + " / " + user_HP_Numerical.fullHp.ToString();
         Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp;
         Party_HP_Numerical[0].Shield = user_HP_Numerical.Shield;
@@ -140,6 +140,8 @@ public class StateMng : MonoBehaviour
                 BuffSc[num].count++;
                 BuffSc[num].isApply = true;
                 BuffSc[num].BuffImg.enabled = true;
+                if (!bufflist[num].check_buff)
+                    nPlayerDeBuffCount++;
             }
             else
             {
@@ -149,5 +151,28 @@ public class StateMng : MonoBehaviour
             }
             bBuffKind[num] = false;
         }
+    }
+
+    public void DeleteBuff(int num)
+    {
+        // int n = 0;
+        // for (int i = 0; i < BuffSc.Length; i++)
+        // {
+        //     if (BuffSc[i].isApply && !bufflist[i].check_buff)
+        //     {
+        //         n++;
+        //         if (n == num)
+        //         {
+        //             Debug.Log(BuffSc[i].buffData.BuffKind);
+        //             BuffSc[i].apply_count = 0;
+        //             BuffSc[i].isApply = false;
+        //             BuffSc[i].count = 0;
+        //             PlayerBuffGams[i].SetActive(false);
+        //             userBuff[i].SetActive(false);
+        //             nPlayerBuffCount--;
+        //             break;
+        //         }
+        //     }
+        // }
     }
 }
