@@ -10,6 +10,26 @@ public enum ITEM_TYPE
     UNUSEFUL_ITEM               // 무쓸모 아이템 - 잡템
 }
 
+public enum ITEM_INDEX
+{
+    POTION = 0,
+    CLEANSER,
+    SPEEDUP,
+    WEAPON_ITEM_INDEX,
+    STICK,
+    BROOM,
+    BAT,
+    CANDY,
+    SANGHYUN,
+    WAKCHORI,
+    WAND,
+    STAFF,
+    ROSE,
+    SWORD,
+    CONSUMABLE_ITEM_INDEX,
+    REDMUSHROOM
+}
+
 public enum BUFF
 {
     BUFF_GAL = 0,

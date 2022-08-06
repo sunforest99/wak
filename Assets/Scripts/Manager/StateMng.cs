@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[System.Serializable]
 public struct Player_HP_Numerical
 {          // 체력에 필요한 수치 구조체
     public float fullHp;                    // 최대 체력
@@ -52,7 +53,7 @@ public class StateMng : MonoBehaviour
     void Start()
     {
         fImageSize = 148.0f;
-        fPlayerImgSize = 295.0f;
+        fPlayerImgSize = 358.0f;
         Party_HP_Numerical[0].fullHp = Party_HP_Numerical[0].fullShield = user_HP_Numerical.fullHp = 95959;
         Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp = 10000;
         Party_HP_Numerical[0].Shield = user_HP_Numerical.Shield = 0;
