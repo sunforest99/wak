@@ -23,6 +23,9 @@ public class SkillData : ScriptableObject
 
     public int skillLevel;
 
+    [SerializeField] private BuffData _buffdata;
+    public BuffData getBuffData { get { return _buffdata; } }
+
     public int CalcSkillDamage(bool isBackAttack)
     {
         if (isBackAttack)

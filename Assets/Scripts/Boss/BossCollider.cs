@@ -61,9 +61,9 @@ public class BossCollider : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Weapon"))
         {
-            if (GameMng.I.character.usingSkill != null && GameMng.I.character.usingSkill.getSkillName.Equals("갈!"))
+            if (GameMng.I.character.usingSkill.getBuffData && GameMng.I.character.usingSkill.getBuffData.isBossDebuf)
             {
-                Debug.Log("디버프");
+                getBuffIndex(GameMng.I.character.usingSkill.getBuffData);
             }
 
             StartCoroutine(HitBlink());
@@ -98,11 +98,11 @@ public class BossCollider : MonoBehaviour
             //     dmg = Random.Range(2000000, 4000000);
             // }
 
-        //     createDamage(
-        //         other.ClosestPoint(transform.position) + new Vector2(0, 3f),
-        //         GameMng.I.gatCharecterDamage(isBackAttack),
-        //         isCritical
-        //    );
+            //     createDamage(
+            //         other.ClosestPoint(transform.position) + new Vector2(0, 3f),
+            //         GameMng.I.gatCharecterDamage(isBackAttack),
+            //         isCritical
+            //    );
             boss._nestingHp -= 10000000;
         }
     }
@@ -110,5 +110,28 @@ public class BossCollider : MonoBehaviour
     void SetJumpPostion()
     {
         this.transform.parent.localPosition = GameMng.I.targetList[GameMng.I.targetCount].transform.localPosition;
+    }
+
+    /*
+     * @brief 디버프 gameobject가 사용중이 아닌 index 값 return (-1은 모두 사용중 )
+     */
+
+    void getBuffIndex(BuffData hitbuffData)
+    {
+        for (int i = 0; i < boss.bossDeBuffs.Length; i++)
+        {
+            if (boss.bossDeBuffs[i].isApply && boss.bossDeBuffs[i].buffData.name == hitbuffData.name)
+            {
+                boss.bossDeBuffs[i].duration = GameMng.I.character.usingSkill.getBuffData.duration;
+                break;
+            }
+            else if (!boss.bossDeBuffs[i].isApply)
+            {
+                boss.bossDeBuffs[i].buffData = GameMng.I.character.usingSkill.getBuffData;
+                boss.bossDeBuffs[i].gameObject.SetActive(true);
+                boss.bossDeBuffs[i].isApply = true;
+                break;
+            }
+        }
     }
 }
