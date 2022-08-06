@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-enum CHARACTER_STATE
+public enum CHARACTER_STATE
 {
     IDLE,                   // 일반 상태, 움직이거나 스킬 사용이 가능한 상태
     CANT_ANYTHING,          // 스킬 쓰는 상태, 아무것도 못함
@@ -11,21 +11,57 @@ enum CHARACTER_STATE
     CAN_MOVE                // 스킬 쓰는 상태, 캔슬이 가능한 상태
 }
 
+public enum JOB
+{
+    NONE,           // -
+    WARRIER,        // 전사
+    MAGICIAN,       // 법사
+    HEALER          // 힐러
+}
+
+public struct Stat
+{
+    public Stat(int minDamage, int maxDamage, 
+    float incDamagePer, float takenDamagePer, float moveSpeedPer, float takenHealPer, float criticalPer, float incBackattackPer)
+    {
+        this.minDamage = minDamage;
+        this.maxDamage = maxDamage;
+        this.incDamagePer = incDamagePer;
+        this.takenDamagePer = takenDamagePer;
+        this.moveSpeedPer = moveSpeedPer;
+        this.takenHealPer = takenHealPer;
+        this.criticalPer = criticalPer;
+        this.incBackattackPer = incBackattackPer;
+    }
+    public int minDamage, maxDamage;    // 실 최소 ~ 최대 데미지
+    public float incDamagePer;          // 공격력 증가 퍼센트
+    public float takenDamagePer;        // 받는 피해량 퍼센트
+    public float moveSpeedPer;          // 이동 속도 퍼센트
+    public float takenHealPer;          // 받는 회복량 퍼센트
+    public float criticalPer;           // 치명타 확률  ex) 값이 10이라면 10%
+    public float incBackattackPer;      // 백어택 증가량 퍼센트  ex) 1.2 라면  데미지 120%
+}
+
 public class Character : MonoBehaviour
 {
-    [SerializeField] Animator _anim;
+    public Animator _anim;
     public void setTriggerSleep() => _anim.SetTrigger("Sleep");
 
-    CHARACTER_STATE _state;
+    public CHARACTER_STATE _state;
+    public Stat _stat;
+    public JOB _job = JOB.NONE;
+
     [SerializeField] StateMng StateSc;
 
     [SerializeField] GameObject[] footprints;
 
     const float MAX_DASH_TIME = 0.1f;
     public float curDashTime = 0.1f;
-    const float DASH_SPEED = 20;
-    float MOVE_SPEED = 5;
-    //public float dashStoppingSpeed = 0.1f;
+    //==== 직업에 따라서 아래 수치가 다름 ========================
+    protected float DASH_SPEED = 20;
+    protected float MOVE_SPEED = 5;
+    protected float DASH_COOLTIME = 6;
+    protected float WAKEUP_COOLTIME = 10;
 
     [SerializeField] Rigidbody2D _rigidBody;
 
@@ -43,11 +79,13 @@ public class Character : MonoBehaviour
 
     private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
 
-    // float _moveDir.x, _moveDir.y;
-    Vector3 _moveDir;
+    Vector3 _moveDir;       // 캐릭터 움직이는 방향
 
     void Start()
     {
+        for (int i = 0; i < 3; i++) {
+            footprints[i] = Instantiate(footprints[3], Vector3.zero, Quaternion.identity) as GameObject;
+        }
         GameMng.I.character = this;
         GameMng.I.targetList.Add(this);
         _state = CHARACTER_STATE.IDLE;
@@ -56,6 +94,7 @@ public class Character : MonoBehaviour
             skill_Img.Add(skill.GetChild(i).transform.GetChild(0).GetComponent<UnityEngine.UI.Image>());
             cooltime_UI.Add(skill.GetChild(i).transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>());
         }
+        init();
     }
 
     void Update()
@@ -68,8 +107,7 @@ public class Character : MonoBehaviour
         inputMove();
     }
 
-
-    IEnumerator SkillCoolDown(int skillnum)        // <! 나중에 바꾸기
+    protected IEnumerator SkillCoolDown(int skillnum)        // <! 나중에 바꾸기
     {
         float cooltime = 0;
 
@@ -77,13 +115,13 @@ public class Character : MonoBehaviour
         if (skillnum == 5)
         {
             skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
-            cooltime = 6;
+            cooltime = DASH_COOLTIME;
         }
         // 기상기
         else if (skillnum == 6)
         {
             skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
-            cooltime = 10;
+            cooltime = WAKEUP_COOLTIME;
         }
         // 스킬
         else
@@ -210,56 +248,21 @@ public class Character : MonoBehaviour
             return;
 
         // 스킬
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (!checkSkill[0])
-            {
-                StartCoroutine(SkillCoolDown(0));
-                _state = CHARACTER_STATE.CANT_ANYTHING;
-                _anim.SetTrigger("Skill_Gal");
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (!checkSkill[1])
-            {
-                StartCoroutine(SkillCoolDown(1));
-                _state = CHARACTER_STATE.CANT_ANYTHING;
-                _anim.SetTrigger("Skill_AGDZ");
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.R))
-        {
-            if (!checkSkill[2])
-            {
-                StartCoroutine(SkillCoolDown(2));
-                _state = CHARACTER_STATE.CAN_MOVE;
-                _anim.SetTrigger("Skill_Bigrr");
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            if (!checkSkill[3])
-            {
-                StartCoroutine(SkillCoolDown(3));
-                _state = CHARACTER_STATE.CANT_ANYTHING;
-                _anim.SetTrigger("Skill_SG");
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (!checkSkill[4])
-            {
-                StartCoroutine(SkillCoolDown(4));
-                _state = CHARACTER_STATE.CANT_ANYTHING;
-                _anim.SetTrigger("Skill_JH");
-            }
-        }
+        if (Input.GetKeyDown(KeyCode.Q) && !checkSkill[0])
+            skill_1();
+        else if (Input.GetKeyDown(KeyCode.E) && !checkSkill[1])
+            skill_2();
+        else if (Input.GetKeyDown(KeyCode.R) && !checkSkill[2])
+            skill_3();
+        else if (Input.GetKeyDown(KeyCode.LeftShift) && !checkSkill[3])
+            skill_4();
+        else if (Input.GetKeyDown(KeyCode.F) && !checkSkill[4])
+            skill_5();
+        
         // 임시 기절 키
         else if (Input.GetKeyDown(KeyCode.Y))
         {
-            _state = CHARACTER_STATE.SLEEP_CANT_ANYTHING;
-            _anim.SetTrigger("Sleep");
+            sleep();
         }
 
         // 마우스 좌클릭 - 일반 공격
@@ -280,13 +283,12 @@ public class Character : MonoBehaviour
         // 핑
         else if (Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.LeftControl))
         {
-            Debug.Log("@@@@@@@@@@@@@");
             GameMng.I.createPing(UnityEngine.Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
         // 마우스 우클릭 - 상호작용
         else if (Input.GetMouseButtonDown(1))
         {
-            GameMng.I.mouseRaycast(this.transform.localPosition);
+            //GameMng.I.mouseRaycast(this.transform.localPosition);
         }
 
         // 배틀 아이템 사용
@@ -313,10 +315,24 @@ public class Character : MonoBehaviour
         }
     }
 
+
+    public virtual void init(){}
+    public virtual void skill_1(){}
+    public virtual void skill_2(){}
+    public virtual void skill_3(){}
+    public virtual void skill_4(){}
+    public virtual void skill_5(){}
+
     void endAct()
     {
         _state = CHARACTER_STATE.IDLE;
         usingSkill = null;
+    }
+
+    public void sleep()
+    {
+        _state = CHARACTER_STATE.SLEEP_CANT_ANYTHING;
+        _anim.SetTrigger("Sleep");
     }
 
     IEnumerator SpeedUp(int apply_count, float saveSpeed)

@@ -19,7 +19,6 @@ public class Buff : MonoBehaviour
 
     void OnEnable()
     {
-        buffData = StateMngSc.bufflist[kind];
         apply_count = buffData.duration;
         StartCoroutine(cool());
     }
@@ -39,10 +38,7 @@ public class Buff : MonoBehaviour
             StartCoroutine(cool());
         }
         else
-        {
-            StateMngSc.userBuff[(int)buffData.BuffKind].SetActive(false);
-            StateMngSc.PlayerBuffGams[(int)buffData.BuffKind].SetActive(false);
-            
+        {   
             if(!buffData.check_buff)
                 StateMngSc.nPlayerDeBuffCount--;
             StateMngSc.nPlayerBuffCount--;

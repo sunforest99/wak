@@ -7,7 +7,6 @@ public class GameMng : MonoBehaviour
     public RaycastHit2D hit;
 
     public GameObject dialogPrefab;
-    public Transform uiCanvas;
     [SerializeField]
     GameObject pingPrefab;
 
@@ -21,7 +20,8 @@ public class GameMng : MonoBehaviour
     public List<Character> targetList;
 
     public Character character = null;
-    
+    public float level = 10;
+
     public int getCharecterDamage(bool isBackAttack)        // <! 캐릭터 데미지 가져오기
     {
         if (character.usingSkill)        // <! 스킬 대미지
@@ -56,30 +56,30 @@ public class GameMng : MonoBehaviour
         DontDestroyOnLoad(this);        // <! 필요하면 쓰장
     }
 
-    public void mouseRaycast(Vector2 charPos)      // <! 이름바꾸기
-    {
-        Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    // public void mouseRaycast(Vector2 charPos)      // <! 이름바꾸기
+    // {
+    //     Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        Ray2D ray = new Ray2D(pos, Vector2.zero);
+    //     Ray2D ray = new Ray2D(pos, Vector2.zero);
 
-        hit = Physics2D.Raycast(ray.origin, ray.direction);
+    //     hit = Physics2D.Raycast(ray.origin, ray.direction);
 
-        if (hit.collider != null && hit.collider.CompareTag("Npc") && Vector2.Distance(hit.collider.transform.localPosition, charPos) <= npcDistance)
-        {
-            npcData = hit.collider.gameObject.GetComponent<Npcdata>();
+    //     if (hit.collider != null && hit.collider.CompareTag("Npc") && Vector2.Distance(hit.collider.transform.localPosition, charPos) <= npcDistance)
+    //     {
+    //         npcData = hit.collider.gameObject.GetComponent<Npcdata>();
 
-            if (!npcData.isDailog && npcData != null)
-            {
-                npcData.isDailog = true;
+    //         if (!npcData.isDailog && npcData != null)
+    //         {
+    //             npcData.isDailog = true;
 
-                GameObject temp = Instantiate(GameMng.I.dialogPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-                npcData.tempDialog = temp;
-                temp.transform.parent = uiCanvas;
-                temp.transform.localPosition = Vector3.zero;
-                temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            }
-        }
-    }
+    //             GameObject temp = Instantiate(GameMng.I.dialogPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+    //             npcData.tempDialog = temp;
+    //             temp.transform.parent = uiCanvas;
+    //             temp.transform.localPosition = Vector3.zero;
+    //             temp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+    //         }
+    //     }
+    // }
 
     public void createPing(Vector2 pos)
     {

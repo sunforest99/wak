@@ -1,44 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class BossBuff : MonoBehaviour
+public class BossBuff : Tooltips, IPointerEnterHandler, IPointerExitHandler
 {
+    [SerializeField] UnityEngine.UI.Image buffImg;
     public BuffData buffData;
-    public Boss BossSc;
-    public int kind;
-    public int apply_count;                     // 버프가 유지된 카운트
-    public int count;                           // 중첩 갯수
+    public int duration;
     public bool isApply;                        // 현재 적용 중인지
 
     void OnEnable()
     {
-        buffData = BossSc.bufflist[kind];
-        apply_count = buffData.duration;
+        duration = buffData.duration;
+        buffImg.sprite = buffData.buffsprite;
         StartCoroutine(cool());
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        base.tooltip.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 1.0f, this.transform.position.z);
+        base.tooltip.SetActive(true);
+        base.toolTipSetting(buffData.buffsprite, buffData.buffname, buffData.buffcontent);
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        base.tooltip.SetActive(false);
     }
 
     IEnumerator cool()
     {
         yield return new WaitForSeconds(1.0f);
-        if (apply_count >= 1)
+        if (duration >= 1)
         {
-            apply_count--;
+            duration--;
             StartCoroutine(cool());
         }
         else
         {
             gameObject.SetActive(false);
-            if (buffData.check_buff)
-            {
-                BossSc.bossBuff[(int)buffData.BuffKind].SetActive(false);
-            }
-            else
-            {
-                BossSc.bossBuff[(int)buffData.BuffKind].SetActive(false);
-            }
+            base.tooltip.SetActive(false);
             isApply = false;
-            count = 0;
         }
     }
 }
