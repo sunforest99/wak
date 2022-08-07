@@ -55,6 +55,7 @@ public class Character : MonoBehaviour
 
     [SerializeField] GameObject[] footprints;
 
+    public List<List<Item>> haveItem = new List<List<Item>>();
     const float MAX_DASH_TIME = 0.1f;
     public float curDashTime = 0.1f;
     //==== 직업에 따라서 아래 수치가 다름 ========================
@@ -95,6 +96,9 @@ public class Character : MonoBehaviour
             cooltime_UI.Add(skill.GetChild(i).transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>());
         }
         init();
+
+        for(int i = 0; i < 4; i++)
+            haveItem.Add(new List<Item>());
     }
 
     void Update()
