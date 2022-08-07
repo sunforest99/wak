@@ -14,6 +14,12 @@ public struct Player_HP_Numerical
     public float Shield_Pos;                // 쉴드 위치
 }
 
+[System.Serializable]
+public struct PartyBuffGroup
+{
+    public PartyBuff[] userBuff;                             // 중하단 UI 플레이어 버프 게임오브젝트
+}
+
 // struct Player_HP_UI{
 //     public Image HP_Img;
 //     public Image Shield_Img;
@@ -21,13 +27,8 @@ public struct Player_HP_Numerical
 
 public class StateMng : MonoBehaviour
 {
-    public BuffData[] bufflist;
-    const int BuffCount = 6;
-
-    public Buff[] BuffSc = new Buff[BuffCount];
-
-    public GameObject[] userBuff = new GameObject[BuffCount];                               // 중하단 UI 플레이어 버프 게임오브젝트
-    public GameObject[] PlayerBuffGams = new GameObject[BuffCount];                         // 좌측 UI 버프, 디버프 게임오브젝트
+    [SerializeField] private PartyBuffGroup[] partybuffGroups = new PartyBuffGroup[4];
+    [SerializeField] private Buff[] ownBuff;        // 내꺼 버프
 
     [SerializeField] Image[] PartyHPImg = new Image[4];                                     // 좌측 UI 플레이어들 체력이미지
     [SerializeField] Image[] PartyShieldImg = new Image[4];
@@ -44,8 +45,6 @@ public class StateMng : MonoBehaviour
 
     public int nPlayerBuffCount;                                                                   // 플레이어의 버프 갯수
     public int nPlayerDeBuffCount;
-
-    bool[] bBuffKind = new bool[BuffCount];                                                 // 나중에 지우기 (랜덤으로 켜기 위해 있는 것)
 
     float fImageSize;
     float fPlayerImgSize;
@@ -72,7 +71,6 @@ public class StateMng : MonoBehaviour
     {
         ShieldPos();
         PlayerHP();
-        PlayerBuffMng();
     }
 
     void ShieldPos()
@@ -118,62 +116,45 @@ public class StateMng : MonoBehaviour
         PlayerShieldImg.rectTransform.anchoredPosition = new Vector2(user_HP_Numerical.Shield_Pos, 0.0f);
     }
 
-    void PlayerBuffMng(/*bool kind, int num*/)                      // 버프가 다 구현되면 호출할 함수 kind = 버프인지 디버프인지, num 버프 종류
+    public void ActiveBuff(BuffData buffData)
     {
-        if (Input.GetKeyDown(KeyCode.L))
+        for (int i = 0; i < partybuffGroups.Length; i++)
         {
-            int buffkind = Random.Range(0, BuffCount);
-            bBuffKind[buffkind] = true;
-            ActiveBuff(buffkind);
+            for (int j = 0; j < partybuffGroups[i].userBuff.Length; j++)
+            {
+                if (partybuffGroups[i].userBuff[j].isApply && partybuffGroups[i].userBuff[j].buffData.name == buffData.name)
+                {
+                    partybuffGroups[i].userBuff[j].duration = GameMng.I.character.usingSkill.getBuffData.duration;
+                    break;
+                }
+                else if (!partybuffGroups[i].userBuff[j].isApply)
+                {
+                    ActiveOwnBuff(GameMng.I.character.usingSkill.getBuffData);
+                    partybuffGroups[i].userBuff[j].buffData = GameMng.I.character.usingSkill.getBuffData;
+                    partybuffGroups[i].userBuff[j].gameObject.SetActive(true);
+                    partybuffGroups[i].userBuff[j].isApply = true;
+                    break;
+                }
+            }
         }
     }
 
-    void ActiveBuff(int num)
+    public void ActiveOwnBuff(BuffData buffData)
     {
-        if (bBuffKind[num])
+        for (int i = 0; i < ownBuff.Length; i++)
         {
-            if (!BuffSc[num].isApply)                                                       // 해당 버프가 지금 있나
+            if (ownBuff[i].isApply && ownBuff[i].buffData.name == buffData.name)
             {
-                userBuff[num].SetActive(true);
-                PlayerBuffGams[num].SetActive(true);
-                nPlayerBuffCount++;
-                BuffSc[num].kind = num;
-                BuffSc[num].count++;
-                BuffSc[num].isApply = true;
-                BuffSc[num].BuffImg.enabled = true;
-                if (!bufflist[num].check_buff)
-                    nPlayerDeBuffCount++;
+                ownBuff[i].duration = GameMng.I.character.usingSkill.getBuffData.duration;
+                break;
             }
-            else
+            else if (!ownBuff[i].isApply)
             {
-                if (BuffSc[num].buffData.check_nesting)
-                    BuffSc[num].count++;
-                BuffSc[num].apply_count = BuffSc[num].buffData.duration;
+                ownBuff[i].buffData = GameMng.I.character.usingSkill.getBuffData;
+                ownBuff[i].gameObject.SetActive(true);
+                ownBuff[i].isApply = true;
+                break;
             }
-            bBuffKind[num] = false;
         }
-    }
-
-    public void DeleteBuff(int num)
-    {
-        // int n = 0;
-        // for (int i = 0; i < BuffSc.Length; i++)
-        // {
-        //     if (BuffSc[i].isApply && !bufflist[i].check_buff)
-        //     {
-        //         n++;
-        //         if (n == num)
-        //         {
-        //             Debug.Log(BuffSc[i].buffData.BuffKind);
-        //             BuffSc[i].apply_count = 0;
-        //             BuffSc[i].isApply = false;
-        //             BuffSc[i].count = 0;
-        //             PlayerBuffGams[i].SetActive(false);
-        //             userBuff[i].SetActive(false);
-        //             nPlayerBuffCount--;
-        //             break;
-        //         }
-        //     }
-        // }
     }
 }
