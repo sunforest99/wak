@@ -18,7 +18,8 @@ public class BuffData : ScriptableObject
 
     public int duration;                        // 지속시간 (카운트를 위해 정수)
 
-    public bool check_buff;                     // 버프인지 디버프인지
+    [SerializeField] private bool _isBuff;                     // 버프인지 디버프인지
+    public bool isBuff { get { return _isBuff; } }
 
     public bool check_nesting;                  // 중첩 여부
 

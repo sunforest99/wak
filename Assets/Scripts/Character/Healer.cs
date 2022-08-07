@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HEALER : Character
+public class Healer : Character
 {
     public override void init()
     {
@@ -20,31 +20,31 @@ public class HEALER : Character
     {
         StartCoroutine(SkillCoolDown(0));
         _state = CHARACTER_STATE.CANT_ANYTHING;
-        _anim.SetTrigger("");
+        _anim.SetTrigger("Skill_Tree");
     }
     public override void skill_2()
     {
         StartCoroutine(SkillCoolDown(1));
         _state = CHARACTER_STATE.CANT_ANYTHING;
-        _anim.SetTrigger("");
+        _anim.SetTrigger("Skill_Thief");
     }
     public override void skill_3()
     {
         StartCoroutine(SkillCoolDown(2));
         _state = CHARACTER_STATE.CAN_MOVE;
-        _anim.SetTrigger("");
+        _anim.SetTrigger("Skill_Winterspring");
     }
     public override void skill_4()
     {
         StartCoroutine(SkillCoolDown(3));
         _state = CHARACTER_STATE.CANT_ANYTHING;
-        _anim.SetTrigger("");
+        _anim.SetTrigger("Skill_Location");
     }
     public override void skill_5()
     {
         StartCoroutine(SkillCoolDown(4));
         _state = CHARACTER_STATE.CANT_ANYTHING;
-        _anim.SetTrigger("");
+        _anim.SetTrigger("Skill_Music");
     }
     
     void settingStat()

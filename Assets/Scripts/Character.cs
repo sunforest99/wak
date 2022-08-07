@@ -21,7 +21,7 @@ public enum JOB
 
 public struct Stat
 {
-    public Stat(int minDamage, int maxDamage, 
+    public Stat(int minDamage, int maxDamage,
     float incDamagePer, float takenDamagePer, float moveSpeedPer, float takenHealPer, float criticalPer, float incBackattackPer)
     {
         this.minDamage = minDamage;
@@ -55,6 +55,7 @@ public class Character : MonoBehaviour
 
     [SerializeField] GameObject[] footprints;
 
+    public List<List<Item>> haveItem = new List<List<Item>>();
     const float MAX_DASH_TIME = 0.1f;
     public float curDashTime = 0.1f;
     //==== 직업에 따라서 아래 수치가 다름 ========================
@@ -83,7 +84,8 @@ public class Character : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++)
+        {
             footprints[i] = Instantiate(footprints[3], Vector3.zero, Quaternion.identity) as GameObject;
         }
         GameMng.I.character = this;
@@ -95,6 +97,9 @@ public class Character : MonoBehaviour
             cooltime_UI.Add(skill.GetChild(i).transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>());
         }
         init();
+
+        for (int i = 0; i < 4; i++)
+            haveItem.Add(new List<Item>());
     }
 
     void Update()
@@ -127,6 +132,10 @@ public class Character : MonoBehaviour
         else
         {
             usingSkill = skilldatas[skillnum];
+            if (usingSkill.getBuffData && usingSkill.getBuffData.isBuff)
+            {
+                StateSc.ActiveBuff(usingSkill.getBuffData);
+            }
             cooltime = usingSkill.getColldown;
         }
 
@@ -258,7 +267,7 @@ public class Character : MonoBehaviour
             skill_4();
         else if (Input.GetKeyDown(KeyCode.F) && !checkSkill[4])
             skill_5();
-        
+
         // 임시 기절 키
         else if (Input.GetKeyDown(KeyCode.Y))
         {
@@ -304,7 +313,6 @@ public class Character : MonoBehaviour
             if (StateSc.nPlayerDeBuffCount > 0)
             {
                 int rand = Random.Range(1, StateSc.nPlayerDeBuffCount + 1);
-                StateSc.DeleteBuff(rand);
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -316,12 +324,12 @@ public class Character : MonoBehaviour
     }
 
 
-    public virtual void init(){}
-    public virtual void skill_1(){}
-    public virtual void skill_2(){}
-    public virtual void skill_3(){}
-    public virtual void skill_4(){}
-    public virtual void skill_5(){}
+    public virtual void init() { }
+    public virtual void skill_1() { }
+    public virtual void skill_2() { }
+    public virtual void skill_3() { }
+    public virtual void skill_4() { }
+    public virtual void skill_5() { }
 
     void endAct()
     {

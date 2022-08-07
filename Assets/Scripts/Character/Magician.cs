@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MAGICIAN : Character
+public class Magician : Character
 {
     public override void init()
     {
@@ -20,25 +20,25 @@ public class MAGICIAN : Character
     {
         StartCoroutine(SkillCoolDown(0));
         _state = CHARACTER_STATE.CANT_ANYTHING;
-        _anim.SetTrigger("");
+        _anim.SetTrigger("Skill_Window");
     }
     public override void skill_2()
     {
         StartCoroutine(SkillCoolDown(1));
         _state = CHARACTER_STATE.CANT_ANYTHING;
-        _anim.SetTrigger("");
+        _anim.SetTrigger("Skill_Chimstercall");
     }
     public override void skill_3()
     {
         StartCoroutine(SkillCoolDown(2));
-        _state = CHARACTER_STATE.CAN_MOVE;
-        _anim.SetTrigger("");
+        _state = CHARACTER_STATE.CANT_ANYTHING;
+        _anim.SetTrigger("Skill_Wakpasun");
     }
     public override void skill_4()
     {
         StartCoroutine(SkillCoolDown(3));
         _state = CHARACTER_STATE.CANT_ANYTHING;
-        _anim.SetTrigger("");
+        _anim.SetTrigger("Skill_Fire");
     }
     public override void skill_5()
     {

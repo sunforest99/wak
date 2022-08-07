@@ -61,9 +61,9 @@ public class BossCollider : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Weapon"))
         {
-            if (GameMng.I.character.usingSkill.getBuffData && GameMng.I.character.usingSkill.getBuffData.isBossDebuf)
+            if (GameMng.I.character.usingSkill && GameMng.I.character.usingSkill.getBuffData && GameMng.I.character.usingSkill.getBuffData.isBossDebuf)
             {
-                getBuffIndex(GameMng.I.character.usingSkill.getBuffData);
+                BuffActive(GameMng.I.character.usingSkill.getBuffData);
             }
 
             StartCoroutine(HitBlink());
@@ -111,12 +111,8 @@ public class BossCollider : MonoBehaviour
     {
         this.transform.parent.localPosition = GameMng.I.targetList[GameMng.I.targetCount].transform.localPosition;
     }
-
-    /*
-     * @brief 디버프 gameobject가 사용중이 아닌 index 값 return (-1은 모두 사용중 )
-     */
-
-    void getBuffIndex(BuffData hitbuffData)
+    
+    void BuffActive(BuffData hitbuffData)
     {
         for (int i = 0; i < boss.bossDeBuffs.Length; i++)
         {

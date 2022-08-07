@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.EventSystems; 
 
-public class Buff : MonoBehaviour
+public class Buff : Tooltips, IPointerEnterHandler, IPointerExitHandler
 {
     public BuffData buffData;
     public StateMng StateMngSc;
@@ -11,43 +12,56 @@ public class Buff : MonoBehaviour
 
     public UnityEngine.UI.Image BuffImg;
 
-    public int kind;
-    public int apply_count;                     // 버프가 유지된 카운트
+    public int duration;                     // 버프가 유지된 카운트
     public int count;                           // 중첩 갯수
 
     public bool isApply;
 
     void OnEnable()
     {
-        apply_count = buffData.duration;
+        BuffImg.sprite = buffData.buffsprite;
+        duration = buffData.duration;
         StartCoroutine(cool());
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        base.tooltip.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 1.0f, this.transform.position.z);
+        base.tooltip.SetActive(true);
+        base.toolTipSetting(buffData.buffsprite, buffData.buffname, buffData.buffcontent);
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        base.tooltip.SetActive(false);
     }
 
     IEnumerator cool()
     {
         yield return new WaitForSeconds(1.0f);
-        if (apply_count == 3)
+        if (duration == 3)
         {
-            apply_count--;
+            duration--;
             StartCoroutine(cool());
             StartCoroutine(Blink(0.5f));
         }
-        else if (apply_count >= 1)
+        else if (duration >= 1)
         {
-            apply_count--;
+            duration--;
             StartCoroutine(cool());
         }
         else
-        {   
-            if(!buffData.check_buff)
-                StateMngSc.nPlayerDeBuffCount--;
+        {
+            // TODO : 이게 아마 디버프 해제 일텐데
+            // if(!buffData.check_buff)
+            //     StateMngSc.nPlayerDeBuffCount--;
             StateMngSc.nPlayerBuffCount--;
             isApply = false;
             count = 0;
             gameObject.SetActive(false);
         }
-        if (!buffData.check_buff && buffData.check_nesting)
-            Mount.text = 'x' + count.ToString();
+        // TODO : 중첩 하기
+        // if (!buffData.check_buff && buffData.check_nesting)
+        //     Mount.text = 'x' + count.ToString();
     }
 
     public IEnumerator Blink(float time)
@@ -55,7 +69,7 @@ public class Buff : MonoBehaviour
         Color color = BuffImg.color;
         while (color.a > 0.5f)
         {
-            if (apply_count > 3)
+            if (duration > 3)
             {
                 color.a = 1;
                 BuffImg.color = color;
@@ -67,7 +81,7 @@ public class Buff : MonoBehaviour
         }
         while (color.a < 1f)
         {
-            if (apply_count > 3)
+            if (duration > 3)
             {
                 color.a = 1;
                 BuffImg.color = color;
@@ -77,9 +91,9 @@ public class Buff : MonoBehaviour
             BuffImg.color = color;
             yield return null;
         }
-        if (apply_count > 3)
+        if (duration > 3)
             yield return null;
-        else if (apply_count >= 0)
+        else if (duration >= 0)
             StartCoroutine(Blink(0.5f));
     }
 }
