@@ -42,6 +42,14 @@ public struct Stat
     public float incBackattackPer;      // 백어택 증가량 퍼센트  ex) 1.2 라면  데미지 120%
 }
 
+[System.Serializable]
+public struct ItemSlotUI
+{
+    public UnityEngine.UI.Image[] ItemImg;
+    public TMPro.TextMeshProUGUI[] ItemText;
+    public ITEM_INDEX[] ItemIdx;
+}
+
 public class Character : MonoBehaviour
 {
     public Animator _anim;
@@ -54,6 +62,11 @@ public class Character : MonoBehaviour
     [SerializeField] GameObject[] footprints;
 
     public List<List<Item>> haveItem = new List<List<Item>>();
+
+    public Item[] equipBattleItem = new Item[3];
+
+    public ItemSlotUI BattleItemUI;
+
     const float MAX_DASH_TIME = 0.1f;
     public float curDashTime = 0.1f;
     //==== 직업에 따라서 아래 수치가 다름 ========================
@@ -348,5 +361,17 @@ public class Character : MonoBehaviour
             StartCoroutine(SpeedUp(apply_count - 1, saveSpeed));
         else if (apply_count == 0)
             MOVE_SPEED = saveSpeed;
+    }
+
+    IEnumerator itemCool(Item item)
+    {
+        yield return new WaitForSeconds(1.0f);
+        if(item.apply_count >= 1)
+        {
+            item.apply_count--;
+            StartCoroutine(itemCool(item));
+        }
+        else
+            item.apply_count = 0;
     }
 }

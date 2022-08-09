@@ -27,7 +27,8 @@ public enum ITEM_INDEX
     ROSE,
     SWORD,
     CONSUMABLE_ITEM_INDEX,
-    REDMUSHROOM
+    REDMUSHROOM,
+    NONE
 }
 
 public enum BUFF

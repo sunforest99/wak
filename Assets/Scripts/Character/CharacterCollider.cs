@@ -27,7 +27,7 @@ public class CharacterCollider : MonoBehaviour
 
         if (other.CompareTag("Item"))
         {
-            Item item = other.GetComponent<Item>();
+            Item item = other.GetComponent<ItemObj>().saveItem;
             switch (item.itemData.itemType)
             {
                 case ITEM_TYPE.BATTLE_ITEM:
@@ -47,4 +47,12 @@ public class CharacterCollider : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
+    // private void OnTriggerStay2D(Collider2D other)
+    // {
+    //     if (other.CompareTag("Item"))
+    //     {
+    //         if (Input.GetKeyDown(KeyCode.M))
+    //             Destroy(other.gameObject);
+    //     }
+    // }
 }
