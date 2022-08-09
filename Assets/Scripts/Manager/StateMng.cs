@@ -27,6 +27,8 @@ public struct PartyBuffGroup
 
 public class StateMng : MonoBehaviour
 {
+    public List<Character> targetList;      // 보스 타겟 설정하는거
+    public Transform getTarget => targetList[Random.Range(0, targetList.Count)].transform;        // 타겟 렌덤
     [SerializeField] private PartyBuffGroup[] partybuffGroups = new PartyBuffGroup[4];
     [SerializeField] private Buff[] ownBuff;        // 내꺼 버프
 

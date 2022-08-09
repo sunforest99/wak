@@ -12,12 +12,9 @@ public class GameMng : MonoBehaviour
 
     public DailogUI dailogUI;
     public Npcdata npcData;
-    public int charactorDmg;
     private float npcDistance = 3.0f;       // <! npc와의 최대 거리
 
     private static GameMng _instance = null;
-
-    public List<Character> targetList;
 
     public Character character = null;
     public float level = 10;
@@ -33,9 +30,9 @@ public class GameMng : MonoBehaviour
             return 20000;
     }
 
-    public BossData bossData = null;
+    public StateMng stateMng;
 
-    public int targetCount => Random.Range(0, targetList.Count);
+    public BossData bossData = null;        // 보스 정보
 
     public Vector2 mapRightTop;
     public Vector2 mapCenter;

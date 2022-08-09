@@ -8,7 +8,6 @@ public class BossBuff : Tooltips, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] UnityEngine.UI.Image buffImg;
     public BuffData buffData;
     public int duration;
-    public bool isApply;                        // 현재 적용 중인지
 
     void OnEnable()
     {
@@ -40,7 +39,6 @@ public class BossBuff : Tooltips, IPointerEnterHandler, IPointerExitHandler
         {
             gameObject.SetActive(false);
             base.tooltip.SetActive(false);
-            isApply = false;
         }
     }
 }

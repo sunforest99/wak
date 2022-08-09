@@ -84,6 +84,7 @@ public class Wakgui : Boss
                 Teleport(true);
                 Checkpatern = true;
                 Checkcircle = true;
+                _isAnnihilation = true;
                 StopCoroutine(Think());
             }
             else if (Checkcircle && !Checkoutcast && base._currentNesting < 50 && action == WAKGUI_ACTION.IDLE)
@@ -112,7 +113,7 @@ public class Wakgui : Boss
             switch (pattern_rand)
             {
                 case (int)WAKGUI_ACTION.IDLE:
-                    _target = GameMng.I.targetList[GameMng.I.targetCount].transform;
+                    _target = GameMng.I.stateMng.getTarget;
                     StartCoroutine(Think());
                     break;
                 case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기
@@ -324,6 +325,7 @@ public class Wakgui : Boss
 
         yield return new WaitForSeconds(15.0f);
         action = WAKGUI_ACTION.IDLE;
+        _isAnnihilation = false;
         StartCoroutine(Think());
         Checkpatern = false;
         yield return null;

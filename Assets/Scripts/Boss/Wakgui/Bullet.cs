@@ -7,7 +7,7 @@ public class Bullet : DestroySelf
     int damage;
     void Start()
     {
-        damage = GameMng.I.bossData.getPatternDmg((int)WAKGUI_ACTION.PATTERN_CRISTAL);
+        damage = GameMng.I.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_CRISTAL);
     }
 
     void Update()

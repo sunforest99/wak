@@ -2,35 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour
+public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Inventory inventorySc;
+    private Button button;
     public ItemData itemData;
     public int itemCount;
     public Image itemImg;
 
     public TMPro.TextMeshProUGUI text_Count;
 
-    public void HoverOn()
+    void Start()
+    {
+        button = GetComponent<Button>();
+        button.onClick.AddListener(clickSlot);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
     {
         inventorySc.contentSet(itemData);
     }
 
-    public void HoverOff()
+    public void OnPointerExit(PointerEventData eventData)
     {
         inventorySc.contentSet();
-    }
-
-    public void AddItem(ItemData item, int count = 1)
-    {
-        itemData = item;
-        itemCount = count;
-        itemImg.sprite = item.itemSp;
-        text_Count.gameObject.SetActive(true);
-
-        if (itemData.itemType != ITEM_TYPE.WEAPON_ITEM && itemData.itemType != ITEM_TYPE.HEAD_ITEM)
-            text_Count.text = itemCount.ToString();
     }
 
     public void SetSlotCount(int count)
@@ -41,7 +38,6 @@ public class Slot : MonoBehaviour
         if (itemCount <= 0)
             Destroy(gameObject);
     }
-
     public void clickSlot()
     {
         inventorySc.getClickIndex = itemData.itemIndex;

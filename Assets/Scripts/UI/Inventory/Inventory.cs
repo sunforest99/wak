@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
+    [SerializeField] private List<Slot> slotPool;
+    [SerializeField] private GameObject slotPrefab;
+
     public GameObject[] inventoryBase = new GameObject[4];
     public GameObject[] equipBT = new GameObject[4];
     public Image[] inventoryBtnImg = new Image[4];
@@ -19,23 +22,35 @@ public class Inventory : MonoBehaviour
     int itemtype = 0;
     public ITEM_INDEX getClickIndex = 0;
 
+    void Awake()
+    {
+        for (int i = 0; i < 40; i++)
+        {
+            GameObject temp = Instantiate(slotPrefab, this.transform);
+
+            slotPool.Add(temp.GetComponent<Slot>());
+            temp.SetActive(false);
+        }
+    }
+
     void OnEnable()
     {
         createSlot(0);
         getSlots(0);
-        if (inventoryBase[0].transform.childCount == 0)
-        {
-            contentOnOff(false);
-            for (int i = 0; i < equipBT.Length; i++)
-                equipBT[i].SetActive(false);
-        }
-        else
-        {
-            contentOnOff(true);
-            contentImg.sprite = slots[0].itemData.itemSp;
-            contentText.text = slots[0].itemData.itemName + "\n" + slots[0].itemData.content;
-            equipBT[0].SetActive(true);
-        }
+        // TODO: 알잘딱 ㄱ (뭔지 모르겠음)
+        // if (inventoryBase[0].transform.childCount == 0)
+        // {
+        //     contentOnOff(false);
+        //     for (int i = 0; i < equipBT.Length; i++)
+        //         equipBT[i].SetActive(false);
+        // }
+        // else
+        // {
+        //     contentOnOff(true);
+        //     contentImg.sprite = slots[0].itemData.itemSp;
+        //     contentText.text = slots[0].itemData.itemName + "\n" + slots[0].itemData.content;
+        //     equipBT[0].SetActive(true);
+        // }
     }
     void OnDisable()
     {
@@ -81,23 +96,54 @@ public class Inventory : MonoBehaviour
         Debug.Log("아이템 장착");
     }
 
+    // void CreatePool()
+    // {
+    //      for (int i = 0; i < GameMng.I.character.haveItem[kind].Count; i++)
+    //     {
+    //         GameObject temp = Instantiate(GameMng.I.character.haveItem[kind][i].itemData.itemSlotPre, inventoryBase[kind].transform);
+    //         Slot slotTemp = temp.GetComponent<Slot>();
+    //         slotTemp.inventorySc = this;
+    //         slotTemp.text_Count.text = "x" + GameMng.I.character.haveItem[kind][i].itemCount.ToString();
+    //     }
+    //     if (GameMng.I.character.haveItem[kind].Count > 0)
+    //         equipBT[kind].SetActive(true);
+    // }
+
     public void createSlot(int kind)
     {
         for (int i = 0; i < GameMng.I.character.haveItem[kind].Count; i++)
         {
-            GameObject temp = Instantiate(GameMng.I.character.haveItem[kind][i].itemData.itemSlotPre, inventoryBase[kind].transform);
-            Slot slotTemp = temp.GetComponent<Slot>();
+            // GameObject temp = Instantiate(GameMng.I.character.haveItem[kind][i].itemData.itemSlotPre, inventoryBase[kind].transform);
+            Slot slotTemp = CheckActiveObject();
+            slotTemp.gameObject.SetActive(true);
+            slotTemp.itemData = GameMng.I.character.haveItem[kind][i].itemData;
+            slotTemp.itemImg.sprite = slotTemp.itemData.itemSp;
+            slotTemp.transform.parent = inventoryBase[kind].transform;
             slotTemp.inventorySc = this;
-            slotTemp.text_Count.text = "x" + GameMng.I.character.haveItem[kind][i].itemCount.ToString();
+            // slotTemp.text_Count.text = "x" + GameMng.I.character.haveItem[kind][i].itemCount.ToString();     // TODO 고치기
         }
         if (GameMng.I.character.haveItem[kind].Count > 0)
             equipBT[kind].SetActive(true);
     }
 
-    public void deleteSlot(int kind)
+    Slot CheckActiveObject()
+    {
+        for (int i = 0; i < slotPool.Count; i++)
+        {
+            if (!slotPool[i].gameObject.activeSelf)
+            {
+                return slotPool[i];
+            }
+        }
+        return null;
+    }
+
+    public void deleteSlot(int kind)        // 아이템 종류(베틀아이템, 소비아이템 등)
     {
         for (int i = 0; i < inventoryBase[kind].transform.childCount; i++)
-            Destroy(inventoryBase[kind].transform.GetChild(i).gameObject);
+        {
+            inventoryBase[kind].transform.GetChild(i).gameObject.SetActive(false);
+        }
         equipBT[kind].SetActive(false);
     }
 

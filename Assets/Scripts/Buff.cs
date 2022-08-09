@@ -7,7 +7,6 @@ using UnityEngine.EventSystems;
 public class Buff : Tooltips, IPointerEnterHandler, IPointerExitHandler
 {
     public BuffData buffData;
-    public StateMng StateMngSc;
     [SerializeField] TextMeshProUGUI Mount;
 
     public UnityEngine.UI.Image BuffImg;
@@ -54,7 +53,7 @@ public class Buff : Tooltips, IPointerEnterHandler, IPointerExitHandler
             // TODO : 이게 아마 디버프 해제 일텐데
             // if(!buffData.check_buff)
             //     StateMngSc.nPlayerDeBuffCount--;
-            StateMngSc.nPlayerBuffCount--;
+            GameMng.I.stateMng.nPlayerBuffCount--;
             isApply = false;
             count = 0;
             gameObject.SetActive(false);

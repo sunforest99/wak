@@ -10,7 +10,7 @@ public class Poo : DestroySelf
     int damage;
     void Start()
     {
-        damage = GameMng.I.bossData.getPatternDmg((int)WAKGUI_ACTION.PATTERN_POO);
+        damage = GameMng.I.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_POO);
         StartCoroutine(Remove());
     }
     

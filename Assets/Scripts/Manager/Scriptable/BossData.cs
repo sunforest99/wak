@@ -3,19 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Boss", menuName = "ScriptableObject/BossData")]
-public class BossData : ScriptableObject
+public class BossData : BaseMonsterData
 {
-    [SerializeField] private int _startHp;          // <! 보스 총 체력
-    public int startHp { get { return _startHp; } }
-
     [SerializeField] private float _radetime;       // <! 레이드 시간
     public float radetime { get { return _radetime; } }
-
-    [SerializeField] private string _bossName;      // <! 보스이름
-    public string bossName { get { return _bossName; } }
-
-    [SerializeField] private float _moveSpeed;      // <! 보스 이동
-    public float moveSpeed { get { return _moveSpeed; } set { _moveSpeed = value; } }
 
     [SerializeField] private Color[] _barColor = new Color[6];      // <! 체력바 색
     public Color[] barColor { get { return _barColor; } }
@@ -33,11 +24,11 @@ public class BossData : ScriptableObject
 
     [SerializeField] private int _bossAction;
     public int setBossAction { set { _bossAction = value; } }
-    [SerializeField] private int[] _patternDmg;
-    public int getPatternDmg() =>_patternDmg[_bossAction];
-    public int getPatternDmg(int action) => _patternDmg[action];
 
     private Color color;
+
+    public override int getDamage() => base._damage[_bossAction];
+    public int getDamage(int action) => base._damage[action];
     
     void Awake()
     {

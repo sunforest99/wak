@@ -59,14 +59,23 @@ public class BossCollider : MonoBehaviour
         dmg.set(damage, isCritical);
     }
 
+    void createDamage(Vector2 pos)
+    {
+        Transform damageObj = Instantiate(damagePopup, pos, Quaternion.identity);
+        Damage dmg = damageObj.GetComponent<Damage>();
+        dmg.set("immune");
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Weapon"))
         {
+            bool isCritical;
             if (GameMng.I.character.usingSkill && GameMng.I.character.usingSkill.getBuffData && GameMng.I.character.usingSkill.getBuffData.isBossDebuf)
             {
                 BuffActive(GameMng.I.character.usingSkill.getBuffData);
             }
+            isCritical = CheckCritial();
 
             StartCoroutine(HitBlink());
             _camera.shake();
@@ -90,39 +99,38 @@ public class BossCollider : MonoBehaviour
                 isBackAttack = false;
             }
 
-            bool isCritical = CheckCritial(GameMng.I.character.usingSkill.getBuffData);
-            damageTemp = GameMng.I.getCharecterDamage(isCritical, isBackAttack);
+            if (!boss.isAnnihilation)
+            {
+                damageTemp = GameMng.I.getCharecterDamage(isCritical, isBackAttack);
 
-            createDamage(
-                other.ClosestPoint(transform.position) + new Vector2(0, 3f),
-                damageTemp,
-                isCritical
-           );
-            boss._nestingHp -= damageTemp;
+                createDamage(
+                    other.ClosestPoint(transform.position) + new Vector2(0, 3f),
+                    damageTemp,
+                    isCritical
+               );
+                boss._nestingHp -= damageTemp;
+            }
+            else
+            {
+                createDamage(other.ClosestPoint(transform.position) + new Vector2(0, 3f));
+            }
         }
     }
 
     bool CheckCritial()
     {
         float criticalrand = Random.Range(0.0f, 100.0f);
-
-        if (criticalrand <= GameMng.I.character._stat.criticalPer)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    bool CheckCritial(BuffData hitbuffData)
-    {
-        float criticalrand = Random.Range(0.0f, 100.0f);
         float criticalPer = GameMng.I.character._stat.criticalPer;
-
-        if (hitbuffData.BuffKind == BUFF.BUFF_GAL)
+        for (int i = 0; i < boss.bossDeBuffs.Length; i++)
         {
-            GameMng.I.character._stat.criticalPer += 100.0f;
+            if (boss.bossDeBuffs[i].gameObject.activeInHierarchy)
+            {
+                if (boss.bossDeBuffs[i].buffData.BuffKind == BUFF.BUFF_GAL)
+                {
+                    criticalPer += boss.bossDeBuffs[i].buffData.numerical;
+                    break;
+                }
+            }
         }
 
         if (criticalrand <= criticalPer)
@@ -137,23 +145,22 @@ public class BossCollider : MonoBehaviour
 
     void SetJumpPostion()
     {
-        this.transform.parent.localPosition = GameMng.I.targetList[GameMng.I.targetCount].transform.localPosition;
+        this.transform.parent.localPosition = GameMng.I.stateMng.getTarget.localPosition;
     }
 
     void BuffActive(BuffData hitbuffData)
     {
         for (int i = 0; i < boss.bossDeBuffs.Length; i++)
         {
-            if (boss.bossDeBuffs[i].isApply && boss.bossDeBuffs[i].buffData.name == hitbuffData.name)
+            if (boss.bossDeBuffs[i].gameObject.activeInHierarchy && boss.bossDeBuffs[i].buffData.name == hitbuffData.name)
             {
                 boss.bossDeBuffs[i].duration = GameMng.I.character.usingSkill.getBuffData.duration;
                 break;
             }
-            else if (!boss.bossDeBuffs[i].isApply)
+            else if (!boss.bossDeBuffs[i].gameObject.activeInHierarchy)
             {
                 boss.bossDeBuffs[i].buffData = GameMng.I.character.usingSkill.getBuffData;
                 boss.bossDeBuffs[i].gameObject.SetActive(true);
-                boss.bossDeBuffs[i].isApply = true;
                 break;
             }
         }

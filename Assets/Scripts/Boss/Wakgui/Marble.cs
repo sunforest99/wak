@@ -26,7 +26,7 @@ public class Marble : DestroySelf
         if (!answer)
         {
             Debug.Log("전멸");
-            for (int i = 0; i < GameMng.I.targetList.Count; i++)
+            for (int i = 0; i < GameMng.I.stateMng.targetList.Count; i++)
             {
 
             }

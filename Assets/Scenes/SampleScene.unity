@@ -478,7 +478,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -64, y: 32.399994}
+  m_AnchoredPosition: {x: -64, y: 32.399902}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!1 &69582184
@@ -537,7 +537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -768,10 +768,9 @@ MonoBehaviour:
   pingPrefab: {fileID: 3304240073633852236, guid: 95c4e916a85d7804cb797dbd7f8a9ecd, type: 3}
   dailogUI: {fileID: 0}
   npcData: {fileID: 0}
-  charactorDmg: 0
-  targetList: []
   character: {fileID: 0}
   level: 10
+  stateMng: {fileID: 5306452078147313785}
   bossData: {fileID: 0}
   mapRightTop: {x: 0, y: 0}
   mapCenter: {x: 0, y: 0}
@@ -8645,7 +8644,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -12109,7 +12108,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -69, y: 3.7999878}
+  m_AnchoredPosition: {x: -69, y: 3.8000488}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &6779685398608472802
@@ -15314,6 +15313,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd310b3fc3a8e394995160d87d474ee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotPool: []
+  slotPrefab: {fileID: 7560811331196411404, guid: d28081510dd73694baeda4142cecde5f, type: 3}
   inventoryBase:
   - {fileID: 1468733805}
   - {fileID: 1327880167}
