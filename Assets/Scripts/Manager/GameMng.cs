@@ -22,10 +22,13 @@ public class GameMng : MonoBehaviour
     public Character character = null;
     public float level = 10;
 
-    public int getCharecterDamage(bool isBackAttack)        // <! 캐릭터 데미지 가져오기
+    public int getCharecterDamage(bool isCrital, bool isBackAttack)        // <! 캐릭터 데미지 가져오기
     {
         if (character.usingSkill)        // <! 스킬 대미지
-            return character.usingSkill.CalcSkillDamage(isBackAttack);
+            return character.usingSkill.CalcSkillDamage(
+                isCrital, isBackAttack, 
+                character._stat.minDamage, character._stat.maxDamage, character._stat.incDamagePer, character._stat.criticalPer, character._stat.incBackattackPer
+            );
         else        // <! 평타 데미지
             return 20000;
     }
