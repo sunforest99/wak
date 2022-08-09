@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChrecterCollider : MonoBehaviour
+public class CharacterCollider : MonoBehaviour
 {
     void itemSetting(int n, Item _item)
     {

@@ -77,7 +77,10 @@ public class Boss : MonoBehaviour
      */
     protected void SetZeroHp()
     {
+        _baseUI.hpbar[1].enabled = false;
+
         StartCoroutine(ZeroHpbar());
+
         _baseUI.bosshpText.text = string.Format("{0} / {1}", 0, bossdata.startHp);
         _baseUI.nestingHp.text = string.Format("X {0}", 0);
     }
