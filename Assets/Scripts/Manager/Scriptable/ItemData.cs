@@ -11,8 +11,6 @@ public class ItemData : ScriptableObject
     public ITEM_TYPE itemType;                      // 아이템 타입
     public ITEM_INDEX itemIndex;                    // 아이템 인덱스 알아오기 (enum)
 
-    public GameObject itemSlotPre;                  // 버튼 프리팹
-
     public Sprite itemSp;                           // 아이템 스프라이트
 
     public string itemName;                         // 아이템 이름

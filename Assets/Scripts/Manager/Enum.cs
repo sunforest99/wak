@@ -27,7 +27,8 @@ public enum ITEM_INDEX
     ROSE,
     SWORD,
     CONSUMABLE_ITEM_INDEX,
-    REDMUSHROOM
+    REDMUSHROOM,
+    NONE
 }
 
 public enum BUFF
@@ -38,4 +39,20 @@ public enum BUFF
     DEBUFF_CHIMSIK,
     DEBUFF_JAMSIK,
     DEBUFF_SHIELD
+}
+
+public enum JOB
+{
+    NONE,           // -
+    WARRIER,        // 전사
+    MAGICIAN,       // 법사
+    HEALER          // 힐러
+}
+
+[System.Serializable]
+public struct ItemSlotUI
+{
+    public UnityEngine.UI.Image[] ItemImg;
+    public TMPro.TextMeshProUGUI[] ItemText;
+    public ITEM_INDEX[] ItemIdx;
 }

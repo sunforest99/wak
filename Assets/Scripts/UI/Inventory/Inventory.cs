@@ -17,8 +17,6 @@ public class Inventory : MonoBehaviour
     [SerializeField] Sprite selectSp;
     [SerializeField] Sprite unselectSp;
 
-    [SerializeField] Slot[] slots;
-
     int itemtype = 0;
     public ITEM_INDEX getClickIndex = 0;
 
@@ -37,20 +35,19 @@ public class Inventory : MonoBehaviour
     {
         createSlot(0);
         getSlots(0);
-        // TODO: 알잘딱 ㄱ (뭔지 모르겠음)
-        // if (inventoryBase[0].transform.childCount == 0)
-        // {
-        //     contentOnOff(false);
-        //     for (int i = 0; i < equipBT.Length; i++)
-        //         equipBT[i].SetActive(false);
-        // }
-        // else
-        // {
-        //     contentOnOff(true);
-        //     contentImg.sprite = slots[0].itemData.itemSp;
-        //     contentText.text = slots[0].itemData.itemName + "\n" + slots[0].itemData.content;
-        //     equipBT[0].SetActive(true);
-        // }
+        if (inventoryBase[0].transform.childCount == 0)
+        {
+            contentOnOff(false);
+            for (int i = 0; i < equipBT.Length; i++)
+                equipBT[i].SetActive(false);
+        }
+        else
+        {
+            contentOnOff(true);
+            contentImg.sprite = getActiveObject().itemData.itemSp;
+            contentText.text = getActiveObject().itemData.itemName + "\n" + getActiveObject().itemData.content;
+            equipBT[0].SetActive(true);
+        }
     }
     void OnDisable()
     {
@@ -66,7 +63,6 @@ public class Inventory : MonoBehaviour
         }
         inventoryBtnImg[kind].sprite = selectSp;
         inventoryBase[kind].SetActive(true);
-        slots = inventoryBase[kind].GetComponentsInChildren<Slot>();
     }
 
     public void btnKind(int kind)
@@ -75,20 +71,47 @@ public class Inventory : MonoBehaviour
         getClickIndex = 0;
         itemtype = kind;
         createSlot(itemtype);
-        slots = null;
         getSlots(kind);
-        if (GameMng.I.character.haveItem[kind].Count == 0)
+        if (Character.haveItem[kind].Count == 0)
             contentOnOff(false);
         else
         {
             contentOnOff(true);
-            contentSet(slots[0].itemData);
+            contentSet(getActiveObject().itemData);
+            getClickIndex = getActiveObject().itemData.itemIndex;
         }
     }
 
     public void slotBtn(int kind)
     {
-        Debug.Log(kind + "번 슬롯 장착");
+        int index = -1;
+        for(int i = 0; i < GameMng.I.BattleItemUI.ItemIdx.Length; i++)
+        {
+            if(GameMng.I.BattleItemUI.ItemIdx[i] == getClickIndex)
+                index = i;
+        }
+        for (int i = 0; i < Character.haveItem[0].Count; i++)
+        {
+            if (Character.haveItem[0][i].itemData.itemIndex == getClickIndex)
+            {
+                Character.equipBattleItem[kind - 1] = Character.haveItem[0][i];
+                GameMng.I.BattleItemUI.ItemImg[kind - 1].gameObject.SetActive(true);
+                GameMng.I.BattleItemUI.ItemText[kind - 1].gameObject.SetActive(true);
+                GameMng.I.BattleItemUI.ItemImg[kind - 1].sprite = Character.haveItem[0][i].itemData.itemSp;
+                GameMng.I.BattleItemUI.ItemText[kind - 1].text = Character.haveItem[0][i].itemCount.ToString();
+                GameMng.I.BattleItemUI.ItemIdx[kind - 1] = Character.haveItem[0][i].itemData.itemIndex;
+                break;
+            }
+        }
+        if(index == -1 || index == kind - 1)
+            return;
+        else
+        {
+            GameMng.I.BattleItemUI.ItemImg[index].gameObject.SetActive(false);
+            GameMng.I.BattleItemUI.ItemText[index].gameObject.SetActive(false);
+            GameMng.I.BattleItemUI.ItemIdx[index] = ITEM_INDEX.NONE;
+            Character.equipBattleItem[index] = null;
+        }
     }
 
     public void equipBtn()
@@ -96,44 +119,43 @@ public class Inventory : MonoBehaviour
         Debug.Log("아이템 장착");
     }
 
-    // void CreatePool()
-    // {
-    //      for (int i = 0; i < GameMng.I.character.haveItem[kind].Count; i++)
-    //     {
-    //         GameObject temp = Instantiate(GameMng.I.character.haveItem[kind][i].itemData.itemSlotPre, inventoryBase[kind].transform);
-    //         Slot slotTemp = temp.GetComponent<Slot>();
-    //         slotTemp.inventorySc = this;
-    //         slotTemp.text_Count.text = "x" + GameMng.I.character.haveItem[kind][i].itemCount.ToString();
-    //     }
-    //     if (GameMng.I.character.haveItem[kind].Count > 0)
-    //         equipBT[kind].SetActive(true);
-    // }
-
     public void createSlot(int kind)
     {
-        for (int i = 0; i < GameMng.I.character.haveItem[kind].Count; i++)
+        for (int i = 0; i < Character.haveItem[kind].Count; i++)
         {
-            // GameObject temp = Instantiate(GameMng.I.character.haveItem[kind][i].itemData.itemSlotPre, inventoryBase[kind].transform);
-            Slot slotTemp = CheckActiveObject();
+            Slot slotTemp = CheckSlotPool();
             slotTemp.gameObject.SetActive(true);
-            slotTemp.itemData = GameMng.I.character.haveItem[kind][i].itemData;
+            slotTemp.itemData = Character.haveItem[kind][i].itemData;
             slotTemp.itemImg.sprite = slotTemp.itemData.itemSp;
             slotTemp.transform.parent = inventoryBase[kind].transform;
+            slotTemp.transform.SetAsLastSibling();
             slotTemp.inventorySc = this;
-            // slotTemp.text_Count.text = "x" + GameMng.I.character.haveItem[kind][i].itemCount.ToString();     // TODO 고치기
+            if (slotTemp.itemData.itemType != ITEM_TYPE.WEAPON_ITEM && slotTemp.itemData.itemType != ITEM_TYPE.HEAD_ITEM)
+            {
+                slotTemp.text_Count.gameObject.SetActive(true);
+                slotTemp.text_Count.text = "x" + Character.haveItem[kind][i].itemCount.ToString();
+            }
         }
-        if (GameMng.I.character.haveItem[kind].Count > 0)
+        if (Character.haveItem[kind].Count > 0)
             equipBT[kind].SetActive(true);
     }
 
-    Slot CheckActiveObject()
+    Slot CheckSlotPool()
     {
         for (int i = 0; i < slotPool.Count; i++)
         {
             if (!slotPool[i].gameObject.activeSelf)
-            {
                 return slotPool[i];
-            }
+        }
+        return null;
+    }
+
+    Slot getActiveObject()
+    {
+        for (int i = 0; i < slotPool.Count; i++)
+        {
+            if (slotPool[i].gameObject.activeSelf)
+                return slotPool[i];
         }
         return null;
     }
@@ -141,38 +163,9 @@ public class Inventory : MonoBehaviour
     public void deleteSlot(int kind)        // 아이템 종류(베틀아이템, 소비아이템 등)
     {
         for (int i = 0; i < inventoryBase[kind].transform.childCount; i++)
-        {
             inventoryBase[kind].transform.GetChild(i).gameObject.SetActive(false);
-        }
         equipBT[kind].SetActive(false);
     }
-
-    // public void AcquireItem(ItemData item, int count = 1)                                       // 같은 종류 아이템 합쳐주는 함수
-    // {
-    //     if (item.itemType != ITEM_TYPE.WEAPON_ITEM && item.itemType != ITEM_TYPE.HEAD_ITEM)
-    //     {
-    //         for (int i = 0; i < slots.Length; i++)
-    //         {
-    //             if (slots[i].itemData != null)  // null 이라면 slots[i].item.itemName 할 때 런타임 에러 나서
-    //             {
-    //                 if (slots[i].itemData.itemName == item.itemName)
-    //                 {
-    //                     slots[i].SetSlotCount(count);
-    //                     return;
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     for (int i = 0; i < slots.Length; i++)
-    //     {
-    //         if (slots[i].itemData == null)
-    //         {
-    //             slots[i].AddItem(item, count);
-    //             return;
-    //         }
-    //     }
-    // }
 
     public void contentOnOff(bool onoff)
     {
@@ -182,14 +175,13 @@ public class Inventory : MonoBehaviour
 
     public void contentSet()
     {
-        // contentImg.sprite = slots[getClickIndex].itemData.itemSp;
-        // contentText.text = slots[getClickIndex].itemData.itemName + "\n" + slots[getClickIndex].itemData.content;
-        for (int i = 0; i < GameMng.I.character.haveItem[itemtype].Count; i++)
+        for (int i = 0; i < Character.haveItem[itemtype].Count; i++)
         {
-            if (GameMng.I.character.haveItem[itemtype][i].itemData.itemIndex == getClickIndex)
+            if (Character.haveItem[itemtype][i].itemData.itemIndex == getClickIndex)
             {
-                contentImg.sprite = GameMng.I.character.haveItem[itemtype][i].itemData.itemSp;
-                contentText.text = GameMng.I.character.haveItem[itemtype][i].itemData.itemName + "\n" + GameMng.I.character.haveItem[itemtype][i].itemData.content;
+                contentImg.sprite = Character.haveItem[itemtype][i].itemData.itemSp;
+                contentText.text = Character.haveItem[itemtype][i].itemData.itemName + "\n" + Character.haveItem[itemtype][i].itemData.content;
+                break;
             }
         }
     }

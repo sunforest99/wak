@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class MCamera : MonoBehaviour
 {
-    [SerializeField]
-    GameObject myCharacter;
-
     bool isFocusing = true;
 
     [SerializeField]
@@ -20,7 +17,7 @@ public class MCamera : MonoBehaviour
     {
         if (isFocusing)
         {
-            transform.position = myCharacter.transform.position - new Vector3(0, 0, 10);
+            transform.position = GameMng.I.character.transform.position - new Vector3(0, 0, 10);
         }
     }
 

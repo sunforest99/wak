@@ -41,21 +41,5 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void clickSlot()
     {
         inventorySc.getClickIndex = itemData.itemIndex;
-        // switch (itemData.itemType)
-        // {
-        //     case ITEM_TYPE.BATTLE_ITEM:                                                                         // 배틀 아이템
-        //         inventorySc.getClickIndex = (int)itemData.itemIndex;
-        //         break;
-        //     case ITEM_TYPE.HEAD_ITEM:                                                                           // 장비 아이템
-        //     case ITEM_TYPE.WEAPON_ITEM:
-        //         inventorySc.getClickIndex = (int)itemData.itemIndex - ((int)ITEM_INDEX.WEAPON_ITEM_INDEX + 1);
-        //         break;
-        //     case ITEM_TYPE.CONSUMABLE_ITEM:                                                                     // 사용 아이템
-        //         inventorySc.getClickIndex = (int)itemData.itemIndex - ((int)ITEM_INDEX.CONSUMABLE_ITEM_INDEX + 1);
-        //         break;
-        //         // case ITEM_TYPE.UNUSEFUL_ITEM:                                                                       // 잡템
-        //         //     inventorySc.getClickIndex = (int)itemData.itemIndex;
-        //         //     break;
-        // }
     }
 }

@@ -28,7 +28,7 @@ public struct PartyBuffGroup
 public class StateMng : MonoBehaviour
 {
     public List<Character> targetList;      // 보스 타겟 설정하는거
-    public Transform getTarget => targetList[Random.Range(0, targetList.Count)].transform;        // 타겟 렌덤
+    public Transform getTarget => targetList[0].transform;        // 타겟 렌덤
     [SerializeField] private PartyBuffGroup[] partybuffGroups = new PartyBuffGroup[4];
     [SerializeField] private Buff[] ownBuff;        // 내꺼 버프
 
@@ -126,13 +126,13 @@ public class StateMng : MonoBehaviour
             {
                 if (partybuffGroups[i].userBuff[j].isApply && partybuffGroups[i].userBuff[j].buffData.name == buffData.name)
                 {
-                    partybuffGroups[i].userBuff[j].duration = GameMng.I.character.usingSkill.getBuffData.duration;
+                    partybuffGroups[i].userBuff[j].duration = Character.usingSkill.getBuffData.duration;
                     break;
                 }
                 else if (!partybuffGroups[i].userBuff[j].isApply)
                 {
-                    ActiveOwnBuff(GameMng.I.character.usingSkill.getBuffData);
-                    partybuffGroups[i].userBuff[j].buffData = GameMng.I.character.usingSkill.getBuffData;
+                    ActiveOwnBuff(Character.usingSkill.getBuffData);
+                    partybuffGroups[i].userBuff[j].buffData = Character.usingSkill.getBuffData;
                     partybuffGroups[i].userBuff[j].gameObject.SetActive(true);
                     partybuffGroups[i].userBuff[j].isApply = true;
                     break;
@@ -147,12 +147,12 @@ public class StateMng : MonoBehaviour
         {
             if (ownBuff[i].isApply && ownBuff[i].buffData.name == buffData.name)
             {
-                ownBuff[i].duration = GameMng.I.character.usingSkill.getBuffData.duration;
+                ownBuff[i].duration = Character.usingSkill.getBuffData.duration;
                 break;
             }
             else if (!ownBuff[i].isApply)
             {
-                ownBuff[i].buffData = GameMng.I.character.usingSkill.getBuffData;
+                ownBuff[i].buffData = Character.usingSkill.getBuffData;
                 ownBuff[i].gameObject.SetActive(true);
                 ownBuff[i].isApply = true;
                 break;

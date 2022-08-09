@@ -7,14 +7,14 @@ public class CharacterCollider : MonoBehaviour
     void itemSetting(int n, Item _item)
     {
         if (n == 1)
-            GameMng.I.character.haveItem[n].Add(_item);
+            Character.haveItem[n].Add(_item);
         else
         {
-            int index = GameMng.I.character.haveItem[n].FindIndex(name => name.itemData.itemName == _item.itemData.itemName);
+            int index = Character.haveItem[n].FindIndex(name => name.itemData.itemName == _item.itemData.itemName);
             if (index == -1)
-                GameMng.I.character.haveItem[n].Add(_item);
+                Character.haveItem[n].Add(_item);
             else
-                GameMng.I.character.haveItem[n][index].itemCount += _item.itemCount;
+                Character.haveItem[n][index].itemCount += _item.itemCount;
         }
     }
 
@@ -27,7 +27,7 @@ public class CharacterCollider : MonoBehaviour
 
         if (other.CompareTag("Item"))
         {
-            Item item = other.GetComponent<Item>();
+            Item item = other.GetComponent<ItemObj>().saveItem;
             switch (item.itemData.itemType)
             {
                 case ITEM_TYPE.BATTLE_ITEM:
