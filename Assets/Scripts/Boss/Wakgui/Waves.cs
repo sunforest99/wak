@@ -16,7 +16,7 @@ public class Waves : DestroySelf
     [SerializeField] POS pos;
     void Start()
     { 
-        damage = GameMng.I.bossData.getPatternDmg((int)WAKGUI_ACTION.PATTERN_WAVE);
+        damage = GameMng.I.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_WAVE);
         rand = Random.Range(0, 4);
         switch (rand)
         {

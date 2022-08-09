@@ -22,6 +22,8 @@ public class Boss : MonoBehaviour
     public int _nestingHp;        // <! 중첩 체력
 
     protected const int _annihilation = 99999;    // <! 전멸기
+    [SerializeField] protected bool _isAnnihilation;
+    public bool isAnnihilation { get { return _isAnnihilation; } }
 
     [SerializeField] protected bossbaseUI _baseUI;       // <! 보스의 기본 UI 담는 구조체
     public BossBuff[] bossDeBuffs;
@@ -44,7 +46,7 @@ public class Boss : MonoBehaviour
 
     public int getOnebarHp
     {
-        get { return bossdata.startHp / bossdata.maxNesting; }
+        get { return bossdata.getStartHp / bossdata.maxNesting; }
     }
 
     protected int _frontBarIndex;
@@ -63,8 +65,8 @@ public class Boss : MonoBehaviour
     protected void BossInitialize()
     {
         this._radetime = bossdata.radetime;
-        this._baseUI.bossnameText.text = bossdata.bossName;
-        this._currentHp = bossdata.startHp;
+        this._baseUI.bossnameText.text = bossdata.getName;
+        this._currentHp = bossdata.getStartHp;
 
         _currentNesting = bossdata.maxNesting;
 
@@ -81,7 +83,7 @@ public class Boss : MonoBehaviour
 
         StartCoroutine(ZeroHpbar());
 
-        _baseUI.bosshpText.text = string.Format("{0} / {1}", 0, bossdata.startHp);
+        _baseUI.bosshpText.text = string.Format("{0} / {1}", 0, bossdata.getStartHp);
         _baseUI.nestingHp.text = string.Format("X {0}", 0);
     }
 
@@ -90,8 +92,8 @@ public class Boss : MonoBehaviour
      */
     protected void ChangeHpText()
     {
-        _currentHp = bossdata.startHp - (getOnebarHp * (bossdata.maxNesting - _currentNesting) - _nestingHp);
-        _baseUI.bosshpText.text = string.Format("{0} / {1}", _currentHp, bossdata.startHp);
+        _currentHp = bossdata.getStartHp - (getOnebarHp * (bossdata.maxNesting - _currentNesting) - _nestingHp);
+        _baseUI.bosshpText.text = string.Format("{0} / {1}", _currentHp, bossdata.getStartHp);
         _baseUI.nestingHp.text = string.Format("X {0}", _currentNesting + 1);
     }
 
@@ -181,7 +183,7 @@ public class Boss : MonoBehaviour
 
         // if (Vector2.Distance(_target.localPosition, this.transform.localPosition) > 2f)
         // {
-        this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3(_target.localPosition.x, _target.localPosition.y + 0.3f, _target.localPosition.z), bossdata.moveSpeed * Time.deltaTime);
+        this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3(_target.localPosition.x, _target.localPosition.y + 0.3f, _target.localPosition.z), bossdata.getMoveSpeed * Time.deltaTime);
         // }
     }
 

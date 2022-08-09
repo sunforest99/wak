@@ -22,7 +22,7 @@ public class CharacterCollider : MonoBehaviour
     {
         if (other.CompareTag("Monster_Weapon"))
         {
-            Debug.Log("기본 패턴 데미지 " + GameMng.I.bossData.getPatternDmg());
+            Debug.Log("기본 패턴 데미지 " + GameMng.I.bossData.getDamage());
         }
 
         if (other.CompareTag("Item"))

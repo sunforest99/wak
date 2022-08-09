@@ -51,8 +51,6 @@ public class Character : MonoBehaviour
     public Stat _stat;
     public JOB _job = JOB.NONE;
 
-    [SerializeField] StateMng StateSc;
-
     [SerializeField] GameObject[] footprints;
 
     public List<List<Item>> haveItem = new List<List<Item>>();
@@ -89,7 +87,7 @@ public class Character : MonoBehaviour
             footprints[i] = Instantiate(footprints[3], Vector3.zero, Quaternion.identity) as GameObject;
         }
         GameMng.I.character = this;
-        GameMng.I.targetList.Add(this);
+        GameMng.I.stateMng.targetList.Add(this);        // 파티를 들어갔을떄
         _state = CHARACTER_STATE.IDLE;
         for (int i = 0; i < skill.transform.childCount; i++)
         {
@@ -134,7 +132,7 @@ public class Character : MonoBehaviour
             usingSkill = skilldatas[skillnum];
             if (usingSkill.getBuffData && usingSkill.getBuffData.isBuff)
             {
-                StateSc.ActiveBuff(usingSkill.getBuffData);
+                GameMng.I.stateMng.ActiveBuff(usingSkill.getBuffData);
             }
             cooltime = usingSkill.getColldown;
         }
@@ -303,16 +301,16 @@ public class Character : MonoBehaviour
         // 배틀 아이템 사용
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (StateSc.user_HP_Numerical.Hp < StateSc.user_HP_Numerical.fullHp)
-                StateSc.user_HP_Numerical.Hp += (int)(StateSc.user_HP_Numerical.fullHp * 30 / 100);
-            if (StateSc.user_HP_Numerical.Hp > StateSc.user_HP_Numerical.fullHp)
-                StateSc.user_HP_Numerical.Hp = StateSc.user_HP_Numerical.fullHp;
+            if (GameMng.I.stateMng.user_HP_Numerical.Hp < GameMng.I.stateMng.user_HP_Numerical.fullHp)
+                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 30 / 100);
+            if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
+                GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (StateSc.nPlayerDeBuffCount > 0)
+            if (GameMng.I.stateMng.nPlayerDeBuffCount > 0)
             {
-                int rand = Random.Range(1, StateSc.nPlayerDeBuffCount + 1);
+                int rand = Random.Range(1, GameMng.I.stateMng.nPlayerDeBuffCount + 1);
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))

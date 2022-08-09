@@ -40,7 +40,7 @@ public class ChangeAction : MonoBehaviour
 
     void SetTelePortSpawn() => wakgui.action = WAKGUI_ACTION.TELEPORT_SPAWN;
 
-    void SetJumpPostion() => this.transform.parent.localPosition = GameMng.I.targetList[GameMng.I.targetCount].transform.localPosition;
+    void SetJumpPostion() => this.transform.parent.localPosition = GameMng.I.stateMng.getTarget.localPosition;
     void SetTelePortPostion() => this.transform.parent.position = new Vector2(GameMng.I.mapCenter.x, GameMng.I.mapCenter.y - 1.0f);
 
     void CreateCircle()

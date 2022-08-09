@@ -9,7 +9,7 @@ public class Damage : MonoBehaviour
 
     [SerializeField]
     TMPro.TextMeshPro resourceText;
-    
+
     private Color textColor;
     private float disappearTime = 0;
     private bool show = false;          // 보여졌는지, Set을 통해 보여져야함
@@ -49,13 +49,24 @@ public class Damage : MonoBehaviour
     {
         resourceText.text = string.Format("{0:#,###}", dmg);
         textColor = resourceText.color;
-        if (isCritical) {
+        if (isCritical)
+        {
             textColor = new Color32(255, 189, 0, 255);
             resourceText.color = textColor;
             this.isCritical = isCritical;
         }
         disappearTime = DISAPPEAR_TIME;
-        transform.position += new Vector3(0, Random.Range(0, 1.5f) , 0);
+        transform.position += new Vector3(0, Random.Range(0, 1.5f), 0);
+        show = true;
+    }
+
+    public void set(string str)
+    {
+        resourceText.text = str;
+        textColor = new Color32(255, 189, 0, 255);
+        resourceText.color = textColor;
+        disappearTime = DISAPPEAR_TIME;
+        transform.position += new Vector3(0, Random.Range(0, 1.5f), 0);
         show = true;
     }
 }

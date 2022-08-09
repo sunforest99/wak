@@ -9,7 +9,7 @@ public class Knife_portal : DestroySelf
 
     void Start()
     {
-        damage = GameMng.I.bossData.getPatternDmg((int)WAKGUI_ACTION.PATTERN_KNIFE);
+        damage = GameMng.I.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_KNIFE);
     }
 
     void Update()
