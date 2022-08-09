@@ -72,7 +72,7 @@ public class Inventory : MonoBehaviour
         itemtype = kind;
         createSlot(itemtype);
         getSlots(kind);
-        if (GameMng.I.character.haveItem[kind].Count == 0)
+        if (Character.haveItem[kind].Count == 0)
             contentOnOff(false);
         else
         {
@@ -85,22 +85,21 @@ public class Inventory : MonoBehaviour
     public void slotBtn(int kind)
     {
         int index = -1;
-        Debug.Log((int)ITEM_INDEX.NONE);
-        for(int i = 0; i < GameMng.I.character.BattleItemUI.ItemIdx.Length; i++)
+        for(int i = 0; i < GameMng.I.BattleItemUI.ItemIdx.Length; i++)
         {
-            if(GameMng.I.character.BattleItemUI.ItemIdx[i] == getClickIndex)
+            if(GameMng.I.BattleItemUI.ItemIdx[i] == getClickIndex)
                 index = i;
         }
-        for (int i = 0; i < GameMng.I.character.haveItem[0].Count; i++)
+        for (int i = 0; i < Character.haveItem[0].Count; i++)
         {
-            if (GameMng.I.character.haveItem[0][i].itemData.itemIndex == getClickIndex)
+            if (Character.haveItem[0][i].itemData.itemIndex == getClickIndex)
             {
-                GameMng.I.character.equipBattleItem[kind - 1] = GameMng.I.character.haveItem[0][i];
-                GameMng.I.character.BattleItemUI.ItemImg[kind - 1].gameObject.SetActive(true);
-                GameMng.I.character.BattleItemUI.ItemText[kind - 1].gameObject.SetActive(true);
-                GameMng.I.character.BattleItemUI.ItemImg[kind - 1].sprite = GameMng.I.character.haveItem[0][i].itemData.itemSp;
-                GameMng.I.character.BattleItemUI.ItemText[kind - 1].text = GameMng.I.character.haveItem[0][i].itemCount.ToString();
-                GameMng.I.character.BattleItemUI.ItemIdx[kind - 1] = GameMng.I.character.haveItem[0][i].itemData.itemIndex;
+                Character.equipBattleItem[kind - 1] = Character.haveItem[0][i];
+                GameMng.I.BattleItemUI.ItemImg[kind - 1].gameObject.SetActive(true);
+                GameMng.I.BattleItemUI.ItemText[kind - 1].gameObject.SetActive(true);
+                GameMng.I.BattleItemUI.ItemImg[kind - 1].sprite = Character.haveItem[0][i].itemData.itemSp;
+                GameMng.I.BattleItemUI.ItemText[kind - 1].text = Character.haveItem[0][i].itemCount.ToString();
+                GameMng.I.BattleItemUI.ItemIdx[kind - 1] = Character.haveItem[0][i].itemData.itemIndex;
                 break;
             }
         }
@@ -108,10 +107,10 @@ public class Inventory : MonoBehaviour
             return;
         else
         {
-            GameMng.I.character.BattleItemUI.ItemImg[index].gameObject.SetActive(false);
-            GameMng.I.character.BattleItemUI.ItemText[index].gameObject.SetActive(false);
-            GameMng.I.character.BattleItemUI.ItemIdx[index] = ITEM_INDEX.NONE;
-            GameMng.I.character.equipBattleItem[index] = null;
+            GameMng.I.BattleItemUI.ItemImg[index].gameObject.SetActive(false);
+            GameMng.I.BattleItemUI.ItemText[index].gameObject.SetActive(false);
+            GameMng.I.BattleItemUI.ItemIdx[index] = ITEM_INDEX.NONE;
+            Character.equipBattleItem[index] = null;
         }
     }
 
@@ -122,11 +121,11 @@ public class Inventory : MonoBehaviour
 
     public void createSlot(int kind)
     {
-        for (int i = 0; i < GameMng.I.character.haveItem[kind].Count; i++)
+        for (int i = 0; i < Character.haveItem[kind].Count; i++)
         {
             Slot slotTemp = CheckSlotPool();
             slotTemp.gameObject.SetActive(true);
-            slotTemp.itemData = GameMng.I.character.haveItem[kind][i].itemData;
+            slotTemp.itemData = Character.haveItem[kind][i].itemData;
             slotTemp.itemImg.sprite = slotTemp.itemData.itemSp;
             slotTemp.transform.parent = inventoryBase[kind].transform;
             slotTemp.transform.SetAsLastSibling();
@@ -134,10 +133,10 @@ public class Inventory : MonoBehaviour
             if (slotTemp.itemData.itemType != ITEM_TYPE.WEAPON_ITEM && slotTemp.itemData.itemType != ITEM_TYPE.HEAD_ITEM)
             {
                 slotTemp.text_Count.gameObject.SetActive(true);
-                slotTemp.text_Count.text = "x" + GameMng.I.character.haveItem[kind][i].itemCount.ToString();
+                slotTemp.text_Count.text = "x" + Character.haveItem[kind][i].itemCount.ToString();
             }
         }
-        if (GameMng.I.character.haveItem[kind].Count > 0)
+        if (Character.haveItem[kind].Count > 0)
             equipBT[kind].SetActive(true);
     }
 
@@ -176,12 +175,12 @@ public class Inventory : MonoBehaviour
 
     public void contentSet()
     {
-        for (int i = 0; i < GameMng.I.character.haveItem[itemtype].Count; i++)
+        for (int i = 0; i < Character.haveItem[itemtype].Count; i++)
         {
-            if (GameMng.I.character.haveItem[itemtype][i].itemData.itemIndex == getClickIndex)
+            if (Character.haveItem[itemtype][i].itemData.itemIndex == getClickIndex)
             {
-                contentImg.sprite = GameMng.I.character.haveItem[itemtype][i].itemData.itemSp;
-                contentText.text = GameMng.I.character.haveItem[itemtype][i].itemData.itemName + "\n" + GameMng.I.character.haveItem[itemtype][i].itemData.content;
+                contentImg.sprite = Character.haveItem[itemtype][i].itemData.itemSp;
+                contentText.text = Character.haveItem[itemtype][i].itemData.itemName + "\n" + Character.haveItem[itemtype][i].itemData.content;
                 break;
             }
         }

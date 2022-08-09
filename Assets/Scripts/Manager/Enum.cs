@@ -40,3 +40,19 @@ public enum BUFF
     DEBUFF_JAMSIK,
     DEBUFF_SHIELD
 }
+
+public enum JOB
+{
+    NONE,           // -
+    WARRIER,        // 전사
+    MAGICIAN,       // 법사
+    HEALER          // 힐러
+}
+
+[System.Serializable]
+public struct ItemSlotUI
+{
+    public UnityEngine.UI.Image[] ItemImg;
+    public TMPro.TextMeshProUGUI[] ItemText;
+    public ITEM_INDEX[] ItemIdx;
+}

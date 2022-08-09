@@ -71,9 +71,9 @@ public class BossCollider : MonoBehaviour
         if (other.gameObject.CompareTag("Weapon"))
         {
             bool isCritical;
-            if (GameMng.I.character.usingSkill && GameMng.I.character.usingSkill.getBuffData && GameMng.I.character.usingSkill.getBuffData.isBossDebuf)
+            if (Character.usingSkill && Character.usingSkill.getBuffData && Character.usingSkill.getBuffData.isBossDebuf)
             {
-                BuffActive(GameMng.I.character.usingSkill.getBuffData);
+                BuffActive(Character.usingSkill.getBuffData);
             }
             isCritical = CheckCritial();
 
@@ -154,12 +154,12 @@ public class BossCollider : MonoBehaviour
         {
             if (boss.bossDeBuffs[i].gameObject.activeInHierarchy && boss.bossDeBuffs[i].buffData.name == hitbuffData.name)
             {
-                boss.bossDeBuffs[i].duration = GameMng.I.character.usingSkill.getBuffData.duration;
+                boss.bossDeBuffs[i].duration = Character.usingSkill.getBuffData.duration;
                 break;
             }
             else if (!boss.bossDeBuffs[i].gameObject.activeInHierarchy)
             {
-                boss.bossDeBuffs[i].buffData = GameMng.I.character.usingSkill.getBuffData;
+                boss.bossDeBuffs[i].buffData = Character.usingSkill.getBuffData;
                 boss.bossDeBuffs[i].gameObject.SetActive(true);
                 break;
             }

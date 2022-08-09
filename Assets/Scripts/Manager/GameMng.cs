@@ -16,14 +16,26 @@ public class GameMng : MonoBehaviour
 
     private static GameMng _instance = null;
 
+    public GameObject[] characterPrefab = new GameObject[3];
+
+    public UserData userData;
+
     public Character character = null;
+
+    public ItemSlotUI BattleItemUI;
+
+    public Transform skillUI;
+
+    public List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
+    public List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
+
     public float level = 10;
 
     public int getCharecterDamage(bool isCrital, bool isBackAttack)        // <! 캐릭터 데미지 가져오기
     {
-        if (character.usingSkill)        // <! 스킬 대미지
-            return character.usingSkill.CalcSkillDamage(
-                isCrital, isBackAttack, 
+        if (Character.usingSkill)        // <! 스킬 대미지
+            return Character.usingSkill.CalcSkillDamage(
+                isCrital, isBackAttack,
                 character._stat.minDamage, character._stat.maxDamage, character._stat.incDamagePer, character._stat.criticalPer, character._stat.incBackattackPer
             );
         else        // <! 평타 데미지
@@ -56,6 +68,12 @@ public class GameMng : MonoBehaviour
         DontDestroyOnLoad(this);        // <! 필요하면 쓰장
     }
 
+    private void Start()
+    {
+        userData.job = 1;
+        createPlayer();
+    }
+
     // public void mouseRaycast(Vector2 charPos)      // <! 이름바꾸기
     // {
     //     Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -84,5 +102,19 @@ public class GameMng : MonoBehaviour
     public void createPing(Vector2 pos)
     {
         Instantiate(pingPrefab, pos += new Vector2(0, 0.65f), Quaternion.identity);
+    }
+
+    public void createPlayer()
+    {
+        GameObject temp = Instantiate(characterPrefab[userData.job - 1]);
+        character = temp.GetComponent<Character>();
+
+        for (int i = 0; i < skillUI.transform.childCount; i++)
+        {
+            skill_Img.Add(skillUI.GetChild(i).transform.GetChild(0).GetComponent<UnityEngine.UI.Image>());
+            cooltime_UI.Add(skillUI.GetChild(i).transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>());
+        }
+        for (int i = 0; i < character.skilldatas.Length; i++)
+            skill_Img[i].sprite = character.skilldatas[i].getSkllImg;
     }
 }

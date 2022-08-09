@@ -113,7 +113,7 @@ public class Wakgui : Boss
             switch (pattern_rand)
             {
                 case (int)WAKGUI_ACTION.IDLE:
-                    _target = GameMng.I.stateMng.getTarget;
+                    //_target = GameMng.I.stateMng.getTarget;
                     StartCoroutine(Think());
                     break;
                 case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기
@@ -210,7 +210,7 @@ public class Wakgui : Boss
 
         // 나중에 살아 있는 플레이어 들에게 모두 쏘기
         GameObject poo = Instantiate(patten.poo, Vector3.zero, Quaternion.identity) as GameObject;
-        poo.transform.SetParent(_target);
+        //poo.transform.SetParent(_target);
         poo.transform.localPosition = new Vector3(0, -2.5f, 0);
 
         baseAttackCount = 0;

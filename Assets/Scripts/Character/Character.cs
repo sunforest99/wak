@@ -11,14 +11,6 @@ public enum CHARACTER_STATE
     CAN_MOVE                // 스킬 쓰는 상태, 캔슬이 가능한 상태
 }
 
-public enum JOB
-{
-    NONE,           // -
-    WARRIER,        // 전사
-    MAGICIAN,       // 법사
-    HEALER          // 힐러
-}
-
 public struct Stat
 {
     public Stat(int minDamage, int maxDamage,
@@ -42,13 +34,6 @@ public struct Stat
     public float incBackattackPer;      // 백어택 증가량 퍼센트  ex) 1.2 라면  데미지 120%
 }
 
-[System.Serializable]
-public struct ItemSlotUI
-{
-    public UnityEngine.UI.Image[] ItemImg;
-    public TMPro.TextMeshProUGUI[] ItemText;
-    public ITEM_INDEX[] ItemIdx;
-}
 
 public class Character : MonoBehaviour
 {
@@ -61,11 +46,9 @@ public class Character : MonoBehaviour
 
     [SerializeField] GameObject[] footprints;
 
-    public List<List<Item>> haveItem = new List<List<Item>>();
+    public static List<List<Item>> haveItem = new List<List<Item>>();
 
-    public Item[] equipBattleItem = new Item[3];
-
-    public ItemSlotUI BattleItemUI;
+    public static Item[] equipBattleItem = new Item[3];
 
     const float MAX_DASH_TIME = 0.1f;
     public float curDashTime = 0.1f;
@@ -80,14 +63,9 @@ public class Character : MonoBehaviour
     int footprintIdx = 0;
     bool isMoving = false;
 
-    [SerializeField] private Transform skill;
-
-    private List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
-    private List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
-
     public SkillData[] skilldatas = new SkillData[5];
 
-    public SkillData usingSkill;
+    public static SkillData usingSkill;
 
     private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
 
@@ -99,16 +77,10 @@ public class Character : MonoBehaviour
         {
             footprints[i] = Instantiate(footprints[3], Vector3.zero, Quaternion.identity) as GameObject;
         }
-        GameMng.I.character = this;
+        //GameMng.I.character = this;
         GameMng.I.stateMng.targetList.Add(this);        // 파티를 들어갔을떄
         _state = CHARACTER_STATE.IDLE;
-        for (int i = 0; i < skill.transform.childCount; i++)
-        {
-            skill_Img.Add(skill.GetChild(i).transform.GetChild(0).GetComponent<UnityEngine.UI.Image>());
-            cooltime_UI.Add(skill.GetChild(i).transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>());
-        }
         init();
-
         for (int i = 0; i < 4; i++)
             haveItem.Add(new List<Item>());
     }
@@ -130,13 +102,13 @@ public class Character : MonoBehaviour
         // 대쉬
         if (skillnum == 5)
         {
-            skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
+            GameMng.I.skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
             cooltime = DASH_COOLTIME;
         }
         // 기상기
         else if (skillnum == 6)
         {
-            skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
+            GameMng.I.skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
             cooltime = WAKEUP_COOLTIME;
         }
         // 스킬
@@ -152,24 +124,24 @@ public class Character : MonoBehaviour
 
         checkSkill[skillnum] = true;
         float time = 0.0f;
-        skill_Img[skillnum].color = new Color32(175, 175, 175, 255);
-        cooltime_UI[skillnum].gameObject.SetActive(true);
+        GameMng.I.skill_Img[skillnum].color = new Color32(175, 175, 175, 255);
+        GameMng.I.cooltime_UI[skillnum].gameObject.SetActive(true);
 
         while (time < cooltime)
         {
             time += Time.deltaTime;
-            skill_Img[skillnum].fillAmount = time / cooltime;
-            cooltime_UI[skillnum].text = Mathf.Floor(cooltime - time).ToString();
+            GameMng.I.skill_Img[skillnum].fillAmount = time / cooltime;
+            GameMng.I.cooltime_UI[skillnum].text = Mathf.Floor(cooltime - time).ToString();
             yield return new WaitForEndOfFrame();
         }
 
-        cooltime_UI[skillnum].gameObject.SetActive(false);
-        skill_Img[skillnum].color = Color.white;
+        GameMng.I.cooltime_UI[skillnum].gameObject.SetActive(false);
+        GameMng.I.skill_Img[skillnum].color = Color.white;
         checkSkill[skillnum] = false;
 
         if (skillnum == 5 || skillnum == 6)
         {
-            skill_Img[skillnum].transform.parent.gameObject.SetActive(false);
+            GameMng.I.skill_Img[skillnum].transform.parent.gameObject.SetActive(false);
         }
 
     }
