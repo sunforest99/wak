@@ -35,6 +35,7 @@ public class Inventory : MonoBehaviour
     {
         createSlot(0);
         getSlots(0);
+        getClickIndex = slotPool[0].itemData.itemIndex;
         if (inventoryBase[0].transform.childCount == 0)
         {
             contentOnOff(false);
@@ -82,36 +83,54 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void slotBtn(int kind)
+    public void slotBtn(int kind)                   // 배틀아이템 슬롯 장착 버튼 선택한 아이템이나 바꾸려는 슬롯에 있는 아이템이 쿨타임 중이면 교환 불가능
     {
-        int index = -1;
-        for(int i = 0; i < GameMng.I.BattleItemUI.ItemIdx.Length; i++)
+        int idx = -1;
+        for (int i = 0; i < Character.equipBattleItem.Length; i++)
         {
-            if(GameMng.I.BattleItemUI.ItemIdx[i] == getClickIndex)
-                index = i;
-        }
-        for (int i = 0; i < Character.haveItem[0].Count; i++)
-        {
-            if (Character.haveItem[0][i].itemData.itemIndex == getClickIndex)
+            if (Character.equipBattleItem[i] == null)
+                continue;
+            if (Character.equipBattleItem[i].itemData.itemIndex == getClickIndex)
             {
-                Character.equipBattleItem[kind - 1] = Character.haveItem[0][i];
-                GameMng.I.BattleItemUI.ItemImg[kind - 1].gameObject.SetActive(true);
-                GameMng.I.BattleItemUI.ItemText[kind - 1].gameObject.SetActive(true);
-                GameMng.I.BattleItemUI.ItemImg[kind - 1].sprite = Character.haveItem[0][i].itemData.itemSp;
-                GameMng.I.BattleItemUI.ItemText[kind - 1].text = Character.haveItem[0][i].itemCount.ToString();
-                GameMng.I.BattleItemUI.ItemIdx[kind - 1] = Character.haveItem[0][i].itemData.itemIndex;
+                idx = i;
                 break;
             }
         }
-        if(index == -1 || index == kind - 1)
-            return;
-        else
-        {
-            GameMng.I.BattleItemUI.ItemImg[index].gameObject.SetActive(false);
-            GameMng.I.BattleItemUI.ItemText[index].gameObject.SetActive(false);
-            GameMng.I.BattleItemUI.ItemIdx[index] = ITEM_INDEX.NONE;
-            Character.equipBattleItem[index] = null;
-        }
+        if(idx == -1)
+            idx = kind - 1;
+
+            if (!GameMng.I.character.usingBattleItem[kind - 1] && !GameMng.I.character.usingBattleItem[idx])
+            {
+                int index = -1;
+                for (int i = 0; i < GameMng.I.BattleItemUI.ItemIdx.Length; i++)
+                {
+                    if (GameMng.I.BattleItemUI.ItemIdx[i] == getClickIndex)
+                        index = i;
+                }
+                for (int i = 0; i < Character.haveItem[0].Count; i++)
+                {
+                    if (Character.haveItem[0][i].itemData.itemIndex == getClickIndex)
+                    {
+                        Character.equipBattleItem[kind - 1] = Character.haveItem[0][i];
+                        GameMng.I.BattleItemUI.ItemImg[kind - 1].gameObject.SetActive(true);
+                        GameMng.I.BattleItemUI.ItemText[kind - 1].gameObject.SetActive(true);
+                        GameMng.I.BattleItemUI.ItemImg[kind - 1].sprite = Character.haveItem[0][i].itemData.itemSp;
+                        GameMng.I.BattleItemUI.ItemText[kind - 1].text = Character.haveItem[0][i].itemCount.ToString();
+                        GameMng.I.BattleItemUI.ItemIdx[kind - 1] = Character.haveItem[0][i].itemData.itemIndex;
+                        break;
+                    }
+                }
+                if (index == -1 || index == kind - 1)
+                    return;
+                else
+                {
+                    GameMng.I.BattleItemUI.ItemImg[index].gameObject.SetActive(false);
+                    GameMng.I.BattleItemUI.ItemText[index].gameObject.SetActive(false);
+                    GameMng.I.BattleItemUI.ItemIdx[index] = ITEM_INDEX.NONE;
+                    Character.equipBattleItem[index] = null;
+                }
+            }
+        
     }
 
     public void equipBtn()

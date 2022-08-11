@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharacterCollider : MonoBehaviour
 {
+    int poolCount = 0;
     void itemSetting(int n, Item _item)
     {
         if (n == 1)
@@ -14,8 +15,45 @@ public class CharacterCollider : MonoBehaviour
             if (index == -1)
                 Character.haveItem[n].Add(_item);
             else
+            {
                 Character.haveItem[n][index].itemCount += _item.itemCount;
+                if (_item.itemData.itemType == ITEM_TYPE.BATTLE_ITEM)
+                {
+                    for (int i = 0; i < Character.equipBattleItem.Length; i++)
+                    {
+                        if (Character.equipBattleItem[i] == null)
+                            continue;
+                        if (Character.equipBattleItem[i].itemData.itemIndex == Character.haveItem[n][index].itemData.itemIndex)
+                        {
+                            GameMng.I.BattleItemUI.ItemText[i].text = Character.equipBattleItem[i].itemCount.ToString();
+                            break;
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    // void getItemEXP(Item item, int idx)
+    // {
+    //     GameMng.I.getItemPool[idx].EXP_Game.SetActive(true);
+    //     GameMng.I.getItemPool[idx].EXP_Game.transform.SetAsLastSibling();
+    //     GameMng.I.getItemPool[idx].EXP_Img.sprite = item.itemData.itemSp;
+    //     if (item.itemData.itemType != ITEM_TYPE.WEAPON_ITEM && item.itemData.itemType != ITEM_TYPE.HEAD_ITEM)
+    //         GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName + " x" + item.itemCount.ToString();
+    //     else
+    //         GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName;
+    // }
+    void getItemEXP(Item item, int idx)
+    {
+        GameMng.I.getItemPool[idx].EXP_Img.sprite = item.itemData.itemSp;
+        if (item.itemData.itemType != ITEM_TYPE.WEAPON_ITEM && item.itemData.itemType != ITEM_TYPE.HEAD_ITEM)
+            GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName + " x" + item.itemCount.ToString();
+        else
+            GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName;
+
+        for(int i = idx; i >= 0; i--)
+            GameMng.I.getItemPool[i].EXP_Game.transform.localPosition = new Vector3(5.0f, 45.0f * (idx - i), 0.0f);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -44,6 +82,9 @@ public class CharacterCollider : MonoBehaviour
                     itemSetting(3, item);
                     break;
             }
+            getItemEXP(item, poolCount++);
+            if (poolCount == 5)
+                poolCount = 0;
             Destroy(other.gameObject);
         }
     }
