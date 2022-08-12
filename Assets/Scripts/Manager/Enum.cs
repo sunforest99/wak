@@ -56,3 +56,11 @@ public struct ItemSlotUI
     public TMPro.TextMeshProUGUI[] ItemText;
     public ITEM_INDEX[] ItemIdx;
 }
+
+[System.Serializable]
+public struct GetItemEXP
+{
+    public UnityEngine.GameObject EXP_Game;
+    public UnityEngine.UI.Image EXP_Img;
+    public TMPro.TextMeshProUGUI EXP_Text;
+}

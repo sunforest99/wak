@@ -25,9 +25,12 @@ public class GameMng : MonoBehaviour
     public ItemSlotUI BattleItemUI;
 
     public Transform skillUI;
+    public Transform itemSlot;
 
     public List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
     public List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
+    public List<UnityEngine.UI.Image> battleItem_Img = new List<UnityEngine.UI.Image>();
+    public GetItemEXP[] getItemPool = new GetItemEXP[5];
 
     public float level = 10;
 
@@ -114,7 +117,13 @@ public class GameMng : MonoBehaviour
             skill_Img.Add(skillUI.GetChild(i).transform.GetChild(0).GetComponent<UnityEngine.UI.Image>());
             cooltime_UI.Add(skillUI.GetChild(i).transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>());
         }
+        for (int i = 0; i < itemSlot.transform.childCount; i++)
+            battleItem_Img.Add(itemSlot.GetChild(i).transform.GetChild(0).GetComponent<UnityEngine.UI.Image>());
+
         for (int i = 0; i < character.skilldatas.Length; i++)
             skill_Img[i].sprite = character.skilldatas[i].getSkllImg;
+
+        // for (int i = 0; i < Character.equipBattleItem.Length; i++)
+        //     battleItem_Img[i].sprite = Character.equipBattleItem[i].itemData.itemSp;
     }
 }

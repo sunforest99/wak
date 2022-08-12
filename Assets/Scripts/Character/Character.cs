@@ -68,6 +68,7 @@ public class Character : MonoBehaviour
     public static SkillData usingSkill;
 
     private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
+    public bool[] usingBattleItem = new bool[3];
 
     Vector3 _moveDir;       // 캐릭터 움직이는 방향
 
@@ -144,6 +145,27 @@ public class Character : MonoBehaviour
             GameMng.I.skill_Img[skillnum].transform.parent.gameObject.SetActive(false);
         }
 
+    }
+
+    protected IEnumerator BattleItemCoolDown(int itemnum)
+    {
+        usingBattleItem[itemnum] = true;
+        equipBattleItem[itemnum].itemCount--;
+        GameMng.I.BattleItemUI.ItemText[itemnum].text = equipBattleItem[itemnum].itemCount.ToString();
+        float cooltime = equipBattleItem[itemnum].itemData.duration;
+
+        float time = 0.0f;
+        GameMng.I.battleItem_Img[itemnum].color = new Color32(175, 175, 175, 255);
+
+        while (time < cooltime)
+        {
+            time += Time.deltaTime;
+            GameMng.I.battleItem_Img[itemnum].fillAmount = time / cooltime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        GameMng.I.battleItem_Img[itemnum].color = Color.white;
+        usingBattleItem[itemnum] = false;
     }
 
     void startMoving()
@@ -286,26 +308,29 @@ public class Character : MonoBehaviour
         // 배틀 아이템 사용
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (GameMng.I.stateMng.user_HP_Numerical.Hp < GameMng.I.stateMng.user_HP_Numerical.fullHp)
-                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 30 / 100);
-            if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
-                GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
+            if (equipBattleItem[0] != null && equipBattleItem[0].itemCount > 0 && !usingBattleItem[0])
+            {
+                useItem(equipBattleItem[0].itemData.itemIndex);
+                StartCoroutine(BattleItemCoolDown(0));
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (GameMng.I.stateMng.nPlayerDeBuffCount > 0)
+            if (equipBattleItem[1] != null && equipBattleItem[1].itemCount > 0 && !usingBattleItem[1])
             {
-                int rand = Random.Range(1, GameMng.I.stateMng.nPlayerDeBuffCount + 1);
+                useItem(equipBattleItem[1].itemData.itemIndex);
+                StartCoroutine(BattleItemCoolDown(1));
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            float save = MOVE_SPEED;
-            MOVE_SPEED = MOVE_SPEED * 200 / 100;
-            StartCoroutine(SpeedUp(5, save));
+            if (equipBattleItem[2] != null && equipBattleItem[2].itemCount > 0 && !usingBattleItem[2])
+            {
+                useItem(equipBattleItem[2].itemData.itemIndex);
+                StartCoroutine(BattleItemCoolDown(2));
+            }
         }
     }
-
 
     public virtual void init() { }
     public virtual void skill_1() { }
@@ -338,12 +363,39 @@ public class Character : MonoBehaviour
     IEnumerator itemCool(Item item)
     {
         yield return new WaitForSeconds(1.0f);
-        if(item.apply_count >= 1)
+        if (item.apply_count >= 1)
         {
             item.apply_count--;
             StartCoroutine(itemCool(item));
         }
         else
             item.apply_count = 0;
+    }
+
+    void useItem(ITEM_INDEX kind)
+    {
+        switch (kind)
+        {
+            case ITEM_INDEX.POTION:
+                if (GameMng.I.stateMng.user_HP_Numerical.Hp < GameMng.I.stateMng.user_HP_Numerical.fullHp)
+                    GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 30 / 100);
+                if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
+                    GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
+                break;
+
+            case ITEM_INDEX.CLEANSER:
+                if (GameMng.I.stateMng.nPlayerDeBuffCount > 0)
+                {
+                    int rand = Random.Range(1, GameMng.I.stateMng.nPlayerDeBuffCount + 1);
+                }
+                break;
+
+            case ITEM_INDEX.SPEEDUP:
+
+                float save = MOVE_SPEED;
+                MOVE_SPEED = MOVE_SPEED * 200 / 100;
+                StartCoroutine(SpeedUp(5, save));
+                break;
+        }
     }
 }
