@@ -19,37 +19,37 @@ public class Healer : Character
     public override void skill_1()
     {
         StartCoroutine(SkillCoolDown(0));
-        _state = CHARACTER_STATE.CANT_ANYTHING;
+        _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Tree");
     }
     public override void skill_2()
     {
         StartCoroutine(SkillCoolDown(1));
-        _state = CHARACTER_STATE.CANT_ANYTHING;
+        _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Thief");
     }
     public override void skill_3()
     {
         StartCoroutine(SkillCoolDown(2));
-        _state = CHARACTER_STATE.CAN_MOVE;
+        _action = CHARACTER_ACTION.CAN_MOVE;
         _anim.SetTrigger("Skill_Winterspring");
     }
     public override void skill_4()
     {
         StartCoroutine(SkillCoolDown(3));
-        _state = CHARACTER_STATE.CANT_ANYTHING;
+        _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Location");
     }
     public override void skill_5()
     {
         StartCoroutine(SkillCoolDown(4));
-        _state = CHARACTER_STATE.CANT_ANYTHING;
+        _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Music");
     }
     
     void settingStat()
     {
-        switch(Mathf.FloorToInt(GameMng.I.level)) {
+        switch(Mathf.FloorToInt(GameMng.I.userData.level)) {
             case 1:
                 _stat = new Stat(10000, 20000, 1, 1, 1, 1, 6, 1.02f);
                 break;

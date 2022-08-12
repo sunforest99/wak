@@ -35,6 +35,7 @@ public class UserData
     public List<Skill_Schema> skills;
     public List<Quest_Schema> quest;
     public List<int> slot;
+    public float level;
     
     public void printData() 
     { 

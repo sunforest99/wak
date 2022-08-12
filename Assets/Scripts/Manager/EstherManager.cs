@@ -8,6 +8,10 @@ public class EstherManager : MonoBehaviour
     [SerializeField] UnityEngine.UI.Image gaugeImg;
     float gauge = 0f;
     
+    [SerializeField] GameObject[] estherAppear;     // 에스더들 등장 일러스트
+    [SerializeField] GameObject appearEffect;       // 에스더 소환되는 이펙트
+    [SerializeField] GameObject[] estherAttack;     // 에스더 공격
+
     void Start()
     {
         setGauge(0);
@@ -22,7 +26,8 @@ public class EstherManager : MonoBehaviour
             }
         } else {
             if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.Z)) {
-                useEsther(0);
+                // 네트워크로 보내서 사용함. 네트워크 연결후엔 아래와 같이 X
+                useEsther(0, GameMng.I.character.transform.position + new Vector3(3, -0.8f, 0), GameMng.I.character.transform.position + new Vector3(3, -0.8f, 0));
             }
             else if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.X)) {
                 useEsther(1);
@@ -33,9 +38,25 @@ public class EstherManager : MonoBehaviour
         }
     }
 
-    void useEsther(int estherCode) {
+    /*
+    * @brief 에스더 사용
+    * @param estherCode 사용 에스더 코드
+    * @param effectPos 에스더 소환 이펙트 위치
+    */
+    void useEsther(int estherCode, Vector2 spawnPos = new Vector2(), Vector2 effectPos = new Vector2()) {
         setGauge(0);
         estherAnim.SetBool("isFull", false);
+
+        // 소환 이펙트 등장
+        appearEffect.transform.position = effectPos;
+        appearEffect.SetActive(true);
+
+        // 에스더 일러스트 등장        
+        estherAppear[estherCode].SetActive(true);
+
+        // 에스더 공격 이펙트 등장  
+        // estherAttack[estherCode].transform.position = spawnPos;
+        // estherAttack[estherCode].SetActive(true);
     }
 
     void setGauge(float mount) {
