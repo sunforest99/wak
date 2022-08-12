@@ -15,7 +15,7 @@ public class MCamera : MonoBehaviour
 
     void Update()
     {
-        if (isFocusing)
+        if (isFocusing && GameMng.I.character)
         {
             transform.position = GameMng.I.character.transform.position - new Vector3(0, 0, 10);
         }

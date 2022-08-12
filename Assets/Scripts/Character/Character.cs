@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public enum CHARACTER_STATE
+public enum CHARACTER_ACTION
 {
     IDLE,                   // 일반 상태, 움직이거나 스킬 사용이 가능한 상태
     CANT_ANYTHING,          // 스킬 쓰는 상태, 아무것도 못함
@@ -40,8 +40,7 @@ public class Character : MonoBehaviour
     public Animator _anim;
     public void setTriggerSleep() => _anim.SetTrigger("Sleep");
 
-    public CHARACTER_STATE _state;
-    public Stat _stat;
+    public CHARACTER_ACTION _action;
     public JOB _job = JOB.NONE;
 
     [SerializeField] GameObject[] footprints;
@@ -53,10 +52,11 @@ public class Character : MonoBehaviour
     const float MAX_DASH_TIME = 0.1f;
     public float curDashTime = 0.1f;
     //==== 직업에 따라서 아래 수치가 다름 ========================
-    protected float DASH_SPEED = 20;
-    protected float MOVE_SPEED = 5;
-    protected float DASH_COOLTIME = 6;
-    protected float WAKEUP_COOLTIME = 10;
+    public static Stat _stat;
+    protected static float DASH_SPEED = 20;
+    protected static float MOVE_SPEED = 5;
+    protected static float DASH_COOLTIME = 6;
+    protected static float WAKEUP_COOLTIME = 10;
 
     [SerializeField] Rigidbody2D _rigidBody;
 
@@ -80,7 +80,7 @@ public class Character : MonoBehaviour
         }
         //GameMng.I.character = this;
         GameMng.I.stateMng.targetList.Add(this);        // 파티를 들어갔을떄
-        _state = CHARACTER_STATE.IDLE;
+        _action = CHARACTER_ACTION.IDLE;
         init();
         for (int i = 0; i < 4; i++)
             haveItem.Add(new List<Item>());
@@ -186,7 +186,7 @@ public class Character : MonoBehaviour
 
         yield return new WaitForSeconds(0.4f);
 
-        if (_state == CHARACTER_STATE.CANT_ANYTHING)
+        if (_action == CHARACTER_ACTION.CANT_ANYTHING)
             isMoving = false;
 
         if (isMoving)
@@ -220,27 +220,27 @@ public class Character : MonoBehaviour
 
     void inputKey()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[6] && _state == CHARACTER_STATE.SLEEP_CANT_ANYTHING)
+        if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[6] && _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
         {
             _anim.SetTrigger("Wakeup");
 
-            _state = CHARACTER_STATE.CAN_MOVE;
+            _action = CHARACTER_ACTION.CAN_MOVE;
 
             StartCoroutine(SkillCoolDown(6));
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[5] && _state != CHARACTER_STATE.SLEEP_CANT_ANYTHING)
+        if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[5] && _action != CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
         {
             curDashTime = 0.0f;
 
             _anim.SetTrigger("Dash");
 
-            _state = CHARACTER_STATE.CAN_MOVE;
+            _action = CHARACTER_ACTION.CAN_MOVE;
             StartCoroutine(SkillCoolDown(5));
         }
 
         // 아무것도 아닌 상태가 아닌 경우는 이동이 가능한 상태
-        if (_state == CHARACTER_STATE.CANT_ANYTHING || _state == CHARACTER_STATE.SLEEP_CANT_ANYTHING)
+        if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
         {
             _moveDir.x = 0;
             _moveDir.y = 0;
@@ -258,7 +258,7 @@ public class Character : MonoBehaviour
             transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
 
         // 모든 스킬은 IDLE 상태에서만 가능하기 때문에 체크함
-        if (_state != CHARACTER_STATE.IDLE)
+        if (_action != CHARACTER_ACTION.IDLE)
             return;
 
         // 스킬
@@ -291,7 +291,7 @@ public class Character : MonoBehaviour
             else
                 transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
 
-            _state = CHARACTER_STATE.CANT_ANYTHING;
+            _action = CHARACTER_ACTION.CANT_ANYTHING;
             _anim.SetTrigger("Attack");
         }
         // 핑
@@ -341,13 +341,13 @@ public class Character : MonoBehaviour
 
     void endAct()
     {
-        _state = CHARACTER_STATE.IDLE;
+        _action = CHARACTER_ACTION.IDLE;
         usingSkill = null;
     }
 
     public void sleep()
     {
-        _state = CHARACTER_STATE.SLEEP_CANT_ANYTHING;
+        _action = CHARACTER_ACTION.SLEEP_CANT_ANYTHING;
         _anim.SetTrigger("Sleep");
     }
 

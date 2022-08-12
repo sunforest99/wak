@@ -101,7 +101,7 @@ public class BossCollider : MonoBehaviour
 
             if (!boss.isAnnihilation)
             {
-                damageTemp = GameMng.I.getCharecterDamage(isCritical, isBackAttack);
+                damageTemp = GameMng.I.getCharacterDamage(isCritical, isBackAttack);
 
                 createDamage(
                     other.ClosestPoint(transform.position) + new Vector2(0, 3f),
@@ -120,7 +120,7 @@ public class BossCollider : MonoBehaviour
     bool CheckCritial()
     {
         float criticalrand = Random.Range(0.0f, 100.0f);
-        float criticalPer = GameMng.I.character._stat.criticalPer;
+        float criticalPer = Character._stat.criticalPer;
         for (int i = 0; i < boss.bossDeBuffs.Length; i++)
         {
             if (boss.bossDeBuffs[i].gameObject.activeInHierarchy)

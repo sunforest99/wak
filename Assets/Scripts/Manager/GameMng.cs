@@ -4,54 +4,45 @@ using UnityEngine;
 
 public class GameMng : MonoBehaviour
 {
-    public RaycastHit2D hit;
-
-    public GameObject dialogPrefab;
-    [SerializeField]
-    GameObject pingPrefab;
-
-    public DailogUI dailogUI;
-    public Npcdata npcData;
-    private float npcDistance = 3.0f;       // <! npc와의 최대 거리
-
     private static GameMng _instance = null;
 
+
+    [Header("[  유저 관리  ]")]  // ========================================================================================================================================
+    public UserData userData;
+    public StateMng stateMng;
+    public Character character = null;
     public GameObject[] characterPrefab = new GameObject[3];
 
-    public UserData userData;
 
-    public Character character = null;
-
-    public ItemSlotUI BattleItemUI;
-
-    public Transform skillUI;
-    public Transform itemSlot;
-
-    public List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
-    public List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
-    public List<UnityEngine.UI.Image> battleItem_Img = new List<UnityEngine.UI.Image>();
+    [Space(20)][Header("[  기본 UI 관리  ]")]  // ==========================================================================================================================
+    public DailogUI dailogUI;           // ( ? )
+    public ItemSlotUI BattleItemUI;     // (체력바 위) 배틀아이템 UI
+    public Transform skillUI;           // (좌측하단) 스킬 UI들 부모
+    public Transform itemSlot;          // (체력바 위) 배틀아이템 
+    [HideInInspector] public List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
+    [HideInInspector] public List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
+    [HideInInspector] public List<UnityEngine.UI.Image> battleItem_Img = new List<UnityEngine.UI.Image>();
     public GetItemEXP[] getItemPool = new GetItemEXP[5];
+    [SerializeField] GameObject pingPrefab;
 
-    public float level = 10;
 
-    public int getCharecterDamage(bool isCrital, bool isBackAttack)        // <! 캐릭터 데미지 가져오기
-    {
-        if (Character.usingSkill)        // <! 스킬 대미지
-            return Character.usingSkill.CalcSkillDamage(
-                isCrital, isBackAttack,
-                character._stat.minDamage, character._stat.maxDamage, character._stat.incDamagePer, character._stat.criticalPer, character._stat.incBackattackPer
-            );
-        else        // <! 평타 데미지
-            return 20000;
-    }
+    [Space(20)][Header("[  NPC 관리  ]")]  // ==============================================================================================================================
+    public RaycastHit2D hit;
+    public Npcdata npcData;
+    private float npcDistance = 3.0f;       // <! npc와의 최대 거리
+    public GameObject dialogPrefab;
 
-    public StateMng stateMng;
 
-    public BossData bossData = null;        // 보스 정보
-
+    [Space(20)][Header("[  맵 관리  ]")]  // ==============================================================================================================================
     public Vector2 mapRightTop;
     public Vector2 mapCenter;
     public Vector2 mapLeftBotton;
+
+
+    [Space(20)][Header("[  보스 관리 (여기 있으면 안됨)  ]")]  // ===========================================================================================================
+    public BossData bossData = null;        // 보스 정보  //!< 이거 여기 없이 사용할 방법 찾아야 함
+
+
 
     public static GameMng I
     {
@@ -101,6 +92,17 @@ public class GameMng : MonoBehaviour
     //         }
     //     }
     // }
+    public int getCharacterDamage(bool isCrital, bool isBackAttack)        // <! 캐릭터 데미지 가져오기
+    {
+        if (Character.usingSkill)        // <! 스킬 대미지
+            return Character.usingSkill.CalcSkillDamage(
+                isCrital, isBackAttack,
+                Character._stat.minDamage, Character._stat.maxDamage, Character._stat.incDamagePer, Character._stat.criticalPer, Character._stat.incBackattackPer
+            );
+        else        // <! 평타 데미지
+            return 20000;
+    }
+
 
     public void createPing(Vector2 pos)
     {
