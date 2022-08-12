@@ -14,41 +14,39 @@ public struct bossbaseUI
 
 public class Boss : MonoBehaviour
 {
-    [SerializeField] protected Transform _target;        // <! 나중에 4명 추가하는걸루
-    protected Vector3 _dir;      // <! 보스와 타겟 방향
+    // 관리 ======================================================================================================
+    [SerializeField] protected BossData bossdata;
+    bool isLFlip = false, isRFlip = false;          // 방향
 
-    [SerializeField] protected int _currentHp;      // <! 헌제 체력
 
-    public int _nestingHp;        // <! 중첩 체력
-
+    // 공격 ======================================================================================================
     protected const int _annihilation = 99999;    // <! 전멸기
     [SerializeField] protected bool _isAnnihilation;
     public bool isAnnihilation { get { return _isAnnihilation; } }
 
+
+    // 버프/디버프 =================================================================================================
     [SerializeField] protected bossbaseUI _baseUI;       // <! 보스의 기본 UI 담는 구조체
     public BossBuff[] bossDeBuffs;
 
-    protected int _currentNesting;     // <! 지금 체력바
 
-    private float _radetime;       // <! 레이드 시간
+    // 시간 관리 ===================================================================================================
+    private float _radetime;        // 레이드 시간
+    private float min, sec;         // 초
+    [SerializeField] private bool _isBerserk;        // 광폭화
 
-    [SerializeField] private bool _isBerserk;        // <! 광폭화
 
-    private float min;      // <! 분
-    private float sec;      // <! 초
-
-    private int merginDmg;
-
-    bool isLFlip = false;
-    bool isRFlip = false;
-
-    [SerializeField] protected BossData bossdata;
-
+    // 체력 ======================================================================================================
+    [SerializeField] protected Transform _target;   // 나중에 4명 추가하는걸루
+    protected Vector3 _dir;                         // 보스와 타겟 방향
+    public int _nestingHp;                          // 중첩 체력
+    protected int _currentNesting;                  // 지금 체력바
+    [SerializeField] protected int _currentHp;      // 헌제 체력
+    private int merginDmg;                          // 여백, 데미지 차이
     public int getOnebarHp
     {
         get { return bossdata.getStartHp / bossdata.maxNesting; }
     }
-
     protected int _frontBarIndex;
     protected int _backBarIndex;
     protected int _StartBarindex
@@ -62,6 +60,9 @@ public class Boss : MonoBehaviour
         }
     }
 
+    /**
+     * @brief 보스 초기화
+     */
     protected void BossInitialize()
     {
         this._radetime = bossdata.radetime;

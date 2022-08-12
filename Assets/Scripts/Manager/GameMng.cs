@@ -65,7 +65,7 @@ public class GameMng : MonoBehaviour
     private void Start()
     {
         userData.job = 1;
-        createPlayer();
+        createMe();
     }
 
     // public void mouseRaycast(Vector2 charPos)      // <! 이름바꾸기
@@ -109,10 +109,19 @@ public class GameMng : MonoBehaviour
         Instantiate(pingPrefab, pos += new Vector2(0, 0.65f), Quaternion.identity);
     }
 
-    public void createPlayer()
+    public Character createPlayer(int job, string nickName)
     {
-        GameObject temp = Instantiate(characterPrefab[userData.job - 1]);
+        GameObject temp = Instantiate(characterPrefab[job]);
         character = temp.GetComponent<Character>();
+        character.nickName = nickName;
+
+        return character;
+    }
+
+    public void createMe()
+    {
+        createPlayer(userData.job - 1, GameMng.I.userData.user_nickname);
+        character._isPlayer = true;
 
         for (int i = 0; i < skillUI.transform.childCount; i++)
         {
