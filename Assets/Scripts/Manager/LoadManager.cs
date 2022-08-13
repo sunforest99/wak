@@ -12,7 +12,7 @@ public class LoadManager : MonoBehaviour
     void Start()
     {
         // 플레이어 생성
-        GameMng.I.createPlayer();
+        GameMng.I.createMe();
 
         // 로딩  끝
 

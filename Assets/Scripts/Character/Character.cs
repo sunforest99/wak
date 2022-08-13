@@ -37,40 +37,43 @@ public struct Stat
 
 public class Character : MonoBehaviour
 {
+    // 캐릭터 ====================================================================================================
     public Animator _anim;
+    [SerializeField] Rigidbody2D _rigidBody;
     public void setTriggerSleep() => _anim.SetTrigger("Sleep");
 
-    public CHARACTER_ACTION _action;
+    // 데이터 ====================================================================================================
+    public bool _isPlayer = false;
+    public string nickName = "";
     public JOB _job = JOB.NONE;
-
-    [SerializeField] GameObject[] footprints;
-
-    public static List<List<Item>> haveItem = new List<List<Item>>();
-
-    public static Item[] equipBattleItem = new Item[3];
-
     const float MAX_DASH_TIME = 0.1f;
     public float curDashTime = 0.1f;
-    //==== 직업에 따라서 아래 수치가 다름 ========================
+    /*========= 직업에 따라서 아래 수치가 다름 =========*/
     public static Stat _stat;
     protected static float DASH_SPEED = 20;
     protected static float MOVE_SPEED = 5;
     protected static float DASH_COOLTIME = 6;
     protected static float WAKEUP_COOLTIME = 10;
 
-    [SerializeField] Rigidbody2D _rigidBody;
-
-    int footprintIdx = 0;
+    // 행동 ======================================================================================================
+    Vector3 _moveDir;       // 캐릭터 움직이는 방향
     bool isMoving = false;
+    public CHARACTER_ACTION _action;
 
+    // 스킬 ======================================================================================================
     public SkillData[] skilldatas = new SkillData[5];
-
     public static SkillData usingSkill;
-
     private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
     public bool[] usingBattleItem = new bool[3];
 
-    Vector3 _moveDir;       // 캐릭터 움직이는 방향
+    // 발자국 =====================================================================================================
+    int footprintIdx = 0;
+    [SerializeField] GameObject[] footprints;
+
+    // 아이템 ====================================================================================================
+    public static Item[] equipBattleItem = new Item[3];
+    public static List<List<Item>> haveItem = new List<List<Item>>();
+
 
     void Start()
     {
