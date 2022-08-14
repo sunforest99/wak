@@ -21,30 +21,35 @@ public class Magician : Character
         StartCoroutine(SkillCoolDown(0));
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Window");
+        // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_1);
     }
     public override void skill_2()
     {
         StartCoroutine(SkillCoolDown(1));
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Chimstercall");
+        // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_2);
     }
     public override void skill_3()
     {
         StartCoroutine(SkillCoolDown(2));
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Wakpasun");
+        // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_3);
     }
     public override void skill_4()
     {
         StartCoroutine(SkillCoolDown(3));
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Fire");
+        // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_4);
     }
     public override void skill_5()
     {
         StartCoroutine(SkillCoolDown(4));
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("");
+        // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_5);
     }
     
     void settingStat()

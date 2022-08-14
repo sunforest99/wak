@@ -4,27 +4,22 @@ using UnityEngine;
 
 public class MCamera : MonoBehaviour
 {
-    bool isFocusing = true;
-
-    [SerializeField]
-    [Range(0.01f, 0.1f)]
-    public float shakeRange = 0.05f;
-    [SerializeField]
-    [Range(0.1f, 1f)]
-    public float duration = 0.5f;
+    [Range(0.01f, 0.1f)] public float shakeRange = 0.05f;
+    [Range(0.1f, 1f)] public float duration = 0.5f;
 
     void Update()
     {
-        if (isFocusing && GameMng.I.character)
+        if (GameMng.I.isFocusing && GameMng.I.character)
         {
             transform.position = GameMng.I.character.transform.position - new Vector3(0, 0, 10);
         }
     }
 
-
-    public void shake()
+    public void shake(float shakeRange = 0.05f)
     {
-        isFocusing = false;
+        this.shakeRange = shakeRange;
+
+        GameMng.I.isFocusing = false;
         InvokeRepeating("startShake", 0, 0.005f);
         Invoke("stopShake", duration);
     }
@@ -42,6 +37,6 @@ public class MCamera : MonoBehaviour
     void stopShake()
     {
         CancelInvoke("startShake");
-        isFocusing = true;
+        GameMng.I.isFocusing = true;
     }
 }

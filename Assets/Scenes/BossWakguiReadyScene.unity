@@ -333,7 +333,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &24077304
 GameObject:
@@ -4962,13 +4962,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 461398201}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.84, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_Father: {fileID: 1240490234}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &481345560
 GameObject:
@@ -5086,7 +5086,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &513942940
 GameObject:
@@ -7757,7 +7757,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &966908945
 GameObject:
@@ -9652,6 +9652,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1240490234}
   - component: {fileID: 1240490233}
+  - component: {fileID: 1240490235}
   m_Layer: 0
   m_Name: "__\uC815\uBE44\uC18C_\uBC14\uB2E5"
   m_TagString: Untagged
@@ -9722,10 +9723,26 @@ Transform:
   m_LocalPosition: {x: 0.3, y: 0, z: 0}
   m_LocalScale: {x: 0.9, y: 0.84, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 461398203}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1240490235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240490232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c86734a4c81a1a1458c577238717aacf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapNameTxt: {fileID: 0}
+  mapName: "(\uC784\uC2DC) \uBCF4\uC2A4\uC815\uBE44\uC18C"
+  isFocusingMap: 0
 --- !u!1 &1244570237
 GameObject:
   m_ObjectHideFlags: 0
@@ -10537,7 +10554,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1331617835
 GameObject:
@@ -11102,7 +11119,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1426727320
 GameObject:
@@ -12505,6 +12522,7 @@ MonoBehaviour:
   - {fileID: 708272248292700936, guid: ebf36a5dc5d731b4f92f88394a9a91b8, type: 3}
   - {fileID: 6052934720873483026, guid: 103e58d78d9fc1d48adaabcdb061b690, type: 3}
   - {fileID: 5970163516513958500, guid: c96a0de85e755c44e9c20fab5d4ad84c, type: 3}
+  isFocusing: 1
   dailogUI: {fileID: 0}
   BattleItemUI:
     ItemImg:
@@ -15447,7 +15465,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1982732859
 GameObject:
@@ -15835,7 +15853,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2024077234
 GameObject:
@@ -16332,7 +16350,6 @@ GameObject:
   - component: {fileID: 2103566309}
   - component: {fileID: 2103566308}
   - component: {fileID: 2103566307}
-  - component: {fileID: 2103566311}
   m_Layer: 5
   m_Name: ___ReadyCanvas
   m_TagString: Untagged
@@ -16422,20 +16439,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &2103566311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2103566306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c86734a4c81a1a1458c577238717aacf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mapNameTxt: {fileID: 0}
-  mapName: 
 --- !u!1 &2111760937
 GameObject:
   m_ObjectHideFlags: 0

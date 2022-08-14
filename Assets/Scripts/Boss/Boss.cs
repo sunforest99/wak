@@ -14,9 +14,10 @@ public struct bossbaseUI
 
 public class Boss : MonoBehaviour
 {
-    // 관리 ======================================================================================================
-    [SerializeField] protected BossData bossdata;
+    [Header("[  관리  ]")]  // 관리 ======================================================================================================
     bool isLFlip = false, isRFlip = false;          // 방향
+    [SerializeField] protected BossData bossdata;
+    [SerializeField] protected Animator animator = null;
 
 
     // 공격 ======================================================================================================

@@ -12,6 +12,7 @@ public class GameMng : MonoBehaviour
     public StateMng stateMng;
     public Character character = null;
     public GameObject[] characterPrefab = new GameObject[3];
+    public bool isFocusing = true;      // 캐릭터에게 포커싱 맞출지 (카메라가 따라올지 유무)
 
 
     [Space(20)][Header("[  기본 UI 관리  ]")]  // ==========================================================================================================================
@@ -40,8 +41,8 @@ public class GameMng : MonoBehaviour
 
 
     [Space(20)][Header("[  보스 관리 (여기 있으면 안됨)  ]")]  // ===========================================================================================================
-    public BossData bossData = null;        // 보스 정보  //!< 이거 여기 없이 사용할 방법 찾아야 함
-
+    public BossData bossData = null;            // 보스 정보    //!< 이거 여기 없이 사용할 방법이 있다면 좋음
+    public EstherManager estherManager = null;  // 에스더 정보  //!< bossData와 같이 보스맵에서 나갈때마다 초기화 해주어야 함
 
 
     public static GameMng I
@@ -109,9 +110,9 @@ public class GameMng : MonoBehaviour
         Instantiate(pingPrefab, pos += new Vector2(0, 0.65f), Quaternion.identity);
     }
 
-    public Character createPlayer(int job, string nickName)
+    public Character createPlayer(int job, string nickName, float posX = 0, float posY = 0)
     {
-        GameObject temp = Instantiate(characterPrefab[job]);
+        GameObject temp = Instantiate(characterPrefab[job], new Vector3(posX, posY, 0), Quaternion.identity);
         character = temp.GetComponent<Character>();
         character.nickName = nickName;
 
