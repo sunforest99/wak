@@ -14,6 +14,7 @@ public class EstherManager : MonoBehaviour
 
     void Start()
     {
+        GameMng.I.estherManager = this;
         setGauge(0);
     }
 
@@ -41,9 +42,10 @@ public class EstherManager : MonoBehaviour
     /*
     * @brief 에스더 사용
     * @param estherCode 사용 에스더 코드
-    * @param effectPos 에스더 소환 이펙트 위치
+    * @param effectPos 에스더 '소환' 이펙트 위치 (사용자 위치)
+    * @param spawnPos 사용 에스더 코드
     */
-    void useEsther(int estherCode, Vector2 spawnPos = new Vector2(), Vector2 effectPos = new Vector2()) {
+    public void useEsther(int estherCode, Vector2 effectPos = new Vector2(), Vector2 spawnPos = new Vector2()) {
         setGauge(0);
         estherAnim.SetBool("isFull", false);
 

@@ -10,27 +10,44 @@ using System;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+public struct PartyData
+{
+    public string nickName;
+    public JOB job;
+    // 장착 아이템들 (머리, 무기..)
+    public PartyData(string nickName, JOB job)
+    {
+        this.nickName = nickName;
+        this.job = job;
+    }
+}
+
 public class NetworkMng : MonoBehaviour
 {
     // 네트워크 기본 데이터 ==================================================================================================
     static Socket socket = null;
-    public string address = "127.0.0.1";   // 주소, 서버 주소와 같게 할 것
-    int port = 10000;               // 포트 번호, 서버포트와 같게 할 것
+    public string address = "127.0.0.1";    // 주소, 서버 주소와 같게 할 것
+    int port = 10000;                       // 포트 번호, 서버포트와 같게 할 것
     byte[] buf = new byte[4096];
     int recvLen = 0;
 
     // 유저 데이터 =========================================================================================================
-    public int myRoom = 0;              // 현재 내 위치
+    public int myRoom = 0;                  // 현재 내 위치
     public string uniqueNumber = "";        // 나 자신을 가리키는 고유 숫자
-    Dictionary<string, Character> v_users = new Dictionary<string, Character>();
+    Dictionary<string, Character> v_users = new Dictionary<string, Character>();        // 맵에 같이 있는 유저들
+    Dictionary<string, PartyData> v_party = new Dictionary<string, PartyData>();        // 파티원들  (v_users안에도 파티원들이 있긴함)
 
 
 
     static NetworkMng _instance;
-    public static NetworkMng getInstance
+    public static NetworkMng I
     {
         get
         {
+            if (_instance.Equals(null))
+            {
+                Debug.LogError("Instance is null");
+            }
             return _instance;
         }
     }
@@ -194,8 +211,14 @@ public class NetworkMng : MonoBehaviour
         else if (txt[0].Equals("USER"))
         {
         }
-        else if (txt[0].Equals("ADDUSER"))
+        else if (txt[0].Equals("ADD_USER"))
         {
+            // 방에 새로 들어온 유저
+            // ADD_USER : 새로온유저uniqueNumber : 직업 : 닉네임
+            v_users.Add(
+                txt[1], 
+                GameMng.I.createPlayer(int.Parse(txt[2]), txt[3])
+            );
         }
         else if (txt[0].Equals("SKILL"))
         {
@@ -211,18 +234,29 @@ public class NetworkMng : MonoBehaviour
         {
             // DAMAGE : 데미지를_입힌_타겟 : 데미지_수치
         }
+        else if (txt[0].Equals("MOVE_START"))
+        {
+            // MOVE_START : 유저uniqueNumber : 방향x좌표 : 방향y좌표
+            // v_users[txt[1]].transform.position = new Vector3(int.Parse(txt[2]), int.Parse(txt[3]), 0);
+        }
         else if (txt[0].Equals("MOVE"))
         {
-            v_users[txt[1]].transform.position = new Vector3(int.Parse(txt[2]), int.Parse(txt[3]), 0);
+            // MOVE : 유저uniqueNumber : 방향x좌표 : 방향y좌표 : 내x좌표 : 내y좌표
+            // v_users[txt[1]].transform.position = new Vector3(int.Parse(txt[2]), int.Parse(txt[3]), 0);
+        }
+        else if (txt[0].Equals("MOVE_STOP"))
+        {
+            // MOVE_STOP : 유저uniqueNumber
+            // v_users[txt[1]].transform.position = new Vector3(int.Parse(txt[2]), int.Parse(txt[3]), 0);
         }
         else if (txt[0].Equals("IN_USER"))  // 기존 맵에 있는 유저들 데이터
         {
             // 고유uniqueNumber : 직업 : 닉네임
-            for (int i = 1; i < txt.Length; i+=3)
+            for (int i = 1; i < txt.Length; i += 5)
             {
                 v_users.Add(
                     txt[i], 
-                    GameMng.I.createPlayer(int.Parse(txt[i + 1]) - 1, txt[i + 2])
+                    GameMng.I.createPlayer(int.Parse(txt[i + 1]) - 1, txt[i + 2], float.Parse(txt[i + 3]), float.Parse(txt[i + 4]))
                 );
             }
         }
@@ -240,13 +274,33 @@ public class NetworkMng : MonoBehaviour
         else if (txt[0].Equals("AGREE_PARTY"))
         {
             // 파티 수락누른 후 정상적으로 파티에 참가됨
-            // txt[1 + n1] 파티원 닉네임
-            // txt[1 + n2] 파티원 uniqueNumber
+            // txt[1 + n1] 파티원 uniqueNumber
+            // txt[1 + n2] 파티원 닉네임
+            // txt[1 + n3] 파티원 직업
+            for (int i = 1; i < txt.Length; i += 3)
+            {
+                v_party.Add(
+                    txt[i],
+                    new PartyData(txt[i + 1], (JOB)Enum.Parse(typeof(JOB), txt[i + 2]))
+                );
+            }
+        }
+        else if (txt[0].Equals("ADD_PARTY"))
+        {
+            // 누군가 파티에 들어옴
+            // txt[1] 파티원 uniqueNumber
+            // txt[2] 파티원 닉네임
+            // txt[3] 파티원 직업
+            v_party.Add(
+                txt[1],
+                new PartyData(txt[2], (JOB)Enum.Parse(typeof(JOB), txt[3]))
+            );
         }
         else if (txt[0].Equals("EXIT_PARTY"))
         {
             // 누군가 파티에서 나감
             // txt[1] 나간 파티원 uniqueNumber
+            v_party.Remove(txt[1]);
         }
         else if (txt[0].Equals("REQ_VOTE_ROOM_CHANGE"))
         {
@@ -258,9 +312,23 @@ public class NetworkMng : MonoBehaviour
             // 방 변경 누가 찬성/반대함
             // txt[1] == "1" 찬성, "0" 반대
         }
+        else if (txt[0].Equals("ESTHER"))
+        {
+            // 에스더 사용
+            // txt[1] 에스더 번호
+            // txt[2] 에스더 소환 자
+            // txt[3] 에스더 소환
+            GameMng.I.estherManager.useEsther(
+                int.Parse(txt[1]),
+                v_users[txt[2]].transform.position
+            );
+        }
         else if (txt[0].Equals("CHANGE_ROOM"))
         {
             // 방 변경 (파티 없이 혼자일때 들어옴 아마)
+            v_users.Clear();
+
+            // 이후 변경된 새 방의 LoadManager 의 Start() 에서 관리
         }
         else if (txt[0].Equals("UNIQUE"))
         {
@@ -378,5 +446,15 @@ public class NetworkMng : MonoBehaviour
         temp[1] = (byte)((val & 0x0000ff00) >> 8);
         temp[0] = (byte)((val & 0x000000ff));
         return temp;
+    }
+
+    /**
+     * @brief 스킬 사용
+     * @param skillCode 0~4스킬, 5대쉬, 6기상기, 7평타
+     * @param skillDirection 스킬 사용방향,  사용방향이 필요없는 스킬은 00, 평타는 좌우, 나머지는 진짜 방향
+     */
+    public void UseSkill(SKILL_CODE skillCode, Vector2 skillDirection = new Vector2())
+    {
+        SendMessage(string.Format("SKILL:{0}:{1}:{2}", skillCode, skillDirection.x, skillDirection.y));
     }
 }

@@ -34,6 +34,17 @@ public struct Stat
     public float incBackattackPer;      // 백어택 증가량 퍼센트  ex) 1.2 라면  데미지 120%
 }
 
+public enum SKILL_CODE
+{
+    SKILL_1,
+    SKILL_2,
+    SKILL_3,
+    SKILL_4,
+    SKILL_5,
+    DASH,
+    WAKEUP,
+    ATTACK
+}
 
 public class Character : MonoBehaviour
 {
@@ -230,6 +241,8 @@ public class Character : MonoBehaviour
             _action = CHARACTER_ACTION.CAN_MOVE;
 
             StartCoroutine(SkillCoolDown(6));
+            
+            // NetworkMng.I.UseSkill(SKILL_CODE.WAKEUP);
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[5] && _action != CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
@@ -240,6 +253,8 @@ public class Character : MonoBehaviour
 
             _action = CHARACTER_ACTION.CAN_MOVE;
             StartCoroutine(SkillCoolDown(5));
+
+            // NetworkMng.I.UseSkill(SKILL_CODE.DASH);
         }
 
         // 아무것도 아닌 상태가 아닌 경우는 이동이 가능한 상태
@@ -288,14 +303,8 @@ public class Character : MonoBehaviour
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            // 좌우 반전
-            if (Input.mousePosition.x < Screen.width / 2)
-                transform.rotation = Quaternion.Euler(Vector3.zero);
-            else
-                transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
-
-            _action = CHARACTER_ACTION.CANT_ANYTHING;
-            _anim.SetTrigger("Attack");
+            // NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition);
+            attack(Input.mousePosition);
         }
         // 핑
         else if (Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.LeftControl))
@@ -341,6 +350,18 @@ public class Character : MonoBehaviour
     public virtual void skill_3() { }
     public virtual void skill_4() { }
     public virtual void skill_5() { }
+
+    public void attack(Vector2 attackDir) {
+        // 좌우 반전
+        if (attackDir.x < Screen.width / 2)
+            transform.rotation = Quaternion.Euler(Vector3.zero);
+        else
+            transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+
+
+        _action = CHARACTER_ACTION.CANT_ANYTHING;
+        _anim.SetTrigger("Attack");
+    }
 
     void endAct()
     {
