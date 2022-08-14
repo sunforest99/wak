@@ -35,28 +35,28 @@ public class Wakgui : Boss
         public GameObject outcast;
         public GameObject[] totem;
     }
-    public WAKGUI_ACTION action;
-
-    [SerializeField] private int baseAttackCount;       // <! 기본패턴 몇번 후 패턴 사용할 것인지 (나중에 바꿀듯)
-
+    // 패턴 ======================================================================================================
     private int pattern_rand;       // <! 패턴 랜덤값
-
+    public WAKGUI_ACTION action;    // 현재 패턴
+    [SerializeField] private int baseAttackCount;       // <! 기본패턴 몇번 후 패턴 사용할 것인지 (나중에 바꿀듯)
     [SerializeField] pattenObj patten;      // <! 패턴 프리팹 담는 구조체
+    
+    // 패턴-똥 시간 ==
+    float pooSpawnTime;
 
+    // 전멸기-왕따게임 ==
     public List<OutCast> outCasts;
     public GameObject getOutcast { get { return patten.outcast; } }
     public GameObject[] getTotem { get { return patten.totem; } }
 
+    // 전멸기-구슬먹기 ==
     public List<Marble> marblelist;
-    bool Checkcircle = false;           // !< 구슬부시기 패턴 채크
-    bool Checkoutcast = false;          // !< 왕따 패턴 체크
-    bool Checkpatern = false;
+    bool checkCircle = false;           // !< 구슬부시기 패턴 채크
+    bool checkOutcast = false;          // !< 왕따 패턴 체크
+    bool checkPattern = false;
     public GameObject[] getCircle { get { return patten.circle; } }
 
-    float pooSpawnTime;
-
-    [SerializeField] private Animator animator = null;
-
+    // ??
     public int accumulateDmg;
     public int circle_answer;
 
@@ -66,7 +66,7 @@ public class Wakgui : Boss
         GameMng.I.bossData = this.bossdata;
         StartCoroutine(Think());
 
-        // StartCoroutine(Teleport("Petern_Circle"));
+        // StartCoroutine(Teleport("Pattern_Circle"));
     }
 
     void Update()
@@ -79,19 +79,19 @@ public class Wakgui : Boss
             if (action == WAKGUI_ACTION.IDLE)
                 base.BossMove();
 
-            if (!Checkpatern && !Checkcircle && base._currentNesting < 90 && action == WAKGUI_ACTION.IDLE)
+            if (!checkPattern && !checkCircle && base._currentNesting < 90 && action == WAKGUI_ACTION.IDLE)
             {
                 Teleport(true);
-                Checkpatern = true;
-                Checkcircle = true;
+                checkPattern = true;
+                checkCircle = true;
                 _isAnnihilation = true;
                 StopCoroutine(Think());
             }
-            else if (Checkcircle && !Checkoutcast && base._currentNesting < 50 && action == WAKGUI_ACTION.IDLE)
+            else if (checkCircle && !checkOutcast && base._currentNesting < 50 && action == WAKGUI_ACTION.IDLE)
             {
                 Teleport(false);
-                Checkpatern = true;
-                Checkoutcast = true;
+                checkPattern = true;
+                checkOutcast = true;
                 StopCoroutine(Think());
             }
         }
@@ -308,30 +308,30 @@ public class Wakgui : Boss
         if (pettern_check)
         {
             animator.SetBool("CheckCircle", true);
-            StartCoroutine(Petern_Circle());
+            StartCoroutine(Pattern_Circle());
         }
         else
         {
             animator.SetBool("CheckCircle", false);
-            StartCoroutine(Petern_Outcast());
+            StartCoroutine(Pattern_Outcast());
         }
     }
 
-    public IEnumerator Petern_Circle()
+    public IEnumerator Pattern_Circle()
     {
         marblelist.Clear();
         circle_answer = Random.Range(0, 6);
-        animator.SetInteger("randCircle", circle_answer);
+        animator.SetInteger("RandCircle", circle_answer);
 
         yield return new WaitForSeconds(15.0f);
         action = WAKGUI_ACTION.IDLE;
         _isAnnihilation = false;
         StartCoroutine(Think());
-        Checkpatern = false;
+        checkPattern = false;
         yield return null;
     }
 
-    public IEnumerator Petern_Outcast()
+    public IEnumerator Pattern_Outcast()
     {
         Debug.Log("ASDfasdfasd");
         yield return null;

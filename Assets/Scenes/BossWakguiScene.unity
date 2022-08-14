@@ -231,7 +231,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &193288161
 PrefabInstance:
@@ -246,7 +246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 708272248292700937, guid: ebf36a5dc5d731b4f92f88394a9a91b8, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 708272248292700937, guid: ebf36a5dc5d731b4f92f88394a9a91b8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -463,7 +463,6 @@ GameObject:
   m_Component:
   - component: {fileID: 634107006}
   - component: {fileID: 634107005}
-  - component: {fileID: 634107004}
   m_Layer: 0
   m_Name: "___\uBCF4\uC2A4\uB9F5_\uBCBD"
   m_TagString: Untagged
@@ -471,19 +470,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &634107004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 634107003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: becd660cc16eb3740931caf94cad6a92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  map: {fileID: 634107005}
 --- !u!212 &634107005
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -544,12 +530,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634107003}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.5}
-  m_LocalScale: {x: 1.8, y: 1.8, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 1350852237}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &893825057 stripped
 GameObject:
@@ -570,6 +556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapNameTxt: {fileID: 0}
   mapName: "\uADC0\uC0C1\uC5B4\uB450"
+  isFocusingMap: 1
 --- !u!114 &968843075 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5735003748936671365, guid: e765bd3727cb25c4291a3125ff115d20, type: 3}
@@ -643,6 +630,7 @@ GameObject:
   - component: {fileID: 1350852237}
   - component: {fileID: 1350852236}
   - component: {fileID: 1350852235}
+  - component: {fileID: 1350852238}
   m_Layer: 0
   m_Name: "___\uBCF4\uC2A4\uB9F5_\uBC14\uB2E5"
   m_TagString: Untagged
@@ -726,10 +714,26 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 1.5}
   m_LocalScale: {x: 1.8, y: 1.8, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 634107006}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1350852238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1350852234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c86734a4c81a1a1458c577238717aacf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapNameTxt: {fileID: 0}
+  mapName: 
+  isFocusingMap: 1
 --- !u!114 &1392550000 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2729649770498423835, guid: e765bd3727cb25c4291a3125ff115d20, type: 3}
@@ -776,7 +780,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3114848300190335687, guid: 0ac0b93498a32f244939d3ae524154af, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3114848300190335687, guid: 0ac0b93498a32f244939d3ae524154af, type: 3}
       propertyPath: m_LocalPosition.x
@@ -964,7 +968,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1882619253 stripped
 MonoBehaviour:
@@ -1118,7 +1122,7 @@ PrefabInstance:
       objectReference: {fileID: 360232309}
     - target: {fileID: 5453262711012187998, guid: c3e8238499ddaa346bde3aecc4e1a991, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5453262711012187998, guid: c3e8238499ddaa346bde3aecc4e1a991, type: 3}
       propertyPath: m_LocalPosition.x
