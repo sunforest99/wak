@@ -65,8 +65,7 @@ public class GameMng : MonoBehaviour
 
     private void Start()
     {
-        userData.job = 1;
-        createMe();
+        
     }
 
     // public void mouseRaycast(Vector2 charPos)      // <! 이름바꾸기
@@ -113,17 +112,20 @@ public class GameMng : MonoBehaviour
     public Character createPlayer(int job, string nickName, float posX = 0, float posY = 0)
     {
         GameObject temp = Instantiate(characterPrefab[job], new Vector3(posX, posY, 0), Quaternion.identity);
-        character = temp.GetComponent<Character>();
-        character.nickName = nickName;
+        Character cha = temp.GetComponent<Character>();
+        cha.nickName = nickName;
 
-        return character;
+        return cha;
     }
 
     public void createMe()
     {
-        createPlayer(userData.job - 1, GameMng.I.userData.user_nickname);
-        character._isPlayer = true;
+        character = createPlayer(userData.job, GameMng.I.userData.user_nickname);
+        character.isMe();
 
+        if (userData.job.Equals(0))     // 무직(초반 캐릭터)는 스킬과 아이템이 없음
+            return;
+        
         for (int i = 0; i < skillUI.transform.childCount; i++)
         {
             skill_Img.Add(skillUI.GetChild(i).transform.GetChild(0).GetComponent<UnityEngine.UI.Image>());
