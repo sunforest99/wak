@@ -36,7 +36,7 @@ public class NetworkMng : MonoBehaviour
     public string uniqueNumber = "";        // 나 자신을 가리키는 고유 숫자
     Dictionary<string, Character> v_users = new Dictionary<string, Character>();        // 맵에 같이 있는 유저들
     Dictionary<string, PartyData> v_party = new Dictionary<string, PartyData>();        // 파티원들  (v_users안에도 파티원들이 있긴함)
-
+    public bool roomOwner = false;
 
 
     static NetworkMng _instance;
@@ -204,14 +204,8 @@ public class NetworkMng : MonoBehaviour
     {
         string msg = Encoding.UTF8.GetString(this.buf, 2, len - 2);
         string[] txt = msg.Split(':');
-
-        if (txt[0].Equals("CONNECT"))
-        {
-        }
-        else if (txt[0].Equals("USER"))
-        {
-        }
-        else if (txt[0].Equals("ADD_USER"))
+        
+        if (txt[0].Equals("ADD_USER"))
         {
             // 방에 새로 들어온 유저
             // ADD_USER : 새로온유저uniqueNumber : 직업 : 닉네임
@@ -233,6 +227,11 @@ public class NetworkMng : MonoBehaviour
         else if (txt[0].Equals("DAMAGE"))
         {
             // DAMAGE : 데미지를_입힌_타겟 : 데미지_수치
+
+            // if (보스맵인가?)
+            //     보스한테 데미지 입힘
+            // else if (필드맵인가?)
+            //     필드맵의 몬스터 누구에게 데미지 입힘
         }
         else if (txt[0].Equals("MOVE_START"))
         {
@@ -251,6 +250,8 @@ public class NetworkMng : MonoBehaviour
         }
         else if (txt[0].Equals("IN_USER"))  // 기존 맵에 있는 유저들 데이터
         {
+            // TODO : 이 메세지를 받으려면 서버에 "CHANGE_ROOM"을 호출해야 하는데 씬을 이동한 후(LoadManager)에 받을 것. 이 메세지를 받았다면 로딩창을 내려도 됨
+
             // 고유uniqueNumber : 직업 : 닉네임
             for (int i = 1; i < txt.Length; i += 5)
             {
@@ -311,6 +312,9 @@ public class NetworkMng : MonoBehaviour
         {
             // 방 변경 누가 찬성/반대함
             // txt[1] == "1" 찬성, "0" 반대
+            
+            // if 모두 찬성
+            //!! 일반적으로 방 변경할때는 CHANGE_ROOM이나, 레이드 정비소 및 보스재입장 시에는 CHANGE_ROOM_PARTY 을 호출해야함
         }
         else if (txt[0].Equals("ESTHER"))
         {
@@ -323,12 +327,30 @@ public class NetworkMng : MonoBehaviour
                 v_users[txt[2]].transform.position
             );
         }
+        else if (txt[0].Equals("ESTHER_DAMAGE"))
+        {
+            // DAMAGE와 다르게 데미지 표시도 해줌
+        }
         else if (txt[0].Equals("CHANGE_ROOM"))
         {
             // 방 변경 (파티 없이 혼자일때 들어옴 아마)
             v_users.Clear();
 
             // 이후 변경된 새 방의 LoadManager 의 Start() 에서 관리
+        }
+        else if (txt[0].Equals("BOSS_PATTERN"))
+        {
+            // txt[1] 보스 패턴
+            // txt[2~] { 패턴에 필요한 데이터 }
+        }
+        else if (txt[0].Equals("YOUR_OWNER"))
+        {
+            // 파티 오너 (보스 패턴을 관리함)
+            roomOwner = true;
+        }
+        else if (txt[0].Equals("CONNECT"))
+        {
+            SendMessage(string.Format("LOGIN:{0}", GameMng.I.userData.user_nickname));
         }
         else if (txt[0].Equals("UNIQUE"))
         {
