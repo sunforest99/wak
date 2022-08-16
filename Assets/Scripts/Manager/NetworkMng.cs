@@ -266,6 +266,12 @@ public class NetworkMng : MonoBehaviour
             Destroy(v_users[txt[1]].gameObject);
             v_users.Remove(txt[1]);
         }
+        else if (txt[0].Equals("CHANGE_HP"))
+        {
+            // 파티원 HP가 변경됨
+            // txt[1] 변경된 파티원 uniqueNumber
+            // txt[2] 변경된 체력 퍼센트
+        }
         else if (txt[0].Equals("INVITE_PARTY"))
         {
             // 파티 초대 왔음

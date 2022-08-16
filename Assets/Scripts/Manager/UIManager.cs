@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // [System.Serializable]
 // public class SkillIcons
@@ -15,10 +16,23 @@ public class UIManager : MonoBehaviour
     // [SerializeField] SkillIcons[] job_skill_icons;
     // [SerializeField] UnityEngine.UI.Image[] skill_icons;
     // [SerializeField] GameObject skillIconWindow;
+    [SerializeField] Canvas _canvas;
 
     private void Awake()
     {
         DontDestroyOnLoad(this);
+    }
+
+    private void OnEnable() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        _canvas.worldCamera = Camera.main;
     }
 
     // void setSkillIcons()

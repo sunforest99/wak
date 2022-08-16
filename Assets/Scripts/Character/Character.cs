@@ -51,6 +51,7 @@ public class Character : MonoBehaviour
     // 캐릭터 ====================================================================================================
     public Animator _anim;
     [SerializeField] Rigidbody2D _rigidBody;
+    [SerializeField] BoxCollider2D _collider;
     public void setTriggerSleep() => _anim.SetTrigger("Sleep");
 
     // 데이터 ====================================================================================================
@@ -102,7 +103,8 @@ public class Character : MonoBehaviour
 
     void Update()
     {
-        inputKey();
+        if (_isPlayer)
+            inputKey();
     }
 
     void FixedUpdate()
@@ -236,24 +238,13 @@ public class Character : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[6] && _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
         {
-            _anim.SetTrigger("Wakeup");
-
-            _action = CHARACTER_ACTION.CAN_MOVE;
-
-            StartCoroutine(SkillCoolDown(6));
-            
+            wakeup();
             // NetworkMng.I.UseSkill(SKILL_CODE.WAKEUP);
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[5] && _action != CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
         {
-            curDashTime = 0.0f;
-
-            _anim.SetTrigger("Dash");
-
-            _action = CHARACTER_ACTION.CAN_MOVE;
-            StartCoroutine(SkillCoolDown(5));
-
+            dash();
             // NetworkMng.I.UseSkill(SKILL_CODE.DASH);
         }
 
@@ -344,6 +335,19 @@ public class Character : MonoBehaviour
         }
     }
 
+    void dash() {
+        StartCoroutine(SkillCoolDown(5));
+        _action = CHARACTER_ACTION.CAN_MOVE;
+        _anim.SetTrigger("Dash");
+        curDashTime = 0.0f;
+    }
+
+    void wakeup() {
+        StartCoroutine(SkillCoolDown(6));
+        _action = CHARACTER_ACTION.CAN_MOVE;
+        _anim.SetTrigger("Wakeup");
+    }
+
     public virtual void init() { }
     public virtual void skill_1() { }
     public virtual void skill_2() { }
@@ -421,5 +425,11 @@ public class Character : MonoBehaviour
                 StartCoroutine(SpeedUp(5, save));
                 break;
         }
+    }
+
+    public void isMe()
+    {
+        _isPlayer = true;
+        _collider.enabled = true;
     }
 }
