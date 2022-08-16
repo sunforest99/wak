@@ -28,7 +28,7 @@ public struct PartyBuffGroup
 public class StateMng : MonoBehaviour
 {
     public List<Character> targetList;      // 보스 타겟 설정하는거
-    public Transform getTarget => targetList[0].transform;        // 타겟 렌덤
+    public Transform getTarget => targetList[Random.Range(0, targetList.Count)].transform;        // 타겟 렌덤
     [SerializeField] private PartyBuffGroup[] partybuffGroups = new PartyBuffGroup[4];
     [SerializeField] private Buff[] ownBuff;        // 내꺼 버프
 
@@ -56,7 +56,7 @@ public class StateMng : MonoBehaviour
         fImageSize = 148.0f;
         fPlayerImgSize = 358.0f;
         Party_HP_Numerical[0].fullHp = Party_HP_Numerical[0].fullShield = user_HP_Numerical.fullHp = 95959;
-        Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp = 10000;
+        Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp = user_HP_Numerical.fullHp;
         Party_HP_Numerical[0].Shield = user_HP_Numerical.Shield = 0;
         for (int i = 1; i < 4; i++)
         {

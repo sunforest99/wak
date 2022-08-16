@@ -33,7 +33,6 @@ public class ChangeAction : MonoBehaviour
     void SetIdle()
     {
         wakgui.action = WAKGUI_ACTION.IDLE;
-        Debug.Log("setIdle");
     }
 
     void SetTelePort() => wakgui.action = WAKGUI_ACTION.TELEPORT;

@@ -166,7 +166,7 @@ public class Boss : MonoBehaviour
      */
     protected void BossMove()
     {
-        //_dir = _target.transform.localPosition - this.transform.localPosition;
+        _dir = _target.transform.localPosition - this.transform.localPosition;
 
         if (_dir.x > 1f && !isRFlip)
         {
@@ -185,7 +185,7 @@ public class Boss : MonoBehaviour
 
         // if (Vector2.Distance(_target.localPosition, this.transform.localPosition) > 2f)
         // {
-        //this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3(_target.localPosition.x, _target.localPosition.y + 0.3f, _target.localPosition.z), bossdata.getMoveSpeed * Time.deltaTime);
+        this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, new Vector3(_target.localPosition.x, _target.localPosition.y + 0.3f, _target.localPosition.z), bossdata.getMoveSpeed * Time.deltaTime);
         // }
     }
 

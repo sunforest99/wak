@@ -40,7 +40,7 @@ public class Wakgui : Boss
     public WAKGUI_ACTION action;    // 현재 패턴
     [SerializeField] private int baseAttackCount;       // <! 기본패턴 몇번 후 패턴 사용할 것인지 (나중에 바꿀듯)
     [SerializeField] pattenObj patten;      // <! 패턴 프리팹 담는 구조체
-    
+
     // 패턴-똥 시간 ==
     float pooSpawnTime;
 
@@ -57,8 +57,8 @@ public class Wakgui : Boss
     public GameObject[] getCircle { get { return patten.circle; } }
 
     // ??
-    public int accumulateDmg;
     public int circle_answer;
+    bool _isStart;
 
     void Start()
     {
@@ -71,6 +71,12 @@ public class Wakgui : Boss
 
     void Update()
     {
+        if (!_isStart)
+        {
+            _target = GameMng.I.stateMng.getTarget;
+            _isStart = true;
+        }
+
         if (_currentHp >= 0)
         {
             base.ChangeHpbar();
@@ -91,7 +97,8 @@ public class Wakgui : Boss
             {
                 Teleport(false);
                 checkPattern = true;
-                checkOutcast = true;
+                checkOutcast = true; 
+                _isAnnihilation = true;
                 StopCoroutine(Think());
             }
         }
@@ -113,7 +120,7 @@ public class Wakgui : Boss
             switch (pattern_rand)
             {
                 case (int)WAKGUI_ACTION.IDLE:
-                    //_target = GameMng.I.stateMng.getTarget;
+                    _target = GameMng.I.stateMng.getTarget;
                     StartCoroutine(Think());
                     break;
                 case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기
@@ -333,7 +340,10 @@ public class Wakgui : Boss
 
     public IEnumerator Pattern_Outcast()
     {
-        Debug.Log("ASDfasdfasd");
+        yield return new WaitForSeconds(15.0f);
+        action = WAKGUI_ACTION.IDLE;
+        _isAnnihilation = false;
+        StartCoroutine(Think());
         yield return null;
     }
 }
