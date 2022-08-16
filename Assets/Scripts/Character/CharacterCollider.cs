@@ -52,7 +52,7 @@ public class CharacterCollider : MonoBehaviour
         else
             GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName;
 
-        for(int i = idx; i >= 0; i--)
+        for (int i = idx; i >= 0; i--)
             GameMng.I.getItemPool[i].EXP_Game.transform.localPosition = new Vector3(5.0f, 45.0f * (idx - i), 0.0f);
     }
 
@@ -60,7 +60,7 @@ public class CharacterCollider : MonoBehaviour
     {
         if (other.CompareTag("Monster_Weapon"))
         {
-            Debug.Log("기본 패턴 데미지 " + GameMng.I.bossData.getDamage());
+            GameMng.I.stateMng.user_HP_Numerical.Hp -= GameMng.I.bossData.getDamage();
         }
 
         if (other.CompareTag("Item"))

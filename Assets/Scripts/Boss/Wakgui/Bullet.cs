@@ -19,7 +19,7 @@ public class Bullet : DestroySelf
     {
         if(other.CompareTag("Player"))
         {
-            Debug.Log("크리스탈 데미지 : " + damage);
+            GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
             destroySelf();
         }
     }

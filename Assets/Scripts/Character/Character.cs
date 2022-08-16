@@ -86,6 +86,10 @@ public class Character : MonoBehaviour
     public static Item[] equipBattleItem = new Item[3];
     public static List<List<Item>> haveItem = new List<List<Item>>();
 
+    private void Awake()
+    {
+        GameMng.I.stateMng.targetList.Add(this);        // 파티를 들어갔을떄
+    }
 
     void Start()
     {
@@ -94,7 +98,7 @@ public class Character : MonoBehaviour
             footprints[i] = Instantiate(footprints[3], Vector3.zero, Quaternion.identity) as GameObject;
         }
         //GameMng.I.character = this;
-        GameMng.I.stateMng.targetList.Add(this);        // 파티를 들어갔을떄
+        // GameMng.I.stateMng.targetList.Add(this);        // 파티를 들어갔을떄
         _action = CHARACTER_ACTION.IDLE;
         init();
         for (int i = 0; i < 4; i++)
@@ -335,14 +339,16 @@ public class Character : MonoBehaviour
         }
     }
 
-    void dash() {
+    void dash()
+    {
         StartCoroutine(SkillCoolDown(5));
         _action = CHARACTER_ACTION.CAN_MOVE;
         _anim.SetTrigger("Dash");
         curDashTime = 0.0f;
     }
 
-    void wakeup() {
+    void wakeup()
+    {
         StartCoroutine(SkillCoolDown(6));
         _action = CHARACTER_ACTION.CAN_MOVE;
         _anim.SetTrigger("Wakeup");
@@ -355,7 +361,8 @@ public class Character : MonoBehaviour
     public virtual void skill_4() { }
     public virtual void skill_5() { }
 
-    public void attack(Vector2 attackDir) {
+    public void attack(Vector2 attackDir)
+    {
         // 좌우 반전
         if (attackDir.x < Screen.width / 2)
             transform.rotation = Quaternion.Euler(Vector3.zero);
@@ -431,5 +438,10 @@ public class Character : MonoBehaviour
     {
         _isPlayer = true;
         _collider.enabled = true;
+    }
+
+    void OnDestroy()
+    {
+        GameMng.I.stateMng.targetList.Remove(this);
     }
 }

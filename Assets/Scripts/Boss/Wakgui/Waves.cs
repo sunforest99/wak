@@ -51,7 +51,7 @@ public class Waves : DestroySelf
     {
         if(other.CompareTag("Player"))
         {
-            Debug.Log("파도 데미지 : " + damage);
+            GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
         }
     }
 }
