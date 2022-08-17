@@ -8,7 +8,8 @@ public class EnterRaidDoor : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("Player"))
         {
-            SceneManager.LoadScene("BossWakguiScene");
+            NetworkMng.I.VoteChangeScene(ROOM_CODE.RAID_0);
+           // SceneManager.LoadScene("BossWakguiScene");
         }
     }
 }

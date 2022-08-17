@@ -487,9 +487,12 @@ public class Character : MonoBehaviour
 
     public void isMe()
     {
+        // this.gameObject.name = "ME";
+        this.gameObject.tag = "Untagged";
+        // this.gameObject.layer = LayerMask.NameToLayer("Character");
         _isPlayer = true;
         _collider.enabled = true;
-        GetComponent<BoxCollider2D>().enabled = false;
+        // GetComponent<BoxCollider2D>().isTrigger = false;
     }
 
     public void useSkill(SKILL_CODE code, Vector2 skillPos)

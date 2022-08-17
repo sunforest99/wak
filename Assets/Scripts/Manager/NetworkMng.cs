@@ -37,7 +37,7 @@ public class NetworkMng : MonoBehaviour
     Dictionary<string, Character> v_users = new Dictionary<string, Character>();        // 맵에 같이 있는 유저들
     Dictionary<string, PartyData> v_party = new Dictionary<string, PartyData>();        // 파티원들  (v_users안에도 파티원들이 있긴함)
     public bool roomOwner = false;
-
+    int voteAgree = 0, voteRefuse = 0;
 
     static NetworkMng _instance;
     public static NetworkMng I
@@ -61,6 +61,10 @@ public class NetworkMng : MonoBehaviour
 
     void Start() {
         Login();
+
+        Debug.Log((int)ROOM_CODE.RAID_0);
+        Debug.Log(ROOM_CODE.RAID_0);
+        Debug.Log("" + ROOM_CODE.RAID_0);
     }
 
     /**
@@ -210,6 +214,8 @@ public class NetworkMng : MonoBehaviour
         string msg = Encoding.UTF8.GetString(this.buf, 2, len - 2);
         string[] txt = msg.Split(':');
         
+        Debug.Log(msg);
+
         if (txt[0].Equals("ADD_USER"))
         {
             // 방에 새로 들어온 유저
@@ -382,13 +388,50 @@ public class NetworkMng : MonoBehaviour
         {
             // 방 변경하기로 파티원이 투표함
             // txt[1] 이동할 방 idx
+            voteAgree = 1;
+            voteRefuse = 0;
+            GameMng.I.alertMessage.name = txt[1];       // 변경할 방 코드 임시 저장
+            GameMng.I.alertMessage.text = "파티원이 맵 이동을 권유합니다. \n 수락 : 1  거절 : 0";
+            GameMng.I.alertMessage.transform.parent.gameObject.SetActive(true);
+            GameMng.I.agreeBT.onClick.RemoveAllListeners();
+            GameMng.I.agreeBT.onClick.AddListener(() => {
+                NetworkMng.I.SendMsg("VOTE_ROOM_CHANGE:1");
+                GameMng.I.agreeBT.interactable = false;
+                GameMng.I.refuseBT.interactable = false;
+            });
+            GameMng.I.refuseBT.onClick.RemoveAllListeners();
+            GameMng.I.refuseBT.onClick.AddListener(() => {
+                NetworkMng.I.SendMsg("VOTE_ROOM_CHANGE:0");
+                GameMng.I.agreeBT.interactable = false;
+                GameMng.I.refuseBT.interactable = false;
+            });
         }
         else if (txt[0].Equals("VOTE_ROOM_CHANGE"))
         {
             // 방 변경 누가 찬성/반대함
-            // txt[1] == "1" 찬성, "0" 반대
+            if (txt[1].Equals("1"))
+                voteAgree++;
+            else
+                voteRefuse++;
             
-            // if 모두 찬성
+            GameMng.I.alertMessage.text = string.Format("파티원이 맵 이동을 권유합니다. \n 수락 : {0}  거절 : {1}", voteAgree, voteRefuse);
+            
+            // 모두 투표
+            if (voteAgree + voteRefuse == v_party.Count + 1)
+            {
+                GameMng.I.alertMessage.transform.parent.gameObject.SetActive(false);
+                GameMng.I.agreeBT.interactable = true;
+                GameMng.I.refuseBT.interactable = true;
+                // 모두 찬성
+                if (voteAgree == v_party.Count + 1)
+                {
+                    ChangeScene(GameMng.I.alertMessage.name);
+                }
+                else
+                {
+                    // 반대가 있음 -> 거절됨
+                }
+            }
             //!! 일반적으로 방 변경할때는 CHANGE_ROOM이나, 레이드 정비소 및 보스재입장 시에는 CHANGE_ROOM_PARTY 을 호출해야함
         }
         else if (txt[0].Equals("ESTHER"))
@@ -554,5 +597,32 @@ public class NetworkMng : MonoBehaviour
     public void UseSkill(SKILL_CODE skillCode, Vector2 skillDirection = new Vector2())
     {
         SendMsg(string.Format("SKILL:{0}:{1}:{2}", skillCode, skillDirection.x, skillDirection.y));
+    }
+
+    public void ChangeScene(string roomCode)
+    {
+        switch ((ROOM_CODE)Enum.Parse(typeof(ROOM_CODE), roomCode))
+        {
+            case ROOM_CODE.RAID_0:
+                SceneManager.LoadScene("BossWakguiScene");
+                break;
+            case ROOM_CODE.RAID_0_REPAIR:
+                break;
+            case ROOM_CODE.RAID_1:
+                break;
+        }
+    }
+
+    public void VoteChangeScene(ROOM_CODE roomCode)
+    {
+        NetworkMng.I.SendMsg(string.Format("REQ_VOTE_ROOM_CHANGE:{0}", (int)roomCode));
+        
+        voteAgree = 1;
+        voteRefuse = 0;
+        GameMng.I.alertMessage.name = (int)roomCode + "";       // 변경할 방 코드 임시 저장
+        GameMng.I.alertMessage.text = "파티원에게 맵 이동 권유중... \n 수락 : 1  거절 : 0";
+        GameMng.I.alertMessage.transform.parent.gameObject.SetActive(true);
+        GameMng.I.agreeBT.interactable = false;
+        GameMng.I.refuseBT.interactable = false;
     }
 }

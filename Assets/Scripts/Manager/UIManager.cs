@@ -31,9 +31,10 @@ public class UIManager : MonoBehaviour
         {
             Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
+            if (hit)
             if (!hit.collider.Equals(null))
             {
-                if (hit.collider.tag.Equals("Player"))
+                if (hit.collider.tag.Equals("Character"))   // 나를 제외한 플레이어를 선택함
                 {
                     // txt[0] 닉네임
                     // txt[1] uniqueNumber
