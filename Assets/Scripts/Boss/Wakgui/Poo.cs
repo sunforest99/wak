@@ -22,4 +22,13 @@ public class Poo : DestroySelf
         yield return new WaitForSeconds(maintainTime);
         destroySelf();
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.bossData.getBuffs[1]);
+            GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+        }
+    }
 }

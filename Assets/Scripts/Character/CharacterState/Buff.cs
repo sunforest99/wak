@@ -59,8 +59,8 @@ public class Buff : Tooltips, IPointerEnterHandler, IPointerExitHandler
             gameObject.SetActive(false);
         }
         // TODO : 중첩 하기
-        // if (!buffData.check_buff && buffData.check_nesting)
-        //     Mount.text = 'x' + count.ToString();
+        if (!buffData.isBuff && buffData.check_nesting)
+            Mount.text = 'x' + count.ToString();
     }
 
     public IEnumerator Blink(float time)

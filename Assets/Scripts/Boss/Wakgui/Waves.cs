@@ -51,6 +51,7 @@ public class Waves : DestroySelf
     {
         if(other.CompareTag("Player"))
         {
+            GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.bossData.getBuffs[2]);
             GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
         }
     }
