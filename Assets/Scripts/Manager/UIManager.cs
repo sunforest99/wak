@@ -17,10 +17,53 @@ public class UIManager : MonoBehaviour
     // [SerializeField] UnityEngine.UI.Image[] skill_icons;
     // [SerializeField] GameObject skillIconWindow;
     [SerializeField] Canvas _canvas;
+    [SerializeField] TMPro.TextMeshProUGUI selectPlayerName;
+    [SerializeField] UnityEngine.UI.Button selectPlayerInviteBT;
 
     private void Awake()
     {
         DontDestroyOnLoad(this);
+    }
+
+    private void Update() {
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
+            if (hit)
+            if (!hit.collider.Equals(null))
+            {
+                if (hit.collider.tag.Equals("Character"))   // 나를 제외한 플레이어를 선택함
+                {
+                    // txt[0] 닉네임
+                    // txt[1] uniqueNumber
+                    string[] txt = hit.collider.name.Split(':');
+                    
+                    // UI 캔버스 상에서 내가 마우스 클릭한 위치로 찾기
+                    Vector2 canvasMousePos;
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                        _canvas.transform as RectTransform, 
+                        Input.mousePosition, 
+                        _canvas.worldCamera, 
+                        out canvasMousePos
+                    );
+                    
+                    selectPlayerName.text = txt[0];
+                    selectPlayerName.transform.parent.localPosition = canvasMousePos;
+                    selectPlayerName.transform.parent.gameObject.SetActive(true);
+                    selectPlayerInviteBT.onClick.RemoveAllListeners();
+                    selectPlayerInviteBT.onClick.AddListener(() => {
+                        selectPlayerName.transform.parent.gameObject.SetActive(false);
+                        NetworkMng.I.SendMsg(string.Format("INVITE_PARTY:{0}", txt[1]));
+                    });
+                }
+            }
+            else
+            {
+                selectPlayerName.transform.parent.gameObject.SetActive(false);
+            }
+        }  
     }
 
     private void OnEnable() {

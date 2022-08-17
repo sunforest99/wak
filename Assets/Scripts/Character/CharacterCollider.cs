@@ -52,8 +52,11 @@ public class CharacterCollider : MonoBehaviour
         else
             GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName;
 
-        for (int i = idx; i >= 0; i--)
-            GameMng.I.getItemPool[i].EXP_Game.transform.localPosition = new Vector3(5.0f, 45.0f * (idx - i), 0.0f);
+        for (int i = idx; i >= 0; i--) {
+            GameMng.I.getItemPool[i].EXP_Game.SetActive(false);
+            GameMng.I.getItemPool[i].EXP_Game.SetActive(true);
+        }
+            // GameMng.I.getItemPool[i].EXP_Game.transform.localPosition = new Vector3(5.0f, 45.0f * (idx - i), 0.0f);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -82,10 +85,22 @@ public class CharacterCollider : MonoBehaviour
                     itemSetting(3, item);
                     break;
             }
+            
+            if (!poolCount.Equals(0))
+                StopCoroutine(itemPoolTimer());
+            StartCoroutine(itemPoolTimer());
+            
             getItemEXP(item, poolCount++);
+            
             if (poolCount == 5)
                 poolCount = 0;
             Destroy(other.gameObject);
         }
+    }
+    
+    IEnumerator itemPoolTimer()
+    {
+        yield return new WaitForSeconds(4);
+        poolCount = 0;
     }
 }

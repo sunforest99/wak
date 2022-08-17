@@ -64,3 +64,13 @@ public struct GetItemEXP
     public UnityEngine.UI.Image EXP_Img;
     public TMPro.TextMeshProUGUI EXP_Text;
 }
+
+public enum ROOM_CODE
+{
+    SQUARE = 0,     // 광장(대도시)
+    FIELD_0,        // 필드 0
+    RAID_0,         // 레이드 0
+    RAID_0_REPAIR,  // 레이드 0 정비소
+    RAID_1,         // 레이드 1
+    RAID_1_REPAIR   // 레이드 1 정비소
+}

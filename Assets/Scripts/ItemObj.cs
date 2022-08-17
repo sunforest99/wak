@@ -15,15 +15,16 @@ public class ItemObj : MonoBehaviour
     IEnumerator bouncingSpawn()
     {
         float tick = 0;
-        float startPosY = transform.position.y + Random.Range(-0.3f, 0.3f);
+        float startPosY = transform.position.y + Random.Range(-0.6f, 0.6f);
+        float moveForceX = Random.Range(1f, 1.8f);
 
         while (tick < 0.1f) {
-            transform.position += new Vector3(1.5f, 1f, 0) * Time.deltaTime;
+            transform.position += new Vector3(moveForceX, 1f, 0) * Time.deltaTime;
             tick += Time.deltaTime;
             yield return null;
         }
         while (startPosY < transform.position.y) {
-            transform.position += new Vector3(1.5f, -1.8f, 0) * Time.deltaTime;
+            transform.position += new Vector3(moveForceX, -1.8f, 0) * Time.deltaTime;
             yield return null;
         }
     }
