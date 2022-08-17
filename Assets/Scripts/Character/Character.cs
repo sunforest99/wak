@@ -62,13 +62,14 @@ public class Character : MonoBehaviour
     public float curDashTime = 0.1f;
     /*========= 직업에 따라서 아래 수치가 다름 =========*/
     public static Stat _stat;
-    protected static float DASH_SPEED = 20;
-    protected static float MOVE_SPEED = 5;
+    protected float DASH_SPEED = 20;
+    protected float MOVE_SPEED = 5;
     protected static float DASH_COOLTIME = 6;
     protected static float WAKEUP_COOLTIME = 10;
 
     // 행동 ======================================================================================================
     Vector3 _moveDir;       // 캐릭터 움직이는 방향
+    Vector3 _moveDirBefore; // 캐릭터 움직이는 방향 (이전 프레임)
     bool isMoving = false;
     public CHARACTER_ACTION _action;
 
@@ -188,16 +189,6 @@ public class Character : MonoBehaviour
         usingBattleItem[itemnum] = false;
     }
 
-    void startMoving()
-    {
-        if (!isMoving)
-        {
-            _anim.SetBool("Move", true);
-            isMoving = true;
-            StartCoroutine(showFootprint());
-        }
-    }
-
     IEnumerator showFootprint()
     {
         footprints[footprintIdx].SetActive(true);
@@ -216,6 +207,9 @@ public class Character : MonoBehaviour
 
     void inputMove()
     {
+        if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
+            return;
+
         Vector3 moveDist = _moveDir.normalized * Time.deltaTime;
         _rigidBody.MovePosition(transform.position + moveDist * MOVE_SPEED);
 
@@ -225,50 +219,74 @@ public class Character : MonoBehaviour
             curDashTime += Time.deltaTime;
             _rigidBody.MovePosition(transform.position + moveDist * DASH_SPEED);
         }
+    }
 
-        // 이동 애니메이션 관리
-        if (_moveDir.x != 0 || _moveDir.y != 0)
+    public void setMoveDir(float changeDirX, float changeDirY)
+    {
+        _moveDir.x = changeDirX;
+        _moveDir.y = changeDirY;
+
+        if (_moveDir.x < 0)
+            transform.rotation = Quaternion.Euler(Vector3.zero);
+        else if (_moveDir.x > 0)
+            transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+    }
+
+    public void startMove()
+    {
+        if (!isMoving)
         {
-            startMoving();
+            _anim.SetBool("Move", true);
+            isMoving = true;
+            StartCoroutine(showFootprint());
         }
-        else
-        {
-            isMoving = false;
-            _anim.SetBool("Move", false);
-        }
+    }
+    public void stopMove()
+    {
+        isMoving = false;
+        _anim.SetBool("Move", false);
     }
 
     void inputKey()
     {
         if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[6] && _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
         {
+            NetworkMng.I.UseSkill(SKILL_CODE.WAKEUP);
+            StartCoroutine(SkillCoolDown(6));
             wakeup();
-            // NetworkMng.I.UseSkill(SKILL_CODE.WAKEUP);
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[5] && _action != CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
         {
+            NetworkMng.I.UseSkill(SKILL_CODE.DASH);
+            StartCoroutine(SkillCoolDown(5));
             dash();
-            // NetworkMng.I.UseSkill(SKILL_CODE.DASH);
         }
 
         // 아무것도 아닌 상태가 아닌 경우는 이동이 가능한 상태
-        if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
-        {
-            _moveDir.x = 0;
-            _moveDir.y = 0;
-            return;
-        }
+        // if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
+        // {
+        //     _moveDir.x = 0;
+        //     _moveDir.y = 0;
+        //     return;
+        // }
 
         // 이동
-        _moveDir.x = Input.GetAxisRaw("Horizontal");
-        _moveDir.y = Input.GetAxisRaw("Vertical");
+        setMoveDir(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        // 방향
-        if (_moveDir.x < 0)
-            transform.rotation = Quaternion.Euler(Vector3.zero);
-        else if (_moveDir.x > 0)
-            transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+        if (_moveDirBefore != _moveDir)
+            if (_moveDirBefore.x.Equals(0) && _moveDirBefore.y.Equals(0)) {
+                startMove();
+                NetworkMng.I.SendMsg(string.Format("MOVE_START:{0}:{1}", _moveDir.x, _moveDir.y));
+            }
+            else if (_moveDir.x.Equals(0) && _moveDir.y.Equals(0)) {
+                stopMove();
+                NetworkMng.I.SendMsg(string.Format("MOVE_STOP:{0}:{1}", transform.position.x, transform.position.y));
+            }
+            else {
+                NetworkMng.I.SendMsg(string.Format("MOVE:{0}:{1}:{2}:{3}", _moveDir.x, _moveDir.y, transform.position.x,  transform.position.y));
+            }
+        _moveDirBefore = _moveDir;
 
         // 모든 스킬은 IDLE 상태에서만 가능하기 때문에 체크함
         if (_action != CHARACTER_ACTION.IDLE)
@@ -276,21 +294,20 @@ public class Character : MonoBehaviour
 
         // 스킬
         if (Input.GetKeyDown(KeyCode.Q) && !checkSkill[0])
-            skill_1();
+            input_skill_1();
         else if (Input.GetKeyDown(KeyCode.E) && !checkSkill[1])
-            skill_2();
+            input_skill_2();
         else if (Input.GetKeyDown(KeyCode.R) && !checkSkill[2])
-            skill_3();
+            input_skill_3();
         else if (Input.GetKeyDown(KeyCode.LeftShift) && !checkSkill[3])
-            skill_4();
+            input_skill_4();
         else if (Input.GetKeyDown(KeyCode.F) && !checkSkill[4])
-            skill_5();
-
+            input_skill_5();
         // 임시 기절 키
-        else if (Input.GetKeyDown(KeyCode.Y))
-        {
-            sleep();
-        }
+        // else if (Input.GetKeyDown(KeyCode.Y))
+        // {
+        //     sleep();
+        // }
 
         // 마우스 좌클릭 - 일반 공격
         if (Input.GetMouseButtonDown(0) && GameMng.I.dailogUI == null)
@@ -298,7 +315,7 @@ public class Character : MonoBehaviour
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            // NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition);
+            NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition);
             attack(Input.mousePosition);
         }
         // 핑
@@ -341,7 +358,6 @@ public class Character : MonoBehaviour
 
     void dash()
     {
-        StartCoroutine(SkillCoolDown(5));
         _action = CHARACTER_ACTION.CAN_MOVE;
         _anim.SetTrigger("Dash");
         curDashTime = 0.0f;
@@ -349,11 +365,41 @@ public class Character : MonoBehaviour
 
     void wakeup()
     {
-        StartCoroutine(SkillCoolDown(6));
         _action = CHARACTER_ACTION.CAN_MOVE;
         _anim.SetTrigger("Wakeup");
     }
 
+
+    void input_skill_1()
+    {
+        StartCoroutine(SkillCoolDown(0));
+        NetworkMng.I.UseSkill(SKILL_CODE.SKILL_1);
+        skill_1();
+    }
+    void input_skill_2()
+    {
+        StartCoroutine(SkillCoolDown(1));
+        NetworkMng.I.UseSkill(SKILL_CODE.SKILL_2);
+        skill_2();
+    }
+    void input_skill_3()
+    {
+        StartCoroutine(SkillCoolDown(2));
+        NetworkMng.I.UseSkill(SKILL_CODE.SKILL_3);
+        skill_3();
+    }
+    void input_skill_4()
+    {
+        StartCoroutine(SkillCoolDown(3));
+        NetworkMng.I.UseSkill(SKILL_CODE.SKILL_4);
+        skill_4();
+    }
+    void input_skill_5()
+    {
+        StartCoroutine(SkillCoolDown(4));
+        NetworkMng.I.UseSkill(SKILL_CODE.SKILL_5);
+        skill_5();
+    }
     public virtual void init() { }
     public virtual void skill_1() { }
     public virtual void skill_2() { }
@@ -368,7 +414,6 @@ public class Character : MonoBehaviour
             transform.rotation = Quaternion.Euler(Vector3.zero);
         else
             transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
-
 
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Attack");
@@ -438,6 +483,38 @@ public class Character : MonoBehaviour
     {
         _isPlayer = true;
         _collider.enabled = true;
+        GetComponent<BoxCollider2D>().enabled = false;
+    }
+
+    public void useSkill(SKILL_CODE code, Vector2 skillPos)
+    {
+        switch (code)
+        {
+            case SKILL_CODE.ATTACK:
+                attack(skillPos);
+                break;
+            case SKILL_CODE.DASH:
+                dash();
+                break;
+            case SKILL_CODE.WAKEUP:
+                wakeup();
+                break;
+            case SKILL_CODE.SKILL_1:
+                skill_1();
+                break;
+            case SKILL_CODE.SKILL_2:
+                skill_2();
+                break;
+            case SKILL_CODE.SKILL_3:
+                skill_3();
+                break;
+            case SKILL_CODE.SKILL_4:
+                skill_4();
+                break;
+            case SKILL_CODE.SKILL_5:
+                skill_5();
+                break;
+        }
     }
 
     void OnDestroy()

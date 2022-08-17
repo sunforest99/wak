@@ -32,7 +32,8 @@ public class StateMng : MonoBehaviour
     [SerializeField] private PartyBuffGroup[] partybuffGroups = new PartyBuffGroup[4];
     [SerializeField] private Buff[] ownBuff;        // 내꺼 버프
 
-    [SerializeField] Image[] PartyHPImg = new Image[4];                                     // 좌측 UI 플레이어들 체력이미지
+    public Image[] PartyHPImg = new Image[4];                                     // 좌측 UI 플레이어들 체력이미지
+    public TMPro.TextMeshProUGUI[] PartyName;
     [SerializeField] Image[] PartyShieldImg = new Image[4];
     [SerializeField] Image PlayerHPImg;                                                     // 중하단 플레이어 체력 이미지
     [SerializeField] Image PlayerShieldImg;

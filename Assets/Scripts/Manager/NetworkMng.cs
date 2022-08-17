@@ -56,6 +56,11 @@ public class NetworkMng : MonoBehaviour
     {
         DontDestroyOnLoad(this);
         _instance = this;
+
+    }
+
+    void Start() {
+        Login();
     }
 
     /**
@@ -211,13 +216,17 @@ public class NetworkMng : MonoBehaviour
             // ADD_USER : 새로온유저uniqueNumber : 직업 : 닉네임
             v_users.Add(
                 txt[1], 
-                GameMng.I.createPlayer(int.Parse(txt[2]), txt[3])
+                GameMng.I.createPlayer(txt[1], int.Parse(txt[2]), txt[3])
             );
         }
         else if (txt[0].Equals("SKILL"))
         {
-            // txt[2] ->  0~7  (스킬5 + 기본공격, 이동기)
-            // v_users[txt[1]].skill_1();
+            // txt[2] 스킬코드
+            // txt[3,4] 스킬사용방향
+            v_users[txt[1]].useSkill(
+                (SKILL_CODE)Enum.Parse(typeof(SKILL_CODE), txt[2]),
+                new Vector2(float.Parse(txt[3]), float.Parse(txt[4]))
+            );
         }
         else if (txt[0].Equals("CHAT"))
         {
@@ -236,28 +245,36 @@ public class NetworkMng : MonoBehaviour
         else if (txt[0].Equals("MOVE_START"))
         {
             // MOVE_START : 유저uniqueNumber : 방향x좌표 : 방향y좌표
-            // v_users[txt[1]].transform.position = new Vector3(int.Parse(txt[2]), int.Parse(txt[3]), 0);
+            v_users[txt[1]].setMoveDir(int.Parse(txt[2]), int.Parse(txt[3]));
+            v_users[txt[1]].startMove();
         }
         else if (txt[0].Equals("MOVE"))
         {
-            // MOVE : 유저uniqueNumber : 방향x좌표 : 방향y좌표 : 내x좌표 : 내y좌표
-            // v_users[txt[1]].transform.position = new Vector3(int.Parse(txt[2]), int.Parse(txt[3]), 0);
+            // MOVE : 유저uniqueNumber : 방향x좌표 : 방향y좌표 : 캐릭터x좌표 : 캐릭터y좌표
+            v_users[txt[1]].setMoveDir(int.Parse(txt[2]), int.Parse(txt[3]));
         }
         else if (txt[0].Equals("MOVE_STOP"))
         {
-            // MOVE_STOP : 유저uniqueNumber
-            // v_users[txt[1]].transform.position = new Vector3(int.Parse(txt[2]), int.Parse(txt[3]), 0);
+            // MOVE_STOP : 유저uniqueNumber : 캐릭터x좌표 : 캐릭터y좌표
+            v_users[txt[1]].setMoveDir(0, 0);
+            v_users[txt[1]].stopMove();
+            v_users[txt[1]].transform.position = new Vector3(float.Parse(txt[2]), float.Parse(txt[3]));
         }
         else if (txt[0].Equals("IN_USER"))  // 기존 맵에 있는 유저들 데이터
         {
             // TODO : 이 메세지를 받으려면 서버에 "CHANGE_ROOM"을 호출해야 하는데 씬을 이동한 후(LoadManager)에 받을 것. 이 메세지를 받았다면 로딩창을 내려도 됨
 
             // 고유uniqueNumber : 직업 : 닉네임
+
+            Debug.Log(" " + txt.Length);
+            if (txt.Length.Equals(2))       // 유저가 아무도 없으면 2가 됨
+                return;
+            
             for (int i = 1; i < txt.Length; i += 5)
             {
                 v_users.Add(
                     txt[i], 
-                    GameMng.I.createPlayer(int.Parse(txt[i + 1]) - 1, txt[i + 2], float.Parse(txt[i + 3]), float.Parse(txt[i + 4]))
+                    GameMng.I.createPlayer(txt[1], int.Parse(txt[i + 1]), txt[i + 2], float.Parse(txt[i + 3]), float.Parse(txt[i + 4]))
                 );
             }
         }
@@ -277,19 +294,36 @@ public class NetworkMng : MonoBehaviour
             // 파티 초대 왔음
             // txt[1] 초대한 사람 닉네임
             // txt[2] 초대한 사람 uniqueNumber
+            GameMng.I.alertMessage.text = txt[1] + "님이 당신을 파티에 초대했습니다.";
+            GameMng.I.alertMessage.transform.parent.gameObject.SetActive(true);
+            GameMng.I.agreeBT.onClick.RemoveAllListeners();
+            GameMng.I.agreeBT.onClick.AddListener(() => {
+                NetworkMng.I.SendMsg(string.Format("RESPONSE_PARTY:1:{0}", txt[2]));
+                GameMng.I.alertMessage.transform.parent.gameObject.SetActive(false);
+            });
+            GameMng.I.refuseBT.onClick.RemoveAllListeners();
+            GameMng.I.refuseBT.onClick.AddListener(() => {
+                NetworkMng.I.SendMsg(string.Format("RESPONSE_PARTY:0:{0}", txt[2]));
+                GameMng.I.alertMessage.transform.parent.gameObject.SetActive(false);
+            });
         }
         else if (txt[0].Equals("AGREE_PARTY"))
         {
             // 파티 수락누른 후 정상적으로 파티에 참가됨
-            // txt[1 + n1] 파티원 uniqueNumber
-            // txt[1 + n2] 파티원 닉네임
-            // txt[1 + n3] 파티원 직업
+            // txt[1 + n0] 파티원 uniqueNumber
+            // txt[1 + n1] 파티원 닉네임
+            // txt[1 + n2] 파티원 직업
+            GameMng.I.stateMng.PartyHPImg[0].transform.parent.gameObject.SetActive(true);   // 나 추가
+            GameMng.I.stateMng.PartyName[0].text = GameMng.I.userData.user_nickname;
             for (int i = 1; i < txt.Length; i += 3)
             {
                 v_party.Add(
                     txt[i],
                     new PartyData(txt[i + 1], (JOB)Enum.Parse(typeof(JOB), txt[i + 2]))
                 );
+                GameMng.I.stateMng.PartyHPImg[v_party.Count].transform.parent.gameObject.SetActive(true);   // 파티원 추가
+                GameMng.I.stateMng.PartyName[v_party.Count].text = txt[i + 1];
+                GameMng.I.stateMng.PartyName[v_party.Count].name = txt[i];      // 오브젝트 이름에 uniqueNumber 담기
             }
         }
         else if (txt[0].Equals("ADD_PARTY"))
@@ -302,11 +336,46 @@ public class NetworkMng : MonoBehaviour
                 txt[1],
                 new PartyData(txt[2], (JOB)Enum.Parse(typeof(JOB), txt[3]))
             );
+
+            if (v_party.Count.Equals(1))    // 파티원잉 처음 한명 들어온 것이기에 내 UI도 추가로 켜줘야함
+            {
+                GameMng.I.stateMng.PartyHPImg[0].transform.parent.gameObject.SetActive(true);   // 나 추가
+                GameMng.I.stateMng.PartyName[0].text = GameMng.I.userData.user_nickname;
+            }
+
+            for (int i = 1; i < 4; i++)
+            {
+                if (!GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.activeSelf)
+                {
+                    GameMng.I.stateMng.PartyHPImg[i].transform.parent.localPosition = new Vector3(0, 60 - 40 * i, 0);
+                    GameMng.I.stateMng.PartyName[i].text = txt[2];
+                    GameMng.I.stateMng.PartyName[i].name = txt[1];
+                    GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.SetActive(true);   // 파티원 추가
+                    break;
+                }
+            }
         }
         else if (txt[0].Equals("EXIT_PARTY"))
         {
             // 누군가 파티에서 나감
             // txt[1] 나간 파티원 uniqueNumber
+            
+            // index 찾아서 그 뒤에 있는 유저들은 위로 끌어올리기
+            
+            for (int i = 1; i < v_party.Count + 1; i++) // 나는 항상 첫번째니까 제외
+            {
+                if (GameMng.I.stateMng.PartyName[i].name.Equals(txt[1]))
+                {
+                    GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.SetActive(false);   // 파티원 끄기
+                    // 나간 파티원들 뒤에 있는 순번 파티원들을 모두 앞으로 당기기
+                    for (int j = i; j < v_party.Count; j++)
+                    {
+                        GameMng.I.stateMng.PartyHPImg[j + 1].transform.parent.position = new Vector3(0, 60 - 40 * j, 0);    // 뒤에 있는 파티원들 앞으로
+                    }
+                    break;
+                }
+            }
+            GameMng.I.stateMng.PartyHPImg[v_party.Count].transform.parent.gameObject.SetActive(false);   // 파티원 제거
             v_party.Remove(txt[1]);
         }
         else if (txt[0].Equals("REQ_VOTE_ROOM_CHANGE"))
@@ -356,7 +425,8 @@ public class NetworkMng : MonoBehaviour
         }
         else if (txt[0].Equals("CONNECT"))
         {
-            SendMessage(string.Format("LOGIN:{0}", GameMng.I.userData.user_nickname));
+            // TODO : 기타 다른 정보까지 알려줄일 있으면 알려줘야함
+            SendMsg(string.Format("LOGIN:{0}:{1}", GameMng.I.userData.user_nickname, GameMng.I.userData.job));
         }
         else if (txt[0].Equals("UNIQUE"))
         {
@@ -483,6 +553,6 @@ public class NetworkMng : MonoBehaviour
      */
     public void UseSkill(SKILL_CODE skillCode, Vector2 skillDirection = new Vector2())
     {
-        SendMessage(string.Format("SKILL:{0}:{1}:{2}", skillCode, skillDirection.x, skillDirection.y));
+        SendMsg(string.Format("SKILL:{0}:{1}:{2}", skillCode, skillDirection.x, skillDirection.y));
     }
 }

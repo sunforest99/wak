@@ -14,17 +14,23 @@ public class GameMng : MonoBehaviour
     public GameObject[] characterPrefab = new GameObject[3];
     public bool isFocusing = true;      // 캐릭터에게 포커싱 맞출지 (카메라가 따라올지 유무)
 
-
     [Space(20)][Header("[  기본 UI 관리  ]")]  // ==========================================================================================================================
     public DailogUI dailogUI;           // ( ? )
     public ItemSlotUI BattleItemUI;     // (체력바 위) 배틀아이템 UI
     public Transform skillUI;           // (좌측하단) 스킬 UI들 부모
     public Transform itemSlot;          // (체력바 위) 배틀아이템 
+    [SerializeField] GameObject pingPrefab;
+    
+    /* 스킬 */
     [HideInInspector] public List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
     [HideInInspector] public List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
+    /* 배틀아이템 */
     [HideInInspector] public List<UnityEngine.UI.Image> battleItem_Img = new List<UnityEngine.UI.Image>();
     public GetItemEXP[] getItemPool = new GetItemEXP[5];
-    [SerializeField] GameObject pingPrefab;
+    /* 알림창 */
+    public TMPro.TextMeshProUGUI alertMessage;  // 알림창 메세지
+    public UnityEngine.UI.Button agreeBT;       // 알림창-수락 버튼
+    public UnityEngine.UI.Button refuseBT;      // 알림창-거절 버튼
 
 
     [Space(20)][Header("[  NPC 관리  ]")]  // ==============================================================================================================================
@@ -109,18 +115,19 @@ public class GameMng : MonoBehaviour
         Instantiate(pingPrefab, pos += new Vector2(0, 0.65f), Quaternion.identity);
     }
 
-    public Character createPlayer(int job, string nickName, float posX = 0, float posY = 0)
+    public Character createPlayer(string uniqueNumber, int job, string nickName, float posX = 0, float posY = 0)
     {
         GameObject temp = Instantiate(characterPrefab[job], new Vector3(posX, posY, 0), Quaternion.identity);
         Character cha = temp.GetComponent<Character>();
         cha.nickName = nickName;
+        temp.name = nickName + ":" + uniqueNumber;
 
         return cha;
     }
 
     public void createMe()
     {
-        character = createPlayer(userData.job, GameMng.I.userData.user_nickname);
+        character = createPlayer(NetworkMng.I.uniqueNumber, userData.job, GameMng.I.userData.user_nickname);
         character.isMe();
 
         if (userData.job.Equals(0))     // 무직(초반 캐릭터)는 스킬과 아이템이 없음
