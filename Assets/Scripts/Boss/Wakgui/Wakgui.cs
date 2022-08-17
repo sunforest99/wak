@@ -112,6 +112,7 @@ public class Wakgui : Boss
     {
         yield return new WaitForSeconds(3.0f);
 
+        action = WAKGUI_ACTION.IDLE;
         if (baseAttackCount < 4 && action == WAKGUI_ACTION.IDLE)
         {
             pattern_rand = Random.Range((int)WAKGUI_ACTION.IDLE, (int)WAKGUI_ACTION.BASE_ROAR + 1);
@@ -333,8 +334,8 @@ public class Wakgui : Boss
         yield return new WaitForSeconds(15.0f);
         action = WAKGUI_ACTION.IDLE;
         _isAnnihilation = false;
-        StartCoroutine(Think());
         checkPattern = false;
+        StartCoroutine(Think());
         yield return null;
     }
 

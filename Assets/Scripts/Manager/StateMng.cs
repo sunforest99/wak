@@ -127,13 +127,13 @@ public class StateMng : MonoBehaviour
             {
                 if (partybuffGroups[i].userBuff[j].isApply && partybuffGroups[i].userBuff[j].buffData.name == buffData.name)
                 {
-                    partybuffGroups[i].userBuff[j].duration = Character.usingSkill.getBuffData.duration;
+                    partybuffGroups[i].userBuff[j].duration = buffData.duration;
                     break;
                 }
                 else if (!partybuffGroups[i].userBuff[j].isApply)
                 {
                     ActiveOwnBuff(Character.usingSkill.getBuffData);
-                    partybuffGroups[i].userBuff[j].buffData = Character.usingSkill.getBuffData;
+                    partybuffGroups[i].userBuff[j].buffData = buffData;
                     partybuffGroups[i].userBuff[j].gameObject.SetActive(true);
                     partybuffGroups[i].userBuff[j].isApply = true;
                     break;
@@ -146,14 +146,21 @@ public class StateMng : MonoBehaviour
     {
         for (int i = 0; i < ownBuff.Length; i++)
         {
-            if (ownBuff[i].isApply && ownBuff[i].buffData.name == buffData.name)
+            if (ownBuff[i].isApply && ownBuff[i].buffData.name == buffData.name && buffData.check_nesting)
             {
-                ownBuff[i].duration = Character.usingSkill.getBuffData.duration;
+                ownBuff[i].count++;
+                ownBuff[i].duration = buffData.duration;
                 break;
             }
+            else if (ownBuff[i].isApply && ownBuff[i].buffData.name == buffData.name)
+            {
+                ownBuff[i].duration = buffData.duration;
+                break;
+            }
+           
             else if (!ownBuff[i].isApply)
             {
-                ownBuff[i].buffData = Character.usingSkill.getBuffData;
+                ownBuff[i].buffData = buffData;
                 ownBuff[i].gameObject.SetActive(true);
                 ownBuff[i].isApply = true;
                 break;

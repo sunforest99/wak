@@ -27,9 +27,12 @@ public class BossData : BaseMonsterData
 
     private Color color;
 
+    [SerializeField] private BuffData[] _buffdata;
+    public BuffData[] getBuffs { get { return _buffdata; } }
+
     public override int getDamage() => base._damage[_bossAction];
     public int getDamage(int action) => base._damage[action];
-    
+
     void Awake()
     {
         ColorUtility.TryParseHtmlString("#9B111E", out color);
