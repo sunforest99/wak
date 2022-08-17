@@ -249,30 +249,35 @@ public class Character : MonoBehaviour
 
     void inputKey()
     {
+        // 일반 모드 상태에만 키입력 가능하게 (타이핑모드나 미니게임모드때는 캐릭터 움직이면 안됨)
+        if (!GameMng.I._keyMode.Equals(KEY_MODE.PLAYER_MODE))
+            return;
+
         if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[6] && _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
         {
             NetworkMng.I.UseSkill(SKILL_CODE.WAKEUP);
             StartCoroutine(SkillCoolDown(6));
             wakeup();
         }
-
         if (Input.GetKeyDown(KeyCode.Space) && !checkSkill[5] && _action != CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
         {
             NetworkMng.I.UseSkill(SKILL_CODE.DASH);
             StartCoroutine(SkillCoolDown(5));
             dash();
         }
+        // 핑
+        if (Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.LeftControl))
+        {
+            GameMng.I.createPing(UnityEngine.Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        }
 
-        // 아무것도 아닌 상태가 아닌 경우는 이동이 가능한 상태
-        // if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
-        // {
-        //     _moveDir.x = 0;
-        //     _moveDir.y = 0;
-        //     return;
-        // }
+        // 이 아래는 이동이 가능한 상태 (ex 기본상태, 이동가능한 스킬상태 ) ===========================================================
+        if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
+            return;
 
         // 이동
-        setMoveDir(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        _moveDir.x = Input.GetAxisRaw("Horizontal");
+        _moveDir.y = Input.GetAxisRaw("Vertical");
 
         if (_moveDirBefore != _moveDir)
             if (_moveDirBefore.x.Equals(0) && _moveDirBefore.y.Equals(0)) {
@@ -288,10 +293,16 @@ public class Character : MonoBehaviour
             }
         _moveDirBefore = _moveDir;
 
-        // 모든 스킬은 IDLE 상태에서만 가능하기 때문에 체크함
+        // 방향 전환
+        if (_moveDir.x < 0)
+            transform.rotation = Quaternion.Euler(Vector3.zero);
+        else if (_moveDir.x > 0)
+            transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+
+        // 이 아래는 IDLE 상태에서만 가능한 것들만 (ex 스킬) ==========================================================================
         if (_action != CHARACTER_ACTION.IDLE)
             return;
-
+        
         // 스킬
         if (Input.GetKeyDown(KeyCode.Q) && !checkSkill[0])
             input_skill_1();
@@ -317,11 +328,6 @@ public class Character : MonoBehaviour
 
             NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition);
             attack(Input.mousePosition);
-        }
-        // 핑
-        else if (Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.LeftControl))
-        {
-            GameMng.I.createPing(UnityEngine.Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
         // 마우스 우클릭 - 상호작용
         else if (Input.GetMouseButtonDown(1))

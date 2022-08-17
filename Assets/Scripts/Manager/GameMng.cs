@@ -2,10 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum KEY_MODE
+{
+    PLAYER_MODE,    // 평상시, 캐릭터 이동할때
+    TYPING_MODE,    // 엔터눌러서 채팅칠때
+    MINIGAME_MODE   // 미니게임 할때
+}
+
 public class GameMng : MonoBehaviour
 {
     private static GameMng _instance = null;
 
+    [HideInInspector] public KEY_MODE _keyMode = KEY_MODE.PLAYER_MODE;
 
     [Header("[  유저 관리  ]")]  // ========================================================================================================================================
     public UserData userData;
@@ -20,6 +28,7 @@ public class GameMng : MonoBehaviour
     public Transform skillUI;           // (좌측하단) 스킬 UI들 부모
     public Transform itemSlot;          // (체력바 위) 배틀아이템 
     [SerializeField] GameObject pingPrefab;
+    public ChatMng chatMng;
     
     /* 스킬 */
     [HideInInspector] public List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();

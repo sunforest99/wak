@@ -231,7 +231,7 @@ public class NetworkMng : MonoBehaviour
         else if (txt[0].Equals("CHAT"))
         {
             // 채팅 UI 에 추가
-            // msg.Substring(5);
+            GameMng.I.chatMng.newMessage(txt[1], msg.Substring(6 + txt[1].Length));     // 닉네임 뒤는 모두 문자로 취급 (: 있는 메세지 방지)
         }
         else if (txt[0].Equals("DAMAGE"))
         {
