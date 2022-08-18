@@ -64,7 +64,9 @@ public class Wakgui : Boss
     {
         base.BossInitialize();
         GameMng.I.bossData = this.bossdata;
-        StartCoroutine(Think());
+
+        if (NetworkMng.I.roomOwner)
+            StartCoroutine(Think());
 
         // StartCoroutine(Teleport("Pattern_Circle"));
     }
@@ -141,6 +143,7 @@ public class Wakgui : Boss
                     Base_Rush();
                     break;
             }
+            // NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0}:{1}", pattern_rand));
         }
 
         else if (action == WAKGUI_ACTION.IDLE)

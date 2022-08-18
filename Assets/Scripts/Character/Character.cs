@@ -52,7 +52,6 @@ public class Character : MonoBehaviour
     public Animator _anim;
     [SerializeField] Rigidbody2D _rigidBody;
     [SerializeField] BoxCollider2D _collider;
-    public void setTriggerSleep() => _anim.SetTrigger("Sleep");
 
     // 데이터 ====================================================================================================
     public bool _isPlayer = false;
