@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.EventSystems; 
+using UnityEngine.EventSystems;
 
 public class Buff : Tooltips, IPointerEnterHandler, IPointerExitHandler
 {
@@ -30,6 +30,11 @@ public class Buff : Tooltips, IPointerEnterHandler, IPointerExitHandler
         base.toolTipSetting(buffData.buffsprite, buffData.buffname, buffData.buffcontent);
     }
     public void OnPointerExit(PointerEventData eventData)
+    {
+        base.tooltip.SetActive(false);
+    }
+    
+    private void OnDisable()
     {
         base.tooltip.SetActive(false);
     }

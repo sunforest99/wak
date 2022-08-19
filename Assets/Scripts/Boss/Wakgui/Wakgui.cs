@@ -58,7 +58,8 @@ public class Wakgui : Boss
 
     // ??
     public int circle_answer;
-    bool _isStart;
+    public List<Transform> targetList;      // 보스 타겟 설정하는거
+    public Transform getTarget => targetList[Random.Range(0, targetList.Count)].transform;        // 타겟 렌덤
 
     void Start()
     {
@@ -68,17 +69,17 @@ public class Wakgui : Boss
         if (NetworkMng.I.roomOwner)
             StartCoroutine(Think());
 
+        foreach (var trans in NetworkMng.I.v_users)
+        {
+            targetList.Add(trans.Value.transform);
+        }
+        _target = getTarget;
+
         // StartCoroutine(Teleport("Pattern_Circle"));
     }
 
     void Update()
     {
-        if (!_isStart)
-        {
-            _target = GameMng.I.stateMng.getTarget;
-            _isStart = true;
-        }
-
         if (_currentHp >= 0)
         {
             base.ChangeHpbar();
@@ -99,7 +100,7 @@ public class Wakgui : Boss
             {
                 Teleport(false);
                 checkPattern = true;
-                checkOutcast = true; 
+                checkOutcast = true;
                 _isAnnihilation = true;
                 StopCoroutine(Think());
             }
@@ -121,8 +122,7 @@ public class Wakgui : Boss
     {
         yield return new WaitForSeconds(3.0f);
 
-        action = WAKGUI_ACTION.IDLE;
-        if (baseAttackCount < 4 && action == WAKGUI_ACTION.IDLE)
+        if (baseAttackCount < 4)
         {
             pattern_rand = Random.Range((int)WAKGUI_ACTION.IDLE, (int)WAKGUI_ACTION.BASE_ROAR + 1);
             bossdata.setBossAction = pattern_rand;
@@ -130,7 +130,7 @@ public class Wakgui : Boss
             switch (pattern_rand)
             {
                 case (int)WAKGUI_ACTION.IDLE:
-                    _target = GameMng.I.stateMng.getTarget;
+                    _target = getTarget;
                     // SendBossPattern(WAKGUI_ACTION.IDLE,  /*타겟의 uniqueNumber*/));
                     StartCoroutine(Think());
                     break;
@@ -158,7 +158,7 @@ public class Wakgui : Boss
             // NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0}:{1}", pattern_rand));
         }
 
-        else if (action == WAKGUI_ACTION.IDLE)
+        else
         {
             pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
             bossdata.setBossAction = pattern_rand;
@@ -239,7 +239,7 @@ public class Wakgui : Boss
 
         // 나중에 살아 있는 플레이어 들에게 모두 쏘기
         GameObject poo = Instantiate(patten.poo, Vector3.zero, Quaternion.identity) as GameObject;
-        //poo.transform.SetParent(_target);
+        poo.transform.SetParent(_target);
         poo.transform.localPosition = new Vector3(0, -2.5f, 0);
 
         baseAttackCount = 0;
