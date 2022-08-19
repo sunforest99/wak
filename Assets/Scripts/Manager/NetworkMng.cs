@@ -384,6 +384,7 @@ public class NetworkMng : MonoBehaviour
         {
             // txt[1] 보스 패턴
             // txt[2~] { 패턴에 필요한 데이터 }
+            // GameMng.I.boss  // 보스 패턴 호출해서 사용가능하게
         }
         else if (txt[0].Equals("NOTICE"))
         {
@@ -399,6 +400,10 @@ public class NetworkMng : MonoBehaviour
                 // 파티원 전용맵에서 파티 오너가 들어왔다는 것은 방의 메세지를 관리하던 파장이 튕긴것이므로 내가 이제 대신 메시지를 관리해야함
                 /// 보스맵이라면 보스 패턴들 활성화 시켜서 보내게..
             }
+        }
+        else if (txt[0].Equals("PING"))
+        {
+            GameMng.I.createPing(new Vector2(float.Parse(txt[1]), float.Parse(txt[2])));
         }
         else if (txt[0].Equals("CONNECT"))
         {

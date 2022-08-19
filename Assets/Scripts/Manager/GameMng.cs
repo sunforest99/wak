@@ -122,7 +122,7 @@ public class GameMng : MonoBehaviour
 
     public void createPing(Vector2 pos)
     {
-        Instantiate(pingPrefab, pos += new Vector2(0, 0.65f), Quaternion.identity);
+        Instantiate(pingPrefab, pos, Quaternion.identity);
     }
 
     public Character createPlayer(string uniqueNumber, int job, string nickName, float posX = 0, float posY = 0)
