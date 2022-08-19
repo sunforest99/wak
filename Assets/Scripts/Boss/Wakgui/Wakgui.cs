@@ -64,7 +64,9 @@ public class Wakgui : Boss
     {
         base.BossInitialize();
         GameMng.I.bossData = this.bossdata;
-        StartCoroutine(Think());
+
+        if (NetworkMng.I.roomOwner)
+            StartCoroutine(Think());
 
         // StartCoroutine(Teleport("Pattern_Circle"));
     }
@@ -108,6 +110,13 @@ public class Wakgui : Boss
         }
     }
 
+    void SendBossPattern(WAKGUI_ACTION action, string msg = "")
+    {
+        // 뒤에 추가로 데이터가 필요로 하지 않은 패턴은 msg를 공백으로 보내서 split을 줄임
+        // 만약 이거때문에 버그가 잦다면 붙여도 무관
+        NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0}{1}", (int)action, msg != "" ? ":" + msg : msg));
+    }
+
     IEnumerator Think()
     {
         yield return new WaitForSeconds(3.0f);
@@ -122,25 +131,31 @@ public class Wakgui : Boss
             {
                 case (int)WAKGUI_ACTION.IDLE:
                     _target = GameMng.I.stateMng.getTarget;
+                    // SendBossPattern(WAKGUI_ACTION.IDLE,  /*타겟의 uniqueNumber*/));
                     StartCoroutine(Think());
                     break;
                 case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기
+                    SendBossPattern(WAKGUI_ACTION.BASE_STAP);
                     baseAttackCount++;
                     Base_Stap();
                     break;
                 case (int)WAKGUI_ACTION.BASE_SLASH:      // <! 내려찍기
+                    SendBossPattern(WAKGUI_ACTION.BASE_SLASH);
                     baseAttackCount++;
                     Base_Slash();
                     break;
                 case (int)WAKGUI_ACTION.BASE_ROAR:      // <! 포효
+                    SendBossPattern(WAKGUI_ACTION.BASE_ROAR);
                     baseAttackCount++;
                     Base_Roar();
                     break;
                 case (int)WAKGUI_ACTION.BASE_RUSH:      // <! 돌진
+                    SendBossPattern(WAKGUI_ACTION.BASE_RUSH);
                     baseAttackCount++;
                     Base_Rush();
                     break;
             }
+            // NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0}:{1}", pattern_rand));
         }
 
         else if (action == WAKGUI_ACTION.IDLE)
@@ -152,21 +167,27 @@ public class Wakgui : Boss
             switch (pattern_rand)
             {
                 case (int)WAKGUI_ACTION.PATTERN_POO:      // <! 똥 생성
+                    SendBossPattern(WAKGUI_ACTION.PATTERN_POO);
                     Pattern_Poo();
                     break;
                 case (int)WAKGUI_ACTION.PATTERN_KNIFE:      // <! 칼날 찌르기
+                    SendBossPattern(WAKGUI_ACTION.PATTERN_KNIFE);               // TODO, 뒤에 칼날 생성될 위치,각도를 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
                     StartCoroutine(Pattern_Knife());
                     break;
                 case (int)WAKGUI_ACTION.PATTERN_JUMP:      // <! 점프 공격
-                    StartCoroutine(Pattern_Jump());
+                    SendBossPattern(WAKGUI_ACTION.PATTERN_JUMP);
+                    StartCoroutine(Pattern_Jump());                             // TODO, 뒤에 점프 공격할 대상의 uniqueNumber 보내줘야함.
                     break;
                 case (int)WAKGUI_ACTION.PATTERN_CRISTAL:      // <! 수정 생성
-                    Pattern_Cristal();
+                    SendBossPattern(WAKGUI_ACTION.PATTERN_CRISTAL);
+                    Pattern_Cristal();                                          // TODO, 뒤에 수정 생성될 위치 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
                     break;
                 case (int)WAKGUI_ACTION.PATTERN_WAVE:      // <! 파도
-                    StartCoroutine(Pattern_Wave());
+                    SendBossPattern(WAKGUI_ACTION.PATTERN_WAVE);
+                    StartCoroutine(Pattern_Wave());                             // TODO, 뒤에 파도 생성될 위치,방향 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
                     break;
                 case (int)WAKGUI_ACTION.PATTERN_COUNTER:      // <! 반격기
+                    SendBossPattern(WAKGUI_ACTION.PATTERN_COUNTER);
                     StartCoroutine(Pattern_Counter());
                     break;
             }

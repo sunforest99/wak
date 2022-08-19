@@ -23,7 +23,7 @@ public class Knife_portal : DestroySelf
         if (other.CompareTag("Player"))
         {
             Debug.Log("칼 데미지 : " + damage);
-            GameMng.I.character.setTriggerSleep();
+            GameMng.I.character.sleep();
         }
     }
 }

@@ -40,6 +40,7 @@ public class GameMng : MonoBehaviour
     public TMPro.TextMeshProUGUI alertMessage;  // 알림창 메세지
     public UnityEngine.UI.Button agreeBT;       // 알림창-수락 버튼
     public UnityEngine.UI.Button refuseBT;      // 알림창-거절 버튼
+    public TMPro.TextMeshProUGUI noticeMessage; // 화면 중앙 하단에 글자만 띄우는 정보 메세지
 
 
     [Space(20)][Header("[  NPC 관리  ]")]  // ==============================================================================================================================
@@ -121,7 +122,7 @@ public class GameMng : MonoBehaviour
 
     public void createPing(Vector2 pos)
     {
-        Instantiate(pingPrefab, pos += new Vector2(0, 0.65f), Quaternion.identity);
+        Instantiate(pingPrefab, pos, Quaternion.identity);
     }
 
     public Character createPlayer(string uniqueNumber, int job, string nickName, float posX = 0, float posY = 0)
@@ -155,5 +156,39 @@ public class GameMng : MonoBehaviour
 
         // for (int i = 0; i < Character.equipBattleItem.Length; i++)
         //     battleItem_Img[i].sprite = Character.equipBattleItem[i].itemData.itemSp;
+    }
+
+    /**
+     * @brief 맵 이동 투표창 띄우기
+     * @param changeRoomCode 이동하고자 하는 맵의 코드
+     */
+    public void alertMapChange(string changeRoomCode)
+    {
+        alertMessage.name = changeRoomCode;       // 변경할 방 코드 임시 저장
+        alertMessage.text = "파티원이 맵 이동을 권유합니다. \n 수락 : 1  거절 : 0";
+        alertMessage.transform.parent.gameObject.SetActive(true);
+        agreeBT.onClick.RemoveAllListeners();
+        agreeBT.onClick.AddListener(() => {
+            NetworkMng.I.SendMsg("VOTE_ROOM_CHANGE:1");
+            agreeBT.interactable = false;
+            refuseBT.interactable = false;
+        });
+        refuseBT.onClick.RemoveAllListeners();
+        refuseBT.onClick.AddListener(() => {
+            NetworkMng.I.SendMsg("VOTE_ROOM_CHANGE:0");
+            agreeBT.interactable = false;
+            refuseBT.interactable = false;
+        });
+    }
+
+    /**
+     * @brief 화면 중앙 알림 띄울때 사용
+     * @param msg 화면에 띄울 알림 메세지 내용
+     */
+    public void showNotice(string msg)
+    {
+        noticeMessage.gameObject.SetActive(false);
+        noticeMessage.text = msg;
+        noticeMessage.gameObject.SetActive(false);
     }
 }

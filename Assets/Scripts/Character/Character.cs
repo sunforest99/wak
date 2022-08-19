@@ -52,7 +52,6 @@ public class Character : MonoBehaviour
     public Animator _anim;
     [SerializeField] Rigidbody2D _rigidBody;
     [SerializeField] BoxCollider2D _collider;
-    public void setTriggerSleep() => _anim.SetTrigger("Sleep");
 
     // 데이터 ====================================================================================================
     public bool _isPlayer = false;
@@ -105,9 +104,21 @@ public class Character : MonoBehaviour
         for (int i = 0; i < 4; i++)
             haveItem.Add(new List<Item>());
     }
+    public float footprintDist = 0;
 
     void Update()
     {
+        if (isMoving){
+            footprintDist += Time.deltaTime;
+            if (footprintDist >= 0.3f)
+            {
+                footprints[footprintIdx].SetActive(true);
+                footprints[footprintIdx].transform.position = transform.position - new Vector3(0, 0.65f, 0);
+                footprintIdx = footprintIdx >= 2 ? 0 : footprintIdx + 1;
+                footprintDist = 0;
+            }
+        }
+
         if (_isPlayer)
             inputKey();
     }
@@ -189,22 +200,6 @@ public class Character : MonoBehaviour
         usingBattleItem[itemnum] = false;
     }
 
-    IEnumerator showFootprint()
-    {
-        footprints[footprintIdx].SetActive(true);
-        footprints[footprintIdx].transform.position = transform.position - new Vector3(0, 0.65f, 0);
-        footprintIdx = footprintIdx >= 2 ? 0 : footprintIdx + 1;
-
-        yield return new WaitForSeconds(0.4f);
-
-        if (_action == CHARACTER_ACTION.CANT_ANYTHING)
-            isMoving = false;
-
-        if (isMoving)
-            StartCoroutine(showFootprint());
-
-    }
-
     void inputMove()
     {
         if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
@@ -238,7 +233,6 @@ public class Character : MonoBehaviour
         {
             _anim.SetBool("Move", true);
             isMoving = true;
-            StartCoroutine(showFootprint());
         }
     }
     public void stopMove()
@@ -268,7 +262,10 @@ public class Character : MonoBehaviour
         // 핑
         if (Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.LeftControl))
         {
-            GameMng.I.createPing(UnityEngine.Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            Vector2 pos = UnityEngine.Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            pos.y += 0.65f;
+            GameMng.I.createPing(pos);
+            NetworkMng.I.SendMsg(string.Format("PING:{0}:{1}", pos.x, pos.y));
         }
 
         // 이 아래는 이동이 가능한 상태 (ex 기본상태, 이동가능한 스킬상태 ) ===========================================================
