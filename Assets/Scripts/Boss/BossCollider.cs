@@ -143,11 +143,6 @@ public class BossCollider : MonoBehaviour
         }
     }
 
-    void SetJumpPostion()
-    {
-        this.transform.parent.localPosition = GameMng.I.stateMng.getTarget.localPosition;
-    }
-
     void BuffActive(BuffData hitbuffData)
     {
         for (int i = 0; i < boss.bossDeBuffs.Length; i++)

@@ -86,11 +86,6 @@ public class Character : MonoBehaviour
     public static Item[] equipBattleItem = new Item[3];
     public static List<List<Item>> haveItem = new List<List<Item>>();
 
-    private void Awake()
-    {
-        GameMng.I.stateMng.targetList.Add(this);        // 파티를 들어갔을떄
-    }
-
     void Start()
     {
         for (int i = 0; i < 3; i++)
@@ -521,10 +516,5 @@ public class Character : MonoBehaviour
                 skill_5();
                 break;
         }
-    }
-
-    void OnDestroy()
-    {
-        GameMng.I.stateMng.targetList.Remove(this);
     }
 }
