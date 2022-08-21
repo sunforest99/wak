@@ -586,15 +586,16 @@ public class NetworkMng : MonoBehaviour
     {
         switch (roomCode)
         {
-            case ROOM_CODE.TEMPLE:
-                SceneManager.LoadScene("TempleScene");
-                break;
             case ROOM_CODE.RAID_0:
                 SceneManager.LoadScene("BossWakguiScene");
                 break;
             case ROOM_CODE.RAID_0_REPAIR:
+                SceneManager.LoadScene("BossWakguiReadyScene");
                 break;
             case ROOM_CODE.RAID_1:
+                break;
+            default:
+                Debug.LogError(" 변경할 씬 넣어줘야함 ");
                 break;
         }
     }

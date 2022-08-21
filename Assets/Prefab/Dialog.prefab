@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5569222582844021390}
   - component: {fileID: 5569222582844021384}
   - component: {fileID: 5569222582844021385}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Dialog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 5569222583424686040}
   - component: {fileID: 5569222583424686041}
   - component: {fileID: 5569222583424686046}
+  - component: {fileID: 1037820620063858308}
   m_Layer: 5
   m_Name: DialogBG
   m_TagString: Untagged
@@ -256,3 +257,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1037820620063858308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5569222583424686044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ce2d9992606ce49a477fca7f6cb010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyRenderer: {fileID: 5569222583424686046}

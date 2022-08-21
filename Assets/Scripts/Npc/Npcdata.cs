@@ -10,7 +10,7 @@ public class Npcdata : MonoBehaviour
     [SerializeField] protected string npcname;
     [SerializeField] TMPro.TextMeshPro speechTxt;
     [SerializeField] GameObject speechBox;
-    public GameObject tempDialog;     // <! 이름 바꾸기
+    // public GameObject tempDialog;     // <! 이름 바꾸기
 
     protected IEnumerator dialogs;
 
@@ -28,8 +28,11 @@ public class Npcdata : MonoBehaviour
         }
     }
 
-    public void NextDialog()
+    public bool NextDialog()
     {
+        if (dialogs == null)
+            return false;
+        
         if (dialogs.MoveNext() == true)
         {
             GameMng.I.dailogUI.setNpcText = npcname;
@@ -51,7 +54,8 @@ public class Npcdata : MonoBehaviour
         {
             ExitDialog();
         }
-
+        
+        return true;
     }
 
     void ExitDialog()
@@ -68,19 +72,15 @@ public class Npcdata : MonoBehaviour
     {
         yield return null;
     }
-
-    protected void showMainQuestIcon()
-    {
-
-    }
-    protected void showSubQuestIcon()
-    {
-        
-    }
     
+    protected void setQuestIcon()
+    {
+        questIcon.gameObject.SetActive(false);
+    }
     protected void setQuestIcon(QUEST_TYPE qType)
     {
         questIcon.sprite = GameMng.I.questTypeSpr[qType == QUEST_TYPE.MAIN ? 0 : 1];
+        questIcon.gameObject.SetActive(true);
     }
 
     /*
@@ -103,8 +103,6 @@ public class Npcdata : MonoBehaviour
 
     protected void setSpeech(string msg)
     {
-        Debug.Log("여기 들어와");
-        // saying = msg;
         speechTxt.text = msg;
 
         float x = speechTxt.preferredWidth;

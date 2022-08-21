@@ -802,6 +802,7 @@ MonoBehaviour:
   speechTxt: {fileID: 302646300}
   speechBox: {fileID: 1335281993}
   tempDialog: {fileID: 0}
+  questIcon: {fileID: 0}
 --- !u!1 &4734409636541922726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1952,5 +1953,23 @@ MonoBehaviour:
 --- !u!1 &1335281993 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5569222583424686044, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
+  m_PrefabInstance: {fileID: 5569222582609796757}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2240247934438458135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335281993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ce2d9992606ce49a477fca7f6cb010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MyRenderer: {fileID: 1335281995}
+--- !u!23 &1335281995 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5569222583424686046, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
   m_PrefabInstance: {fileID: 5569222582609796757}
   m_PrefabAsset: {fileID: 0}

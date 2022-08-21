@@ -57,13 +57,13 @@ public class Character : MonoBehaviour
     public bool _isPlayer = false;
     public string nickName = "";
     public JOB _job = JOB.NONE;
-    const float MAX_DASH_TIME = 0.1f;
+    const float MAX_DASH_TIME = 0.2f;
     public float curDashTime = 0.1f;
     /*========= 직업에 따라서 아래 수치가 다름 =========*/
     public static Stat _stat;
     protected float DASH_SPEED = 20;
     protected float MOVE_SPEED = 5;
-    protected static float DASH_COOLTIME = 6;
+    protected static float DASH_COOLTIME = 3;
     protected static float WAKEUP_COOLTIME = 10;
 
     // 행동 ======================================================================================================

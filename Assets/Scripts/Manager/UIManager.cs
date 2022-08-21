@@ -29,6 +29,22 @@ public class UIManager : MonoBehaviour
     {
         GameMng.I.userData.main_quest.quest_code = 1;
         QuestLoad();
+        StartCoroutine(waitingLoading());
+    }
+
+    IEnumerator waitingLoading()
+    {
+        yield return new WaitForSeconds(3);
+        
+        // 전직을 안했다는건 최초 숲으로 이동
+        if (GameMng.I.userData.job.Equals(0))
+        {
+            SceneManager.LoadScene("ForestScene");
+        }
+        else
+        {
+            NetworkMng.I.changeRoom(ROOM_CODE.RAID_0_REPAIR);   // TODO <- 대도시로 변경
+        }
     }
 
     private void Update() {
@@ -72,12 +88,14 @@ public class UIManager : MonoBehaviour
                         // 저장된 dialog 실행
                         // 근데 dialog 저장 방식이 맞는지 일단 확인
                         GameMng.I.npcData = hit.collider.GetComponent<Npcdata>();
-                        GameMng.I.npcData.NextDialog();
-                        GameMng.I.dailogUI.gameObject.SetActive(true);
-                        GameMng.I.npcData.isDialog = true;
+                        if (GameMng.I.npcData.NextDialog())
+                        {
+                            GameMng.I.dailogUI.gameObject.SetActive(true);
+                            GameMng.I.npcData.isDialog = true;
 
-                        // UI 레이어 제거
-                        Camera.main.cullingMask = ~(1 << LayerMask.NameToLayer("UI"));
+                            // UI 레이어 제거
+                            Camera.main.cullingMask = ~(1 << LayerMask.NameToLayer("UI"));
+                        }
                     }
                     else
                     {
@@ -135,13 +153,13 @@ public class UIManager : MonoBehaviour
                 subQuestName,
                 Resources.Load<QuestData>($"QuestData/Sub/{subQuestName}") 
             );
-            Character.sub_quest_progress[subQuestName] = 0;
+            Character.sub_quest_progress[subQuestName] = 0;      // TODO : DB 데이터로 최신화 할 것
 
             // 퀘스트 UI에는 최대 5개 까지만 보여줌. TODO : 화면에 띄울 퀘스트를 선택해서 보여주게 하려면 바꿔야함.
             if (i+1 < 5)
             {
-                GameMng.I.myQuestName[i+1].text = Character.main_quest.questName;
-                GameMng.I.myQuestContent[i+1].text = Character.main_quest.progressContent[Character.main_quest_progress];
+                GameMng.I.myQuestName[i+1].text = Character.sub_quest[subQuestName].questName;
+                GameMng.I.myQuestContent[i+1].text = Character.sub_quest[subQuestName].progressContent[Character.sub_quest_progress[subQuestName]];
             }
         }
     }
