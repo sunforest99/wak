@@ -107,8 +107,9 @@ public class BossCollider : MonoBehaviour
                     other.ClosestPoint(transform.position) + new Vector2(0, 3f),
                     damageTemp,
                     isCritical
-               );
-                boss._nestingHp -= damageTemp;
+                );
+                NetworkMng.I.SendMsg(string.Format("DAMAGE:{0}", damageTemp));
+                // boss._nestingHp -= damageTemp;
             }
             else
             {

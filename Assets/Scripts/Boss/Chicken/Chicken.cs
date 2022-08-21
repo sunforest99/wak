@@ -25,7 +25,7 @@ public class Chicken : Boss
     void Start()
     {
         base.BossInitialize();
-        GameMng.I.bossData = this.bossdata;
+        // GameMng.I.bossData = this.bossdata;
         StartCoroutine(Think());
     }
     

@@ -17,6 +17,7 @@ public class Boss : MonoBehaviour
     [Header("[  관리  ]")]  // 관리 ======================================================================================================
     bool isLFlip = false, isRFlip = false;          // 방향
     [SerializeField] protected BossData bossdata;
+    public BossData bossData { get { return bossdata; } }
     [SerializeField] protected Animator animator = null;
 
 
@@ -39,6 +40,7 @@ public class Boss : MonoBehaviour
 
     // 체력 ======================================================================================================
     [SerializeField] protected Transform _target;   // 나중에 4명 추가하는걸루
+    public Transform target { get { return _target; } }
     protected Vector3 _dir;                         // 보스와 타겟 방향
     public int _nestingHp;                          // 중첩 체력
     protected int _currentNesting;                  // 지금 체력바
@@ -186,8 +188,8 @@ public class Boss : MonoBehaviour
         // if (Vector2.Distance(_target.localPosition, this.transform.localPosition) > 2f)
         // {
         this.transform.localPosition = Vector3.Lerp(
-            this.transform.localPosition, 
-            new Vector3(_target.localPosition.x, _target.localPosition.y + 0.3f, _target.localPosition.z), 
+            this.transform.localPosition,
+            new Vector3(_target.localPosition.x, _target.localPosition.y + 0.3f, _target.localPosition.z),
             bossdata.getMoveSpeed * Time.deltaTime
         );
         // }
@@ -202,4 +204,7 @@ public class Boss : MonoBehaviour
             _baseUI.hpbar[0].fillAmount = Mathf.Lerp(_baseUI.hpbar[0].fillAmount, 0, 5 * Time.deltaTime);
         }
     }
+    
+    public virtual void Raid_Start() { }
+    public virtual void Action(string msg) { }
 }

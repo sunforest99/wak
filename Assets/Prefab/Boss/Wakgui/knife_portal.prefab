@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 167111025
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 47e7513fabdb3da4b953c6bc5d80400d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -157,7 +157,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 167111025
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 2711647ececbdc042b4c42e06ad26048, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
@@ -294,7 +294,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 167111025
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: b729ef3a82e8d4a4bb73005a1b4034fb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -317,7 +317,7 @@ BoxCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.72}
@@ -345,8 +345,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb8162b59a3c6c479524818e11185f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossdata: {fileID: 11400000, guid: d96ce92a9f8f110478f793a5fcd7357e, type: 2}
-  damage: 0
   animator: {fileID: 5081268575539120845}
 --- !u!1 &7578800598515329737
 GameObject:
@@ -419,7 +417,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 167111025
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: a44523b2724e97949a75e66424db6b3b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.46666667}
@@ -508,7 +506,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 167111025
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 2063864799, guid: 9abc5847c8f5b5a41b0ecb1494712a33, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

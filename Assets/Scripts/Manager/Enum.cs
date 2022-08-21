@@ -31,6 +31,12 @@ public enum ITEM_INDEX
     NONE
 }
 
+public enum QUEST_CODE
+{
+    /* 서브 퀘스트 이름 */
+    TEMP_QUEST_0
+}
+
 public enum BUFF
 {
     BUFF_GAL = 0,
@@ -72,9 +78,17 @@ public enum ROOM_CODE
      *    이 데이터가 바뀐다면 꼭! 바로 서버내의 데이터도 바꿀 것
      *
      *********************************************************************/
-    SQUARE = 0,     // 광장(대도시)
+
+    // _LOCAL_MAP_,  ////////////// 이 아래 부터 로컬 전용 맵 (네트워크 통신 안함)
+
+    FOREST = 0,
+    TEMPLE,
+
+    _WORLD_MAP_,    /////////////// 이 아래 부터 월드 전용 맵 (네트워크 들어가며 모든 유저들 있을수 있음)
+
+    SQUARE,         // 광장(대도시)
     
-    _PARTY_MAP_,    /////////////// 이 아래 부터는 파티 전용 맵
+    _PARTY_MAP_,    /////////////// 이 아래 부터 파티 전용 맵
 
     FIELD_0,        // 필드 0
     RAID_0,         // 레이드 0

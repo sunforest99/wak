@@ -8,15 +8,18 @@ public class LoadManager : MonoBehaviour
     [SerializeField] UnityEngine.UI.Text mapNameTxt;        // !< GameObject가 관리해도 괜찮아 보임
     [SerializeField] string mapName = "";
     [SerializeField] bool isFocusingMap = true;
+    [SerializeField] bool onlineMap = true;
 
     void Start()
     {
         // 플레이어 생성
         GameMng.I.createMe();
-
-        Debug.Log("@ 파티원 수 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + NetworkMng.I.v_party.Count);
         
-
+        if (!onlineMap)
+            return;
+        else if (!NetworkMng.I.enabled)
+            NetworkMng.I.enabled = true;
+        
         foreach (var party in NetworkMng.I.v_party)
         {
             NetworkMng.I.v_users.Add(

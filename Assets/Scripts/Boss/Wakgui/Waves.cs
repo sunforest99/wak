@@ -11,32 +11,28 @@ enum POS
 }
 public class Waves : DestroySelf
 {
-    int rand;
+    public int rand;
     int damage;
-    [SerializeField] POS pos;
+    
     void Start()
     { 
-        damage = GameMng.I.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_WAVE);
-        rand = Random.Range(0, 4);
+        damage = GameMng.I.boss.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_WAVE);
+
         switch (rand)
         {
             case (int)POS.DOWN:
-                this.transform.position = new Vector3(Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x), GameMng.I.mapRightTop.y, 0);
                 this.transform.localRotation = Quaternion.Euler(0, 0, 90.0f);
                 break;
 
             case (int)POS.UP:
-                this.transform.position = new Vector3(Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x), GameMng.I.mapLeftBotton.y, 0);
                 this.transform.localRotation = Quaternion.Euler(0, 0, -90.0f);
                 break;
 
             case (int)POS.RIGHT:
-                this.transform.position = new Vector3(GameMng.I.mapLeftBotton.x, Random.Range(GameMng.I.mapLeftBotton.y, GameMng.I.mapRightTop.y), 0);
                 this.transform.localRotation = Quaternion.Euler(0, 0, 180.0f);
                 break;
 
             case (int)POS.LEFT:
-                this.transform.position = new Vector3(GameMng.I.mapRightTop.x, Random.Range(GameMng.I.mapLeftBotton.y, GameMng.I.mapRightTop.y), 0);
                 this.transform.localRotation = Quaternion.identity;
                 break;
         }
@@ -44,6 +40,13 @@ public class Waves : DestroySelf
 
     void Update()
     {
+        if(this.transform.position.x < GameMng.I.mapLeftBotton.x ||
+        this.transform.position.x > GameMng.I.mapRightTop.x ||
+        this.transform.position.y < GameMng.I.mapLeftBotton.y || 
+        this.transform.position.y > GameMng.I.mapRightTop.y)
+        {
+            destroySelf();
+        }
         this.transform.Translate(Vector3.left * 3.0f * Time.deltaTime);
     }
 
@@ -51,7 +54,7 @@ public class Waves : DestroySelf
     {
         if(other.CompareTag("Player"))
         {
-            GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.bossData.getBuffs[2]);
+            GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.boss.bossData.getBuffs[2]);
             GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
         }
     }

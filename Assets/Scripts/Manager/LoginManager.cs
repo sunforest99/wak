@@ -13,9 +13,15 @@ public class Character_Schema {
 public class Item_Schema {
     public int item_code;
     public int mount;
+    public Item_Schema(int itemcode, int mount)
+    {
+        this.item_code = itemcode;
+        this.mount = mount;
+    }
 }
 
-[System.Serializable] public class Skill_Schema {
+[System.Serializable]
+public class Skill_Schema {
     public int strength;
     public int rune_code;
 }
@@ -31,19 +37,22 @@ public class UserData
     public string user_nickname; 
     public int job; 
     public Character_Schema character;
-    public List<Item_Schema> inventory;
-    public List<Skill_Schema> skills;
-    public List<Quest_Schema> quest_ing;
+    public List<List<Item_Schema>> inventory = new List<List<Item_Schema>>();
+    public List<Skill_Schema> skills = new List<Skill_Schema>();
+    public Quest_Schema main_quest;
+    public List<Quest_Schema> sub_quest;
     public List<int> quest_done;
-    public List<int> slot;
+    public List<int> slot = new List<int>();
     public float level;
     
     public void printData() 
     { 
         Debug.Log("User_OID : " + _id + " , Nickname : " + user_nickname);
         Debug.Log("Hair : " + character.hair + " , weapon : " + character.weapon);
-        for (int i = 0; i < inventory.Count; i++) {
-            Debug.Log(" _ " + inventory[i].item_code  + " _ " + inventory[i].mount );
+        for (int i = 0; i < inventory.Count; i++)
+        {
+            for (int j = 0; j < inventory[i].Count; j++)
+                Debug.Log(" _ " + inventory[i][j].item_code + " _ " + inventory[i][j].mount);
         }
     } 
 } 

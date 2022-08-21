@@ -11,7 +11,9 @@ public class EnterRaidDoor : MonoBehaviour
             if (!NetworkMng.I.v_party.Count.Equals(0))
                 NetworkMng.I.VoteChangeScene(ROOM_CODE.RAID_0);
             else {
+                // NetworkMng.I.changeRoom(ROOM_CODE.TEMPLE);
                 NetworkMng.I.changeRoom(ROOM_CODE.RAID_0);
+
                 // SceneManager.LoadScene("BossWakguiScene");
             }
         }

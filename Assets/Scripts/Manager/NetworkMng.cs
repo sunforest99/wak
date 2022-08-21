@@ -14,11 +14,34 @@ public struct PartyData
 {
     public string nickName;
     public JOB job;
+    public int partyNumber;
+
     // 장착 아이템들 (머리, 무기..)
-    public PartyData(string nickName, JOB job)
+    public PartyData(string nickName, JOB job, int partyNumber = 0)
     {
         this.nickName = nickName;
         this.job = job;
+        this.partyNumber = 0;
+
+        bool partyNumCheck = true;
+        for (int i = 1; i < 4; i++)     // '나'는 v_party에 들어가지도 않고 항상 0이기때문에 제외
+        {
+            partyNumCheck = true;
+            foreach (var p in NetworkMng.I.v_party)
+            {
+                // 나와 같은 파티 번호를 한사람이 있다면 중복되면 안되니까 패스
+                if (p.Value.partyNumber.Equals(i))
+                {
+                    partyNumCheck = false;
+                    break;
+                }
+            }
+            if (partyNumCheck) {
+                this.partyNumber = i;
+                break;
+            }
+        }
+        
     }
 }
 
@@ -243,6 +266,7 @@ public class NetworkMng : MonoBehaviour
             //     보스한테 데미지 입힘
             // else if (필드맵인가?)
             //     필드맵의 몬스터 누구에게 데미지 입힘
+            GameMng.I.boss._nestingHp -= int.Parse(txt[1]);
         }
         else if (txt[0].Equals("MOVE_START"))
         {
@@ -284,18 +308,25 @@ public class NetworkMng : MonoBehaviour
             // 내 파티에 속한 사람이 나갔다면
             if (v_party.ContainsKey(txt[1]))
             {
-                v_party.Remove(txt[1]);
+                Debug.Log("&&&&&&&&&&&&&&&&&&&& 여기 뜰 ");
                 SomeoneExitParty(txt[1]);
             }
 
             Destroy(v_users[txt[1]].gameObject);
             v_users.Remove(txt[1]);
         }
-        else if (txt[0].Equals("CHANGE_HP"))
+        else if (txt[0].Equals("PARTY_HP"))
         {
             // 파티원 HP가 변경됨
             // txt[1] 변경된 파티원 uniqueNumber
             // txt[2] 변경된 체력 퍼센트
+
+            // 뒤에 체력 percent가 붙을 수 있게
+            // GameMng.I.stateMng.Party_HP_Numerical[v_party[txt[1]].partyNumber].
+        }
+        else if (txt[0].Equals("PARTY_BUFF"))
+        {
+
         }
         else if (txt[0].Equals("INVITE_PARTY"))
         {
@@ -380,11 +411,16 @@ public class NetworkMng : MonoBehaviour
         {
             // DAMAGE와 다르게 데미지 표시도 해줌
         }
+        else if (txt[0].Equals("RAID_START"))
+        {
+            GameMng.I.boss.Raid_Start();
+        }
         else if (txt[0].Equals("BOSS_PATTERN"))
         {
             // txt[1] 보스 패턴
             // txt[2~] { 패턴에 필요한 데이터 }
             // GameMng.I.boss  // 보스 패턴 호출해서 사용가능하게
+            GameMng.I.boss.Action(msg);
         }
         else if (txt[0].Equals("NOTICE"))
         {
@@ -560,8 +596,12 @@ public class NetworkMng : MonoBehaviour
                 SceneManager.LoadScene("BossWakguiScene");
                 break;
             case ROOM_CODE.RAID_0_REPAIR:
+                SceneManager.LoadScene("BossWakguiReadyScene");
                 break;
             case ROOM_CODE.RAID_1:
+                break;
+            default:
+                Debug.LogError(" 변경할 씬 넣어줘야함 ");
                 break;
         }
     }
@@ -625,19 +665,25 @@ public class NetworkMng : MonoBehaviour
      */
     void AgreeParty(string[] txt)
     {
-        GameMng.I.stateMng.PartyHPImg[0].transform.parent.gameObject.SetActive(true);   // 나 추가
         GameMng.I.stateMng.PartyName[0].text = GameMng.I.userData.user_nickname;
+        GameMng.I.stateMng.PartyHPImg[0].transform.parent.gameObject.SetActive(true);   // 나 추가
         for (int i = 1; i < txt.Length; i += 3)
         {
             v_party.Add(
                 txt[i],
                 new PartyData(txt[i + 1], (JOB)Enum.Parse(typeof(JOB), txt[i + 2]))
             );
-            GameMng.I.stateMng.PartyHPImg[v_party.Count].transform.parent.localPosition = new Vector3(0, 60 - 40 * i, 0);
-            GameMng.I.stateMng.PartyName[v_party.Count].text = txt[i + 1];
-            GameMng.I.stateMng.PartyName[v_party.Count].name = txt[i];      // 오브젝트 이름에 uniqueNumber 담기
-            GameMng.I.stateMng.PartyHPImg[v_party.Count].transform.parent.gameObject.SetActive(true);   // 파티원 추가
+            GameMng.I.stateMng.PartyName[v_party[txt[i]].partyNumber].text = txt[i + 1];
+            // GameMng.I.stateMng.PartyName[v_party[txt[i]].partyNumber].name = txt[i];      // 오브젝트 이름에 uniqueNumber 담기
+            GameMng.I.stateMng.PartyHPImg[v_party[txt[i]].partyNumber].transform.parent.gameObject.SetActive(true);   // 파티원 추가
         }
+
+        string msg = "";
+        foreach (var p in NetworkMng.I.v_party)
+        {
+            msg += "[" + p.Value.nickName + ") : " + p.Value.partyNumber + "\n";
+        }
+        GameMng.I.noticeMessage.text = msg;
     }
 
     /**
@@ -659,17 +705,28 @@ public class NetworkMng : MonoBehaviour
             GameMng.I.stateMng.PartyName[0].text = GameMng.I.userData.user_nickname;
         }
 
-        for (int i = 1; i < 4; i++)
+        GameMng.I.stateMng.PartyName[v_party[newUniqueNumber].partyNumber].text = newNickname;
+        // GameMng.I.stateMng.PartyName[v_party[newUniqueNumber].partyNumber].name = newUniqueNumber;      // 오브젝트 이름에 uniqueNumber 담기
+        GameMng.I.stateMng.PartyHPImg[v_party[newUniqueNumber].partyNumber].transform.parent.gameObject.SetActive(true);   // 파티원 추가
+
+        // for (int i = 1; i < 4; i++)
+        // {
+        //     if (!GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.activeSelf)
+        //     {
+        //         GameMng.I.stateMng.PartyHPImg[i].transform.parent.localPosition = new Vector3(0, 60 - 40 * i, 0);
+        //         GameMng.I.stateMng.PartyName[i].text = newNickname;
+        //         GameMng.I.stateMng.PartyName[i].name = newUniqueNumber;
+        //         GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.SetActive(true);   // 파티원 추가
+        //         break;
+        //     }
+        // }
+
+        string msg = "";
+        foreach (var p in NetworkMng.I.v_party)
         {
-            if (!GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.activeSelf)
-            {
-                GameMng.I.stateMng.PartyHPImg[i].transform.parent.localPosition = new Vector3(0, 60 - 40 * i, 0);
-                GameMng.I.stateMng.PartyName[i].text = newNickname;
-                GameMng.I.stateMng.PartyName[i].name = newUniqueNumber;
-                GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.SetActive(true);   // 파티원 추가
-                break;
-            }
+            msg += "[" + p.Value.nickName + ") : " + p.Value.partyNumber + "\n";
         }
+        GameMng.I.noticeMessage.text = msg;
     }
 
     /**
@@ -678,21 +735,13 @@ public class NetworkMng : MonoBehaviour
      */
     void SomeoneExitParty(string exitUserUniqueNumber)
     {
-        // index 찾아서 그 뒤에 있는 유저들은 위로 끌어올리기
-        for (int i = 1; i < v_party.Count + 1; i++) // 나는 항상 첫번째니까 제외
-        {
-            if (GameMng.I.stateMng.PartyName[i].name.Equals(exitUserUniqueNumber))
-            {
-                GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.SetActive(false);   // 파티원 끄기
-                // 나간 파티원들 뒤에 있는 순번 파티원들을 모두 앞으로 당기기
-                for (int j = i; j < v_party.Count; j++)
-                {
-                    GameMng.I.stateMng.PartyHPImg[j + 1].transform.parent.position = new Vector3(0, 60 - 40 * j, 0);    // 뒤에 있는 파티원들 앞으로
-                }
-                break;
-            }
-        }
-        GameMng.I.stateMng.PartyHPImg[v_party.Count].transform.parent.gameObject.SetActive(false);   // 파티원 제거
+        GameMng.I.stateMng.PartyHPImg[v_party[exitUserUniqueNumber].partyNumber].transform.parent.gameObject.SetActive(false);   // 파티원 제거
         v_party.Remove(exitUserUniqueNumber);
+
+        // 파티원이 모두 나가고 나만 남음
+        if (v_party.Count.Equals(0))
+        {
+            GameMng.I.stateMng.PartyHPImg[0].transform.parent.gameObject.SetActive(false);   // 파티원 제거
+        }
     }
 }
