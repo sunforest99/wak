@@ -23,7 +23,7 @@ public class BossData : BaseMonsterData
     public int maxWave { get { return _maxWave; } }
 
     [SerializeField] private int _bossAction;
-    public int setBossAction { set { _bossAction = value; } }
+    public int bossAction { set { _bossAction = value; } get { return _bossAction; } }
 
     private Color color;
 

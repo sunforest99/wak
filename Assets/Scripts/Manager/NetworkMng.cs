@@ -266,6 +266,7 @@ public class NetworkMng : MonoBehaviour
             //     보스한테 데미지 입힘
             // else if (필드맵인가?)
             //     필드맵의 몬스터 누구에게 데미지 입힘
+            GameMng.I.boss._nestingHp -= int.Parse(txt[1]);
         }
         else if (txt[0].Equals("MOVE_START"))
         {
@@ -410,11 +411,16 @@ public class NetworkMng : MonoBehaviour
         {
             // DAMAGE와 다르게 데미지 표시도 해줌
         }
+        else if (txt[0].Equals("RAID_START"))
+        {
+            GameMng.I.boss.Raid_Start();
+        }
         else if (txt[0].Equals("BOSS_PATTERN"))
         {
             // txt[1] 보스 패턴
             // txt[2~] { 패턴에 필요한 데이터 }
             // GameMng.I.boss  // 보스 패턴 호출해서 사용가능하게
+            GameMng.I.boss.Action(msg);
         }
         else if (txt[0].Equals("NOTICE"))
         {

@@ -6,7 +6,7 @@ public class ChangeAction : MonoBehaviour
 {
     [SerializeField] private Wakgui wakgui;
     [SerializeField] Vector2[] circlevec = new Vector2[4];
-    [SerializeField] List<int> visit;
+    // [SerializeField] List<int> visit;
 
     void SetStap() => wakgui.action = WAKGUI_ACTION.BASE_STAP;
 
@@ -33,33 +33,21 @@ public class ChangeAction : MonoBehaviour
     void SetIdle()
     {
         wakgui.action = WAKGUI_ACTION.IDLE;
+        wakgui.Think();
     }
 
     void SetTelePort() => wakgui.action = WAKGUI_ACTION.TELEPORT;
 
     void SetTelePortSpawn() => wakgui.action = WAKGUI_ACTION.TELEPORT_SPAWN;
 
-    void SetJumpPostion() => this.transform.parent.localPosition = wakgui.getTarget.localPosition;
+    void SetJumpPostion() => this.transform.parent.localPosition = wakgui.target.localPosition;
     void SetTelePortPostion() => this.transform.parent.position = new Vector2(GameMng.I.mapCenter.x, GameMng.I.mapCenter.y - 1.0f);
 
     void CreateCircle()
     {
-        int rand = Random.Range(0, 4);
-        for (int j = 0; j < circlevec.Length;)
-        {
-            if (visit.Contains(rand))
-            {
-                rand = Random.Range(0, 4);
-            }
-            else
-            {
-                visit.Add(rand);
-                j++;
-            }
-        }
         for (int i = 0; i < circlevec.Length; i++)
         {
-            GameObject temp = Instantiate(wakgui.getCircle[i], circlevec[visit[i]], Quaternion.identity);
+            GameObject temp = Instantiate(wakgui.getCircle[i], circlevec[wakgui.visit[i]], Quaternion.identity);
             wakgui.marblelist.Add(temp.GetComponent<Marble>());
         }
         
@@ -92,14 +80,13 @@ public class ChangeAction : MonoBehaviour
 
     void CreateOutcast()
     {
-        int rand = Random.Range(0, 4);
         for (int i = 0; i < 4; i++)
         {
             GameObject temp = Instantiate(wakgui.getOutcast, GameMng.I.mapCenter, Quaternion.identity);
             wakgui.outCasts.Add(temp.GetComponent<OutCast>());
             wakgui.outCasts[i].distance = 4;
         }
-        wakgui.outCasts[rand].checkFigure = true;
+        wakgui.outCasts[wakgui.outcastRand].checkFigure = true;
     }
 
     void CreateTotem()

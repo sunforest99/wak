@@ -62,7 +62,7 @@ public class GameMng : MonoBehaviour
 
 
     [Space(20)][Header("[  보스 관리 (여기 있으면 안됨)  ]")]  // ===========================================================================================================
-    public BossData bossData = null;            // 보스 정보    //!< 이거 여기 없이 사용할 방법이 있다면 좋음
+    public Boss boss = null;                    // 보스 정보 //!< 이거 여기 없이 사용할 방법이 있다면 좋음
     public EstherManager estherManager = null;  // 에스더 정보  //!< bossData와 같이 보스맵에서 나갈때마다 초기화 해주어야 함
 
 

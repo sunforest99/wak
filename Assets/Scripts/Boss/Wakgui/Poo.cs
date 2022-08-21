@@ -10,7 +10,7 @@ public class Poo : DestroySelf
     int damage;
     void Start()
     {
-        damage = GameMng.I.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_POO);
+        damage = GameMng.I.boss.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_POO);
         StartCoroutine(Remove());
     }
     
@@ -27,7 +27,7 @@ public class Poo : DestroySelf
     {
         if (other.CompareTag("Player"))
         {
-            GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.bossData.getBuffs[1]);
+            GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.boss.bossData.getBuffs[1]);
             GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
         }
     }

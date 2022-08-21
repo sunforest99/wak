@@ -37,17 +37,17 @@ public class OutCast : DestroySelf
 
     void figureSetting(GameObject figure, Collider2D user)
     {
-        figure.transform.SetParent(user.transform.parent);
+        figure.transform.SetParent(user.transform);
         figure.transform.SetAsFirstSibling();
-        figure.transform.localPosition = new Vector2(user.transform.localPosition.x, user.transform.localPosition.y + 5.0f);
+        figure.transform.localPosition = new Vector2(0, 3.0f);
         destroySelf();
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if(other.GetComponent<Character>())
         {
-            if (other.transform.parent.GetChild(0).name == "Triangle" || other.transform.parent.GetChild(0).name == "Rect")
+            if (other.transform.GetChild(0).name == "Triangle" || other.transform.GetChild(0).name == "Rect")
             {
                 destroySelf();
                 return;

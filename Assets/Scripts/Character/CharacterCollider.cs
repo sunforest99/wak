@@ -63,7 +63,7 @@ public class CharacterCollider : MonoBehaviour
     {
         if (other.CompareTag("Monster_Weapon"))
         {
-            GameMng.I.stateMng.user_HP_Numerical.Hp -= GameMng.I.bossData.getDamage();
+            GameMng.I.stateMng.user_HP_Numerical.Hp -= GameMng.I.boss.bossData.getDamage();
             NetworkMng.I.SendMsg(string.Format("CHANGE_HP:{0}", GameMng.I.stateMng.user_HP_Numerical.Hp / GameMng.I.stateMng.user_HP_Numerical.fullHp));
         }
 
