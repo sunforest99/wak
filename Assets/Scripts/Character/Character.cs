@@ -101,7 +101,10 @@ public class Character : MonoBehaviour
         _action = CHARACTER_ACTION.IDLE;
         init();
         for (int i = 0; i < 4; i++)
+        {
             haveItem.Add(new List<Item>());
+            GameMng.I.userData.inventory.Add(new List<Item_Schema>());
+        }
     }
     public float footprintDist = 0;
 

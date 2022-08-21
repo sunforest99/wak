@@ -9,6 +9,12 @@ public class Item
     public int itemCount;
     public int apply_count = 0;
 
+    public Item(ItemData itemdata, int count)
+    {
+        this.itemData = itemdata;
+        this.itemCount = count;
+    }
+
     public void usingItem()
     {
         apply_count = itemData.duration;

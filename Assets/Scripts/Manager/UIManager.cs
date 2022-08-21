@@ -28,7 +28,10 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         GameMng.I.userData.main_quest.quest_code = 1;
+        
+        itemLoad();
         QuestLoad();
+
         StartCoroutine(waitingLoading());
     }
 
@@ -133,7 +136,28 @@ public class UIManager : MonoBehaviour
     //         skill_icons[i].sprite = job_skill_icons[GameMng.I.userData.job - 1].icons[i];
     //     }
     // }
+    void itemSave()
+    {
+        for(int i = 0; i < Character.haveItem.Count; i++)
+        {
+            for(int j = 0; j < Character.haveItem[i].Count; j++)
+            {
+                GameMng.I.userData.inventory[i][j].item_code = (int)Character.haveItem[i][j].itemData.itemIndex;
+                GameMng.I.userData.inventory[i][j].mount = Character.haveItem[i][j].itemCount;
+            }
+        }
+    }
 
+    void itemLoad()
+    {
+        for (int i = 0; i < GameMng.I.userData.inventory.Count; i++)
+        {
+            for (int j = 0; j < GameMng.I.userData.inventory[i].Count; j++)
+            {
+                Character.haveItem[i].Add(new Item(Resources.Load<ItemData>($"ItemData/{((ITEM_INDEX)GameMng.I.userData.inventory[i][j].item_code).ToString()}"), GameMng.I.userData.inventory[i][j].mount));
+            }
+        }
+    }
 
     void QuestLoad()
     {

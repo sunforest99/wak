@@ -8,15 +8,22 @@ public class CharacterCollider : MonoBehaviour
     void itemSetting(int n, Item _item)
     {
         if (n == 1)
+        {
             Character.haveItem[n].Add(_item);
+            GameMng.I.userData.inventory[n].Add(new Item_Schema((int)_item.itemData.itemIndex, _item.itemCount));
+        }
         else
         {
             int index = Character.haveItem[n].FindIndex(name => name.itemData.itemName == _item.itemData.itemName);
             if (index == -1)
+            {
                 Character.haveItem[n].Add(_item);
+                GameMng.I.userData.inventory[n].Add(new Item_Schema((int)_item.itemData.itemIndex, _item.itemCount));
+            }
             else
             {
                 Character.haveItem[n][index].itemCount += _item.itemCount;
+                GameMng.I.userData.inventory[n][index].mount += _item.itemCount;
                 if (_item.itemData.itemType == ITEM_TYPE.BATTLE_ITEM)
                 {
                     for (int i = 0; i < Character.equipBattleItem.Length; i++)
@@ -34,16 +41,6 @@ public class CharacterCollider : MonoBehaviour
         }
     }
 
-    // void getItemEXP(Item item, int idx)
-    // {
-    //     GameMng.I.getItemPool[idx].EXP_Game.SetActive(true);
-    //     GameMng.I.getItemPool[idx].EXP_Game.transform.SetAsLastSibling();
-    //     GameMng.I.getItemPool[idx].EXP_Img.sprite = item.itemData.itemSp;
-    //     if (item.itemData.itemType != ITEM_TYPE.WEAPON_ITEM && item.itemData.itemType != ITEM_TYPE.HEAD_ITEM)
-    //         GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName + " x" + item.itemCount.ToString();
-    //     else
-    //         GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName;
-    // }
     void getItemEXP(Item item, int idx)
     {
         GameMng.I.getItemPool[idx].EXP_Img.sprite = item.itemData.itemSp;
