@@ -31,6 +31,12 @@ public enum ITEM_INDEX
     NONE
 }
 
+public enum QUEST_CODE
+{
+    /* 서브 퀘스트 이름 */
+    TEMP_QUEST_0
+}
+
 public enum BUFF
 {
     BUFF_GAL = 0,
@@ -73,6 +79,7 @@ public enum ROOM_CODE
      *
      *********************************************************************/
     SQUARE = 0,     // 광장(대도시)
+    TEMPLE = 0,
     
     _PARTY_MAP_,    /////////////// 이 아래 부터는 파티 전용 맵
 

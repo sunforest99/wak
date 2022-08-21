@@ -23,13 +23,17 @@ public class GameMng : MonoBehaviour
     public bool isFocusing = true;      // 캐릭터에게 포커싱 맞출지 (카메라가 따라올지 유무)
 
     [Space(20)][Header("[  기본 UI 관리  ]")]  // ==========================================================================================================================
-    public DailogUI dailogUI;           // ( ? )
+    public DialogUI dailogUI;           // ( ? )
     public ItemSlotUI BattleItemUI;     // (체력바 위) 배틀아이템 UI
     public Transform skillUI;           // (좌측하단) 스킬 UI들 부모
     public Transform itemSlot;          // (체력바 위) 배틀아이템 
     [SerializeField] GameObject pingPrefab;
     public ChatMng chatMng;
+    public TMPro.TextMeshProUGUI[] myQuestName;       // 내가 진행중인 퀘스트 이름 text
+    public TMPro.TextMeshProUGUI[] myQuestContent;    // 내가 진행중인 퀘스트 내용 text
     
+    public Sprite[] questTypeSpr;         // 메인퀘스트, 서브퀘스트 Sprite 파일
+
     /* 스킬 */
     [HideInInspector] public List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
     [HideInInspector] public List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
@@ -44,10 +48,11 @@ public class GameMng : MonoBehaviour
 
 
     [Space(20)][Header("[  NPC 관리  ]")]  // ==============================================================================================================================
-    public RaycastHit2D hit;
+    // public RaycastHit2D hit;
     public Npcdata npcData;
-    private float npcDistance = 3.0f;       // <! npc와의 최대 거리
-    public GameObject dialogPrefab;
+    // private float npcDistance = 3.0f;       // <! npc와의 최대 거리
+    // public GameObject dialogPrefab;
+    
 
 
     [Space(20)][Header("[  맵 관리  ]")]  // ==============================================================================================================================
@@ -81,7 +86,7 @@ public class GameMng : MonoBehaviour
 
     private void Start()
     {
-        
+        userData.user_nickname = "임시 닉네임 (" +Random.Range(0, 1000) + ")";
     }
 
     // public void mouseRaycast(Vector2 charPos)      // <! 이름바꾸기
@@ -137,7 +142,7 @@ public class GameMng : MonoBehaviour
 
     public void createMe()
     {
-        character = createPlayer(NetworkMng.I.uniqueNumber, userData.job, GameMng.I.userData.user_nickname);
+        character = createPlayer(NetworkMng.I.uniqueNumber, userData.job, userData.user_nickname);
         character.isMe();
 
         if (userData.job.Equals(0))     // 무직(초반 캐릭터)는 스킬과 아이템이 없음
@@ -190,5 +195,101 @@ public class GameMng : MonoBehaviour
         noticeMessage.gameObject.SetActive(false);
         noticeMessage.text = msg;
         noticeMessage.gameObject.SetActive(false);
+    }
+
+    /**
+     * @brief 서브 퀘스트를 처음 시작할때 알림
+     * @param qcode 서브 퀘스트 코드
+     */
+    public void StartSubQuest(QUEST_CODE qcode)
+    {
+        string subQuestName = qcode.ToString();
+        Character.sub_quest.Add(
+            subQuestName,
+            Resources.Load<QuestData>($"QuestData/Sub/{subQuestName}") 
+        );
+        Character.sub_quest_progress[subQuestName] = 0;
+    }
+    /*
+     * @brief 메인 퀘스트 진행률을 높일때 사용. 퀘스트 완료까지 체크함
+     */
+    public void nextMainQuest()
+    {
+        // 대화를 모두 진행했다면 해당 퀘스트의 진행률을 올림
+        Character.main_quest_progress++;
+        
+        // 퀘스트마다 있는 진행률을 완료했다면 다음 퀘스트로 이동
+        if (Character.main_quest_progress >= Character.main_quest.progressContent.Length)
+        {
+            // 경험치 지급
+            rewardExp(Character.main_quest.rewardExp);
+
+            // 보상 아이템 지급
+            rewardItem(Character.main_quest.rewardItem);
+
+            Character.main_quest = Resources.Load<QuestData>($"QuestData/Main/MAIN_{Character.main_quest.questCode + 1}");
+            Character.main_quest_progress = 0;
+        }
+        else
+        {
+            // 퀘스트 자체가 완료된것이 아니기 때문에 퀘스트 내용 UI만 변경함
+            myQuestContent[0].text = Character.main_quest.progressContent[Character.main_quest_progress];
+        }
+    }
+
+    /*
+     * @brief 서브 퀘스트 진행률을 높일때 사용. 퀘스트 완료까지 체크함
+     * @param questCode 체크할 서브 퀘스트 코드
+     */
+    public void nextSubQuest(QUEST_CODE questCode)
+    {
+        string questName = questCode.ToString();
+        
+        Character.sub_quest_progress[questName]++;
+
+        if (Character.sub_quest_progress[questName] >= Character.sub_quest[questName].progressContent.Length)
+        {
+            // 경험치 지급
+            rewardExp(Character.sub_quest[questName].rewardExp);
+
+            // 보상 아이템 지급
+            rewardItem(Character.sub_quest[questName].rewardItem);
+
+            Character.sub_quest.Remove(questName);
+            Character.sub_quest_progress.Remove(questName);
+
+            userData.quest_done.Add(
+                Character.sub_quest[questName].questCode
+            );
+        }
+        else
+        {
+            // TODO : 지금은 퀘스트 제목이 같은걸 찾아서 검색함. 크게 상관없으나 좋은 방법이 있다면 변경해보기
+            // 퀘스트 자체가 완료된것이 아니기 때문에 퀘스트 내용 UI만 변경함
+            // 서브 퀘스트 아직 표시 안해서 주석처리함
+            // for (int i = 1; i < 5; i++)
+            // {
+            //     if (myQuestName[i].text.Equals(Character.sub_quest[questName].questName))
+            //     {
+            //         myQuestContent[i].text = Character.sub_quest[questName].progressContent[Character.sub_quest_progress[questName]];
+            //         break;
+            //     }
+            // }
+        }
+    }
+
+    void rewardExp(float reward)
+    {
+        if (Mathf.FloorToInt(userData.level) <
+            Mathf.FloorToInt(userData.level + reward))
+        {
+            // 레벨업 애니메이션 작동
+        }
+        userData.level += reward;
+    }
+
+    void rewardItem(ItemData[] reward)
+    {
+        // 아이템 지급
     }
 }

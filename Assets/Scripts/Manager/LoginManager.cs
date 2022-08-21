@@ -33,7 +33,8 @@ public class UserData
     public Character_Schema character;
     public List<Item_Schema> inventory;
     public List<Skill_Schema> skills;
-    public List<Quest_Schema> quest_ing;
+    public Quest_Schema main_quest;
+    public List<Quest_Schema> sub_quest;
     public List<int> quest_done;
     public List<int> slot;
     public float level;

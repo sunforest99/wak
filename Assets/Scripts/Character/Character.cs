@@ -78,14 +78,18 @@ public class Character : MonoBehaviour
     private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
     public bool[] usingBattleItem = new bool[3];
 
-    // 발자국 =====================================================================================================
+    // 발자국 ====================================================================================================
     int footprintIdx = 0;
     [SerializeField] GameObject[] footprints;
 
     // 아이템 ====================================================================================================
     public static Item[] equipBattleItem = new Item[3];
-    public static List<List<Item>> haveItem = new List<List<Item>>();
-
+    public static List<List<Item>> haveItem = new List<List<Item>>();       // 소유중인 인벤토리 데이터 (나중에 위치 옮기기)
+    public static QuestData main_quest;                                     // 메인 퀘스트 데이터 (나중에 위치 옮기기)
+    public static Dictionary<string, QuestData> sub_quest = new Dictionary<string, QuestData>();        // 서브 퀘스트들 데이터 (나중에 위치 옮기기)
+    public static int main_quest_progress = 0;
+    public static Dictionary<string, int> sub_quest_progress = new Dictionary<string, int>();
+    
     void Start()
     {
         for (int i = 0; i < 3; i++)
@@ -313,18 +317,13 @@ public class Character : MonoBehaviour
         // }
 
         // 마우스 좌클릭 - 일반 공격
-        if (Input.GetMouseButtonDown(0) && GameMng.I.dailogUI == null)
+        if (Input.GetMouseButtonDown(0))
         {
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
 
             NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition);
             attack(Input.mousePosition);
-        }
-        // 마우스 우클릭 - 상호작용
-        else if (Input.GetMouseButtonDown(1))
-        {
-            //GameMng.I.mouseRaycast(this.transform.localPosition);
         }
 
         // 배틀 아이템 사용
@@ -515,6 +514,14 @@ public class Character : MonoBehaviour
             case SKILL_CODE.SKILL_5:
                 skill_5();
                 break;
+        }
+    }
+
+    void OnDestroy()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            Destroy(footprints[i]);
         }
     }
 }

@@ -25,6 +25,12 @@ public class UIManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
+    void Start()
+    {
+        GameMng.I.userData.main_quest.quest_code = 1;
+        QuestLoad();
+    }
+
     private void Update() {
 
         if (Input.GetMouseButtonDown(1))
@@ -57,12 +63,30 @@ public class UIManager : MonoBehaviour
                         selectPlayerName.transform.parent.gameObject.SetActive(false);
                         NetworkMng.I.SendMsg(string.Format("INVITE_PARTY:{0}", txt[1]));
                     });
+                    return;
+                }
+                else if (hit.collider.tag.Equals("Npc"))
+                {
+                    if (Vector2.Distance(hit.collider.transform.position, GameMng.I.character.transform.position) < 1.4f)
+                    {
+                        // 저장된 dialog 실행
+                        // 근데 dialog 저장 방식이 맞는지 일단 확인
+                        GameMng.I.npcData = hit.collider.GetComponent<Npcdata>();
+                        GameMng.I.npcData.NextDialog();
+                        GameMng.I.dailogUI.gameObject.SetActive(true);
+                        GameMng.I.npcData.isDialog = true;
+
+                        // UI 레이어 제거
+                        Camera.main.cullingMask = ~(1 << LayerMask.NameToLayer("UI"));
+                    }
+                    else
+                    {
+                        GameMng.I.showNotice("거리가 너무 멉니다.");
+                    }
+                    return;
                 }
             }
-            else
-            {
-                selectPlayerName.transform.parent.gameObject.SetActive(false);
-            }
+            selectPlayerName.transform.parent.gameObject.SetActive(false);
         }  
     }
 
@@ -91,4 +115,34 @@ public class UIManager : MonoBehaviour
     //         skill_icons[i].sprite = job_skill_icons[GameMng.I.userData.job - 1].icons[i];
     //     }
     // }
+
+
+    void QuestLoad()
+    {
+        // 메인 퀘스트 so 파일명은 진행 순서에 따라서 MAIN_${} 으로 결정됨.
+        Character.main_quest = Resources.Load<QuestData>($"QuestData/Main/MAIN_{GameMng.I.userData.main_quest.quest_code}");
+        Character.main_quest_progress = 0;      // TODO : DB 데이터로 최신화 할 것
+        GameMng.I.myQuestName[0].text = Character.main_quest.questName;
+        GameMng.I.myQuestContent[0].text = Character.main_quest.progressContent[Character.main_quest_progress];
+        
+        string subQuestName = "";
+
+        // 서브 퀘스트 so 파일명은 ENUM에 모두 저장함.
+        for(int i = 0; i < GameMng.I.userData.sub_quest.Count; i++)
+        {
+            subQuestName = ((QUEST_CODE)GameMng.I.userData.sub_quest[i].quest_code).ToString();
+            Character.sub_quest.Add(
+                subQuestName,
+                Resources.Load<QuestData>($"QuestData/Sub/{subQuestName}") 
+            );
+            Character.sub_quest_progress[subQuestName] = 0;
+
+            // 퀘스트 UI에는 최대 5개 까지만 보여줌. TODO : 화면에 띄울 퀘스트를 선택해서 보여주게 하려면 바꿔야함.
+            if (i+1 < 5)
+            {
+                GameMng.I.myQuestName[i+1].text = Character.main_quest.questName;
+                GameMng.I.myQuestContent[i+1].text = Character.main_quest.progressContent[Character.main_quest_progress];
+            }
+        }
+    }
 }

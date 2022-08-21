@@ -297,9 +297,10 @@ public class Wakgui : Boss
     IEnumerator Pattern_Wave()
     {
         animator.SetTrigger("Wave");
+        WaitForSeconds wc = new WaitForSeconds(2.0f);
         for (int i = 0; i < bossdata.maxWave; i++)
         {
-            yield return new WaitForSeconds(2.0f);
+            yield return wc;
             Instantiate(patten.waves, Vector3.zero, Quaternion.identity);
         }
 
