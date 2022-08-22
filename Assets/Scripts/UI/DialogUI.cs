@@ -10,6 +10,8 @@ public class DialogUI : MonoBehaviour
     // [SerializeField] private TMPro.TextMeshProUGUI player_name_ui;
     [SerializeField] private TMPro.TextMeshProUGUI player_chat_ui;
     public GameObject selectBlock;
+    [SerializeField] private TMPro.TextMeshProUGUI select_1_text;
+    [SerializeField] private TMPro.TextMeshProUGUI select_2_text;
 
     public bool flow;       // <! 선택지 2개
 
@@ -35,16 +37,24 @@ public class DialogUI : MonoBehaviour
         GameMng.I.dailogUI = this;
     }
 
+    public void setSelectBlock(string s1, string s2)
+    {
+        this.select_1_text.text = s1;
+        this.select_2_text.text = s2;
+        this.selectBlock.SetActive(true);
+        MCamera.I.setTargetChange(GameMng.I.character.transform);
+    }
+
     public void Select1()
     {
-        flow = false;
-        GameMng.I.npcData.NextDialog();
+        flow = true;
         this.selectBlock.SetActive(false);
+        GameMng.I.npcData.NextDialog();
     }
     public void Select2()
     {
-        flow = true;
-        GameMng.I.npcData.NextDialog();
+        flow = false;
         this.selectBlock.SetActive(false);
+        GameMng.I.npcData.NextDialog();
     }
 }

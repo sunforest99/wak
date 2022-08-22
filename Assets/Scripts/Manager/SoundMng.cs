@@ -37,15 +37,15 @@ public class SoundMng : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void changeAudioVolume(float vol)
+    public void changeAudioVolume(UnityEngine.UI.Slider vol)
     {
-        _audioVolume = vol;
-        _audio.volume = vol;
+        _audioVolume = vol.value;
+        _audio.volume = vol.value;
     }
-    public void changeEffectVolume(float vol)
+    public void changeEffectVolume(UnityEngine.UI.Slider vol)
     {
-        _effectVolume = vol;
-        _effect.volume = vol;
+        _effectVolume = vol.value;
+        _effect.volume = vol.value;
     }
 
     public void PlayAudio(AudioClip audioClip)

@@ -74,9 +74,22 @@ public class NpcAngel : Npcdata
         yield return ".....";
         yield return "아무튼 많은 텍스트";
         yield return "아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트";
-        Debug.Log(" 여기 들어옴 1 ");
+
+        //yield return "";    // 선택 메세지 띄우기 전에 틈을 주려면 빈 메세지 넣기
+        GameMng.I.dailogUI.setSelectBlock("선택 1", "선택 2");
+        yield return "";    // <- 얘는 선택메세지 후에는 꼭 있어야함
+
+        if (getFlow())
+        {
+            yield return "선택1에 따른 대사";
+        }
+        else
+        {
+            yield return "선택2에 따른 대사 - 1";
+            yield return "선택2에 따른 대사 - 2";
+        }
+
         yield return "앞에 있는 책을 통해 힘을 드리겠습니다";
-        Debug.Log(" 여기 들어옴 2 ");
 
         GameMng.I.nextMainQuest();
         checkQuest();
@@ -84,12 +97,11 @@ public class NpcAngel : Npcdata
 
     protected IEnumerator Talk_MainQuest_4()
     {
-        Debug.Log(" 여기 클릭 함 " + Character.main_quest_progress);
-
         if (Character.main_quest_progress.Equals(0))
         {
             yield return "앞의 책을 통해 전직해주세요..";
             yield return ";;";
+            base.dialogs = Talk_MainQuest_4();          // <- 만약 이후 퀘가 있어서 다시 말걸어야 한다면 꼭 마지막에 다시 선언
         }
         else
         {

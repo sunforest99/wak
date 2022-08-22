@@ -78,7 +78,8 @@ public class BossCollider : MonoBehaviour
             isCritical = CheckCritial();
 
             StartCoroutine(HitBlink());
-            _camera.shake();
+            // _camera.shake();
+            MCamera.I.shake(5f, .1f);
 
             // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남
             if (this.transform.localRotation.y == 180 && this.transform.position.x + 1 > other.transform.parent.transform.position.x)

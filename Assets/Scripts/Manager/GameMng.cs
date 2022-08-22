@@ -6,7 +6,8 @@ public enum KEY_MODE
 {
     PLAYER_MODE,    // 평상시, 캐릭터 이동할때
     TYPING_MODE,    // 엔터눌러서 채팅칠때
-    MINIGAME_MODE   // 미니게임 할때
+    MINIGAME_MODE,  // 미니게임 할때
+    QUEST_MODE      // NPC와 대화, 혹은 퀘스트 등에 대한 상황
 }
 
 public class GameMng : MonoBehaviour

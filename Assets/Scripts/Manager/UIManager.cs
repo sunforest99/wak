@@ -91,10 +91,16 @@ public class UIManager : MonoBehaviour
                         // 저장된 dialog 실행
                         // 근데 dialog 저장 방식이 맞는지 일단 확인
                         GameMng.I.npcData = hit.collider.GetComponent<Npcdata>();
-                        if (GameMng.I.npcData.NextDialog())
+
+                        // 이미 대화중인지 체크
+                        if (!GameMng.I.dailogUI.gameObject.activeSelf)
                         {
                             GameMng.I.dailogUI.gameObject.SetActive(true);
                             GameMng.I.npcData.isDialog = true;
+                            GameMng.I._keyMode = KEY_MODE.QUEST_MODE;
+
+                            MCamera.I.setTargetChange(hit.collider.transform);
+                            MCamera.I.zoomIn();
 
                             // UI 레이어 제거
                             Camera.main.cullingMask = ~(1 << LayerMask.NameToLayer("UI"));

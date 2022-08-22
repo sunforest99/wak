@@ -21,7 +21,8 @@ public class Npcdata : MonoBehaviour
     {
         if (isDialog)
         {
-            if (Input.GetMouseButtonDown(1) && !GameMng.I.dailogUI.selectBlock.activeSelf)
+            if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+                    && !GameMng.I.dailogUI.selectBlock.activeSelf)
             {
                 NextDialog();
             }
@@ -35,6 +36,10 @@ public class Npcdata : MonoBehaviour
         
         if (dialogs.MoveNext() == true)
         {
+            // 빈 메세지라면 그냥 넘기기 (선택 메세지 전 틈줄때 의미있음)
+            if (dialogs.Current.ToString() == "")
+                return true;
+            
             GameMng.I.dailogUI.setNpcText = npcname;
             // GameMng.I.dailogUI.setPlayerName = "Player";        // <! 나중에 닉네임 넣기
             if (dialogs.Current.ToString().FirstOrDefault() == '$')
@@ -63,9 +68,13 @@ public class Npcdata : MonoBehaviour
         // Destroy(tempDialog);
         isDialog = false;
         GameMng.I.dailogUI.gameObject.SetActive(false);
+        GameMng.I._keyMode = KEY_MODE.PLAYER_MODE;
 
         // UI 레이어 다시 ON
         Camera.main.cullingMask |= 1 << LayerMask.NameToLayer("UI");
+
+        MCamera.I.setTargetChange(GameMng.I.character.transform);
+        MCamera.I.zoomOut();
     }
 
     protected virtual IEnumerator NpcDialog()
@@ -100,6 +109,11 @@ public class Npcdata : MonoBehaviour
         StartCoroutine(checkPlayerDistance());
     }
 
+    protected bool getFlow()
+    {
+        MCamera.I.setTargetChange(this.transform);
+        return GameMng.I.dailogUI.flow;
+    }
 
     protected void setSpeech(string msg)
     {

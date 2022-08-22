@@ -39,7 +39,9 @@ public class Npc1 : Npcdata
         yield return "안녕 npc1 이야";
         yield return "$ㅎㅇ player 1";
 
-        GameMng.I.dailogUI.selectBlock.SetActive(true);
+        // GameMng.I.dailogUI.selectBlock.SetActive(true);
+        GameMng.I.dailogUI.setSelectBlock("a", "b");
+
         yield return "$선택";
 
         if(GameMng.I.dailogUI.flow)
