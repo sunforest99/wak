@@ -9,6 +9,7 @@ public class LoadManager : MonoBehaviour
     [SerializeField] string mapName = "";
     [SerializeField] bool isFocusingMap = true;
     [SerializeField] bool onlineMap = true;
+    [SerializeField] AudioClip mapBG;
 
     void Start()
     {
@@ -41,6 +42,8 @@ public class LoadManager : MonoBehaviour
 
         // 캐릭터에게 포커싱(카메라) 해야할 맵인지
         GameMng.I.isFocusing = isFocusingMap;
+
+        SoundMng.I.PlayAudio(mapBG);
 
         // 로딩  끝
 
