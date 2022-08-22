@@ -185,6 +185,12 @@ public class Character : MonoBehaviour
     {
         usingBattleItem[itemnum] = true;
         equipBattleItem[itemnum].itemCount--;
+        if(equipBattleItem[itemnum].itemCount <= 0)
+        {
+            int idx = haveItem[0].FindIndex(name => name.itemData.itemName == equipBattleItem[itemnum].itemData.itemName);
+            haveItem[0].RemoveAt(idx);
+            GameMng.I.userData.inventory[0].RemoveAt(idx);
+        }
         GameMng.I.BattleItemUI.ItemText[itemnum].text = equipBattleItem[itemnum].itemCount.ToString();
         float cooltime = equipBattleItem[itemnum].itemData.duration;
 

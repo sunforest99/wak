@@ -35,8 +35,7 @@ public class Inventory : MonoBehaviour
     {
         createSlot(0);
         getSlots(0);
-        getClickIndex = slotPool[0].itemData.itemIndex;
-        if (inventoryBase[0].transform.childCount == 0)
+        if(Character.haveItem[0].Count == 0)
         {
             contentOnOff(false);
             for (int i = 0; i < equipBT.Length; i++)
@@ -44,6 +43,7 @@ public class Inventory : MonoBehaviour
         }
         else
         {
+            getClickIndex = slotPool[0].itemData.itemIndex;
             contentOnOff(true);
             contentImg.sprite = getActiveObject().itemData.itemSp;
             contentText.text = getActiveObject().itemData.itemName + "\n" + getActiveObject().itemData.content;
@@ -99,7 +99,7 @@ public class Inventory : MonoBehaviour
         if (idx == -1)
             idx = kind - 1;
 
-            if (!GameMng.I.character.usingBattleItem[kind - 1] && !GameMng.I.character.usingBattleItem[idx])
+        if (!GameMng.I.character.usingBattleItem[kind - 1] && !GameMng.I.character.usingBattleItem[idx])
         {
             int index = -1;
             for (int i = 0; i < GameMng.I.BattleItemUI.ItemIdx.Length; i++)
@@ -135,6 +135,11 @@ public class Inventory : MonoBehaviour
     public void equipBtn()
     {
         Debug.Log("아이템 장착");
+    }
+
+    public void useConsumableItemBtn()
+    {
+        Debug.Log("사용 아이템 사용");
     }
 
     public void createSlot(int kind)

@@ -27,6 +27,7 @@ public struct PartyBuffGroup
 
 public class StateMng : MonoBehaviour
 {
+    public BuffData[] buffDatas;
     [SerializeField] private PartyBuffGroup[] partybuffGroups = new PartyBuffGroup[4];
     [SerializeField] private Buff[] ownBuff;        // 내꺼 버프
 
@@ -39,14 +40,9 @@ public class StateMng : MonoBehaviour
     public Player_HP_Numerical[] Party_HP_Numerical = new Player_HP_Numerical[4]; // 좌측 UI 플레이어 수치
     public Player_HP_Numerical user_HP_Numerical;
 
-    // ///////////////////////////////////////////////////////////////////////////////////////////
-    // [SerializeField] float fPlayerHP;                                                   // 플레이어 체력 시각 효과를 위한 변수 나중에 꼭 지우기
-    // [SerializeField] float fPlayerShield;
-    // ///////////////////////////////////////////////////////////////////////////////////////////
-
     public int nPlayerBuffCount;                                                                   // 플레이어의 버프 갯수
     public int nPlayerDeBuffCount;
-
+    public BuffData b;
     float fImageSize;
     float fPlayerImgSize;
 
@@ -155,7 +151,6 @@ public class StateMng : MonoBehaviour
                 ownBuff[i].duration = buffData.duration;
                 break;
             }
-           
             else if (!ownBuff[i].isApply)
             {
                 ownBuff[i].buffData = buffData;
@@ -164,5 +159,18 @@ public class StateMng : MonoBehaviour
                 break;
             }
         }
+        NetworkMng.I.SendMsg(string.Format("BUFF:{0}:{1}", NetworkMng.I.uniqueNumber, (int)buffData.BuffKind));
+    }
+
+    public void partyActiveBuff(int player, BUFF buff)
+    {
+        if (!partybuffGroups[player].userBuff[(int)buff].isApply)
+        {
+            partybuffGroups[player].userBuff[(int)buff].buffData = buffDatas[(int)buff];
+            partybuffGroups[player].userBuff[(int)buff].isApply = true;
+            partybuffGroups[player].userBuff[(int)buff].gameObject.SetActive(true);
+        }
+        else
+            partybuffGroups[player].userBuff[(int)buff].duration = partybuffGroups[player].userBuff[(int)buff].buffData.duration;
     }
 }
