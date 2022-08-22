@@ -450,6 +450,14 @@ public class NetworkMng : MonoBehaviour
         {
             this.uniqueNumber = txt[1];
         }
+        else if (txt[0].Equals("BUFF"))
+        {
+            if(v_users.Count != 0)
+            {
+                for(int user = 0; user < v_users.Count; user++)
+                    GameMng.I.stateMng.partyActiveBuff(user, (BUFF)(int.Parse(txt[2])));
+            }
+        }
     }
 
     /**

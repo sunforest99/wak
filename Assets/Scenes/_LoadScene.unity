@@ -13474,7 +13474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1383254681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20116,7 +20116,7 @@ MonoBehaviour:
   userData:
     _id: 
     user_nickname: 22
-    job: 0
+    job: 1
     character:
       hair: 0
       face: 0
@@ -21480,6 +21480,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 5731582710971678883, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
+      propertyPath: b
+      value: 
+      objectReference: {fileID: 11400000, guid: 4c6b587e3be1e6f4e89a5c5862794ec2, type: 2}
+    - target: {fileID: 5731582710971678883, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
       propertyPath: PlayerHPImg
       value: 
       objectReference: {fileID: 1619277607}
@@ -21518,6 +21522,10 @@ PrefabInstance:
     - target: {fileID: 5731582710971678883, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
       propertyPath: PartyName.Array.size
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5731582710971678883, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
+      propertyPath: buffDatas.Array.size
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5731582710971678883, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
       propertyPath: ownBuff.Array.data[0]
@@ -21583,6 +21591,30 @@ PrefabInstance:
       propertyPath: PartyName.Array.data[3]
       value: 
       objectReference: {fileID: 174573130}
+    - target: {fileID: 5731582710971678883, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
+      propertyPath: buffDatas.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: bc94caa5509e733418b7fddc57cce851, type: 2}
+    - target: {fileID: 5731582710971678883, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
+      propertyPath: buffDatas.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4c6b587e3be1e6f4e89a5c5862794ec2, type: 2}
+    - target: {fileID: 5731582710971678883, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
+      propertyPath: buffDatas.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 1863f364f1f6d654f8d97ed39b33c65b, type: 2}
+    - target: {fileID: 5731582710971678883, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
+      propertyPath: buffDatas.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: aab56d51708068f4f80c0453cea7b0b2, type: 2}
+    - target: {fileID: 5731582710971678883, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
+      propertyPath: buffDatas.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7d58d0a983a40ee41844769d44e4279a, type: 2}
+    - target: {fileID: 5731582710971678883, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
+      propertyPath: buffDatas.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 616fe60bbe6e5b848aed0a5349273bd8, type: 2}
     - target: {fileID: 5731582710971678884, guid: 9c1ad39ce22fd4246babff9292218b92, type: 3}
       propertyPath: m_Name
       value: Party_HP
@@ -22573,8 +22605,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1042267859}
         m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
-        m_MethodName: slotBtn
-        m_Mode: 3
+        m_MethodName: useConsumableItemBtn
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
