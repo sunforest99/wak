@@ -51,6 +51,7 @@ public class Character : MonoBehaviour
 {
     // 캐릭터 ====================================================================================================
     public Animator _anim;
+    // [SerializeField] Transform _body;
     [SerializeField] Rigidbody _rigidBody;
     // [SerializeField] BoxCollider _collider;
     [SerializeField] GameObject _attackCollider;
@@ -217,7 +218,7 @@ public class Character : MonoBehaviour
             return;
 
         Vector3 moveDist = _moveDir.normalized * Time.deltaTime;
-        _rigidBody.MovePosition(transform.position + new Vector3(moveDist.x, 0, moveDist.y) * MOVE_SPEED);
+        _rigidBody.MovePosition(transform.parent.position + new Vector3(moveDist.x, 0, moveDist.y) * MOVE_SPEED);
         
         // transform.position += new Vector3(_moveDir.x, 0, _moveDir.y) * 7 * Time.deltaTime;
 
@@ -225,7 +226,7 @@ public class Character : MonoBehaviour
         if (curDashTime < MAX_DASH_TIME)
         {
             curDashTime += Time.deltaTime;
-            _rigidBody.MovePosition(transform.position + new Vector3(moveDist.x, 0, moveDist.y) * DASH_SPEED);
+            _rigidBody.MovePosition(transform.parent.position + new Vector3(moveDist.x, 0, moveDist.y) * DASH_SPEED);
         }
     }
 
@@ -497,7 +498,7 @@ public class Character : MonoBehaviour
         {
             case ITEM_INDEX.POTION:
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp < GameMng.I.stateMng.user_HP_Numerical.fullHp)
-                    GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 30 / 100);
+                    GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 20 / 100);
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
                 break;
@@ -521,8 +522,8 @@ public class Character : MonoBehaviour
     public void isMe()
     {
         // this.gameObject.name = "ME";
-        this.gameObject.tag = "Untagged";
-        // this.gameObject.layer = LayerMask.NameToLayer("Character");
+        this.gameObject.tag = "Player";
+        this.gameObject.layer = LayerMask.NameToLayer("Player");
         _isPlayer = true;
         // _collider.enabled = true;
         _attackCollider.SetActive(true);

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class EnterRaidDoor : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D other) {
+    private void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Player"))
         {
             if (!NetworkMng.I.v_party.Count.Equals(0))

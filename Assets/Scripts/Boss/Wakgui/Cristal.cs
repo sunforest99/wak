@@ -43,7 +43,7 @@ public class Cristal : DestroySelf
         StartCoroutine(CreateBullet());
     }
 
-    private void OnTriggerEnter2D(Collider2D other) 
+    private void OnTriggerEnter(Collider other) 
     {
         if(other.CompareTag("Weapon"))
         {

@@ -19,10 +19,10 @@ public class Bullet : DestroySelf
         {
             destroySelf();
         }
-        transform.Translate(Vector3.down * 3.0f * Time.deltaTime);
+        transform.Translate(Vector3.back * 3.0f * Time.deltaTime);
     }
 
-    private void OnTriggerEnter2D(Collider2D other) 
+    private void OnTriggerEnter(Collider other) 
     {
         if(other.CompareTag("Player"))
         {

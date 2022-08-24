@@ -134,7 +134,7 @@ public class GameMng : MonoBehaviour
     public Character createPlayer(string uniqueNumber, int job, string nickName, float posX = 0, float posY = 0)
     {
         GameObject temp = Instantiate(characterPrefab[job], new Vector3(posX, posY, 0), Quaternion.identity);
-        Character cha = temp.GetComponent<Character>();
+        Character cha = temp.transform.GetChild(0).GetComponent<Character>();
         cha.nickName = nickName;
         temp.name = nickName + ":" + uniqueNumber;
 

@@ -35,7 +35,7 @@ public class OutCast : DestroySelf
         }
     }
 
-    void figureSetting(GameObject figure, Collider2D user)
+    void figureSetting(GameObject figure, Collider user)
     {
         figure.transform.SetParent(user.transform);
         figure.transform.SetAsFirstSibling();
@@ -43,7 +43,7 @@ public class OutCast : DestroySelf
         destroySelf();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter(Collider other)
     {
         if(other.GetComponent<Character>())
         {
