@@ -66,10 +66,13 @@ public class BossCollider : MonoBehaviour
         dmg.set("immune");
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Weapon"))
         {
+            if (Mathf.Abs(transform.parent.position.z - other.transform.parent.position.z) > 2)
+                return;
+
             bool isCritical;
             if (Character.usingSkill && Character.usingSkill.getBuffData && Character.usingSkill.getBuffData.isBossDebuf)
             {
@@ -96,7 +99,7 @@ public class BossCollider : MonoBehaviour
             // 일반 공격
             else
             {
-                Instantiate(_eff, other.ClosestPoint(transform.position) + new Vector2(Random.Range(-0.1f, 0.1f), Random.Range(1f, 1.2f)), Quaternion.identity);
+                Instantiate(_eff, other.ClosestPoint(transform.position) + new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(1f, 1.2f), 0), Quaternion.identity);
                 isBackAttack = false;
             }
 
@@ -105,7 +108,7 @@ public class BossCollider : MonoBehaviour
                 damageTemp = GameMng.I.getCharacterDamage(isCritical, isBackAttack);
 
                 createDamage(
-                    other.ClosestPoint(transform.position) + new Vector2(0, 3f),
+                    other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0),
                     damageTemp,
                     isCritical
                 );
@@ -114,7 +117,7 @@ public class BossCollider : MonoBehaviour
             }
             else
             {
-                createDamage(other.ClosestPoint(transform.position) + new Vector2(0, 3f));
+                createDamage(other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0));
             }
         }
     }

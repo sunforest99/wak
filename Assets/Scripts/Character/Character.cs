@@ -8,6 +8,7 @@ public enum CHARACTER_ACTION
     IDLE,                   // 일반 상태, 움직이거나 스킬 사용이 가능한 상태
     CANT_ANYTHING,          // 스킬 쓰는 상태, 아무것도 못함
     SLEEP_CANT_ANYTHING,    // 기절 상태, 기상기 외에는 아무것도 못함
+    ATTACK_CANT_ANYTHING,   // 기본 공격, 연속 기본공격 입력외에는 아무것도 못함
     CAN_MOVE                // 스킬 쓰는 상태, 캔슬이 가능한 상태
 }
 
@@ -50,8 +51,9 @@ public class Character : MonoBehaviour
 {
     // 캐릭터 ====================================================================================================
     public Animator _anim;
-    [SerializeField] Rigidbody2D _rigidBody;
-    [SerializeField] BoxCollider2D _collider;
+    [SerializeField] Rigidbody _rigidBody;
+    // [SerializeField] BoxCollider _collider;
+    [SerializeField] GameObject _attackCollider;
 
     // 데이터 ====================================================================================================
     public bool _isPlayer = false;
@@ -77,6 +79,7 @@ public class Character : MonoBehaviour
     public static SkillData usingSkill;
     private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
     public bool[] usingBattleItem = new bool[3];
+    public int continuousAttack = 0;
 
     // 발자국 ====================================================================================================
     int footprintIdx = 0;
@@ -210,17 +213,19 @@ public class Character : MonoBehaviour
 
     void inputMove()
     {
-        if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
+        if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING || _action == CHARACTER_ACTION.ATTACK_CANT_ANYTHING)
             return;
 
         Vector3 moveDist = _moveDir.normalized * Time.deltaTime;
-        _rigidBody.MovePosition(transform.position + moveDist * MOVE_SPEED);
+        _rigidBody.MovePosition(transform.position + new Vector3(moveDist.x, 0, moveDist.y) * MOVE_SPEED);
+        
+        // transform.position += new Vector3(_moveDir.x, 0, _moveDir.y) * 7 * Time.deltaTime;
 
         // 대시 이동
         if (curDashTime < MAX_DASH_TIME)
         {
             curDashTime += Time.deltaTime;
-            _rigidBody.MovePosition(transform.position + moveDist * DASH_SPEED);
+            _rigidBody.MovePosition(transform.position + new Vector3(moveDist.x, 0, moveDist.y) * DASH_SPEED);
         }
     }
 
@@ -230,9 +235,9 @@ public class Character : MonoBehaviour
         _moveDir.y = changeDirY;
 
         if (_moveDir.x < 0)
-            transform.rotation = Quaternion.Euler(Vector3.zero);
+            transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
         else if (_moveDir.x > 0)
-            transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+            transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
     }
 
     public void startMove()
@@ -270,7 +275,9 @@ public class Character : MonoBehaviour
         // 핑
         if (Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.LeftControl))
         {
-            Vector2 pos = UnityEngine.Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var mousePos = Input.mousePosition;
+            mousePos.z = -10;
+            Vector2 pos = UnityEngine.Camera.main.ScreenToWorldPoint(mousePos);
             pos.y += 0.65f;
             GameMng.I.createPing(pos);
             NetworkMng.I.SendMsg(string.Format("PING:{0}:{1}", pos.x, pos.y));
@@ -279,6 +286,18 @@ public class Character : MonoBehaviour
         // 이 아래는 이동이 가능한 상태 (ex 기본상태, 이동가능한 스킬상태 ) ===========================================================
         if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
             return;
+        if (_action == CHARACTER_ACTION.ATTACK_CANT_ANYTHING)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (EventSystem.current.IsPointerOverGameObject())
+                    return;
+
+                NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition);
+                attack(Input.mousePosition);
+            }
+            return;
+        }
 
         // 이동
         _moveDir.x = Input.GetAxisRaw("Horizontal");
@@ -300,9 +319,9 @@ public class Character : MonoBehaviour
 
         // 방향 전환
         if (_moveDir.x < 0)
-            transform.rotation = Quaternion.Euler(Vector3.zero);
+            transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
         else if (_moveDir.x > 0)
-            transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+            transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
 
         // 이 아래는 IDLE 상태에서만 가능한 것들만 (ex 스킬) ==========================================================================
         if (_action != CHARACTER_ACTION.IDLE)
@@ -319,11 +338,6 @@ public class Character : MonoBehaviour
             input_skill_4();
         else if (Input.GetKeyDown(KeyCode.F) && !checkSkill[4])
             input_skill_5();
-        // 임시 기절 키
-        // else if (Input.GetKeyDown(KeyCode.Y))
-        // {
-        //     sleep();
-        // }
 
         // 마우스 좌클릭 - 일반 공격
         if (Input.GetMouseButtonDown(0))
@@ -367,6 +381,7 @@ public class Character : MonoBehaviour
         _action = CHARACTER_ACTION.CAN_MOVE;
         _anim.SetTrigger("Dash");
         curDashTime = 0.0f;
+        continuousAttack = 0;
     }
 
     void wakeup()
@@ -415,20 +430,38 @@ public class Character : MonoBehaviour
 
     public void attack(Vector2 attackDir)
     {
-        // 좌우 반전
-        if (attackDir.x < Screen.width / 2)
-            transform.rotation = Quaternion.Euler(Vector3.zero);
-        else
-            transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+        if (continuousAttack >= 3)
+            return;
+        
+        continuousAttack++;
+        if (continuousAttack.Equals(1))
+            _anim.SetTrigger("Attack");
+        _anim.SetInteger("C_Attack", continuousAttack);
 
-        _action = CHARACTER_ACTION.CANT_ANYTHING;
-        _anim.SetTrigger("Attack");
+        // 공격시 좌우 반전되는거 막기 위함
+        if (_action != CHARACTER_ACTION.ATTACK_CANT_ANYTHING)
+        {
+            // 좌우 반전
+            if (attackDir.x < Screen.width / 2)
+                transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
+            else
+                transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
+        }
+
+        _action = CHARACTER_ACTION.ATTACK_CANT_ANYTHING;
+
     }
 
     void endAct()
     {
         _action = CHARACTER_ACTION.IDLE;
         usingSkill = null;
+    }
+
+    void resetAttackContinuous()
+    {
+        continuousAttack = 0;
+        endAct();
     }
 
     public void sleep()
@@ -491,7 +524,8 @@ public class Character : MonoBehaviour
         this.gameObject.tag = "Untagged";
         // this.gameObject.layer = LayerMask.NameToLayer("Character");
         _isPlayer = true;
-        _collider.enabled = true;
+        // _collider.enabled = true;
+        _attackCollider.SetActive(true);
         // GetComponent<BoxCollider2D>().isTrigger = false;
     }
 
