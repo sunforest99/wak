@@ -70,15 +70,15 @@ public class BossCollider : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Weapon"))
         {
-            if (Mathf.Abs(transform.parent.position.z - other.transform.parent.position.z) > 2)
-                return;
+            // if (Mathf.Abs(transform.parent.position.z - other.transform.parent.position.z) > 2)
+            //     return;
 
             bool isCritical;
             if (Character.usingSkill && Character.usingSkill.getBuffData && Character.usingSkill.getBuffData.isBossDebuf)
             {
                 BuffActive(Character.usingSkill.getBuffData);
             }
-            isCritical = CheckCritial();
+            isCritical = CheckCritical();
 
             StartCoroutine(HitBlink());
             // _camera.shake();
@@ -122,7 +122,7 @@ public class BossCollider : MonoBehaviour
         }
     }
 
-    bool CheckCritial()
+    bool CheckCritical()
     {
         float criticalrand = Random.Range(0.0f, 100.0f);
         float criticalPer = Character._stat.criticalPer;

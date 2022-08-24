@@ -970,7 +970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4657231755677225247, guid: 77618c670228ae7428179b7222e7cc31, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.97
+      value: 0.72
       objectReference: {fileID: 0}
     - target: {fileID: 4657231755677225247, guid: 77618c670228ae7428179b7222e7cc31, type: 3}
       propertyPath: m_LocalPosition.y
@@ -978,7 +978,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4657231755677225247, guid: 77618c670228ae7428179b7222e7cc31, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -17.249968
+      value: -21.099968
       objectReference: {fileID: 0}
     - target: {fileID: 4657231755677225247, guid: 77618c670228ae7428179b7222e7cc31, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1755,6 +1755,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6281128334967869752, guid: cb7c468d2dae0a44cb90b3c7a9a324c9, type: 3}
+      propertyPath: m_Follow
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6281128334967869754, guid: cb7c468d2dae0a44cb90b3c7a9a324c9, type: 3}
       propertyPath: m_Name
       value: ___Cine Camera
@@ -1765,7 +1769,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6281128334967869759, guid: cb7c468d2dae0a44cb90b3c7a9a324c9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.97
+      value: 0.72
       objectReference: {fileID: 0}
     - target: {fileID: 6281128334967869759, guid: cb7c468d2dae0a44cb90b3c7a9a324c9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1773,7 +1777,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6281128334967869759, guid: cb7c468d2dae0a44cb90b3c7a9a324c9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -17.249968
+      value: -21.099968
       objectReference: {fileID: 0}
     - target: {fileID: 6281128334967869759, guid: cb7c468d2dae0a44cb90b3c7a9a324c9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8066,7 +8070,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923531825}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: -0.42, z: 1.71}
   m_LocalScale: {x: 1.15, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8585,18 +8589,6 @@ PrefabInstance:
       propertyPath: questBook
       value: 
       objectReference: {fileID: 996979499}
-    - target: {fileID: 1611888530, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: questIcon
-      value: 
-      objectReference: {fileID: 5074543893336450990}
-    - target: {fileID: 1711419580, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: m_Name
-      value: Quest_Icon
-      objectReference: {fileID: 0}
-    - target: {fileID: 1711419580, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4723054551740063541, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
       propertyPath: m_Name
       value: Angel
@@ -8611,11 +8603,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5855718294757656406, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.353
+      value: 0.437
       objectReference: {fileID: 0}
     - target: {fileID: 5855718294757656406, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 3.07
       objectReference: {fileID: 0}
     - target: {fileID: 5855718294757656406, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8647,8 +8639,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
---- !u!212 &5074543893336450990 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 1711419582, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-  m_PrefabInstance: {fileID: 5074543893336450989}
-  m_PrefabAsset: {fileID: 0}

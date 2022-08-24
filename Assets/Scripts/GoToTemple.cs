@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class GoToTemple : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D other) {        
+    private void OnTriggerEnter(Collider other) {        
         if (other.gameObject.CompareTag("Player"))
         {
             // 1.대도시로, 2.생존하기 퀘스트 넘기고 바로 전직하기로 넘어감

@@ -18,7 +18,7 @@ public class Knife_portal : DestroySelf
             destroySelf();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
