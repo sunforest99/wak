@@ -174,14 +174,14 @@ public class Boss : MonoBehaviour
         {
             isRFlip = true;
             isLFlip = false;
-            this.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            this.transform.localRotation = Quaternion.Euler(-20, 180, 0);
             this.transform.position += new Vector3(1.8f, 0, 0);
         }
         else if (_dir.x < -1f && !isLFlip)
         {
             isLFlip = true;
             isRFlip = false;
-            this.transform.localRotation = Quaternion.identity;
+            this.transform.localRotation = Quaternion.Euler(new Vector3(20f, 0, 0));
             this.transform.position -= new Vector3(1.8f, 0, 0);
         }
 

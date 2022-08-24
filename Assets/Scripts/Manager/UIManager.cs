@@ -32,12 +32,12 @@ public class UIManager : MonoBehaviour
         itemLoad();
         QuestLoad();
 
-        StartCoroutine(waitingLoading());
+        // StartCoroutine(waitingLoading());
     }
 
     IEnumerator waitingLoading()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         
         // 전직을 안했다는건 최초 숲으로 이동
         if (GameMng.I.userData.job.Equals(0))
@@ -54,8 +54,12 @@ public class UIManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
+            // Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            // RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+
             if (hit)
             if (!hit.collider.Equals(null))
             {
