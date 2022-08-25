@@ -7,8 +7,8 @@ public class Warrier : Character
     public override void init()
     {
         _job = JOB.WARRIER;
-        DASH_SPEED = 10;
-        MOVE_SPEED = 5;
+        DASH_SPEED = 12;
+        MOVE_SPEED = 8;
         DASH_COOLTIME = 6;
         WAKEUP_COOLTIME = 10;
 
