@@ -91,7 +91,7 @@ public class Wakgui : Boss
             if (action == WAKGUI_ACTION.IDLE && _target != null)
                 base.BossMove();
 
-            if (!checkPattern && !checkCircle && base._currentNesting < 90)
+            if (action == WAKGUI_ACTION.IDLE && !checkPattern && !checkCircle && base._currentNesting < 90)
             {
                 Teleport(true);
                 checkPattern = true;
@@ -117,7 +117,7 @@ public class Wakgui : Boss
                 }
                 // StopCoroutine(Action());
             }
-            else if (checkCircle && !checkOutcast && base._currentNesting < 50)
+            else if (action == WAKGUI_ACTION.IDLE && checkCircle && !checkOutcast && base._currentNesting < 50)
             {
                 Teleport(false);
                 checkPattern = true;

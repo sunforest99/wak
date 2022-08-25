@@ -50,7 +50,7 @@ public class Totem : DestroySelf
         Destroy(GameMng.I.character.transform.GetChild(0).gameObject);
         foreach(var value in NetworkMng.I.v_users.Values)
         {
-            Destroy(value.transform.GetChild(0));
+            Destroy(value.transform.GetChild(0).gameObject);
         }
         destroySelf();
         yield return null;
