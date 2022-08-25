@@ -284,7 +284,10 @@ public class NetworkMng : MonoBehaviour
             // MOVE_STOP : 유저uniqueNumber : 캐릭터x좌표 : 캐릭터y좌표
             v_users[txt[1]].setMoveDir(0, 0);
             v_users[txt[1]].stopMove();
-            v_users[txt[1]].transform.position = new Vector3(float.Parse(txt[2]), float.Parse(txt[3]));
+            Vector3 v = v_users[txt[1]].transform.position;
+            v.x = float.Parse(txt[2]);
+            v.z = float.Parse(txt[3]);
+            v_users[txt[1]].transform.position = v;
         }
         else if (txt[0].Equals("IN_USER"))  // 기존 맵에 있는 유저들 데이터
         {
@@ -439,7 +442,7 @@ public class NetworkMng : MonoBehaviour
         }
         else if (txt[0].Equals("PING"))
         {
-            GameMng.I.createPing(new Vector2(float.Parse(txt[1]), float.Parse(txt[2])));
+            GameMng.I.createPing(new Vector3(float.Parse(txt[1]), float.Parse(txt[2]), float.Parse(txt[3])));
         }
         else if (txt[0].Equals("CONNECT"))
         {

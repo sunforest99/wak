@@ -11,11 +11,13 @@ enum POS
 }
 public class Waves : DestroySelf
 {
+    [SerializeField] Rigidbody _rigidbody;
+
     public int rand;
     int damage;
     
     void Start()
-    { 
+    {
         damage = GameMng.I.boss.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_WAVE);
 
         switch (rand)
@@ -36,19 +38,21 @@ public class Waves : DestroySelf
                 this.transform.localRotation = Quaternion.identity;
                 break;
         }
+        
+        _rigidbody.velocity = transform.TransformDirection(Vector3.left * 3);
     }
 
-    void Update()
-    {
-        if(this.transform.position.x < GameMng.I.mapLeftBotton.x ||
-        this.transform.position.x > GameMng.I.mapRightTop.x ||
-        this.transform.position.y < GameMng.I.mapLeftBotton.y || 
-        this.transform.position.y > GameMng.I.mapRightTop.y)
-        {
-            destroySelf();
-        }
-        this.transform.Translate(Vector3.left * 3.0f * Time.deltaTime);
-    }
+    // void Update()
+    // {
+    //     if(this.transform.position.x < GameMng.I.mapLeftBotton.x ||
+    //     this.transform.position.x > GameMng.I.mapRightTop.x ||
+    //     this.transform.position.y < GameMng.I.mapLeftBotton.y || 
+    //     this.transform.position.y > GameMng.I.mapRightTop.y)
+    //     {
+    //         destroySelf();
+    //     }
+    //     // this.transform.Translate(Vector3.left * 3.0f * Time.deltaTime);
+    // }
 
     private void OnTriggerEnter(Collider other) 
     {

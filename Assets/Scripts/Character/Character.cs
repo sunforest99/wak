@@ -273,16 +273,6 @@ public class Character : MonoBehaviour
             StartCoroutine(SkillCoolDown(5));
             dash();
         }
-        // 핑
-        if (Input.GetMouseButtonDown(1) && Input.GetKey(KeyCode.LeftControl))
-        {
-            var mousePos = Input.mousePosition;
-            mousePos.z = -10;
-            Vector2 pos = UnityEngine.Camera.main.ScreenToWorldPoint(mousePos);
-            pos.y += 0.65f;
-            GameMng.I.createPing(pos);
-            NetworkMng.I.SendMsg(string.Format("PING:{0}:{1}", pos.x, pos.y));
-        }
 
         // 이 아래는 이동이 가능한 상태 (ex 기본상태, 이동가능한 스킬상태 ) ===========================================================
         if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
@@ -307,14 +297,14 @@ public class Character : MonoBehaviour
         if (_moveDirBefore != _moveDir)
             if (_moveDirBefore.x.Equals(0) && _moveDirBefore.y.Equals(0)) {
                 startMove();
-                NetworkMng.I.SendMsg(string.Format("MOVE_START:{0}:{1}", _moveDir.x, _moveDir.y));
+                NetworkMng.I.SendMsg(string.Format("MOVE_START:{0}:{1}", _moveDir.x, _moveDir.z));
             }
             else if (_moveDir.x.Equals(0) && _moveDir.y.Equals(0)) {
                 stopMove();
-                NetworkMng.I.SendMsg(string.Format("MOVE_STOP:{0}:{1}", transform.position.x, transform.position.y));
+                NetworkMng.I.SendMsg(string.Format("MOVE_STOP:{0}:{1}", transform.position.x, transform.position.z));
             }
             else {
-                NetworkMng.I.SendMsg(string.Format("MOVE:{0}:{1}:{2}:{3}", _moveDir.x, _moveDir.y, transform.position.x,  transform.position.y));
+                NetworkMng.I.SendMsg(string.Format("MOVE:{0}:{1}:{2}:{3}", _moveDir.x, _moveDir.y, transform.position.x,  transform.position.z));
             }
         _moveDirBefore = _moveDir;
 

@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Bullet : DestroySelf
 {
+    [SerializeField] Rigidbody _rigidbody;
+
     int damage;
     void Start()
     {
         damage = GameMng.I.boss.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_CRISTAL);
+        _rigidbody.velocity = transform.TransformDirection(Vector3.left * 3);
     }
 
     void Update()
@@ -19,7 +22,7 @@ public class Bullet : DestroySelf
         {
             destroySelf();
         }
-        transform.Translate(Vector3.back * 3.0f * Time.deltaTime);
+        // this.transform.Translate(Vector3.left * 3.0f * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other) 

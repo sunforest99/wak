@@ -371,7 +371,7 @@ public class Wakgui : Boss
     {
         animator.SetTrigger("Cristal");
 
-        Instantiate(patten.cristal, new Vector3(posX, posY, 0), Quaternion.identity);
+        Instantiate(patten.cristal, new Vector3(posX, 0.14f, posY), Quaternion.identity);
     }
 
     string Pattern_Wave_Think()
@@ -397,7 +397,7 @@ public class Wakgui : Boss
     {
         animator.SetTrigger("Wave");
 
-        Waves temp = Instantiate(patten.waves, new Vector2(posX, posY), Quaternion.identity).GetComponent<Waves>();
+        Waves temp = Instantiate(patten.waves, new Vector3(posX, -0.19f, posY), Quaternion.identity).GetComponent<Waves>();
         temp.rand = rand;
     }
 

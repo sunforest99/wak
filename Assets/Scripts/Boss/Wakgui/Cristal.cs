@@ -12,8 +12,10 @@ public class Cristal : DestroySelf
 
     void Start()
     {
+        count = 0;
         hp = 5;
-        spawn.transform.localRotation = Quaternion.Euler(0, 0, Random.Range(-360, 361));
+        spawn.transform.localRotation = Quaternion.Euler(70, 0, Random.Range(-360, 361));
+
         StartCoroutine(CreateBullet());
     }
 
@@ -29,9 +31,10 @@ public class Cristal : DestroySelf
 
     IEnumerator CreateBullet()
     {
+        Debug.Log("!!!!!!!!");
         if (count < 7)
         {
-            Instantiate(bullet, this.transform.localPosition, spawn.transform.rotation).transform.parent = this.transform;
+            Instantiate(bullet, this.transform.localPosition, spawn.transform.rotation);
             count++;
             yield return new WaitForSeconds(0.2f);
         }

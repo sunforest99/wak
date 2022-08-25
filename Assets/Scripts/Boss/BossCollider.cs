@@ -120,6 +120,19 @@ public class BossCollider : MonoBehaviour
                 createDamage(other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0));
             }
         }
+        else if (other.gameObject.CompareTag("Esther_Attack"))
+        {
+            if (!boss.isAnnihilation)
+            {
+                createDamage(
+                    other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0),
+                    Random.Range(50123300, 54987889),       // <- 에스더는 고정 데미지인데 랜덤 값이 너무 딱 맞는 값 나오면 이상하니까 겹쳐도 적당한 수
+                    true
+                );
+                NetworkMng.I.SendMsg(string.Format("DAMAGE:{0}", damageTemp));
+                // boss._nestingHp -= damageTemp;
+            }
+        }
     }
 
     bool CheckCritical()
