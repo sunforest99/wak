@@ -126,7 +126,7 @@ public class GameMng : MonoBehaviour
     }
 
 
-    public void createPing(Vector2 pos)
+    public void createPing(Vector3 pos)
     {
         Instantiate(pingPrefab, pos, Quaternion.identity);
     }

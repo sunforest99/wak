@@ -54,49 +54,19 @@ public class UIManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            // Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            // RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
+            // RaycastHit[] hits;
+            // hits = Physics.RaycastAll(transform.position, transform.forward, 100.0F);
 
-            // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            // RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
+            // for (int i = 0; i < hits.Length; i++)
+            // {
+            //     RaycastHit hit = hits[i];
+            // }
             
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             
             if (Physics.Raycast(ray.origin, ray.direction * 100, out hit)) {
-                Debug.DrawRay(ray.origin, ray.direction * 100, Color.red);
-                
-                Transform objectHit = hit.transform;
-
-                Debug.Log(hit.transform.name);
-                Debug.Log(hit.transform.tag);
-                
-                if (hit.transform.tag.Equals("Character"))   // 나를 제외한 플레이어를 선택함
-                {
-                    // txt[0] 닉네임
-                    // txt[1] uniqueNumber
-                    string[] txt = hit.transform.name.Split(':');
-                    
-                    // UI 캔버스 상에서 내가 마우스 클릭한 위치로 찾기
-                    Vector2 canvasMousePos;
-                    RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                        _canvas.transform as RectTransform, 
-                        Input.mousePosition, 
-                        _canvas.worldCamera, 
-                        out canvasMousePos
-                    );
-                    
-                    selectPlayerName.text = txt[0];
-                    selectPlayerName.transform.parent.localPosition = canvasMousePos;
-                    selectPlayerName.transform.parent.gameObject.SetActive(true);
-                    selectPlayerInviteBT.onClick.RemoveAllListeners();
-                    selectPlayerInviteBT.onClick.AddListener(() => {
-                        selectPlayerName.transform.parent.gameObject.SetActive(false);
-                        NetworkMng.I.SendMsg(string.Format("INVITE_PARTY:{0}", txt[1]));
-                    });
-                    return;
-                }
-                else if (hit.transform.tag.Equals("Npc"))
+                if (hit.transform.tag.Equals("Npc"))        // NPC 우선순위
                 {
                     if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 2)
                     {
@@ -124,67 +94,40 @@ public class UIManager : MonoBehaviour
                     }
                     return;
                 }
+                else if (hit.transform.tag.Equals("Character"))   // 나를 제외한 플레이어를 선택함
+                {
+                    // txt[0] 닉네임
+                    // txt[1] uniqueNumber
+                    string[] txt = hit.transform.name.Split(':');
+                    
+                    // UI 캔버스 상에서 내가 마우스 클릭한 위치로 찾기
+                    Vector2 canvasMousePos;
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                        _canvas.transform as RectTransform, 
+                        Input.mousePosition, 
+                        _canvas.worldCamera, 
+                        out canvasMousePos
+                    );
+                    
+                    selectPlayerName.text = txt[0];
+                    selectPlayerName.transform.parent.localPosition = canvasMousePos;
+                    selectPlayerName.transform.parent.gameObject.SetActive(true);
+                    selectPlayerInviteBT.onClick.RemoveAllListeners();
+                    selectPlayerInviteBT.onClick.AddListener(() => {
+                        selectPlayerName.transform.parent.gameObject.SetActive(false);
+                        NetworkMng.I.SendMsg(string.Format("INVITE_PARTY:{0}", txt[1]));
+                    });
+                    return;
+                }
+                // 핑 생성
+                else if (hit.transform.tag.Equals("Floor") && Input.GetKey(KeyCode.LeftControl))
+                {
+                    GameMng.I.createPing(hit.point + new Vector3(0, 0.54f, 0));
+                    NetworkMng.I.SendMsg(string.Format("PING:{0}:{1}:{2}", hit.point.x, hit.point.y, hit.point.z + 0.54f));
+                }
+
                 selectPlayerName.transform.parent.gameObject.SetActive(false);
             }
-
-            // if (hit)
-            // if (!hit.collider.Equals(null))
-            // {
-            //     if (hit.collider.tag.Equals("Character"))   // 나를 제외한 플레이어를 선택함
-            //     {
-            //         // txt[0] 닉네임
-            //         // txt[1] uniqueNumber
-            //         string[] txt = hit.collider.name.Split(':');
-                    
-            //         // UI 캔버스 상에서 내가 마우스 클릭한 위치로 찾기
-            //         Vector2 canvasMousePos;
-            //         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            //             _canvas.transform as RectTransform, 
-            //             Input.mousePosition, 
-            //             _canvas.worldCamera, 
-            //             out canvasMousePos
-            //         );
-                    
-            //         selectPlayerName.text = txt[0];
-            //         selectPlayerName.transform.parent.localPosition = canvasMousePos;
-            //         selectPlayerName.transform.parent.gameObject.SetActive(true);
-            //         selectPlayerInviteBT.onClick.RemoveAllListeners();
-            //         selectPlayerInviteBT.onClick.AddListener(() => {
-            //             selectPlayerName.transform.parent.gameObject.SetActive(false);
-            //             NetworkMng.I.SendMsg(string.Format("INVITE_PARTY:{0}", txt[1]));
-            //         });
-            //         return;
-            //     }
-            //     else if (hit.collider.tag.Equals("Npc"))
-            //     {
-            //         if (Vector2.Distance(hit.collider.transform.position, GameMng.I.character.transform.position) < 1.4f)
-            //         {
-            //             // 저장된 dialog 실행
-            //             // 근데 dialog 저장 방식이 맞는지 일단 확인
-            //             GameMng.I.npcData = hit.collider.GetComponent<Npcdata>();
-
-            //             // 이미 대화중인지 체크
-            //             if (!GameMng.I.dailogUI.gameObject.activeSelf)
-            //             {
-            //                 GameMng.I.dailogUI.gameObject.SetActive(true);
-            //                 GameMng.I.npcData.isDialog = true;
-            //                 GameMng.I._keyMode = KEY_MODE.QUEST_MODE;
-
-            //                 MCamera.I.setTargetChange(hit.collider.transform);
-            //                 MCamera.I.zoomIn();
-
-            //                 // UI 레이어 제거
-            //                 Camera.main.cullingMask = ~(1 << LayerMask.NameToLayer("UI"));
-            //             }
-            //         }
-            //         else
-            //         {
-            //             GameMng.I.showNotice("거리가 너무 멉니다.");
-            //         }
-            //         return;
-            //     }
-            // }
-            // selectPlayerName.transform.parent.gameObject.SetActive(false);
         }  
     }
 

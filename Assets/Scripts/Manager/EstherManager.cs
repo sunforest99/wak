@@ -34,10 +34,10 @@ public class EstherManager : MonoBehaviour
         } else {
             if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.Z)) {
                 // 네트워크로 보내서 사용함. 네트워크 연결후엔 아래와 같이 X
-                StartCoroutine(useEsther(0, GameMng.I.character.transform.position + new Vector3(3, -0.8f, 0), GameMng.I.character.transform.position + new Vector3(3, -0.8f, 0)));
+                StartCoroutine(useEsther(0, GameMng.I.character.transform.position + new Vector3(3, 0, 0), GameMng.I.character.transform.position + new Vector3(3, 0, 0)));
             }
             else if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.X)) {
-                useEsther(1);
+                StartCoroutine(useEsther(0, GameMng.I.character.transform.position + new Vector3(3, 0, 0), GameMng.I.character.transform.position + new Vector3(3, 0, 0)));
             }
             else if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.C)) {
                 useEsther(2);
@@ -51,22 +51,23 @@ public class EstherManager : MonoBehaviour
     * @param effectPos 에스더 '소환' 이펙트 위치 (사용자 위치)
     * @param spawnPos 사용 에스더 코드
     */
-    public IEnumerator useEsther(int estherCode, Vector2 effectPos = new Vector2(), Vector2 spawnPos = new Vector2()) {
+    public IEnumerator useEsther(int estherCode, Vector3 effectPos = new Vector3(), Vector3 spawnPos = new Vector3()) {
         setGauge(0);
         estherAnim.SetBool("isFull", false);
 
         // 1. 에스더 소환되는 이펙트
+        effectPos.y = -2.08f;
         appearEffect.transform.position = effectPos;
         appearEffect.SetActive(true);
 
         // 1초 뒤
-        yield return new WaitForSeconds(1);
+        // yield return new WaitForSeconds(1);
         
         // 2. 에스더 관련 라이트로 변경
         appearLightAnim.SetTrigger(estherCode.ToString());
         
         // 1초 뒤
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
 
         // 3. 에스더 일러스트 작동
         estherAppear[estherCode].SetActive(true);
