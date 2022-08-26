@@ -103,6 +103,14 @@ public class BossCollider : MonoBehaviour
                 isBackAttack = false;
             }
 
+            // 평타면서 전사라면 공격 방향으로 밀려나는 효과 주기
+            if (!Character.usingSkill && GameMng.I.userData.job.Equals((int)JOB.WARRIER)) {
+                GameMng.I.character.addForceImpulse(new Vector3(this.transform.position.x < other.transform.parent.transform.position.x ? -2 : 2, 0, -1.2f));
+
+                // TODO : 네트워크 메세지
+                // NetworkMng.I.SendMsg("FORCE:{0}:{1}",  );
+            }
+
             if (!boss.isAnnihilation)
             {
                 damageTemp = GameMng.I.getCharacterDamage(isCritical, isBackAttack);

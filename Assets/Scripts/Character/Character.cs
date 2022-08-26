@@ -280,13 +280,7 @@ public class Character : MonoBehaviour
         if (_action == CHARACTER_ACTION.ATTACK_CANT_ANYTHING)
         {
             if (Input.GetMouseButtonDown(0))
-            {
-                if (EventSystem.current.IsPointerOverGameObject())
-                    return;
-
-                NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition);
-                attack(Input.mousePosition);
-            }
+                input_attack();
             return;
         }
 
@@ -332,13 +326,7 @@ public class Character : MonoBehaviour
 
         // 마우스 좌클릭 - 일반 공격
         if (Input.GetMouseButtonDown(0))
-        {
-            if (EventSystem.current.IsPointerOverGameObject())
-                return;
-
-            NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition);
-            attack(Input.mousePosition);
-        }
+            input_attack();
 
         // 배틀 아이템 사용
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -381,7 +369,15 @@ public class Character : MonoBehaviour
         _anim.SetTrigger("Wakeup");
     }
 
+    void input_attack()
+    {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
 
+        NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition);
+        attack(Input.mousePosition);
+    }
+    
     void input_skill_1()
     {
         StartCoroutine(SkillCoolDown(0));
@@ -446,7 +442,8 @@ public class Character : MonoBehaviour
     void endAct()
     {
         _action = CHARACTER_ACTION.IDLE;
-        usingSkill = null;
+        if (_isPlayer)
+            usingSkill = null;
     }
 
     void resetAttackContinuous()
@@ -509,11 +506,16 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void addForceImpulse(Vector3 frc)
+    {
+        _rigidBody.AddForce(frc, ForceMode.Impulse);
+    }
+
     public void isMe()
     {
         // this.gameObject.name = "ME";
-        this.gameObject.tag = "Player";
-        this.gameObject.layer = LayerMask.NameToLayer("Player");
+        this.transform.parent.tag = "Player";
+        this.transform.parent.gameObject.layer = LayerMask.NameToLayer("Player");
         _isPlayer = true;
         // _collider.enabled = true;
         _attackCollider.SetActive(true);
