@@ -422,9 +422,9 @@ public class Character : MonoBehaviour
     public virtual void attack(Vector2 attackDir) {
         // 좌우 반전
         if (attackDir.x < Screen.width / 2)
-            transform.rotation = Quaternion.Euler(Vector3.zero);
+            transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
         else
-            transform.rotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+            transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
 
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Attack");

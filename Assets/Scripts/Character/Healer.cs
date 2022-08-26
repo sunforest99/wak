@@ -18,8 +18,6 @@ public class Healer : Character
     public override void input_attack()
     {
         Vector3 point = getMouseHitPoint();
-        
-        Debug.Log(point);
 
         if (!float.IsNegativeInfinity(point.x))
         {
@@ -37,7 +35,7 @@ public class Healer : Character
                 // 사전 거리 안이면 스킬 시전 가능
                 StartCoroutine(SkillCoolDown(0));
                 NetworkMng.I.UseSkill(SKILL_CODE.SKILL_1, point.x, point.z);
-                skill_1(point);
+                skill_1(new Vector2(point.x, point.z));
             }
             else
             {
@@ -55,7 +53,7 @@ public class Healer : Character
                 // 사전 거리 안이면 스킬 시전 가능
                 StartCoroutine(SkillCoolDown(3));
                 NetworkMng.I.UseSkill(SKILL_CODE.SKILL_4, point.x, point.z);
-                skill_4(point);
+                skill_4(new Vector2(point.x, point.z));
             }
             else
             {
@@ -81,15 +79,7 @@ public class Healer : Character
 
     public override void skill_1(Vector2 skillPos)
     {
-        Vector3 moveTo = new Vector3(skillPos.x, 0.3f, skillPos.y);
-        moveTo -= transform.position;
-        float lookAngle =  Mathf.Atan2(moveTo.z, moveTo.x) * Mathf.Rad2Deg;
-        Vector3 spawnPos = transform.position;
-        spawnPos.y = 0.3f;
-
-        // TODO : 좌우 방향으로 할지, 마우스 방향으로 할지 미정
-        GameObject attObj = Instantiate(GameMng.I.healerSkillPrefab[1], spawnPos, Quaternion.Euler(0, 0, lookAngle)) as GameObject;
-        attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 6);
+        Instantiate(GameMng.I.healerSkillPrefab[1], new Vector3(skillPos.x, 0, skillPos.y), Quaternion.Euler(20, 0, 0));
         
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Tree");
@@ -108,7 +98,7 @@ public class Healer : Character
     }
     public override void skill_4(Vector2 skillPos)
     {
-        Instantiate(GameMng.I.healerSkillPrefab[2], new Vector3(skillPos.x, 0, skillPos.y), Quaternion.identity);
+        Instantiate(GameMng.I.healerSkillPrefab[2], new Vector3(skillPos.x, -0.2f, skillPos.y), Quaternion.identity);
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Location");
     }
