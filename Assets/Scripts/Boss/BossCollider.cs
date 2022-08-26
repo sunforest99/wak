@@ -128,7 +128,7 @@ public class BossCollider : MonoBehaviour
                 createDamage(other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0));
             }
         }
-        else if (other.gameObject.CompareTag("Esther_Attack"))
+        else if (other.gameObject.CompareTag("Esther_Attack_Skill"))
         {
             if (!boss.isAnnihilation)
             {

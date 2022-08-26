@@ -16,35 +16,40 @@ public class Magician : Character
         settingStat();        
     }
 
-    public override void skill_1()
+    public override void attack(Vector2 attackDir)
+    {
+        base.attack(attackDir);
+    }
+    
+    public override void skill_1(Vector2 skillPos)
     {
         StartCoroutine(SkillCoolDown(0));
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Window");
         // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_1);
     }
-    public override void skill_2()
+    public override void skill_2(Vector2 skillPos)
     {
         StartCoroutine(SkillCoolDown(1));
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Chimstercall");
         // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_2);
     }
-    public override void skill_3()
+    public override void skill_3(Vector2 skillPos)
     {
         StartCoroutine(SkillCoolDown(2));
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Wakpasun");
         // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_3);
     }
-    public override void skill_4()
+    public override void skill_4(Vector2 skillPos)
     {
         StartCoroutine(SkillCoolDown(3));
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Fire");
         // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_4);
     }
-    public override void skill_5()
+    public override void skill_5(Vector2 skillPos)
     {
         StartCoroutine(SkillCoolDown(4));
         _action = CHARACTER_ACTION.CANT_ANYTHING;

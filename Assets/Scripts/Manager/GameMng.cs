@@ -21,6 +21,7 @@ public class GameMng : MonoBehaviour
     public StateMng stateMng;
     public Character character = null;
     public GameObject[] characterPrefab = new GameObject[3];
+    public GameObject[] healerSkillPrefab = new GameObject[3];  // 기본공격, 나무, 레이저
     public bool isFocusing = true;      // 캐릭터에게 포커싱 맞출지 (카메라가 따라올지 유무)
 
     [Space(20)][Header("[  기본 UI 관리  ]")]  // ==========================================================================================================================

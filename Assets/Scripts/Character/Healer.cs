@@ -15,41 +15,107 @@ public class Healer : Character
         // if 이게 내꺼라면
         settingStat();        
     }
-
-    public override void skill_1()
+    public override void input_attack()
     {
-        StartCoroutine(SkillCoolDown(0));
+        Vector3 point = getMouseHitPoint();
+        
+        Debug.Log(point);
+
+        if (!float.IsNegativeInfinity(point.x))
+        {
+            NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, point.x, point.z);
+            attack(new Vector2(point.x, point.z));
+        }
+    }
+    public override void input_skill_1()
+    {
+        Vector3 point = getMouseHitPoint();
+        if (!float.IsNegativeInfinity(point.x))
+        {
+            if (Vector3.Distance(point, transform.position) < 10)
+            {
+                // 사전 거리 안이면 스킬 시전 가능
+                StartCoroutine(SkillCoolDown(0));
+                NetworkMng.I.UseSkill(SKILL_CODE.SKILL_1, point.x, point.z);
+                skill_1(point);
+            }
+            else
+            {
+                // 거리 밖이면 사용 불가능 말함
+            }
+        }
+    }
+    public override void input_skill_4()
+    {
+        Vector3 point = getMouseHitPoint();
+        if (!float.IsNegativeInfinity(point.x))
+        {
+            if (Vector3.Distance(point, transform.position) < 10)
+            {
+                // 사전 거리 안이면 스킬 시전 가능
+                StartCoroutine(SkillCoolDown(3));
+                NetworkMng.I.UseSkill(SKILL_CODE.SKILL_4, point.x, point.z);
+                skill_4(point);
+            }
+            else
+            {
+                // 거리 밖이면 사용 불가능 말함
+            }
+        }
+    }
+
+    public override void attack(Vector2 attackDir)
+    {
+        Vector3 moveTo = new Vector3(attackDir.x, 0.3f, attackDir.y);
+        moveTo -= transform.position;
+        float lookAngle =  Mathf.Atan2(moveTo.z, moveTo.x) * Mathf.Rad2Deg;
+        Vector3 spawnPos = transform.position;
+        spawnPos.y = 0.3f;
+
+        // TODO : 좌우 방향으로 할지, 마우스 방향으로 할지 미정
+        GameObject attObj = Instantiate(GameMng.I.healerSkillPrefab[0], spawnPos, Quaternion.Euler(90, 0, lookAngle)) as GameObject;
+        attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 5);
+
+        base.attack(attackDir);
+    }
+
+    public override void skill_1(Vector2 skillPos)
+    {
+        Vector3 moveTo = new Vector3(skillPos.x, 0.3f, skillPos.y);
+        moveTo -= transform.position;
+        float lookAngle =  Mathf.Atan2(moveTo.z, moveTo.x) * Mathf.Rad2Deg;
+        Vector3 spawnPos = transform.position;
+        spawnPos.y = 0.3f;
+
+        // TODO : 좌우 방향으로 할지, 마우스 방향으로 할지 미정
+        GameObject attObj = Instantiate(GameMng.I.healerSkillPrefab[1], spawnPos, Quaternion.Euler(0, 0, lookAngle)) as GameObject;
+        attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 6);
+        
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Tree");
-        // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_1);
     }
-    public override void skill_2()
+    public override void skill_2(Vector2 skillPos)
     {
-        StartCoroutine(SkillCoolDown(1));
+        // TODO : 나한테 쉴드 줌
+        
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Thief");
-        // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_2);
     }
-    public override void skill_3()
+    public override void skill_3(Vector2 skillPos)
     {
-        StartCoroutine(SkillCoolDown(2));
         _action = CHARACTER_ACTION.CAN_MOVE;
         _anim.SetTrigger("Skill_Winterspring");
-        // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_3);
     }
-    public override void skill_4()
+    public override void skill_4(Vector2 skillPos)
     {
-        StartCoroutine(SkillCoolDown(3));
+        Instantiate(GameMng.I.healerSkillPrefab[2], new Vector3(skillPos.x, 0, skillPos.y), Quaternion.identity);
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Location");
-        // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_4);
     }
-    public override void skill_5()
+    public override void skill_5(Vector2 skillPos)
     {
-        StartCoroutine(SkillCoolDown(4));
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Music");
-        // NetworkMng.I.UseSkill(SKILL_CODE.SKILL_5);
     }
     
     void settingStat()

@@ -590,9 +590,9 @@ public class NetworkMng : MonoBehaviour
      * @param skillCode 0~4스킬, 5대쉬, 6기상기, 7평타
      * @param skillDirection 스킬 사용방향,  사용방향이 필요없는 스킬은 00, 평타는 좌우, 나머지는 진짜 방향
      */
-    public void UseSkill(SKILL_CODE skillCode, Vector2 skillDirection = new Vector2())
+    public void UseSkill(SKILL_CODE skillCode, float skillDirectionX = 0, float skillDirectionY = 0)
     {
-        SendMsg(string.Format("SKILL:{0}:{1}:{2}", skillCode, skillDirection.x, skillDirection.y));
+        SendMsg(string.Format("SKILL:{0}:{1}:{2}", skillCode, skillDirectionX, skillDirectionY));
     }
 
     /**
