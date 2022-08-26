@@ -23,6 +23,7 @@ public class Warrier : Character
     }
     public override void skill_2()
     {
+        StartCoroutine(agdzForce());
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_AGDZ");
     }
@@ -41,7 +42,14 @@ public class Warrier : Character
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_JH");
     }
-    
+
+    IEnumerator agdzForce()
+    {
+        yield return new WaitForSeconds(0.5f);
+        
+        addForceImpulse(new Vector3(-10, 0, 0));
+    }
+
     void settingStat()
     {
         switch(Mathf.FloorToInt(GameMng.I.userData.level)) {

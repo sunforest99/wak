@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
         itemLoad();
         QuestLoad();
 
-        // StartCoroutine(waitingLoading());
+        StartCoroutine(waitingLoading());
     }
 
     IEnumerator waitingLoading()
