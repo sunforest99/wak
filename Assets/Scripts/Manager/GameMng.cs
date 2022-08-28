@@ -58,9 +58,10 @@ public class GameMng : MonoBehaviour
 
 
     [Space(20)][Header("[  맵 관리  ]")]  // ==============================================================================================================================
-    public Vector2 mapRightTop;
-    public Vector2 mapCenter;
-    public Vector2 mapLeftBotton;
+    public Vector3 mapRightTop;
+    public Vector3 mapCenter;
+    public Vector3 mapLeftBotton;
+    public GameObject grass_destroy_eff;
 
 
     [Space(20)][Header("[  보스 관리 (여기 있으면 안됨)  ]")]  // ===========================================================================================================

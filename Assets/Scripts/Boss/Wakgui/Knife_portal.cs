@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Knife_portal : DestroySelf
+public class Knife_portal : MonoBehaviour
 {
     int damage;
     [SerializeField] Animator animator;
@@ -15,7 +15,10 @@ public class Knife_portal : DestroySelf
     void Update()
     {
         if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 2.0f)
-            destroySelf();
+        {
+            this.transform.localPosition = Vector3.zero;
+            this.gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

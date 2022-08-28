@@ -9,7 +9,7 @@ enum POS
     LEFT,
     RIGHT
 }
-public class Waves : DestroySelf
+public class Waves : MonoBehaviour
 {
     [SerializeField] Rigidbody _rigidbody;
 
@@ -23,23 +23,22 @@ public class Waves : DestroySelf
         switch (rand)
         {
             case (int)POS.DOWN:
-                this.transform.localRotation = Quaternion.Euler(0, 0, 90.0f);
+                this.transform.localRotation = Quaternion.Euler(90.0f, 0, 90.0f);
                 break;
 
             case (int)POS.UP:
-                this.transform.localRotation = Quaternion.Euler(0, 0, -90.0f);
+                this.transform.localRotation = Quaternion.Euler(90.0f, 0, -90.0f);
                 break;
 
             case (int)POS.RIGHT:
-                this.transform.localRotation = Quaternion.Euler(0, 0, 180.0f);
+                this.transform.localRotation = Quaternion.Euler(90.0f, 0, 180.0f);
                 break;
 
             case (int)POS.LEFT:
-                this.transform.localRotation = Quaternion.identity;
+                this.transform.localRotation = Quaternion.Euler(90.0f, 0 ,0);
                 break;
         }
-        
-        _rigidbody.velocity = transform.TransformDirection(Vector3.left * 3);
+        _rigidbody.velocity = transform.TransformDirection(Vector3.left * 3f);
     }
 
     // void Update()
@@ -60,6 +59,11 @@ public class Waves : DestroySelf
         {
             GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.boss.bossData.getBuffs[2]);
             GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+        }
+        else if(other.CompareTag("Map"))
+        {
+            this.transform.localPosition = Vector3.zero;
+            this.gameObject.SetActive(false);
         }
     }
 }
