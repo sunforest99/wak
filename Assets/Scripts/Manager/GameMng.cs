@@ -21,6 +21,7 @@ public class GameMng : MonoBehaviour
     public StateMng stateMng;
     public Character character = null;
     public GameObject[] characterPrefab = new GameObject[3];
+    public GameObject[] healerSkillPrefab = new GameObject[3];  // 기본공격, 나무, 레이저
     public bool isFocusing = true;      // 캐릭터에게 포커싱 맞출지 (카메라가 따라올지 유무)
 
     [Space(20)][Header("[  기본 UI 관리  ]")]  // ==========================================================================================================================
@@ -57,9 +58,10 @@ public class GameMng : MonoBehaviour
 
 
     [Space(20)][Header("[  맵 관리  ]")]  // ==============================================================================================================================
-    public Vector2 mapRightTop;
-    public Vector2 mapCenter;
-    public Vector2 mapLeftBotton;
+    public Vector3 mapRightTop;
+    public Vector3 mapCenter;
+    public Vector3 mapLeftBotton;
+    public GameObject grass_destroy_eff;
 
 
     [Space(20)][Header("[  보스 관리 (여기 있으면 안됨)  ]")]  // ===========================================================================================================

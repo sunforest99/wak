@@ -15,29 +15,51 @@ public class Warrier : Character
         // if 이게 내꺼라면
         settingStat();        
     }
+    public override void attack(Vector2 attackDir)
+    {
+        if (continuousAttack >= 3)
+            return;
+        
+        continuousAttack++;
+        if (continuousAttack.Equals(1))
+            _anim.SetTrigger("Attack");
+        _anim.SetInteger("C_Attack", continuousAttack);
 
-    public override void skill_1()
+        // 공격시 좌우 반전되는거 막기 위함
+        if (_action != CHARACTER_ACTION.ATTACK_CANT_ANYTHING)
+        {
+            // 좌우 반전
+            if (attackDir.x < Screen.width / 2)
+                transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
+            else
+                transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
+        }
+
+        _action = CHARACTER_ACTION.ATTACK_CANT_ANYTHING;
+    }
+    
+    public override void skill_1(Vector2 skillPos)
     {
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Gal");
     }
-    public override void skill_2()
+    public override void skill_2(Vector2 skillPos)
     {
         StartCoroutine(agdzForce());
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_AGDZ");
     }
-    public override void skill_3()
+    public override void skill_3(Vector2 skillPos)
     {
         _action = CHARACTER_ACTION.CAN_MOVE;
         _anim.SetTrigger("Skill_Bigrr");
     }
-    public override void skill_4()
+    public override void skill_4(Vector2 skillPos)
     {
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_SG");
     }
-    public override void skill_5()
+    public override void skill_5(Vector2 skillPos)
     {
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_JH");

@@ -279,7 +279,7 @@ public class Character : MonoBehaviour
             return;
         if (_action == CHARACTER_ACTION.ATTACK_CANT_ANYTHING)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                 input_attack();
             return;
         }
@@ -325,7 +325,7 @@ public class Character : MonoBehaviour
             input_skill_5();
 
         // 마우스 좌클릭 - 일반 공격
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             input_attack();
 
         // 배틀 아이템 사용
@@ -369,75 +369,71 @@ public class Character : MonoBehaviour
         _anim.SetTrigger("Wakeup");
     }
 
-    void input_attack()
+    protected Vector3 getMouseHitPoint()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
+        int layerMask = 1 << LayerMask.NameToLayer("Map");
 
-        NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition);
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
+        if (Physics.Raycast(ray, out hit, 100f, layerMask)) {
+            return hit.point;
+        }
+        return Vector3.negativeInfinity;
+    }
+
+    public virtual void input_attack()
+    {
+        NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition.x, Input.mousePosition.y);
         attack(Input.mousePosition);
     }
     
-    void input_skill_1()
+    public virtual void input_skill_1()
     {
         StartCoroutine(SkillCoolDown(0));
         NetworkMng.I.UseSkill(SKILL_CODE.SKILL_1);
         skill_1();
     }
-    void input_skill_2()
+    public virtual void input_skill_2()
     {
         StartCoroutine(SkillCoolDown(1));
         NetworkMng.I.UseSkill(SKILL_CODE.SKILL_2);
         skill_2();
     }
-    void input_skill_3()
+    public virtual void input_skill_3()
     {
         StartCoroutine(SkillCoolDown(2));
         NetworkMng.I.UseSkill(SKILL_CODE.SKILL_3);
         skill_3();
     }
-    void input_skill_4()
+    public virtual void input_skill_4()
     {
         StartCoroutine(SkillCoolDown(3));
         NetworkMng.I.UseSkill(SKILL_CODE.SKILL_4);
         skill_4();
     }
-    void input_skill_5()
+    public virtual void input_skill_5()
     {
         StartCoroutine(SkillCoolDown(4));
         NetworkMng.I.UseSkill(SKILL_CODE.SKILL_5);
         skill_5();
     }
     public virtual void init() { }
-    public virtual void skill_1() { }
-    public virtual void skill_2() { }
-    public virtual void skill_3() { }
-    public virtual void skill_4() { }
-    public virtual void skill_5() { }
+    public virtual void attack(Vector2 attackDir) {
+        // 좌우 반전
+        if (attackDir.x < Screen.width / 2)
+            transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
+        else
+            transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
 
-    public void attack(Vector2 attackDir)
-    {
-        if (continuousAttack >= 3)
-            return;
-        
-        continuousAttack++;
-        if (continuousAttack.Equals(1))
-            _anim.SetTrigger("Attack");
-        _anim.SetInteger("C_Attack", continuousAttack);
-
-        // 공격시 좌우 반전되는거 막기 위함
-        if (_action != CHARACTER_ACTION.ATTACK_CANT_ANYTHING)
-        {
-            // 좌우 반전
-            if (attackDir.x < Screen.width / 2)
-                transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
-            else
-                transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
-        }
-
-        _action = CHARACTER_ACTION.ATTACK_CANT_ANYTHING;
-
+        _action = CHARACTER_ACTION.CANT_ANYTHING;
+        _anim.SetTrigger("Attack");
     }
+    public virtual void skill_1(Vector2 skillPos = new Vector2()) { }
+    public virtual void skill_2(Vector2 skillPos = new Vector2()) { }
+    public virtual void skill_3(Vector2 skillPos = new Vector2()) { }
+    public virtual void skill_4(Vector2 skillPos = new Vector2()) { }
+    public virtual void skill_5(Vector2 skillPos = new Vector2()) { }
 
     void endAct()
     {
@@ -536,19 +532,19 @@ public class Character : MonoBehaviour
                 wakeup();
                 break;
             case SKILL_CODE.SKILL_1:
-                skill_1();
+                skill_1(skillPos);
                 break;
             case SKILL_CODE.SKILL_2:
-                skill_2();
+                skill_2(skillPos);
                 break;
             case SKILL_CODE.SKILL_3:
-                skill_3();
+                skill_3(skillPos);
                 break;
             case SKILL_CODE.SKILL_4:
-                skill_4();
+                skill_4(skillPos);
                 break;
             case SKILL_CODE.SKILL_5:
-                skill_5();
+                skill_5(skillPos);
                 break;
         }
     }

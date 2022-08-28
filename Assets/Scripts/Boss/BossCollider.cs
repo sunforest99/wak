@@ -52,14 +52,14 @@ public class BossCollider : MonoBehaviour
         }
     }
 
-    void createDamage(Vector2 pos, int damage, bool isCritical)
+    void createDamage(Vector3 pos, int damage, bool isCritical)
     {
         Transform damageObj = Instantiate(damagePopup, pos, Quaternion.identity);
         Damage dmg = damageObj.GetComponent<Damage>();
         dmg.set(damage, isCritical);
     }
 
-    void createDamage(Vector2 pos)
+    void createDamage(Vector3 pos)
     {
         Transform damageObj = Instantiate(damagePopup, pos, Quaternion.identity);
         Damage dmg = damageObj.GetComponent<Damage>();
@@ -87,19 +87,31 @@ public class BossCollider : MonoBehaviour
             // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남
             if (this.transform.localRotation.y == 180 && this.transform.position.x + 1 > other.transform.parent.transform.position.x)
             {
-                Instantiate(_backEff, new Vector2(transform.position.x + Random.Range(-2f, 1f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f)), Quaternion.identity);
+                Instantiate(
+                    _backEff, 
+                    new Vector3(transform.position.x + Random.Range(-2f, 1f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f), transform.position.z), 
+                    Quaternion.identity
+                );
                 isBackAttack = true;
             }
             // 보스 좌측 바라보는 상태에서  콜리더가 우측에서 일어남
             else if (this.transform.localRotation.y == 0 && this.transform.position.x + 1 < other.transform.parent.transform.position.x)
             {
-                Instantiate(_backEff, new Vector2(transform.position.x + Random.Range(1.2f, 2.2f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f)), Quaternion.identity);
+                Instantiate(
+                    _backEff, 
+                    new Vector3(transform.position.x + Random.Range(1.2f, 2.2f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f), transform.position.z),
+                    Quaternion.identity
+                );
                 isBackAttack = true;
             }
             // 일반 공격
             else
             {
-                Instantiate(_eff, other.ClosestPoint(transform.position) + new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(1f, 1.2f), 0), Quaternion.identity);
+                Instantiate(
+                    _eff,
+                    other.ClosestPoint(transform.position) + new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(1f, 1.2f), transform.position.z),
+                    Quaternion.identity
+                );
                 isBackAttack = false;
             }
 
@@ -128,7 +140,7 @@ public class BossCollider : MonoBehaviour
                 createDamage(other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0));
             }
         }
-        else if (other.gameObject.CompareTag("Esther_Attack"))
+        else if (other.gameObject.CompareTag("Esther_Attack_Skill"))
         {
             if (!boss.isAnnihilation)
             {
@@ -141,6 +153,13 @@ public class BossCollider : MonoBehaviour
                 // boss._nestingHp -= damageTemp;
             }
         }
+    }
+
+    Vector3 getHitEffPos(Vector3 closetPoint)
+    {
+        closetPoint += new Vector3(0, 3, 0);
+        closetPoint.z = transform.position.z;
+        return closetPoint;
     }
 
     bool CheckCritical()
