@@ -109,7 +109,7 @@ public class BossCollider : MonoBehaviour
             {
                 Instantiate(
                     _eff,
-                    other.ClosestPoint(transform.position) + new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(1f, 1.2f), transform.position.z),
+                    new Vector3(transform.position.x + Random.Range(-0.1f, 0.1f), other.ClosestPoint(transform.position).y + Random.Range(1.2f, 1.4f), transform.position.z),
                     Quaternion.identity
                 );
                 isBackAttack = false;

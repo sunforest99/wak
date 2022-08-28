@@ -682,24 +682,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _anim: {fileID: 7226663044692593516}
   _rigidBody: {fileID: 3522037822435540164}
-  _collider: {fileID: 6052934722105820403}
+  _attackCollider: {fileID: 0}
   _isPlayer: 0
   nickName: 
   _job: 2
   curDashTime: 0.1
   _action: 0
   skilldatas:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: e5ae4863f5f9db145ae066e39e53cfc1, type: 2}
+  - {fileID: 11400000, guid: 0b50819b09b2265458bb4c092d2479be, type: 2}
+  - {fileID: 11400000, guid: 02b9ead73a7c73342870df58eca26290, type: 2}
+  - {fileID: 11400000, guid: e8c98ec9080d0df45b46683c6bdf61d4, type: 2}
+  - {fileID: 11400000, guid: f5436b4b7165443489c5cc7531dea6dc, type: 2}
   usingBattleItem: 000000
+  continuousAttack: 0
   footprints:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 346173956140761065, guid: 1be025d5f35ce2643834fdc75ac8232a, type: 3}
+  footprintDist: 0
 --- !u!50 &3522037822435540164
 Rigidbody2D:
   serializedVersion: 4

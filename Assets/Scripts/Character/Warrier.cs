@@ -68,8 +68,9 @@ public class Warrier : Character
     IEnumerator agdzForce()
     {
         yield return new WaitForSeconds(0.5f);
-        
-        addForceImpulse(new Vector3(-10, 0, 0));
+
+        // 왼쪽 보고 있으면 왼쪽으로 -10 힘 주기 (20 혹은 340인데 소수점 오차 위해서 100 이하라는 숫자로 확인함)
+        addForceImpulse(new Vector3(transform.eulerAngles.x <= 100 ? -10 : 10, 0, 0));
     }
 
     void settingStat()

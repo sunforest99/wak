@@ -32,14 +32,14 @@ public class EstherManager : MonoBehaviour
                 estherAnim.SetBool("isFull", true);
             }
         } else {
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.Z)) {
+            if (Input.GetKeyDown(KeyCode.Z)) {
                 // 네트워크로 보내서 사용함. 네트워크 연결후엔 아래와 같이 X
                 StartCoroutine(useEsther(0, GameMng.I.character.transform.position + new Vector3(3, 0, 0), GameMng.I.character.transform.position + new Vector3(3, 0, 0)));
             }
-            else if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.X)) {
+            else if (Input.GetKeyDown(KeyCode.X)) {
                 StartCoroutine(useEsther(0, GameMng.I.character.transform.position + new Vector3(3, 0, 0), GameMng.I.character.transform.position + new Vector3(3, 0, 0)));
             }
-            else if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.C)) {
+            else if (Input.GetKeyDown(KeyCode.C)) {
                 useEsther(2);
             }
         }
