@@ -25,6 +25,10 @@ public struct Stat
         this.takenHealPer = takenHealPer;
         this.criticalPer = criticalPer;
         this.incBackattackPer = incBackattackPer;
+
+
+        // 장착중인 무기, 장비에 따라 추가 스탯 변동 일어나게
+        // if (GameMng.I.userData.character.weapon)
     }
     public int minDamage, maxDamage;    // 실 최소 ~ 최대 데미지
     public float incDamagePer;          // 공격력 증가 퍼센트
@@ -419,7 +423,7 @@ public class Character : MonoBehaviour
         skill_5();
     }
     public virtual void init() { }
-    public virtual void attack(Vector2 attackDir) {
+    public virtual void attack(Vector2 attackDir, bool isMe = false) {
         // 좌우 반전
         if (attackDir.x < Screen.width / 2)
             transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
@@ -429,11 +433,11 @@ public class Character : MonoBehaviour
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Attack");
     }
-    public virtual void skill_1(Vector2 skillPos = new Vector2()) { }
-    public virtual void skill_2(Vector2 skillPos = new Vector2()) { }
-    public virtual void skill_3(Vector2 skillPos = new Vector2()) { }
-    public virtual void skill_4(Vector2 skillPos = new Vector2()) { }
-    public virtual void skill_5(Vector2 skillPos = new Vector2()) { }
+    public virtual void skill_1(Vector2 skillPos = new Vector2(), bool isMe = false) { }
+    public virtual void skill_2(Vector2 skillPos = new Vector2(), bool isMe = false) { }
+    public virtual void skill_3(Vector2 skillPos = new Vector2(), bool isMe = false) { }
+    public virtual void skill_4(Vector2 skillPos = new Vector2(), bool isMe = false) { }
+    public virtual void skill_5(Vector2 skillPos = new Vector2(), bool isMe = false) { }
 
     void endAct()
     {

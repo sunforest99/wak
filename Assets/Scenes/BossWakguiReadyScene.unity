@@ -10453,6 +10453,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Item_Obj (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5358752772899639577, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358752772899639577, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -10463,11 +10471,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.03
+      value: -0.43
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.34999996
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_LocalRotation.w
@@ -12819,6 +12827,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Item_Obj (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5358752772899639577, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358752772899639577, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -12829,11 +12845,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.03
+      value: -0.43
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_LocalRotation.w
@@ -16010,6 +16026,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Item_Obj
       objectReference: {fileID: 0}
+    - target: {fileID: 5358752772899639577, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358752772899639577, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -16020,11 +16044,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.03
+      value: -0.43
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.34999996
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17241,6 +17265,10 @@ MonoBehaviour:
   - {fileID: 708272248292700936, guid: ebf36a5dc5d731b4f92f88394a9a91b8, type: 3}
   - {fileID: 6052934720873483026, guid: 103e58d78d9fc1d48adaabcdb061b690, type: 3}
   - {fileID: 5970163516513958500, guid: c96a0de85e755c44e9c20fab5d4ad84c, type: 3}
+  healerSkillPrefab:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isFocusing: 1
   dailogUI: {fileID: 1819811496}
   BattleItemUI:
@@ -17288,9 +17316,10 @@ MonoBehaviour:
   refuseBT: {fileID: 1878206411}
   noticeMessage: {fileID: 1657989156}
   npcData: {fileID: 0}
-  mapRightTop: {x: 0, y: 0}
-  mapCenter: {x: 0, y: 0}
-  mapLeftBotton: {x: 0, y: 0}
+  mapRightTop: {x: 0, y: 0, z: 0}
+  mapCenter: {x: 0, y: 0, z: 0}
+  mapLeftBotton: {x: 0, y: 0, z: 0}
+  grass_destroy_eff: {fileID: 0}
   boss: {fileID: 0}
   estherManager: {fileID: 0}
 --- !u!4 &1570213129

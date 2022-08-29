@@ -33,7 +33,7 @@ public class Bullet : MonoBehaviour
             this.transform.localPosition = Vector3.zero;
             this.gameObject.SetActive(false);
         }
-        else if(other.CompareTag("Map"))
+        else if(other.CompareTag("Map_Wall"))
         {
             this.transform.localPosition = Vector3.zero;
             this.gameObject.SetActive(false);

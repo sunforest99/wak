@@ -399,6 +399,14 @@ public class NetworkMng : MonoBehaviour
             }
             //!! 일반적으로 방 변경할때는 CHANGE_ROOM이나, 레이드 정비소 및 보스재입장 시에는 CHANGE_ROOM_PARTY 을 호출해야함
         }
+        else if (txt[0].Equals("FORCE"))
+        {
+            // 물리 힘 적용
+            // txt[1] 적용할 유저
+            // txt[2] x 방향
+            // txt[3] y 방향
+            v_users[txt[1]].addForceImpulse(new Vector3(float.Parse(txt[2]), 0, float.Parse(txt[3])));
+        }
         else if (txt[0].Equals("ESTHER"))
         {
             // 에스더 사용

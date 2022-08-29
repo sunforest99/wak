@@ -7,8 +7,8 @@ public class Healer : Character
     public override void init()
     {
         _job = JOB.HEALER;
-        DASH_SPEED = 22;
-        MOVE_SPEED = 7;
+        DASH_SPEED = 12;
+        MOVE_SPEED = 9;
         DASH_COOLTIME = 5;
         WAKEUP_COOLTIME = 10;
         
@@ -22,7 +22,7 @@ public class Healer : Character
         if (!float.IsNegativeInfinity(point.x))
         {
             NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, point.x, point.z);
-            attack(new Vector2(point.x, point.z));
+            attack(new Vector2(point.x, point.z), true);
         }
     }
     public override void input_skill_1()
@@ -35,7 +35,7 @@ public class Healer : Character
                 // 사전 거리 안이면 스킬 시전 가능
                 StartCoroutine(SkillCoolDown(0));
                 NetworkMng.I.UseSkill(SKILL_CODE.SKILL_1, point.x, point.z);
-                skill_1(new Vector2(point.x, point.z));
+                skill_1(new Vector2(point.x, point.z), true);
             }
             else
             {
@@ -62,7 +62,7 @@ public class Healer : Character
         }
     }
 
-    public override void attack(Vector2 attackDir)
+    public override void attack(Vector2 attackDir, bool isMe = false)
     {
         Vector3 moveTo = new Vector3(attackDir.x, 0.3f, attackDir.y);
         moveTo -= transform.position;
@@ -73,36 +73,62 @@ public class Healer : Character
         // TODO : 좌우 방향으로 할지, 마우스 방향으로 할지 미정
         GameObject attObj = Instantiate(GameMng.I.healerSkillPrefab[0], spawnPos, Quaternion.Euler(90, 0, lookAngle)) as GameObject;
         attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 5);
+        if (isMe)
+            attObj.tag = "Weapon_disposable_me";
 
-        base.attack(attackDir);
+        if (transform.position.x > attackDir.x)
+            transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
+        else
+            transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
+
+        _action = CHARACTER_ACTION.CANT_ANYTHING;
+        _anim.SetTrigger("Attack");
     }
 
-    public override void skill_1(Vector2 skillPos)
+    public override void skill_1(Vector2 skillPos, bool isMe = false)
     {
+        if (transform.position.x > skillPos.x)
+            transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
+        else
+            transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
+
         Instantiate(GameMng.I.healerSkillPrefab[1], new Vector3(skillPos.x, 0, skillPos.y), Quaternion.Euler(20, 0, 0));
         
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Tree");
     }
-    public override void skill_2(Vector2 skillPos)
+    public override void skill_2(Vector2 skillPos, bool isMe = false)
     {
         // TODO : 나한테 쉴드 줌
         
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Thief");
     }
-    public override void skill_3(Vector2 skillPos)
+    public override void skill_3(Vector2 skillPos, bool isMe = false)
     {
+        if (transform.position.x < skillPos.x)
+            transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
+        else
+            transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
+
         _action = CHARACTER_ACTION.CAN_MOVE;
         _anim.SetTrigger("Skill_Winterspring");
     }
-    public override void skill_4(Vector2 skillPos)
+    public override void skill_4(Vector2 skillPos, bool isMe = false)
     {
-        Instantiate(GameMng.I.healerSkillPrefab[2], new Vector3(skillPos.x, -0.2f, skillPos.y), Quaternion.identity);
+        if (transform.position.x > skillPos.x)
+            transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
+        else
+            transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
+            
+        GameObject attObj = Instantiate(GameMng.I.healerSkillPrefab[2], new Vector3(skillPos.x, -0.2f, skillPos.y), Quaternion.identity) as GameObject;
+        if (isMe)
+            attObj.GetComponent<BoxCollider>().enabled = true;
+
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Location");
     }
-    public override void skill_5(Vector2 skillPos)
+    public override void skill_5(Vector2 skillPos, bool isMe = false)
     {
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Music");

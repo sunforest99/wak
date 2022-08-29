@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class BossCollider : MonoBehaviour
 {
-    [SerializeField] private List<SpriteRenderer> render = new List<SpriteRenderer>();
-
-    [SerializeField] private Material[] materials = new Material[2];
-
     [SerializeField] private Boss boss = null;
 
-    [SerializeField] MCamera _camera;
+    // 타격 렌더 ================================================================
+    [SerializeField] private Transform boss_o;      // 보스 이미지들 모인 Gameobject, sprite 부모
+    [SerializeField] private Material[] materials = new Material[2];
+    [SerializeField] private List<SpriteRenderer> render = new List<SpriteRenderer>();
 
+
+    // 데미지 ===================================================================
+    [SerializeField] int damageTemp;
     [SerializeField] Transform damagePopup;
-
     [SerializeField] GameObject _eff;
     [SerializeField] GameObject _backEff;
-
-    [SerializeField] int damageTemp;
-
     bool isBackAttack;
+
+
 
     SpriteRenderer temp;
     void Start()
     {
-        for (int i = 0; i < this.transform.childCount; i++)
+        for (int i = 0; i < this.boss_o.childCount; i++)
         {
-            temp = transform.GetChild(i).GetComponent<SpriteRenderer>();
+            temp = boss_o.GetChild(i).GetComponent<SpriteRenderer>();
             if (temp)
             {
                 render.Add(temp);
@@ -68,61 +68,57 @@ public class BossCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Weapon"))
+        if (other.gameObject.CompareTag("Weapon") || other.gameObject.CompareTag("Weapon_disposable_me"))
         {
-            // if (Mathf.Abs(transform.parent.position.z - other.transform.parent.position.z) > 2)
-            //     return;
-
-            bool isCritical;
+            // 버프 존재하는 스킬에 맞은건지 확인 ======================================================================================================================
             if (Character.usingSkill && Character.usingSkill.getBuffData && Character.usingSkill.getBuffData.isBossDebuf)
             {
                 BuffActive(Character.usingSkill.getBuffData);
             }
+
+            // 크리티컬 계산 ==========================================================================================================================================
+            bool isCritical;
             isCritical = CheckCritical();
 
+            // 타격 효과 ===============================================================================================================================================
             StartCoroutine(HitBlink());
-            // _camera.shake();
             MCamera.I.shake(5f, .1f);
 
-            // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남
-            if (this.transform.localRotation.y == 180 && this.transform.position.x + 1 > other.transform.parent.transform.position.x)
+            // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 =======================================================================================================
+            if (Character.usingSkill && Character.usingSkill.isBackAttackSkill)
             {
-                Instantiate(
-                    _backEff, 
-                    new Vector3(transform.position.x + Random.Range(-2f, 1f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f), transform.position.z), 
-                    Quaternion.identity
-                );
-                isBackAttack = true;
+                if (this.transform.localRotation.y == 180 && this.transform.position.x + 1 > other.transform.parent.transform.position.x)
+                {
+                    isBackAttack = true;
+                    createEffect(transform.position.x + Random.Range(-2f, 1f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f));
+                }
+                // 보스 좌측 바라보는 상태에서  콜리더가 우측에서 일어남 ====================================================================================================
+                else if (this.transform.localRotation.y == 0 && this.transform.position.x + 1 < other.transform.parent.transform.position.x)
+                {
+                    isBackAttack = true;
+                    createEffect(transform.position.x + Random.Range(1.2f, 2.2f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f));
+                }
+                // (백어택 가능 공격인데) 일반 공격 =======================================================================================================================
+                else
+                {
+                    isBackAttack = false;
+                    createEffect(transform.position.x + Random.Range(-0.1f, 0.1f), other.ClosestPoint(transform.position).y + Random.Range(1.2f, 1.4f));
+                }
             }
-            // 보스 좌측 바라보는 상태에서  콜리더가 우측에서 일어남
-            else if (this.transform.localRotation.y == 0 && this.transform.position.x + 1 < other.transform.parent.transform.position.x)
-            {
-                Instantiate(
-                    _backEff, 
-                    new Vector3(transform.position.x + Random.Range(1.2f, 2.2f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f), transform.position.z),
-                    Quaternion.identity
-                );
-                isBackAttack = true;
-            }
-            // 일반 공격
+            // 일반 공격 ================================================================================================================================================
             else
             {
-                Instantiate(
-                    _eff,
-                    new Vector3(transform.position.x + Random.Range(-0.1f, 0.1f), other.ClosestPoint(transform.position).y + Random.Range(1.2f, 1.4f), transform.position.z),
-                    Quaternion.identity
-                );
                 isBackAttack = false;
+                createEffect(transform.position.x + Random.Range(-0.1f, 0.1f), other.ClosestPoint(transform.position).y + Random.Range(1.2f, 1.4f));
             }
 
-            // 평타면서 전사라면 공격 방향으로 밀려나는 효과 주기
+            // 평타면서 전사라면 공격 방향으로 밀려나는 효과 주기 ==========================================================================================================
             if (!Character.usingSkill && GameMng.I.userData.job.Equals((int)JOB.WARRIER)) {
+                NetworkMng.I.SendMsg(string.Format("FORCE:{0}:{1}", this.transform.position.x < other.transform.parent.transform.position.x ? -2 : 2, -1.2f));
                 GameMng.I.character.addForceImpulse(new Vector3(this.transform.position.x < other.transform.parent.transform.position.x ? -2 : 2, 0, -1.2f));
-
-                // TODO : 네트워크 메세지
-                // NetworkMng.I.SendMsg("FORCE:{0}:{1}",  );
             }
 
+            // 무적 상태인지 확인 =========================================================================================================================================
             if (!boss.isAnnihilation)
             {
                 damageTemp = GameMng.I.getCharacterDamage(isCritical, isBackAttack);
@@ -153,6 +149,21 @@ public class BossCollider : MonoBehaviour
                 // boss._nestingHp -= damageTemp;
             }
         }
+
+        // 일회용 공격이면 제거 =========================================================================================================================================
+        if (other.gameObject.CompareTag("Weapon_disposable") || other.gameObject.CompareTag("Weapon_disposable_me"))
+        {
+            Destroy(other.gameObject);
+        }
+    }
+
+    void createEffect(float posX, float posY)
+    {
+        Instantiate(
+            isBackAttack ? _backEff : _eff,
+            new Vector3(posX, posY, transform.position.z),
+            Quaternion.identity
+        );
     }
 
     Vector3 getHitEffPos(Vector3 closetPoint)

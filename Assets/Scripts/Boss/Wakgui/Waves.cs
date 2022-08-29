@@ -60,7 +60,7 @@ public class Waves : MonoBehaviour
             GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.boss.bossData.getBuffs[2]);
             GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
         }
-        else if(other.CompareTag("Map"))
+        else if(other.CompareTag("Map_Wall"))
         {
             this.transform.localPosition = Vector3.zero;
             this.gameObject.SetActive(false);

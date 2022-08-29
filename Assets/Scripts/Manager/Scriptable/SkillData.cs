@@ -14,6 +14,7 @@ public class SkillData : ScriptableObject
     public int getColldown { get { return _collDown; } }
 
     [SerializeField] bool isCanBack;
+    public bool isBackAttackSkill { get { return isCanBack; } }
 
     [SerializeField] private int critical;
 

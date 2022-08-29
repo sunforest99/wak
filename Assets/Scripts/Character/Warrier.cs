@@ -15,7 +15,7 @@ public class Warrier : Character
         // if 이게 내꺼라면
         settingStat();        
     }
-    public override void attack(Vector2 attackDir)
+    public override void attack(Vector2 attackDir, bool isMe = false)
     {
         if (continuousAttack >= 3)
             return;
@@ -38,28 +38,28 @@ public class Warrier : Character
         _action = CHARACTER_ACTION.ATTACK_CANT_ANYTHING;
     }
     
-    public override void skill_1(Vector2 skillPos)
+    public override void skill_1(Vector2 skillPos, bool isMe = false)
     {
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Gal");
     }
-    public override void skill_2(Vector2 skillPos)
+    public override void skill_2(Vector2 skillPos, bool isMe = false)
     {
         StartCoroutine(agdzForce());
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_AGDZ");
     }
-    public override void skill_3(Vector2 skillPos)
+    public override void skill_3(Vector2 skillPos, bool isMe = false)
     {
         _action = CHARACTER_ACTION.CAN_MOVE;
         _anim.SetTrigger("Skill_Bigrr");
     }
-    public override void skill_4(Vector2 skillPos)
+    public override void skill_4(Vector2 skillPos, bool isMe = false)
     {
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_SG");
     }
-    public override void skill_5(Vector2 skillPos)
+    public override void skill_5(Vector2 skillPos, bool isMe = false)
     {
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_JH");
