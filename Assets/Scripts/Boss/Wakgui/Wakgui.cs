@@ -76,6 +76,7 @@ public class Wakgui : Boss
         base.BossInitialize();
         GameMng.I.boss = this;
 
+    NetworkMng.I.roomOwner = true;
         if (NetworkMng.I.roomOwner)
         {
             StartCoroutine(RaidStart());

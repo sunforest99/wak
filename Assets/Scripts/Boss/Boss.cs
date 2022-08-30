@@ -19,7 +19,7 @@ public class Boss : MonoBehaviour
     [SerializeField] protected BossData bossdata;
     public BossData bossData { get { return bossdata; } }
     [SerializeField] protected Animator animator = null;
-
+    [SerializeField] Transform bossO;      // 본체, (첫번째 자식)
 
     // 공격 ======================================================================================================
     protected const int _annihilation = 99999;    // <! 전멸기
@@ -174,15 +174,15 @@ public class Boss : MonoBehaviour
         {
             isRFlip = true;
             isLFlip = false;
-            this.transform.localRotation = Quaternion.Euler(-20, 180, 0);
-            this.transform.position += new Vector3(1.8f, 0, 0);
+            this.bossO.localRotation = Quaternion.Euler(-20, 180, 0);
+            // this.transform.position += new Vector3(1.8f, 0, 0);
         }
         else if (_dir.x < -1f && !isLFlip)
         {
             isLFlip = true;
             isRFlip = false;
-            this.transform.localRotation = Quaternion.Euler(new Vector3(20f, 0, 0));
-            this.transform.position -= new Vector3(1.8f, 0, 0);
+            this.bossO.localRotation = Quaternion.Euler(new Vector3(20f, 0, 0));
+            // this.transform.position -= new Vector3(1.8f, 0, 0);
         }
 
         // if (Vector2.Distance(_target.localPosition, this.transform.localPosition) > 2f)
