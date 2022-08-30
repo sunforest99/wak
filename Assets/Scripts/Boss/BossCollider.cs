@@ -14,9 +14,6 @@ public class BossCollider : MonoBehaviour
 
     // 데미지 ===================================================================
     [SerializeField] int damageTemp;
-    [SerializeField] Transform damagePopup;
-    [SerializeField] GameObject _eff;
-    [SerializeField] GameObject _backEff;
     bool isBackAttack;
 
 
@@ -52,23 +49,14 @@ public class BossCollider : MonoBehaviour
         }
     }
 
-    void createDamage(Vector3 pos, int damage, bool isCritical)
-    {
-        Transform damageObj = Instantiate(damagePopup, pos, Quaternion.identity);
-        Damage dmg = damageObj.GetComponent<Damage>();
-        dmg.set(damage, isCritical);
-    }
-
-    void createDamage(Vector3 pos)
-    {
-        Transform damageObj = Instantiate(damagePopup, pos, Quaternion.identity);
-        Damage dmg = damageObj.GetComponent<Damage>();
-        dmg.set("immune");
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Weapon") || other.gameObject.CompareTag("Weapon_disposable_me"))
+        // Weapon : 캐릭터에게 붙어있는 공격 콜리더
+        // Weapon_disposable : 다른 사람의 일회용(맞으면 사라져야하는) 공격&스킬
+        // Weapon_disposable_me : 나의 일회용 공격(일반 공격, 스킬 X)
+        // Skill : 나의 스킬 공격 (분리된 것들)
+        // Skill_disposable_me : 나의 일회용 스킬 공격 (분리된 것들)
+        if (other.gameObject.CompareTag("Weapon") || other.gameObject.CompareTag("Weapon_disposable_me") || other.gameObject.CompareTag("Skill") || other.gameObject.CompareTag("Skill_disposable_me"))
         {
             // 버프 존재하는 스킬에 맞은건지 확인 ======================================================================================================================
             if (Character.usingSkill && Character.usingSkill.getBuffData && Character.usingSkill.getBuffData.isBossDebuf)
@@ -84,32 +72,48 @@ public class BossCollider : MonoBehaviour
             StartCoroutine(HitBlink());
             MCamera.I.shake(5f, .1f);
 
-            // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 =======================================================================================================
             if (Character.usingSkill && Character.usingSkill.isBackAttackSkill)
             {
+                // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 ===================================================================================================
                 if (this.transform.localRotation.y == 180 && this.transform.position.x + 1 > other.transform.parent.transform.position.x)
                 {
                     isBackAttack = true;
-                    createEffect(transform.position.x + Random.Range(-2f, 1f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f));
+                    GameMng.I.createEffect(isBackAttack, new Vector3(
+                        transform.position.x + Random.Range(-2f, 1f),
+                        other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f),
+                        transform.position.z
+                    ));
                 }
                 // 보스 좌측 바라보는 상태에서  콜리더가 우측에서 일어남 ====================================================================================================
                 else if (this.transform.localRotation.y == 0 && this.transform.position.x + 1 < other.transform.parent.transform.position.x)
                 {
                     isBackAttack = true;
-                    createEffect(transform.position.x + Random.Range(1.2f, 2.2f), other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f));
+                    GameMng.I.createEffect(isBackAttack, new Vector3(
+                        transform.position.x + Random.Range(1.2f, 2.2f),
+                        other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f),
+                        transform.position.z
+                    ));
                 }
                 // (백어택 가능 공격인데) 일반 공격 =======================================================================================================================
                 else
                 {
                     isBackAttack = false;
-                    createEffect(transform.position.x + Random.Range(-0.1f, 0.1f), other.ClosestPoint(transform.position).y + Random.Range(1.2f, 1.4f));
+                    GameMng.I.createEffect(isBackAttack, new Vector3(
+                        transform.position.x + Random.Range(-0.1f, 0.1f),
+                        other.ClosestPoint(transform.position).y + Random.Range(1.2f, 1.4f),
+                        transform.position.z
+                    ));
                 }
             }
             // 일반 공격 ================================================================================================================================================
             else
             {
                 isBackAttack = false;
-                createEffect(transform.position.x + Random.Range(-0.1f, 0.1f), other.ClosestPoint(transform.position).y + Random.Range(1.2f, 1.4f));
+                GameMng.I.createEffect(isBackAttack, new Vector3(
+                    transform.position.x + Random.Range(-0.1f, 0.1f),
+                    other.ClosestPoint(transform.position).y + Random.Range(1.2f, 1.4f),
+                    transform.position.z
+                ));
             }
 
             // 평타면서 전사라면 공격 방향으로 밀려나는 효과 주기 ==========================================================================================================
@@ -121,9 +125,16 @@ public class BossCollider : MonoBehaviour
             // 무적 상태인지 확인 =========================================================================================================================================
             if (!boss.isAnnihilation)
             {
-                damageTemp = GameMng.I.getCharacterDamage(isCritical, isBackAttack);
+                damageTemp = GameMng.I.getCharacterDamage(
+                    other.gameObject.CompareTag("Weapon") ? 
+                        Character.usingSkill : (other.gameObject.CompareTag("Skill") || other.gameObject.CompareTag("Skill_disposable_me")) ?
+                        GameMng.I.character.skilldatas[ int.Parse(other.gameObject.name) ] :
+                        null,       // "Weapon_disposable_me"
+                    isCritical,
+                    isBackAttack
+                );
 
-                createDamage(
+                GameMng.I.createDamage(
                     other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0),
                     damageTemp,
                     isCritical
@@ -133,38 +144,43 @@ public class BossCollider : MonoBehaviour
             }
             else
             {
-                createDamage(other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0));
+                GameMng.I.createDamage(other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0));
             }
         }
         else if (other.gameObject.CompareTag("Esther_Attack_Skill"))
         {
-            if (!boss.isAnnihilation)
-            {
-                createDamage(
-                    other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0),
-                    Random.Range(50123300, 54987889),       // <- 에스더는 고정 데미지인데 랜덤 값이 너무 딱 맞는 값 나오면 이상하니까 겹쳐도 적당한 수
+            damageTemp = !boss.isAnnihilation ? Random.Range(50123300, 54987889) : 0;
+            Vector3 dmgSpawnPos = other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0);
+
+            if (!damageTemp.Equals(0)) {
+                GameMng.I.createDamage(
+                    dmgSpawnPos,
+                    damageTemp,       // <- 에스더는 고정 데미지인데 랜덤 값이 너무 딱 맞는 값 나오면 이상하니까 겹쳐도 적당한 수
                     true
                 );
-                NetworkMng.I.SendMsg(string.Format("DAMAGE:{0}", damageTemp));
-                // boss._nestingHp -= damageTemp;
+                boss._nestingHp -= damageTemp;
             }
+            else {
+                GameMng.I.createDamage(dmgSpawnPos);
+            }
+            NetworkMng.I.SendMsg(string.Format("ESTHER_DAMAGE:{0}:{1}:{2}:{3}", dmgSpawnPos.x, dmgSpawnPos.y, dmgSpawnPos.z, damageTemp));
         }
 
         // 일회용 공격이면 제거 =========================================================================================================================================
-        if (other.gameObject.CompareTag("Weapon_disposable") || other.gameObject.CompareTag("Weapon_disposable_me"))
+        if (other.gameObject.CompareTag("Weapon_disposable") || other.gameObject.CompareTag("Weapon_disposable_me") || other.gameObject.CompareTag("Skill_disposable_me"))
         {
             Destroy(other.gameObject);
         }
     }
 
-    void createEffect(float posX, float posY)
-    {
-        Instantiate(
-            isBackAttack ? _backEff : _eff,
-            new Vector3(posX, posY, transform.position.z),
-            Quaternion.identity
-        );
-    }
+    // void createEffect(float posX, float posY)
+    // {
+    //     Instantiate(
+    //         isBackAttack ? GameMng.I.backEff : GameMng.I.eff,
+    //         new Vector3(posX, posY, transform.position.z),
+    //         Quaternion.identity
+    //     );
+    // }
 
     Vector3 getHitEffPos(Vector3 closetPoint)
     {

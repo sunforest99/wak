@@ -258,7 +258,7 @@ public class Wakgui : Boss
             case (int)WAKGUI_ACTION.IDLE:
                 // SendBossPattern(WAKGUI_ACTION.IDLE,  /*타겟의 uniqueNumber*/));
                 // Action();
-                _target = NetworkMng.I.v_users[txt[2]].transform;
+                _target = NetworkMng.I.v_users[txt[2]].transform.parent;
                 Think();
                 break;
             case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기

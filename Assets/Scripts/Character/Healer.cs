@@ -53,7 +53,7 @@ public class Healer : Character
                 // 사전 거리 안이면 스킬 시전 가능
                 StartCoroutine(SkillCoolDown(3));
                 NetworkMng.I.UseSkill(SKILL_CODE.SKILL_4, point.x, point.z);
-                skill_4(new Vector2(point.x, point.z));
+                skill_4(new Vector2(point.x, point.z), true);
             }
             else
             {
@@ -122,7 +122,10 @@ public class Healer : Character
             
         GameObject attObj = Instantiate(GameMng.I.healerSkillPrefab[2], new Vector3(skillPos.x, -0.2f, skillPos.y), Quaternion.identity) as GameObject;
         if (isMe)
-            attObj.GetComponent<BoxCollider>().enabled = true;
+        {
+            attObj.tag = "Skill";
+            attObj.name = "3";
+        }
 
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Location");

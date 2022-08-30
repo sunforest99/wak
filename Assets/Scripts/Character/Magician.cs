@@ -100,9 +100,12 @@ public class Magician : Character
 
         attObj = Instantiate(GameMng.I.magicianSkillPrefab[1], spawnPos, Quaternion.Euler(90, 0, lookAngle)) as GameObject;
         attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 5);
-        attObj.transform.GetChild(0).rotation = Quaternion.identity;
+        attObj.transform.GetChild(0).rotation = Quaternion.Euler(20, 0, 0);
         if (isMe)
-            attObj.tag = "Weapon_disposable_me";
+        {
+            attObj.tag = "Skill_disposable_me";
+            attObj.name = "0";
+        }
 
         if (transform.position.x > skillPos.x)
             transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
@@ -128,7 +131,10 @@ public class Magician : Character
         attObj = Instantiate(GameMng.I.magicianSkillPrefab[2], spawnPos, Quaternion.Euler(90, 0, lookAngle)) as GameObject;
         attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 5);
         if (isMe)
-            attObj.tag = "Weapon_disposable_me";
+        {
+            attObj.tag = "Skill_disposable_me";
+            attObj.name = "2";
+        }
 
         if (transform.position.x > skillPos.x)
             transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
@@ -151,9 +157,11 @@ public class Magician : Character
             transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
 
         attObj =  Instantiate(GameMng.I.magicianSkillPrefab[3], new Vector3(skillPos.x, 0, skillPos.y), Quaternion.Euler(20, 0, 0)) as GameObject;
-        // if (isMe)
-        //     attObj.tag = "Weapon_disposable_me";
-
+        if (isMe) {
+            attObj.tag = "Skill";
+            attObj.name = "4";
+        }
+        
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Chimstercall");
     }
@@ -166,7 +174,7 @@ public class Magician : Character
 
     public void fireSkillForce()
     {
-        addForceImpulse(new Vector3(7, 0, 0));
+        addForceImpulse(new Vector3(transform.rotation.x < 100 ? 7 : -7, 0, 0));
     }
 
     void settingStat()

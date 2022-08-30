@@ -189,7 +189,7 @@ public class Boss : MonoBehaviour
         // {
         this.transform.localPosition = Vector3.Lerp(
             this.transform.localPosition,
-            new Vector3(_target.localPosition.x, _target.localPosition.y + 0.3f, _target.localPosition.z),
+            new Vector3(_target.localPosition.x, _target.localPosition.y, _target.localPosition.z + 0.3f),
             bossdata.getMoveSpeed * Time.deltaTime
         );
         // }

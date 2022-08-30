@@ -112,12 +112,19 @@ public class NetworkMng : MonoBehaviour
             }
             catch (SocketException err)
             {
+                GameMng.I.noticeMessage.text = "------------------- ERROR 여기 들어오면 메세지 받기가 이제 안됨 ";
+                Debug.LogError(" 메세지 이상 " + err.ToString());
+                
+
                 Debug.Log("서버가 닫혀있습니다. : " + err.ToString());
                 Logout();
             }
             catch (Exception ex)
             {
                 Debug.Log("ERROR 개반자에게 문의 : " + ex.ToString());
+                
+                GameMng.I.noticeMessage.text = "------------------- ERROR 개반자에게 문의 : " + ex.ToString();
+
                 Logout();
             }
         }
@@ -284,10 +291,10 @@ public class NetworkMng : MonoBehaviour
             // MOVE_STOP : 유저uniqueNumber : 캐릭터x좌표 : 캐릭터y좌표
             v_users[txt[1]].setMoveDir(0, 0);
             v_users[txt[1]].stopMove();
-            Vector3 v = v_users[txt[1]].transform.position;
+            Vector3 v = v_users[txt[1]].transform.parent.position;
             v.x = float.Parse(txt[2]);
             v.z = float.Parse(txt[3]);
-            v_users[txt[1]].transform.position = v;
+            v_users[txt[1]].transform.parent.position = v;
         }
         else if (txt[0].Equals("IN_USER"))  // 기존 맵에 있는 유저들 데이터
         {
@@ -412,15 +419,28 @@ public class NetworkMng : MonoBehaviour
             // 에스더 사용
             // txt[1] 에스더 번호
             // txt[2] 에스더 소환 자
-            // txt[3] 에스더 소환
+            // txt[3,4] 에스더 소환 위치 x, 
             GameMng.I.estherManager.useEsther(
                 int.Parse(txt[1]),
-                v_users[txt[2]].transform.position
+                v_users[txt[2]].transform.parent.position,
+                new Vector3(float.Parse(txt[3]), 0, float.Parse(txt[4]))
             );
         }
         else if (txt[0].Equals("ESTHER_DAMAGE"))
         {
             // DAMAGE와 다르게 데미지 표시도 해줌
+            // txt[1, 2, 3] 데미지 띄울 좌표
+            // txt[4] 데미지 수치
+            if (!txt[4].Equals("0")) {
+                GameMng.I.createDamage(
+                    new Vector3(float.Parse(txt[1]), float.Parse(txt[2]), float.Parse(txt[3])),
+                    int.Parse(txt[4]),
+                    true
+                );
+                GameMng.I.boss._nestingHp -= int.Parse(txt[4]);
+            }
+            else
+                GameMng.I.createDamage(new Vector3(float.Parse(txt[1]), float.Parse(txt[2]), float.Parse(txt[3])));
         }
         else if (txt[0].Equals("RAID_START"))
         {

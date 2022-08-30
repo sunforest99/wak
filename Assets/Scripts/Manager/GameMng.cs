@@ -57,12 +57,17 @@ public class GameMng : MonoBehaviour
     // public GameObject dialogPrefab;
     
 
-
     [Space(20)][Header("[  맵 관리  ]")]  // ==============================================================================================================================
     public Vector3 mapRightTop;
     public Vector3 mapCenter;
     public Vector3 mapLeftBotton;
     public GameObject grass_destroy_eff;
+
+
+    [Space(20)][Header("[  이펙트 관리  ]")]  // ==============================================================================================================================
+    public Transform damageEff;         // 데미지 량 띄워주는 이펙트
+    public GameObject eff;              // 일반 이펙트
+    public GameObject backEff;          // 백어텍 이펙트
 
 
     [Space(20)][Header("[  보스 관리 (여기 있으면 안됨)  ]")]  // ===========================================================================================================
@@ -117,15 +122,16 @@ public class GameMng : MonoBehaviour
     //         }
     //     }
     // }
-    public int getCharacterDamage(bool isCrital, bool isBackAttack)        // <! 캐릭터 데미지 가져오기
-    {
-        if (Character.usingSkill)        // <! 스킬 대미지
-            return Character.usingSkill.CalcSkillDamage(
+    public int getCharacterDamage(SkillData usingSkill, bool isCrital, bool isBackAttack)        // <! 캐릭터 데미지 가져오기
+    {        
+        if (usingSkill)        // <! 스킬 대미지
+            return usingSkill.CalcSkillDamage(
                 isCrital, isBackAttack,
                 Character._stat.minDamage, Character._stat.maxDamage, Character._stat.incDamagePer, Character._stat.criticalPer, Character._stat.incBackattackPer
             );
         else        // <! 평타 데미지
             return 20000;
+        // Random.Range(Character._stat.minDamage, Character._stat.maxDamage);
     }
 
 
@@ -136,7 +142,7 @@ public class GameMng : MonoBehaviour
 
     public Character createPlayer(string uniqueNumber, int job, string nickName, float posX = 0, float posY = 0)
     {
-        GameObject temp = Instantiate(characterPrefab[job], new Vector3(posX, posY, 0), Quaternion.identity);
+        GameObject temp = Instantiate(characterPrefab[job], new Vector3(posX, 0, posY), Quaternion.identity);
         Character cha = temp.transform.GetChild(0).GetComponent<Character>();
         cha.nickName = nickName;
         temp.name = nickName + ":" + uniqueNumber;
@@ -296,4 +302,43 @@ public class GameMng : MonoBehaviour
     {
         // 아이템 지급
     }
+
+    
+    /*
+     * @brief 데미지 이펙트 표시
+     * @param pos 데미지 이펙트 좌표
+     * @param damage 수치
+     * @param isCritical 크리티컬 여부
+     */
+    public void createDamage(Vector3 pos, int damage, bool isCritical)
+    {
+        Transform damageObj = Instantiate(GameMng.I.damageEff, pos, Quaternion.identity);
+        Damage dmg = damageObj.GetComponent<Damage>();
+        dmg.set(damage, isCritical);
+    }
+
+    /*
+     * @brief 데미지 이펙트 표시
+     * @param pos 데미지 이펙트 좌표
+     */
+    public void createDamage(Vector3 pos)
+    {
+        Transform damageObj = Instantiate(GameMng.I.damageEff, pos, Quaternion.identity);
+        Damage dmg = damageObj.GetComponent<Damage>();
+        dmg.set("immune");
+    }
+
+    /*
+     * @brief 이펙트 표시
+     * @param isBackAttack 백어택 여부
+     * @param pos 데미지 이펙트 좌표
+     */
+    public void createEffect(bool isBackAttack, Vector3 pos)
+    {
+        Instantiate(
+            isBackAttack ? backEff : eff,
+            pos,
+            Quaternion.identity
+        );
+    } 
 }

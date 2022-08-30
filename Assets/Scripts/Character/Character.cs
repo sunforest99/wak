@@ -299,10 +299,10 @@ public class Character : MonoBehaviour
             }
             else if (_moveDir.x.Equals(0) && _moveDir.y.Equals(0)) {
                 stopMove();
-                NetworkMng.I.SendMsg(string.Format("MOVE_STOP:{0}:{1}", transform.position.x, transform.position.z));
+                NetworkMng.I.SendMsg(string.Format("MOVE_STOP:{0}:{1}", transform.parent.position.x, transform.parent.position.z));
             }
             else {
-                NetworkMng.I.SendMsg(string.Format("MOVE:{0}:{1}:{2}:{3}", _moveDir.x, _moveDir.y, transform.position.x,  transform.position.z));
+                NetworkMng.I.SendMsg(string.Format("MOVE:{0}:{1}:{2}:{3}", _moveDir.x, _moveDir.y, transform.parent.position.x,  transform.parent.position.z));
             }
         _moveDirBefore = _moveDir;
 
