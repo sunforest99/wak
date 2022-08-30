@@ -5,6 +5,7 @@ using UnityEngine;
 public class ChangeAction : MonoBehaviour
 {
     [SerializeField] private Wakgui wakgui;
+    [SerializeField] private GameObject shadow;
     [SerializeField] Vector2[] circlevec = new Vector2[4];
     // [SerializeField] List<int> visit;
 
@@ -101,5 +102,14 @@ public class ChangeAction : MonoBehaviour
         {
             wakgui.outCasts[i].distance = i;
         }
+    }
+
+    void HideShadow()
+    {
+        shadow.SetActive(false);
+    }
+    void ShowShadow()
+    {
+        shadow.SetActive(true);
     }
 }

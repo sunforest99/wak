@@ -31550,6 +31550,18 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+    - target: {fileID: 4318762179049942193, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.233632
+      objectReference: {fileID: 0}
+    - target: {fileID: 4318762179049942193, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.00000005258984
+      objectReference: {fileID: 0}
+    - target: {fileID: 4318762179049942193, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4398976197172456727, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -31576,6 +31588,18 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
     - target: {fileID: 5758825220408658032, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
       propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5758825220408658032, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5758825220408658032, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5758825220408658032, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
+      propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5758825220408658033, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
@@ -31728,7 +31752,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8004185915449101088, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.58
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8004185915449101088, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -31884,6 +31908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wakgui: {fileID: 585349998}
+  shadow: {fileID: 192046255}
   circlevec:
   - {x: 12, y: 8}
   - {x: -12, y: -8}
