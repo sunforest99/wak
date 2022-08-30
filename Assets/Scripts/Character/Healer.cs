@@ -70,7 +70,6 @@ public class Healer : Character
         Vector3 spawnPos = transform.position;
         spawnPos.y = 0.3f;
 
-        // TODO : 좌우 방향으로 할지, 마우스 방향으로 할지 미정
         GameObject attObj = Instantiate(GameMng.I.healerSkillPrefab[0], spawnPos, Quaternion.Euler(90, 0, lookAngle)) as GameObject;
         attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 5);
         if (isMe)

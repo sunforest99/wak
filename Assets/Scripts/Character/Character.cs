@@ -508,7 +508,7 @@ public class Character : MonoBehaviour
 
     public void addForceImpulse(Vector3 frc)
     {
-        _rigidBody.AddForce(frc, ForceMode.Impulse);
+        _rigidBody.AddForce(frc, ForceMode.VelocityChange);
     }
 
     public void isMe()
