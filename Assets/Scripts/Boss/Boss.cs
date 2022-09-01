@@ -20,6 +20,7 @@ public class Boss : MonoBehaviour
     public BossData bossData { get { return bossdata; } }
     [SerializeField] protected Animator animator = null;
     [SerializeField] Transform bossO;      // 본체, (첫번째 자식)
+    [SerializeField] private Rigidbody rigid;
 
     // 공격 ======================================================================================================
     protected const int _annihilation = 99999;    // <! 전멸기
@@ -187,11 +188,10 @@ public class Boss : MonoBehaviour
 
         // if (Vector2.Distance(_target.localPosition, this.transform.localPosition) > 2f)
         // {
-        this.transform.localPosition = Vector3.Lerp(
+        rigid.MovePosition(Vector3.Lerp(
             this.transform.localPosition,
             new Vector3(_target.localPosition.x, _target.localPosition.y, _target.localPosition.z + 0.3f),
-            bossdata.getMoveSpeed * Time.deltaTime
-        );
+            bossdata.getMoveSpeed * Time.deltaTime));
         // }
     }
 
