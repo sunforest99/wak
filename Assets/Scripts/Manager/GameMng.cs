@@ -312,7 +312,7 @@ public class GameMng : MonoBehaviour
      */
     public void createDamage(Vector3 pos, int damage, bool isCritical)
     {
-        Transform damageObj = Instantiate(GameMng.I.damageEff, pos, Quaternion.identity);
+        Transform damageObj = Instantiate(GameMng.I.damageEff, pos, Quaternion.Euler(20, 0, 0));
         Damage dmg = damageObj.GetComponent<Damage>();
         dmg.set(damage, isCritical);
     }
@@ -323,7 +323,7 @@ public class GameMng : MonoBehaviour
      */
     public void createDamage(Vector3 pos)
     {
-        Transform damageObj = Instantiate(GameMng.I.damageEff, pos, Quaternion.identity);
+        Transform damageObj = Instantiate(GameMng.I.damageEff, pos, Quaternion.Euler(20, 0, 0));
         Damage dmg = damageObj.GetComponent<Damage>();
         dmg.set("immune");
     }
