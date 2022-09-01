@@ -64,7 +64,7 @@ public class Wakgui : Boss
     public List<int> visit;
 
     // ??
-    [Header("Other")]
+    [Header("기타")]
     public int circle_answer;
     public List<string> targetList;      // 보스 타겟 설정하는거
     public string getTarget => targetList[Random.Range(0, targetList.Count)];        // 타겟 렌덤
