@@ -6,11 +6,12 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] Rigidbody _rigidbody;
 
+    [SerializeField] float speed = 5.0f;
     int damage;
     void Start()
     {
         damage = GameMng.I.boss.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_CRISTAL);
-        _rigidbody.velocity = transform.TransformDirection(Vector3.left * 3);
+        _rigidbody.velocity = transform.TransformDirection(Vector3.left * speed);
     }
 
     // void Update()
