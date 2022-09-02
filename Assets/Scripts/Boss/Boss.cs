@@ -186,13 +186,13 @@ public class Boss : MonoBehaviour
             // this.transform.position -= new Vector3(1.8f, 0, 0);
         }
 
-        // if (Vector2.Distance(_target.localPosition, this.transform.localPosition) > 2f)
-        // {
+        if (Vector3.Distance(_target.localPosition, this.transform.localPosition) > 4f)
+        {
         rigid.MovePosition(Vector3.MoveTowards(
             this.transform.localPosition,
             _target.localPosition,
             bossdata.getMoveSpeed * Time.deltaTime));
-        // }
+        }
     }
 
     IEnumerator ZeroHpbar()

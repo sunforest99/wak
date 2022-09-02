@@ -56,7 +56,7 @@ public class Character : MonoBehaviour
     // 캐릭터 ====================================================================================================
     public Animator _anim;
     // [SerializeField] Transform _body;
-    [SerializeField] Rigidbody _rigidBody;
+    public Rigidbody _rigidBody;
     // [SerializeField] BoxCollider _collider;
     [SerializeField] GameObject _attackCollider;
 
@@ -222,7 +222,7 @@ public class Character : MonoBehaviour
             return;
 
         Vector3 moveDist = _moveDir.normalized * Time.deltaTime;
-        _rigidBody.MovePosition(transform.parent.position + new Vector3(moveDist.x, 0, moveDist.y) * MOVE_SPEED);
+        _rigidBody.MovePosition(_rigidBody.position + new Vector3(moveDist.x, 0, moveDist.y) * MOVE_SPEED);
         
         // transform.position += new Vector3(_moveDir.x, 0, _moveDir.y) * 7 * Time.deltaTime;
 
@@ -230,7 +230,7 @@ public class Character : MonoBehaviour
         if (curDashTime < MAX_DASH_TIME)
         {
             curDashTime += Time.deltaTime;
-            _rigidBody.MovePosition(transform.parent.position + new Vector3(moveDist.x, 0, moveDist.y) * DASH_SPEED);
+            _rigidBody.MovePosition(_rigidBody.position + new Vector3(moveDist.x, 0, moveDist.y) * DASH_SPEED);
         }
     }
 
@@ -295,14 +295,14 @@ public class Character : MonoBehaviour
         if (_moveDirBefore != _moveDir)
             if (_moveDirBefore.x.Equals(0) && _moveDirBefore.y.Equals(0)) {
                 startMove();
-                NetworkMng.I.SendMsg(string.Format("MOVE_START:{0}:{1}", _moveDir.x, _moveDir.z));
+                NetworkMng.I.SendMsg(string.Format("MOVE_START:{0}:{1}", _moveDir.x, _moveDir.y));
             }
             else if (_moveDir.x.Equals(0) && _moveDir.y.Equals(0)) {
                 stopMove();
-                NetworkMng.I.SendMsg(string.Format("MOVE_STOP:{0}:{1}", transform.parent.position.x, transform.parent.position.z));
+                NetworkMng.I.SendMsg(string.Format("MOVE_STOP:{0}:{1}", _rigidBody.position.x, _rigidBody.position.z));
             }
             else {
-                NetworkMng.I.SendMsg(string.Format("MOVE:{0}:{1}:{2}:{3}", _moveDir.x, _moveDir.y, transform.parent.position.x,  transform.parent.position.z));
+                NetworkMng.I.SendMsg(string.Format("MOVE:{0}:{1}:{2}:{3}", _moveDir.x, _moveDir.y, _rigidBody.position.x, _rigidBody.position.z));
             }
         _moveDirBefore = _moveDir;
 
@@ -388,8 +388,11 @@ public class Character : MonoBehaviour
 
     public virtual void input_attack()
     {
-        NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, Input.mousePosition.x, Input.mousePosition.y);
-        attack(Input.mousePosition);
+        Vector2 inputPos = Vector2.right;
+        if (Input.mousePosition.x < Screen.width / 2)
+            inputPos.x = -1;
+        NetworkMng.I.UseSkill(SKILL_CODE.ATTACK, inputPos.x, 0);
+        attack(inputPos);
     }
     
     public virtual void input_skill_1()
@@ -425,7 +428,7 @@ public class Character : MonoBehaviour
     public virtual void init() { }
     public virtual void attack(Vector2 attackDir, bool isMe = false) {
         // 좌우 반전
-        if (attackDir.x < Screen.width / 2)
+        if (attackDir.x < 0)
             transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
         else
             transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));

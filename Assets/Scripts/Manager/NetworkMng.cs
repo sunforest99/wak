@@ -55,7 +55,7 @@ public class NetworkMng : MonoBehaviour
     int recvLen = 0;
 
     // 유저 데이터 =========================================================================================================
-    public ROOM_CODE myRoom = ROOM_CODE.RAID_0_REPAIR;                  // 현재 내 위치
+    public ROOM_CODE myRoom = ROOM_CODE.FOREST;                  // 현재 내 위치
     public string uniqueNumber = "";        // 나 자신을 가리키는 고유 숫자
     public Dictionary<string, Character> v_users = new Dictionary<string, Character>();        // 맵에 같이 있는 유저들
     public Dictionary<string, PartyData> v_party = new Dictionary<string, PartyData>();        // 파티원들  (v_users안에도 파티원들이 있긴함)
@@ -105,7 +105,7 @@ public class NetworkMng : MonoBehaviour
             try
             {
                 socket.Connect(new IPEndPoint(serverIP, serverPort));
-                StartCoroutine("PacketProc");
+                StartCoroutine(PacketProc());
 
                 // 정상
                 // SceneManager.LoadScene("Main");
@@ -117,7 +117,8 @@ public class NetworkMng : MonoBehaviour
                 
 
                 Debug.Log("서버가 닫혀있습니다. : " + err.ToString());
-                Logout();
+                SendMsg("LOG:SocketException err");
+                // Logout();
             }
             catch (Exception ex)
             {
@@ -125,6 +126,7 @@ public class NetworkMng : MonoBehaviour
                 
                 GameMng.I.noticeMessage.text = "------------------- ERROR 개반자에게 문의 : " + ex.ToString();
 
+                SendMsg("LOG:Exception err");
                 Logout();
             }
         }
@@ -201,6 +203,7 @@ public class NetworkMng : MonoBehaviour
         while (true)
         {
             if (socket.Connected)
+            {
                 if (socket.Available > 0)
                 {
                     byte[] buf = new byte[4096];
@@ -227,7 +230,16 @@ public class NetworkMng : MonoBehaviour
                             }
                         }
                     }
+                    else
+                    {
+                        SendMsg("LOG:nRead");
+                    }
                 }
+            }
+            else
+            {
+                SendMsg("LOG:socket.Connected");
+            }
             yield return null;
         }
     }
@@ -285,16 +297,14 @@ public class NetworkMng : MonoBehaviour
         {
             // MOVE : 유저uniqueNumber : 방향x좌표 : 방향y좌표 : 캐릭터x좌표 : 캐릭터y좌표
             v_users[txt[1]].setMoveDir(int.Parse(txt[2]), int.Parse(txt[3]));
+            // v_users[txt[1]]._rigidBody.position = new Vector3(float.Parse(txt[4]), v_users[txt[1]]._rigidBody.position.y, float.Parse(txt[5]));
         }
         else if (txt[0].Equals("MOVE_STOP"))
         {
             // MOVE_STOP : 유저uniqueNumber : 캐릭터x좌표 : 캐릭터y좌표
             v_users[txt[1]].setMoveDir(0, 0);
             v_users[txt[1]].stopMove();
-            Vector3 v = v_users[txt[1]].transform.parent.position;
-            v.x = float.Parse(txt[2]);
-            v.z = float.Parse(txt[3]);
-            v_users[txt[1]].transform.parent.position = v;
+            v_users[txt[1]]._rigidBody.position = new Vector3(float.Parse(txt[2]), v_users[txt[1]]._rigidBody.position.y, float.Parse(txt[3]));
         }
         else if (txt[0].Equals("IN_USER"))  // 기존 맵에 있는 유저들 데이터
         {
@@ -505,7 +515,8 @@ public class NetworkMng : MonoBehaviour
             Thread.Sleep(500);
             socket.Close();
         }
-        StopCoroutine("PacketProc");
+        SendMsg("LOG:OnDestroy");
+        StopCoroutine(PacketProc());
     }
 
     /**

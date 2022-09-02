@@ -37,7 +37,6 @@ public class Cristal : MonoBehaviour
         if (count < 1)
         {
             objectPool.setBulletActive(this.transform.position, spawn.transform.rotation.eulerAngles);
-            Debug.Log(spawn.transform.rotation.eulerAngles);
             count++;
             yield return new WaitForSeconds(0.2f);
         }
