@@ -16,10 +16,10 @@ public class Poo : DestroySelf
     
     IEnumerator Remove()
     {
-        yield return new WaitForSeconds(waitingTime);
+        yield return new WaitForSecondsRealtime(waitingTime);
         transform.SetParent(transform.root.parent);
         _anim.SetBool("Active", true);
-        yield return new WaitForSeconds(maintainTime);
+        yield return new WaitForSecondsRealtime(maintainTime);
         destroySelf();
     }
 

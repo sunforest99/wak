@@ -106,6 +106,14 @@ public class ChangeAction : MonoBehaviour
         }
     }
 
+    void RushForce()
+    {
+        if (wakgui.isRFlip)
+            wakgui.rigid.AddForce(new Vector3(20, 0, 0), ForceMode.Impulse);
+        else
+            wakgui.rigid.AddForce(new Vector3(-20, 0, 0), ForceMode.Impulse);
+    }
+
     void HideShadow()
     {
         shadow.SetActive(false);

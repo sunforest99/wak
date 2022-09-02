@@ -15,12 +15,12 @@ public struct bossbaseUI
 public class Boss : MonoBehaviour
 {
     [Header("[  관리  ]")]  // 관리 ======================================================================================================
-    bool isLFlip = false, isRFlip = false;          // 방향
+    public bool isLFlip = false, isRFlip = false;          // 방향
     [SerializeField] protected BossData bossdata;
     public BossData bossData { get { return bossdata; } }
     [SerializeField] protected Animator animator = null;
     [SerializeField] Transform bossO;      // 본체, (첫번째 자식)
-    [SerializeField] private Rigidbody rigid;
+    [SerializeField] public Rigidbody rigid;
 
     // 공격 ======================================================================================================
     protected const int _annihilation = 99999;    // <! 전멸기

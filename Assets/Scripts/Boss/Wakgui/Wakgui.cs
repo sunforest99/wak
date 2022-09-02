@@ -162,7 +162,7 @@ public class Wakgui : Boss
         {
             if (baseAttackCount < 4)
             {
-                pattern_rand = Random.Range((int)WAKGUI_ACTION.BASE_STAP, (int)WAKGUI_ACTION.BASE_ROAR + 1);
+                pattern_rand = Random.Range((int)WAKGUI_ACTION.BASE_STAP, (int)WAKGUI_ACTION.BASE_RUSH + 1);
                 switch (pattern_rand)
                 {
                     case (int)WAKGUI_ACTION.IDLE:
@@ -171,69 +171,69 @@ public class Wakgui : Boss
                         break;
                     case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기
                         SendBossPattern(WAKGUI_ACTION.BASE_STAP);
-                        // baseAttackCount++;
+                        baseAttackCount++;
                         break;
                     case (int)WAKGUI_ACTION.BASE_SLASH:      // <! 내려찍기
                         SendBossPattern(WAKGUI_ACTION.BASE_SLASH);
-                        // baseAttackCount++;
+                        baseAttackCount++;
                         break;
                     case (int)WAKGUI_ACTION.BASE_ROAR:      // <! 포효
                         SendBossPattern(WAKGUI_ACTION.BASE_ROAR);
-                        // baseAttackCount++;
+                        baseAttackCount++;
                         break;
                     case (int)WAKGUI_ACTION.BASE_RUSH:      // <! 돌진
                         SendBossPattern(WAKGUI_ACTION.BASE_RUSH);
-                        // baseAttackCount++;
+                        baseAttackCount++;
                         break;
                 }
             }
 
-            // else
-            // {
-            //     // pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
-            //     pattern_rand = (int)WAKGUI_ACTION.PATTERN_CRISTAL;
-            //     switch (pattern_rand)
-            //     {
-            //         case (int)WAKGUI_ACTION.PATTERN_POO:      // <! 똥 생성
-            //             SendBossPattern(WAKGUI_ACTION.PATTERN_POO);
-            //             baseAttackCount = 0;
-            //             break;
-            //         case (int)WAKGUI_ACTION.PATTERN_KNIFE:      // <! 칼날 찌르기
-            //             for (int i = 0; i < bossdata.maxKnife; i++)
-            //             {
-            //                 SendBossPattern(WAKGUI_ACTION.PATTERN_KNIFE,
-            //                 Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x).ToString() + ":" +
-            //                 Random.Range(GameMng.I.mapLeftBotton.z, GameMng.I.mapRightTop.z).ToString());               // TODO, 뒤에 칼날 생성될 위치,각도를 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
-            //             }
-            //             baseAttackCount = 0;
-            //             break;
-            //         case (int)WAKGUI_ACTION.PATTERN_JUMP:      // <! 점프 공격
-            //             SendBossPattern(WAKGUI_ACTION.PATTERN_JUMP);                     // TODO, 뒤에 점프 공격할 대상의 uniqueNumber 보내줘야함.
-            //             baseAttackCount = 0;
-            //             break;
-            //         case (int)WAKGUI_ACTION.PATTERN_CRISTAL:      // <! 수정 생성
-            //             for (int i = 0; i < bossdata.maxCristal; i++)
-            //             {
-            //                 SendBossPattern(WAKGUI_ACTION.PATTERN_CRISTAL, Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x).ToString() + ":" +
-            //                 Random.Range(GameMng.I.mapLeftBotton.z, GameMng.I.mapRightTop.z).ToString());         // TODO, 뒤에 수정 생성될 위치 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
-            //             }
+            else
+            {
+                pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
+                // pattern_rand = (int)WAKGUI_ACTION.PATTERN_CRISTAL;
+                switch (pattern_rand)
+                {
+                    case (int)WAKGUI_ACTION.PATTERN_POO:      // <! 똥 생성
+                        SendBossPattern(WAKGUI_ACTION.PATTERN_POO);
+                        baseAttackCount = 0;
+                        break;
+                    case (int)WAKGUI_ACTION.PATTERN_KNIFE:      // <! 칼날 찌르기
+                        for (int i = 0; i < bossdata.maxKnife; i++)
+                        {
+                            SendBossPattern(WAKGUI_ACTION.PATTERN_KNIFE,
+                            Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x).ToString() + ":" +
+                            Random.Range(GameMng.I.mapLeftBotton.z, GameMng.I.mapRightTop.z).ToString());               // TODO, 뒤에 칼날 생성될 위치,각도를 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
+                        }
+                        baseAttackCount = 0;
+                        break;
+                    case (int)WAKGUI_ACTION.PATTERN_JUMP:      // <! 점프 공격
+                        SendBossPattern(WAKGUI_ACTION.PATTERN_JUMP);                     // TODO, 뒤에 점프 공격할 대상의 uniqueNumber 보내줘야함.
+                        baseAttackCount = 0;
+                        break;
+                    case (int)WAKGUI_ACTION.PATTERN_CRISTAL:      // <! 수정 생성
+                        for (int i = 0; i < bossdata.maxCristal; i++)
+                        {
+                            SendBossPattern(WAKGUI_ACTION.PATTERN_CRISTAL, Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x).ToString() + ":" +
+                            Random.Range(GameMng.I.mapLeftBotton.z, GameMng.I.mapRightTop.z).ToString());         // TODO, 뒤에 수정 생성될 위치 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
+                        }
 
-            //             baseAttackCount = 0;
-            //             break;
-            //         case (int)WAKGUI_ACTION.PATTERN_WAVE:      // <! 파도
-            //             for (int i = 0; i < bossData.maxWave; i++)
-            //             {
-            //                 SendBossPattern(WAKGUI_ACTION.PATTERN_WAVE,
-            //                 Pattern_Wave_Think());            // TODO, 뒤에 파도 생성될 위치,방향 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
-            //             }
-            //             baseAttackCount = 0;
-            //             break;
-            //         case (int)WAKGUI_ACTION.PATTERN_COUNTER:      // <! 반격기
-            //             SendBossPattern(WAKGUI_ACTION.PATTERN_COUNTER);
-            //             baseAttackCount = 0;
-            //             break;
-            //     }
-            // }
+                        baseAttackCount = 0;
+                        break;
+                    case (int)WAKGUI_ACTION.PATTERN_WAVE:      // <! 파도
+                        for (int i = 0; i < bossData.maxWave; i++)
+                        {
+                            SendBossPattern(WAKGUI_ACTION.PATTERN_WAVE,
+                            Pattern_Wave_Think());            // TODO, 뒤에 파도 생성될 위치,방향 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
+                        }
+                        baseAttackCount = 0;
+                        break;
+                    case (int)WAKGUI_ACTION.PATTERN_COUNTER:      // <! 반격기
+                        SendBossPattern(WAKGUI_ACTION.PATTERN_COUNTER);
+                        baseAttackCount = 0;
+                        break;
+                }
+            }
         }
     }
 
@@ -358,7 +358,8 @@ public class Wakgui : Boss
         // 나중에 살아 있는 플레이어 들에게 모두 쏘기
         GameObject poo = Instantiate(patten.poo, Vector3.zero, Quaternion.identity) as GameObject;
         poo.transform.SetParent(_target);
-        poo.transform.localPosition = new Vector3(0, -2.5f, 0);
+        poo.transform.localPosition = new Vector3(0, -0.32f, 0);
+        poo.transform.localRotation = Quaternion.Euler(90, 0, 0);   
     }
 
     /**

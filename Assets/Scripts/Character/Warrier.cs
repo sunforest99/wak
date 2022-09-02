@@ -29,7 +29,7 @@ public class Warrier : Character
         if (_action != CHARACTER_ACTION.ATTACK_CANT_ANYTHING)
         {
             // 좌우 반전
-            if (attackDir.x < Screen.width / 2)
+            if (attackDir.x < 0)
                 transform.rotation = Quaternion.Euler(new Vector3(20f, 0, 0));
             else
                 transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
