@@ -10,7 +10,7 @@ public class Totem : DestroySelf
         TRIANGLE
     }
 
-    [SerializeField] Collider2D[] colliders;
+    [SerializeField] Collider[] colliders;
     [SerializeField] TOTEM_TYPE type;
 
     void Start()
@@ -28,7 +28,7 @@ public class Totem : DestroySelf
     {
         yield return new WaitForSeconds(10.0f);
         Debug.Log("IN");
-        colliders = Physics2D.OverlapCircleAll(this.transform.position, 2.5f);
+        colliders = Physics.OverlapSphere(this.transform.position, 2.5f);
 
         switch (type)
         {

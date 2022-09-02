@@ -188,9 +188,9 @@ public class Boss : MonoBehaviour
 
         // if (Vector2.Distance(_target.localPosition, this.transform.localPosition) > 2f)
         // {
-        rigid.MovePosition(Vector3.Lerp(
+        rigid.MovePosition(Vector3.MoveTowards(
             this.transform.localPosition,
-            new Vector3(_target.localPosition.x, _target.localPosition.y, _target.localPosition.z + 0.3f),
+            _target.localPosition,
             bossdata.getMoveSpeed * Time.deltaTime));
         // }
     }

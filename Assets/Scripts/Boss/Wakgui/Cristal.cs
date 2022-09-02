@@ -34,7 +34,6 @@ public class Cristal : MonoBehaviour
 
     IEnumerator CreateBullet()
     {
-        Debug.Log("!!!!!!!!");
         if (count < 1)
         {
             objectPool.setBulletActive(this.transform.position, spawn.transform.rotation.eulerAngles);

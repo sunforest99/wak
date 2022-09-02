@@ -9,6 +9,8 @@ public class SeaDu_New : Monster
     protected override void Start()
     {
         base.Start();
+        _hp = 30000000;
+        _fullHp = 30000000;
     }
 
     /**

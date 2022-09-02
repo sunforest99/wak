@@ -37,14 +37,18 @@ public class Monster : MonoBehaviour
     [SerializeField] protected Animator _anim;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Material[] materials = new Material[2];
-    private List<SpriteRenderer> render = new List<SpriteRenderer>();
+    [SerializeField] private List<SpriteRenderer> render = new List<SpriteRenderer>();  // <- 보스와 달리 몬스터는 render 모두 넣어줘야함 (이유: 그림자, hp바 등 모두 자식으로 관리하기때문)
     Dictionary<BUFF, MonsterDebuff> buffDatas = new Dictionary<BUFF, MonsterDebuff>();
 
 
     [Space(20)][Header("[  몬스터 개인 데이터  ]")]  // =======================================================================================================================
-    protected int _hp;
-    protected int _moveSpeed;
+    protected float _hp;
+    protected float _fullHp;
+    protected float _moveSpeed;
     protected int _damage;
+
+    [Space(20)][Header("[  몬스터 UI]")]  // ===================================================================================================================================
+    [SerializeField] GameObject hpbar;
 
     // 기본적인 반복 계산용
     int damageTemp;
@@ -52,16 +56,6 @@ public class Monster : MonoBehaviour
 
     protected virtual void Start()
     {
-        SpriteRenderer temp;
-        for (int i = 0; i < this.transform.childCount; i++)
-        {
-            temp = this.transform.GetChild(i).GetComponent<SpriteRenderer>();
-            if (temp)
-            {
-                render.Add(temp);
-            }
-        }
-
         endAct();
     }
 
@@ -261,6 +255,15 @@ public class Monster : MonoBehaviour
             );
             NetworkMng.I.SendMsg(string.Format("DAMAGE:{0}", damageTemp));
             // boss._nestingHp -= damageTemp;
+
+            getDamage(damageTemp);
         }
+    }
+
+    public void getDamage(int dmg)
+    {
+        this._hp -= dmg;
+        this.hpbar.transform.localScale = new Vector3(this._hp / this._fullHp, 1, 1);
+        Debug.Log(_hp + " : " + this._fullHp + " : " + this._hp / this._fullHp);
     }
 }

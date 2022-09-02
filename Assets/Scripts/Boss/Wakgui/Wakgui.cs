@@ -98,7 +98,7 @@ public class Wakgui : Boss
             base.ChangeHpbar();
             base.RaidTimer();
             base.ChangeHpText();
-            if (action == WAKGUI_ACTION.IDLE && _target != null)
+            if ((action == WAKGUI_ACTION.IDLE || action == WAKGUI_ACTION.PATTERN_JUMP) && _target != null)
                 base.BossMove();
 
             if (action == WAKGUI_ACTION.IDLE && !checkPattern && !checkCircle && base._currentNesting < 90)
@@ -151,9 +151,9 @@ public class Wakgui : Boss
         NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0}{1}", (int)action, msg != "" ? ":" + msg : msg));
     }
 
-    public void Think()
+    public IEnumerator Think()
     {
-        // yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(1.0f);
 
         if (NetworkMng.I.roomOwner)
         {
@@ -248,7 +248,7 @@ public class Wakgui : Boss
         {
             SendBossPattern(WAKGUI_ACTION.IDLE, NetworkMng.I.uniqueNumber);
         }
-        Think();
+        StartCoroutine(Think());
     }
 
     public override void Action(string msg)
@@ -260,7 +260,7 @@ public class Wakgui : Boss
                 // SendBossPattern(WAKGUI_ACTION.IDLE,  /*타겟의 uniqueNumber*/));
                 // Action();
                 _target = NetworkMng.I.v_users[txt[2]].transform.parent;
-                Think();
+                StartCoroutine(Think());
                 break;
             case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기
                 Base_Stap();

@@ -8,8 +8,9 @@ public class OutCast : DestroySelf
     public bool checkFigure;
     [SerializeField] private GameObject rect;       // <! 0 사각형 1 삼각형
     [SerializeField] private GameObject triangle;
+    [SerializeField] private Rigidbody rigid;
 
-    void Update()
+    void Start()
     {
         Move();
     }
@@ -19,16 +20,16 @@ public class OutCast : DestroySelf
         switch (distance)
         {
             case 0:     // <! 상
-                this.transform.Translate(Vector3.up * 5 * Time.deltaTime);
+                rigid.velocity = transform.TransformDirection(Vector3.forward * 5);
                 break;
             case 1:     // <! 하
-                this.transform.Translate(Vector3.down * 5 * Time.deltaTime);
+                rigid.velocity = transform.TransformDirection(Vector3.back * 5);
                 break;
             case 2:     // <! 좌
-                this.transform.Translate(Vector3.left * 5 * Time.deltaTime);
+                rigid.velocity = transform.TransformDirection(Vector3.left * 5);
                 break;
             case 3:     // <! 우
-                this.transform.Translate(Vector3.right * 5 * Time.deltaTime);
+                rigid.velocity = transform.TransformDirection(Vector3.right * 5);
                 break;
             default:
                 break;
@@ -37,15 +38,16 @@ public class OutCast : DestroySelf
 
     void figureSetting(GameObject figure, Collider user)
     {
-        figure.transform.SetParent(user.transform);
+        figure.transform.SetParent(user.transform.GetChild(0));
         figure.transform.SetAsFirstSibling();
         figure.transform.localPosition = new Vector2(0, 3.0f);
+        figure.transform.localRotation = Quaternion.identity;
         destroySelf();
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.GetComponent<Character>())
+        if(other.CompareTag("Player") || other.CompareTag("Character"))
         {
             if (other.transform.GetChild(0).name == "Triangle" || other.transform.GetChild(0).name == "Rect")
             {

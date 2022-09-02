@@ -6,7 +6,9 @@ public class ChangeAction : MonoBehaviour
 {
     [SerializeField] private Wakgui wakgui;
     [SerializeField] private GameObject shadow;
-    [SerializeField] Vector2[] circlevec = new Vector2[4];
+
+    [Header("순서 왼위, 왼아래, 우위, 우아래")]
+    [SerializeField] Vector3[] circlevec = new Vector3[4];
     // [SerializeField] List<int> visit;
 
     void SetStap() => wakgui.action = WAKGUI_ACTION.BASE_STAP;
@@ -34,15 +36,15 @@ public class ChangeAction : MonoBehaviour
     void SetIdle()
     {
         wakgui.action = WAKGUI_ACTION.IDLE;
-        wakgui.Think();
+        StartCoroutine(wakgui.Think());
     }
 
     void SetTelePort() => wakgui.action = WAKGUI_ACTION.TELEPORT;
 
     void SetTelePortSpawn() => wakgui.action = WAKGUI_ACTION.TELEPORT_SPAWN;
 
-    void SetJumpPostion() => this.transform.parent.localPosition = wakgui.target.localPosition;
-    void SetTelePortPostion() => this.transform.parent.position = new Vector2(GameMng.I.mapCenter.x, GameMng.I.mapCenter.y - 1.0f);
+    void SetJumpPostion() => this.transform.parent.parent.position = new Vector3(wakgui.target.position.x, -3.6f, wakgui.target.position.z);
+    void SetTelePortPostion() => this.transform.parent.parent.position = new Vector3(GameMng.I.mapCenter.x, -3.6f);
 
     void CreateCircle()
     {
@@ -51,7 +53,7 @@ public class ChangeAction : MonoBehaviour
             GameObject temp = Instantiate(wakgui.getCircle[i], circlevec[wakgui.visit[i]], Quaternion.identity);
             wakgui.marblelist.Add(temp.GetComponent<Marble>());
         }
-        
+
         switch (wakgui.circle_answer)
         {
             case 0:
@@ -83,17 +85,17 @@ public class ChangeAction : MonoBehaviour
     {
         for (int i = 0; i < 4; i++)
         {
-            GameObject temp = Instantiate(wakgui.getOutcast, GameMng.I.mapCenter, Quaternion.identity);
+            GameObject temp = Instantiate(wakgui.getOutcast, new Vector3(wakgui.transform.position.x, 0.5f, wakgui.transform.position.z), Quaternion.identity);
             wakgui.outCasts.Add(temp.GetComponent<OutCast>());
-            wakgui.outCasts[i].distance = 4;
+            wakgui.outCasts[i].distance = i;
         }
         wakgui.outCasts[wakgui.outcastRand].checkFigure = true;
     }
 
     void CreateTotem()
     {
-        Instantiate(wakgui.getTotem[0], new Vector2(-11.0f, GameMng.I.mapCenter.y), Quaternion.identity);
-        Instantiate(wakgui.getTotem[1], new Vector2(11.0f, GameMng.I.mapCenter.y), Quaternion.identity);
+        Instantiate(wakgui.getTotem[0], new Vector3(-11.0f, GameMng.I.mapCenter.y, 0), Quaternion.Euler(90, 0, 0));
+        Instantiate(wakgui.getTotem[1], new Vector3(11.0f, GameMng.I.mapCenter.y, 0), Quaternion.Euler(90, 0, 0));
     }
 
     void StartMoveOutcast()
