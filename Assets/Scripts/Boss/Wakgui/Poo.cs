@@ -17,9 +17,13 @@ public class Poo : DestroySelf
     IEnumerator Remove()
     {
         yield return new WaitForSecondsRealtime(waitingTime);
+        
         transform.SetParent(transform.root.parent);
+        transform.position = new Vector3(transform.position.x, -0.19f, transform.position.z);
         _anim.SetBool("Active", true);
+
         yield return new WaitForSecondsRealtime(maintainTime);
+        
         destroySelf();
     }
 

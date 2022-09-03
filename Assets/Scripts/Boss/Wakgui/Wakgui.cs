@@ -190,8 +190,8 @@ public class Wakgui : Boss
 
             else
             {
-                pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
-                // pattern_rand = (int)WAKGUI_ACTION.PATTERN_CRISTAL;
+                // pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
+                pattern_rand = (int)WAKGUI_ACTION.PATTERN_KNIFE;
                 switch (pattern_rand)
                 {
                     case (int)WAKGUI_ACTION.PATTERN_POO:      // <! 똥 생성
@@ -358,7 +358,7 @@ public class Wakgui : Boss
         // 나중에 살아 있는 플레이어 들에게 모두 쏘기
         GameObject poo = Instantiate(patten.poo, Vector3.zero, Quaternion.identity) as GameObject;
         poo.transform.SetParent(_target);
-        poo.transform.localPosition = new Vector3(0, -0.32f, 0);
+        poo.transform.localPosition = new Vector3(0, -0.234f, 0);
         poo.transform.localRotation = Quaternion.Euler(90, 0, 0);   
     }
 

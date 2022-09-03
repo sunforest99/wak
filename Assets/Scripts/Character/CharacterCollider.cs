@@ -49,10 +49,12 @@ public class CharacterCollider : MonoBehaviour
         else
             GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName;
 
-        for (int i = idx; i >= 0; i--) {
-            GameMng.I.getItemPool[i].EXP_Game.SetActive(false);
-            GameMng.I.getItemPool[i].EXP_Game.SetActive(true);
-        }
+            GameMng.I.getItemPool[idx].EXP_Game.SetActive(false);
+            GameMng.I.getItemPool[idx].EXP_Game.SetActive(true);
+        // for (int i = idx; i >= 0; i--) {
+        //     GameMng.I.getItemPool[i].EXP_Game.SetActive(false);
+        //     GameMng.I.getItemPool[i].EXP_Game.SetActive(true);
+        // }
             // GameMng.I.getItemPool[i].EXP_Game.transform.localPosition = new Vector3(5.0f, 45.0f * (idx - i), 0.0f);
     }
 
@@ -64,10 +66,12 @@ public class CharacterCollider : MonoBehaviour
             GameMng.I.stateMng.user_HP_Numerical.Hp -= GameMng.I.boss.bossData.getDamage();
             NetworkMng.I.SendMsg(string.Format("CHANGE_HP:{0}", GameMng.I.stateMng.user_HP_Numerical.Hp / GameMng.I.stateMng.user_HP_Numerical.fullHp));
         }
-
-        if (other.CompareTag("Item"))
+    }
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Item"))
         {
-            Item item = other.GetComponent<ItemObj>().saveItem;
+            Item item = other.gameObject.GetComponent<ItemObj>().saveItem;
             switch (item.itemData.itemType)
             {
                 case ITEM_TYPE.BATTLE_ITEM:
@@ -96,7 +100,7 @@ public class CharacterCollider : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
-    
+
     IEnumerator itemPoolTimer()
     {
         yield return new WaitForSeconds(4);

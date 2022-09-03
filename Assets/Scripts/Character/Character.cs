@@ -221,16 +221,21 @@ public class Character : MonoBehaviour
         if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING || _action == CHARACTER_ACTION.ATTACK_CANT_ANYTHING)
             return;
 
-        Vector3 moveDist = _moveDir.normalized * Time.deltaTime;
-        _rigidBody.MovePosition(_rigidBody.position + new Vector3(moveDist.x, 0, moveDist.y) * MOVE_SPEED);
-        
+        Vector3 moveDist = _moveDir.normalized;
+        Debug.Log(moveDist);
         // transform.position += new Vector3(_moveDir.x, 0, _moveDir.y) * 7 * Time.deltaTime;
 
-        // 대시 이동
-        if (curDashTime < MAX_DASH_TIME)
+        // 기본 이동
+        if (curDashTime >= MAX_DASH_TIME)
         {
+            // _rigidBody.MovePosition(_rigidBody.position + new Vector3(moveDist.x, 0, moveDist.y) * MOVE_SPEED);
+            _rigidBody.velocity = new Vector3(moveDist.x, _rigidBody.velocity.y, moveDist.y) * MOVE_SPEED; 
+        }
+        // 대시 이동
+        else {
             curDashTime += Time.deltaTime;
-            _rigidBody.MovePosition(_rigidBody.position + new Vector3(moveDist.x, 0, moveDist.y) * DASH_SPEED);
+            // _rigidBody.MovePosition(_rigidBody.position + new Vector3(moveDist.x, 0, moveDist.y) * (MOVE_SPEED + DASH_SPEED));
+            _rigidBody.velocity = new Vector3(moveDist.x, _rigidBody.velocity.y, moveDist.y) *  (MOVE_SPEED + DASH_SPEED); 
         }
     }
 

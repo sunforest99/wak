@@ -12,13 +12,19 @@ public class Knife_portal : MonoBehaviour
         damage = GameMng.I.boss.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_KNIFE);
     }
 
-    void Update()
+    // void Update()
+    // {
+    //     if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 2.0f)
+    //     {
+    //         this.transform.localPosition = Vector3.zero;
+    //         this.gameObject.SetActive(false);
+    //     }
+    // }
+    
+    void animationDone()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 2.0f)
-        {
-            this.transform.localPosition = Vector3.zero;
-            this.gameObject.SetActive(false);
-        }
+        this.transform.localPosition = Vector3.zero;
+        this.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
