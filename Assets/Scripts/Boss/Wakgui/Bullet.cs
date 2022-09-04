@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) 
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Player") || other.CompareTag("Character"))
         {
             GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
             this.transform.localPosition = Vector3.zero;

@@ -23,7 +23,11 @@ public class ChangeAction : MonoBehaviour
 
     void SetKnife() => wakgui.action = WAKGUI_ACTION.PATTERN_KNIFE;
 
-    void SetJump() => wakgui.action = WAKGUI_ACTION.PATTERN_JUMP;
+    void SetJump()
+    {
+        wakgui.action = WAKGUI_ACTION.PATTERN_JUMP;
+        wakgui.jump = true;
+    }
 
     void SetCristal() => wakgui.action = WAKGUI_ACTION.PATTERN_CRISTAL;
 
@@ -36,14 +40,15 @@ public class ChangeAction : MonoBehaviour
     void SetIdle()
     {
         wakgui.action = WAKGUI_ACTION.IDLE;
-        StartCoroutine(wakgui.Think());
+        wakgui.isThink = false;
+        // StartCoroutine(wakgui.Think());
     }
 
     void SetTelePort() => wakgui.action = WAKGUI_ACTION.TELEPORT;
 
     void SetTelePortSpawn() => wakgui.action = WAKGUI_ACTION.TELEPORT_SPAWN;
 
-    void SetJumpPostion() => this.transform.parent.parent.position = new Vector3(wakgui.target.position.x, -3.6f, wakgui.target.position.z);
+    void SetJumpPostion() => wakgui.jump = false;
     void SetTelePortPostion() => this.transform.parent.parent.position = new Vector3(GameMng.I.mapCenter.x, -3.6f);
 
     void CreateCircle()
@@ -52,6 +57,7 @@ public class ChangeAction : MonoBehaviour
         {
             GameObject temp = Instantiate(wakgui.getCircle[i], circlevec[wakgui.visit[i]], Quaternion.identity);
             wakgui.marblelist.Add(temp.GetComponent<Marble>());
+            wakgui.marblelist[i].uniqueNum = i;
         }
 
         switch (wakgui.circle_answer)
@@ -85,7 +91,7 @@ public class ChangeAction : MonoBehaviour
     {
         for (int i = 0; i < 4; i++)
         {
-            GameObject temp = Instantiate(wakgui.getOutcast, new Vector3(wakgui.transform.position.x, 0.5f, wakgui.transform.position.z), Quaternion.identity);
+            GameObject temp = Instantiate(wakgui.getOutcast, new Vector3(wakgui.transform.position.x, 0.5f, wakgui.transform.position.z), Quaternion.Euler(20.0f, 0, 0));
             wakgui.outCasts.Add(temp.GetComponent<OutCast>());
             wakgui.outCasts[i].distance = i;
         }
@@ -96,6 +102,30 @@ public class ChangeAction : MonoBehaviour
     {
         Instantiate(wakgui.getTotem[0], new Vector3(-11.0f, GameMng.I.mapCenter.y, 0), Quaternion.Euler(90, 0, 0));
         Instantiate(wakgui.getTotem[1], new Vector3(11.0f, GameMng.I.mapCenter.y, 0), Quaternion.Euler(90, 0, 0));
+    }
+
+    void CreateWaves()
+    {
+        for(int i = 0; i < wakgui.spawnPattenVec.Count; i++)
+        {
+            wakgui.objectPool.setWaveObject(wakgui.spawnPattenVec[i].x,wakgui.spawnPattenVec[i].z);
+        }
+    }
+
+    void CreateCristal()
+    {
+       for(int i = 0; i < wakgui.spawnPattenVec.Count; i++)
+        {
+            wakgui.objectPool.setCristalActive(wakgui.spawnPattenVec[i].x,wakgui.spawnPattenVec[i].z, i);
+        }
+    }
+
+    void CreateKnife()
+    {
+        for(int i = 0; i < wakgui.spawnPattenVec.Count; i++)
+        {
+            wakgui.objectPool.setKnifeActive(wakgui.spawnPattenVec[i].x,wakgui.spawnPattenVec[i].z);
+        }
     }
 
     void StartMoveOutcast()
