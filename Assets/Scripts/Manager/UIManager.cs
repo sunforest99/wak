@@ -61,11 +61,17 @@ public class UIManager : MonoBehaviour
             // {
             //     RaycastHit hit = hits[i];
             // }
+            Debug.Log("@@@@");
             
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             
-            if (Physics.Raycast(ray.origin, ray.direction * 100, out hit)) {
+            string[] layers = { "Default", "Character", "Map" }; 
+            int layerMask = LayerMask.GetMask(layers);
+            // int layerMask = 1 << LayerMask.NameToLayer("Character");
+
+            if (Physics.Raycast(ray, out hit, 100f, layerMask)) {
+            // if (Physics.Raycast(ray.origin, ray.direction * 10000, out hit)) {
                 if (hit.transform.tag.Equals("Npc"))        // NPC 우선순위
                 {
                     if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 2)
@@ -96,6 +102,7 @@ public class UIManager : MonoBehaviour
                 }
                 else if (hit.transform.tag.Equals("Character"))   // 나를 제외한 플레이어를 선택함
                 {
+                    Debug.Log("!!!!");
                     // txt[0] 닉네임
                     // txt[1] uniqueNumber
                     string[] txt = hit.transform.name.Split(':');

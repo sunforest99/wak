@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8693872574215935070}
   - component: {fileID: 3568531811561520086}
   - component: {fileID: 3284013105789122672}
+  - component: {fileID: -545401585857261906}
   m_Layer: 0
   m_Name: Fire
   m_TagString: Weapon_disposable
@@ -136,3 +137,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &-545401585857261906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3653492250333416298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2af4c288c3a711246bb1b6363311ee82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

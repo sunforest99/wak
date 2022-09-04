@@ -10,6 +10,13 @@ public enum KEY_MODE
     QUEST_MODE      // NPC와 대화, 혹은 퀘스트 등에 대한 상황
 }
 
+public enum EFF_TYPE
+{
+    EFF,
+    BACK_EFF,
+    REMOVE_EFF
+}
+
 public class GameMng : MonoBehaviour
 {
     private static GameMng _instance = null;
@@ -68,11 +75,16 @@ public class GameMng : MonoBehaviour
     public Transform damageEff;         // 데미지 량 띄워주는 이펙트
     public GameObject eff;              // 일반 이펙트
     public GameObject backEff;          // 백어텍 이펙트
+    public GameObject removeEff;        // 사라지는 이펙트
+    public Queue<GameObject> effPool = new Queue<GameObject>();         // 일반 이펙트 풀
+    public Queue<GameObject> backEffPool = new Queue<GameObject>();     // 백어택 이펙트 풀
+    public Queue<GameObject> removeEffPool = new Queue<GameObject>();   // 사라지는 이펙트 풀
 
 
     [Space(20)][Header("[  보스 관리 (여기 있으면 안됨)  ]")]  // ===========================================================================================================
     public Boss boss = null;                    // 보스 정보 //!< 이거 여기 없이 사용할 방법이 있다면 좋음
     public EstherManager estherManager = null;  // 에스더 정보  //!< bossData와 같이 보스맵에서 나갈때마다 초기화 해주어야 함
+    public Dictionary<string, Monster> _monsters = new Dictionary<string, Monster>();
 
 
     public static GameMng I
@@ -335,10 +347,73 @@ public class GameMng : MonoBehaviour
      */
     public void createEffect(bool isBackAttack, Vector3 pos)
     {
-        Instantiate(
-            isBackAttack ? backEff : eff,
-            pos,
-            Quaternion.identity
-        );
-    } 
+        showEff(isBackAttack ? EFF_TYPE.EFF : EFF_TYPE.BACK_EFF, pos);
+    }
+
+    /*
+     * @brief 히트 이펙트, 백어택 이펙트, 사라지는 이펙트 풀 초기화 (씬 변경됬을때만 사용할것)
+     */
+    public void initAllEff()
+    {
+        effPool.Clear();
+        removeEffPool.Clear();
+        backEffPool.Clear();
+        for (int i = 0; i < 10; i++)
+        {
+            effPool.Enqueue(
+                Instantiate(eff, Vector3.zero, Quaternion.Euler(20, 0, 0))
+            );
+            removeEffPool.Enqueue(
+                Instantiate(removeEff, Vector3.zero, Quaternion.Euler(20, 0, 0))
+            );
+            if (userData.job.Equals((int)JOB.WARRIER))  // 백어택 이펙트는 전사만 가짐
+                backEffPool.Enqueue(
+                    Instantiate(backEff, Vector3.zero, Quaternion.Euler(20, 0, 0))
+                );
+        }
+    }
+    public void showEff(EFF_TYPE type, Vector3 pos)
+    {
+        GameObject obj;
+        switch (type)
+        {
+            case EFF_TYPE.EFF:
+                if (effPool.Count > 0)
+                    obj = effPool.Dequeue();
+                else
+                    obj = Instantiate(eff, Vector3.zero, Quaternion.Euler(20, 0, 0));
+                break;
+            case EFF_TYPE.BACK_EFF:
+                if (backEffPool.Count > 0)
+                    obj = backEffPool.Dequeue();
+                else
+                    obj = Instantiate(backEff, Vector3.zero, Quaternion.Euler(20, 0, 0));
+                break;
+            default:
+                if (removeEffPool.Count > 0)
+                    obj = removeEffPool.Dequeue();
+                else
+                    obj = Instantiate(removeEff, Vector3.zero, Quaternion.Euler(20, 0, 0));
+                break;
+        }
+        obj.transform.position = pos;
+        obj.gameObject.SetActive(true);
+    }
+
+    public void endEff(EFF_TYPE type, GameObject obj)
+    {
+        obj.SetActive(false);
+        switch (type)
+        {
+            case EFF_TYPE.EFF:
+                effPool.Enqueue(obj);
+                break;
+            case EFF_TYPE.BACK_EFF:
+                backEffPool.Enqueue(obj);
+                break;
+            default:
+                removeEffPool.Enqueue(obj);
+                break;
+        }
+    }
 }

@@ -162,7 +162,7 @@ public class Character : MonoBehaviour
             {
                 GameMng.I.stateMng.ActiveBuff(usingSkill.getBuffData);
             }
-            cooltime = usingSkill.getColldown;
+            cooltime = usingSkill.getCoolTime;
         }
 
         checkSkill[skillnum] = true;
@@ -219,10 +219,14 @@ public class Character : MonoBehaviour
     void inputMove()
     {
         if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING || _action == CHARACTER_ACTION.ATTACK_CANT_ANYTHING)
+        {
+            if (!(_moveDir.x == 0 && _moveDir.y == 0))
+                _rigidBody.velocity = Vector3.zero;
             return;
+        }
 
         Vector3 moveDist = _moveDir.normalized;
-        Debug.Log(moveDist);
+        // Debug.Log(moveDist);
         // transform.position += new Vector3(_moveDir.x, 0, _moveDir.y) * 7 * Time.deltaTime;
 
         // 기본 이동
@@ -285,9 +289,17 @@ public class Character : MonoBehaviour
 
         // 이 아래는 이동이 가능한 상태 (ex 기본상태, 이동가능한 스킬상태 ) ===========================================================
         if (_action == CHARACTER_ACTION.CANT_ANYTHING || _action == CHARACTER_ACTION.SLEEP_CANT_ANYTHING)
+        {
+            // _rigidBody.velocity = Vector3.zero;
+            // if (!(_moveDir.x == 0 && _moveDir.y == 0))
+            //     _rigidBody.velocity = Vector3.zero;
             return;
+        }
         if (_action == CHARACTER_ACTION.ATTACK_CANT_ANYTHING)
         {
+            // _rigidBody.velocity = Vector3.zero;
+            // if (!(_moveDir.x == 0 && _moveDir.y == 0))
+            //     _rigidBody.velocity = Vector3.zero;
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                 input_attack();
             return;

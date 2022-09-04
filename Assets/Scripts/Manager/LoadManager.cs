@@ -48,5 +48,7 @@ public class LoadManager : MonoBehaviour
         // 로딩  끝
 
         // mapNameTxt.text = mapName;
+
+        GameMng.I.initAllEff();
     }
 }
