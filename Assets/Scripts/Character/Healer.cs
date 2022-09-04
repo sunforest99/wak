@@ -110,6 +110,8 @@ public class Healer : Character
         else
             transform.rotation = Quaternion.Euler(new Vector3(-20f, -180f, 0f));
 
+        // tag = "Weapon"
+
         _action = CHARACTER_ACTION.CAN_MOVE;
         _anim.SetTrigger("Skill_Winterspring");
     }
@@ -123,7 +125,7 @@ public class Healer : Character
         GameObject attObj = Instantiate(GameMng.I.healerSkillPrefab[2], new Vector3(skillPos.x, -0.2f, skillPos.y), Quaternion.identity) as GameObject;
         if (isMe)
         {
-            attObj.tag = "Skill";
+            attObj.tag = "Skill_disposable_me";
             attObj.name = "3";
         }
 

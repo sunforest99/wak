@@ -10,15 +10,15 @@ GameObject:
   m_Component:
   - component: {fileID: 4301312996644471656}
   - component: {fileID: 4301312996644471657}
-  - component: {fileID: 4301312996644471658}
-  - component: {fileID: 4067043058862804237}
+  - component: {fileID: 5634716706083781750}
+  - component: {fileID: 5175470863296614153}
   m_Layer: 0
   m_Name: Attack_Hit_Effect_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4301312996644471656
 Transform:
   m_ObjectHideFlags: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -211404677
-  m_SortingLayer: 7
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 1968751327, guid: 2ed3238a71ec255468ceb5a2bb27034f, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
@@ -86,7 +86,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &4301312996644471658
+--- !u!114 &5634716706083781750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4301312996644471659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39590032a8246984c9914bd34982ae1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &5175470863296614153
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -96,7 +108,7 @@ Animator:
   m_GameObject: {fileID: 4301312996644471659}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 43060ac0112cc5d479a122ebd6d86f07, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3f28744adf0256943a561179ae79239f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -106,15 +118,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4067043058862804237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4301312996644471659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5354593f40f5ec34683a44c3ac0418e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

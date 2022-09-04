@@ -62,6 +62,7 @@ public class Waves : MonoBehaviour
         }
         else if(other.CompareTag("Map_Wall"))
         {
+            GameMng.I.showEff(EFF_TYPE.REMOVE_EFF, this.transform.localPosition);
             this.transform.localPosition = Vector3.zero;
             this.gameObject.SetActive(false);
         }

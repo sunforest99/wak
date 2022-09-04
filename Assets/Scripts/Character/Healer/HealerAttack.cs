@@ -8,6 +8,7 @@ public class HealerAttack : MonoBehaviour
     {
         if(other.CompareTag("Map_Wall"))
         {
+            GameMng.I.showEff(EFF_TYPE.REMOVE_EFF, this.transform.position);
             Destroy(this.gameObject);
         }
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Marble : DestroySelf
 {
+    public int uniqueNum;
     int hp = 2;
     public bool answer;
     void Start()
@@ -16,6 +17,7 @@ public class Marble : DestroySelf
         transform.Rotate(Vector3.forward * 50 * Time.deltaTime);
         if( hp <= 0)
         {
+            NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0} : {1}", (int)WAKGUI_ACTION.MARBLE_BROKEN, uniqueNum));
             destroySelf();
         }
     }

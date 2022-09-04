@@ -25,6 +25,10 @@ public class WakguiObjectPool : MonoBehaviour
     [SerializeField] private List<Cristal> cristalPool;
     [SerializeField] private List<GameObject> bulletPool;
 
+    // 소횐되는 오브젝트 y좌표 
+    [SerializeField] private float posY;
+    public List<int> rand = new List<int>();
+
     void Awake()
     {
         for (int i = 0; i < 16; i++)
@@ -41,14 +45,15 @@ public class WakguiObjectPool : MonoBehaviour
             temp.transform.parent = knifeParent;
             temp.SetActive(false);
         }
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 30; i++)
         {
             GameObject temp = Instantiate(cristal, this.transform);
             cristalPool.Add(temp.GetComponent<Cristal>());
+            cristalPool[i].uniqueNum = i;
             temp.transform.parent = cristalParent;
             temp.SetActive(false);
         }
-        for (int i = 0; i < 25; i++)
+        for (int i = 0; i < 150; i++)
         {
             GameObject temp = Instantiate(bullet, this.transform);
             bulletPool.Add(temp);
@@ -63,36 +68,43 @@ public class WakguiObjectPool : MonoBehaviour
         {
             if (!knifePool[i].activeSelf)
             {
-                knifePool[i].transform.position = new Vector3(posX, 0.14f, posZ);
+                knifePool[i].transform.position = new Vector3(posX, posY, posZ);
                 knifePool[i].SetActive(true);
                 break;
             }
         }
     }
 
-    public void WaveObject(float posX, float posZ, int rand)
+    public void enableCirstal(int uniqueNum)
+    {
+        cristalPool[uniqueNum].transform.position = Vector3.zero;
+        cristalPool[uniqueNum].gameObject.SetActive(false);
+    }
+
+    public void setWaveObject(float posX, float posZ)
     {
         for (int i = 0; i < wavesPool.Count; i++)
         {
             if (!wavesPool[i].gameObject.activeSelf)
             {
                 wavesPool[i].gameObject.SetActive(true);
-                wavesPool[i].transform.position = new Vector3(posX, 0.14f, posZ);
-                wavesPool[i].rand = rand;
+                wavesPool[i].transform.position = new Vector3(posX, posY, posZ);
+                wavesPool[i].rand = rand[i];
                 break;
             }
         }
     }
 
-    public void setCristalActive(float posX, float posZ)
+    public void setCristalActive(float posX, float posZ, int num)
     {
         for (int i = 0; i < cristalPool.Count; i++)
         {
             if (!cristalPool[i].gameObject.activeSelf)
             {
                 cristalPool[i].gameObject.SetActive(true);
-                cristalPool[i].transform.position = new Vector3(posX, 0.14f, posZ);
+                cristalPool[i].transform.position = new Vector3(posX, posY, posZ);
                 cristalPool[i].objectPool = this;
+                cristalPool[i].spawnNum = num;
                 break;
             }
         }
@@ -100,7 +112,7 @@ public class WakguiObjectPool : MonoBehaviour
 
     public void setBulletActive(Vector3 pos, Vector3 rotate)
     {
-        for (int i = 0; i < wavesPool.Count; i++)
+        for (int i = 0; i < bulletPool.Count; i++)
         {
             if (!bulletPool[i].gameObject.activeSelf)
             {

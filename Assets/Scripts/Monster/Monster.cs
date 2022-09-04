@@ -29,12 +29,28 @@ public class MonsterDebuff : MonoBehaviour
     }
 }
 
+
+/*
+
+1. 공격 대상 선택
+1-0. 시작은 무조건 랜덤
+1-1. 가장 가까운 캐릭터     (40%)
+1-2. 가장 먼 캐릭터         (20%)
+1-3. 가장 피가 적은 캐릭터  (40%)
+
+2. 패턴 선택
+2-1. 공격 대상과 거리 계산해서 시전 가능한 패턴 중 랜덤
+2-2. 사용 불가능할 정도로 거리가 멀다면 이동 혹은 이동 공격
+
+*/
+
 public class Monster : MonoBehaviour
 {
     [Header("[  몬스터 기본 데이터  ]")]  // =================================================================================================================================
     protected bool isMoving = false;
     protected Transform _target = null;
     [SerializeField] protected Animator _anim;
+    [SerializeField] protected Transform _body;         // 스프라이트들 부모 (첫번째 자식, 본체)
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Material[] materials = new Material[2];
     [SerializeField] private List<SpriteRenderer> render = new List<SpriteRenderer>();  // <- 보스와 달리 몬스터는 render 모두 넣어줘야함 (이유: 그림자, hp바 등 모두 자식으로 관리하기때문)
@@ -46,8 +62,10 @@ public class Monster : MonoBehaviour
     protected float _fullHp;
     protected float _moveSpeed;
     protected int _damage;
+    protected int _nearness;        // 대상이랑 최소 얼마까지 가까워야 할지 (보통 기본 공격 사정거리 범위보다 조금 적게)
 
-    [Space(20)][Header("[  몬스터 UI]")]  // ===================================================================================================================================
+
+    [Space(20)][Header("[  몬스터 UI ]")]  // ===================================================================================================================================
     [SerializeField] GameObject hpbar;
 
     // 기본적인 반복 계산용
@@ -56,35 +74,15 @@ public class Monster : MonoBehaviour
 
     protected virtual void Start()
     {
+        // TODO : 나중에 MONSTER_START 명령어 호출되면 그때
+        _target = GameMng.I.character.transform.parent;
+
         endAct();
-    }
-
-    /**
-     * @bref 맞을때 호출해주기
-     */
-    IEnumerator HitBlink()
-    {
-        for (int i = 0; i < render.Count; i++)
-        {
-            render[i].material = materials[1];
-        }
-
-        yield return new WaitForSeconds(.2f);
-
-        for (int i = 0; i < render.Count; i++)
-        {
-            render[i].material = materials[0];
-        }
     }
 
     void Update()
     {
-        if (isMoving)
-        {
-            // _target 한테 move
-        }
-
-
+        // 몬스터가 가지고 있는 버프들 카운트하기
         foreach (var bf in buffDatas)
         {
             if (bf.Value.isActive())
@@ -92,52 +90,173 @@ public class Monster : MonoBehaviour
         }
     }
 
-    public void doSomething(int code)
+    void FixedUpdate()
     {
+        if (isMoving)
+        {
+            if (_target.position.x < transform.position.x)
+                _body.transform.rotation = Quaternion.Euler(20, 0, 0);
+            else
+                _body.transform.rotation = Quaternion.Euler(-20, 180, 0);
+                
+            // _target 한테 move
+            if (Vector3.Distance(_target.position, transform.position) > _nearness)
+            {
+                _rigidbody.MovePosition(Vector3.MoveTowards(
+                    transform.position,
+                    new Vector3(_target.position.x, transform.position.y, _target.position.z),
+                    _moveSpeed * Time.deltaTime
+                ));
+            }
+        }
+    }
+
+    /**
+     * @brief 행동 지시
+     * @param code 행동 번호
+     * @param msg 행동 추가 데이터
+     */
+    public void doSomething(int code, string msg = "")
+    {
+        Debug.Log(code);
         isMoving = false;
 
+        string[] txt = msg.Split(':');
+        // txt[0] "MONSTER_PATTERN"
+        // txt[1] 몬스터 고유 이름
+        // txt[2~] 데이터
+
+        // 타겟 지정 할때는 가만히 있음
+        // 이후에는 계속 움직이면서 패턴함
         switch (code)
         {
+            case -1:
+                // 휴식
+                endAct();
+                break;
             case 0:
-                // 이동
+                // 타겟 지정
+                // setTarget(txt[2]);
+                endAct();
                 break;
             case 1:
                 // 기본공격
                 _anim.SetTrigger("Attack");
+                attack(msg);
                 break;
             case 2:
                 // 패턴1
                 _anim.SetTrigger("Skill_0");
-                StartCoroutine(skill_0());
+                skill_0(msg);
                 break;
             default:
                 break;
         }
     }
 
-
-    protected virtual IEnumerator skill_0() { yield return null; }
-    protected virtual IEnumerator skill_1() { yield return null; }
-    protected virtual IEnumerator think() { yield return null; }
+    /**
+     * @brief 행동 및 애니메이션 종료 (다음 행동 생각하기)
+     */
     void endAct()
     {
+        _damage = 0;
         //if (NetworkMng.I.roomOwner)
+                isMoving = true;
         StartCoroutine(think());    // TODO : 방장만 생각하게
     }
 
+    /**
+     * @brief 타겟과 거리 계산
+     * @param uniqueNumber 타겟 고유 번호
+     */
     public void setTarget(string uniqueNumber)
     {
-        _target = NetworkMng.I.v_users[uniqueNumber].transform;
+        _target = NetworkMng.I.v_users[uniqueNumber].transform.parent;
     }
 
-    void searchTarget()
+    /**
+     * @brief 타겟과 거리 계산
+     * @param target 타겟
+     * @return 거리 정도
+     */
+    protected float getDistanceFromTarget(Vector3 target)
     {
-        //NetworkMng.I.v_users
+        return Vector3.Distance(target, new Vector3(transform.position.x, target.y, transform.position.z));
     }
 
+    /**
+     * @brief 대상 검색
+     */
+    public void searchTarget()
+    {
+        int rand = Random.Range(0, 5);
+        
+        string chooseTarget = NetworkMng.I.uniqueNumber;
+        float compareValue = 0;
+
+        switch (rand)
+        {
+            // 가장 가까운 캐릭터
+            case 0:
+            case 1:
+                compareValue = float.PositiveInfinity;
+                foreach (var user in NetworkMng.I.v_users)
+                {
+                    if (getDistanceFromTarget(user.Value.transform.parent.position) < compareValue)
+                    {
+                        compareValue = getDistanceFromTarget(user.Value.transform.parent.position);
+                        chooseTarget = user.Key;
+                    }
+                }
+                break;
+            // 가장 먼 캐릭터
+            case 2:
+                compareValue = float.NegativeInfinity;
+                foreach (var user in NetworkMng.I.v_users)
+                {
+                    if (getDistanceFromTarget(user.Value.transform.parent.position) > compareValue)
+                    {
+                        compareValue = getDistanceFromTarget(user.Value.transform.parent.position);
+                        chooseTarget = user.Key;
+                    }
+                }
+                break;
+            // 가장 피 적은 캐릭터
+            case 3:
+            case 4:
+                compareValue = GameMng.I.stateMng.user_HP_Numerical.Hp;
+                for (int i = 0; i < 4; i++)
+                {
+                    // 파티원들 중
+                    if (GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.activeSelf)
+                    {
+                        // 체력이 가장 적은
+                        if (GameMng.I.stateMng.Party_HP_Numerical[i].Hp < compareValue)
+                        {
+                            compareValue = GameMng.I.stateMng.Party_HP_Numerical[i].Hp;
+                            chooseTarget = GameMng.I.stateMng.PartyName[i].text;        // 닉네임 가져옴
+                        }
+                    }
+                }
+                // 찾은 유저 닉네임을 고유 번호로 변환하기 위해 검색
+                foreach (var user in NetworkMng.I.v_party)
+                {
+                    if (user.Value.nickName.Equals(chooseTarget))
+                    {
+                        chooseTarget = user.Key;
+                        break;
+                    }
+                }
+                break;
+        }
+        NetworkMng.I.SendMsg(string.Format("MONSTER_PATTERN:{0}:{1}:{2}", name, 0, chooseTarget));
+    }
+
+    /**
+     * @brief 크리티컬 확인
+     */
     bool CheckCritical()
     {
-        Debug.Log(buffDatas);
         float criticalrand = Random.Range(0.0f, 100.0f);
         float criticalPer = Character._stat.criticalPer;
 
@@ -151,6 +270,10 @@ public class Monster : MonoBehaviour
         return (criticalrand <= criticalPer);
     }
 
+    /**
+     * @brief 버프 활성화
+     * @param buffData 버프
+     */
     void BuffActive(BuffData buffData)
     {
         if (buffDatas.ContainsKey(buffData.BuffKind))
@@ -167,17 +290,23 @@ public class Monster : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // Weapon : 캐릭터에게 붙어있는 공격 콜리더
+        // Weapon : 캐릭터에게 붙어있는 공격 콜리더 (전사 기본공격 + 전사 스킬들) (힐러 겨울봄)
         // Weapon_disposable : 다른 사람의 일회용(맞으면 사라져야하는) 공격&스킬
-        // Weapon_disposable_me : 나의 일회용 공격(일반 공격, 스킬 X)
+        // Weapon_disposable_me : 나의 일회용 공격(일반 공격, 스킬 X) (법사, 힐러 기본공격)
         // Skill : 나의 스킬 공격 (분리된 것들)
         // Skill_disposable_me : 나의 일회용 스킬 공격 (분리된 것들)
         if (other.gameObject.CompareTag("Weapon") || other.gameObject.CompareTag("Weapon_disposable_me") || other.gameObject.CompareTag("Skill") || other.gameObject.CompareTag("Skill_disposable_me"))
         {
+            // 몬스터가 맞은게 공격인지 소환식 혹은 일반 스킬들인지 확인
+            SkillData skillData = other.gameObject.CompareTag("Weapon") ?
+                    Character.usingSkill : (other.gameObject.CompareTag("Skill") || other.gameObject.CompareTag("Skill_disposable_me")) ?
+                    GameMng.I.character.skilldatas[int.Parse(other.gameObject.name)] :
+                    null /* "Weapon_disposable_me" */;
+            
             // 버프 존재하는 스킬에 맞은건지 확인 ======================================================================================================================
-            if (Character.usingSkill && Character.usingSkill.getBuffData && Character.usingSkill.getBuffData.isBossDebuf)
+            if (skillData && skillData.getBuffData && skillData.getBuffData.isBossDebuf)
             {
-                BuffActive(Character.usingSkill.getBuffData);
+                BuffActive(skillData.getBuffData);
             }
 
             // 크리티컬 계산 ==========================================================================================================================================
@@ -185,9 +314,15 @@ public class Monster : MonoBehaviour
 
             // 타격 효과 ===============================================================================================================================================
             StartCoroutine(HitBlink());
-            MCamera.I.shake(5f, .1f);
-
-            if (Character.usingSkill && Character.usingSkill.isBackAttackSkill)
+            if (skillData)
+                MCamera.I.shake(skillData.getIntensity, skillData.getShakeTime);
+            else if (GameMng.I.userData.job.Equals((int)JOB.WARRIER))
+                MCamera.I.shake(5, .1f);
+            else    // 법사 or 힐러 평타
+                MCamera.I.shake(4, .1f);
+            
+            // 백어택 상관 있는 백어택 스킬들
+            if (skillData && skillData.isBackAttackSkill)
             {
                 // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 ===================================================================================================
                 if (this.transform.localRotation.y == 180 && this.transform.position.x + 1 > other.transform.parent.transform.position.x)
@@ -220,7 +355,7 @@ public class Monster : MonoBehaviour
                     ));
                 }
             }
-            // 일반 공격 ================================================================================================================================================
+            // 백어택 상관 없는 일반 공격 ======================================================================================================================================
             else
             {
                 isBackAttack = false;
@@ -232,7 +367,7 @@ public class Monster : MonoBehaviour
             }
 
             // 평타면서 전사라면 공격 방향으로 밀려나는 효과 주기 ==========================================================================================================
-            if (!Character.usingSkill && GameMng.I.userData.job.Equals((int)JOB.WARRIER))
+            if (!skillData && GameMng.I.userData.job.Equals((int)JOB.WARRIER))
             {
                 NetworkMng.I.SendMsg(string.Format("FORCE:{0}:{1}", this.transform.position.x < other.transform.parent.transform.position.x ? -2 : 2, -1.2f));
                 GameMng.I.character.addForceImpulse(new Vector3(this.transform.position.x < other.transform.parent.transform.position.x ? -2 : 2, 0, -1.2f));
@@ -240,10 +375,7 @@ public class Monster : MonoBehaviour
 
             // 데미지 표시 ===================================================================================================================================================
             damageTemp = GameMng.I.getCharacterDamage(
-                other.gameObject.CompareTag("Weapon") ?
-                    Character.usingSkill : (other.gameObject.CompareTag("Skill") || other.gameObject.CompareTag("Skill_disposable_me")) ?
-                    GameMng.I.character.skilldatas[int.Parse(other.gameObject.name)] :
-                    null,       // "Weapon_disposable_me"
+                skillData,
                 isCritical,
                 isBackAttack
             );
@@ -253,17 +385,49 @@ public class Monster : MonoBehaviour
                 damageTemp,
                 isCritical
             );
-            NetworkMng.I.SendMsg(string.Format("DAMAGE:{0}", damageTemp));
+            NetworkMng.I.SendMsg(string.Format("DAMAGE:{0}:{1}", this.transform.name, damageTemp));
             // boss._nestingHp -= damageTemp;
 
             getDamage(damageTemp);
         }
     }
 
+    /**
+     * @brief 맞을때 호출해주기
+     */
+    IEnumerator HitBlink()
+    {
+        for (int i = 0; i < render.Count; i++)
+        {
+            render[i].material = materials[1];
+        }
+
+        yield return new WaitForSeconds(.2f);
+
+        for (int i = 0; i < render.Count; i++)
+        {
+            render[i].material = materials[0];
+        }
+    }
+
+    /**
+     * @brief 몬스터가 데미지 입었을 때
+     */
     public void getDamage(int dmg)
     {
         this._hp -= dmg;
         this.hpbar.transform.localScale = new Vector3(this._hp / this._fullHp, 1, 1);
-        Debug.Log(_hp + " : " + this._fullHp + " : " + this._hp / this._fullHp);
+
+        if (this._hp <= 0)
+        {
+            Destroy(gameObject);
+            // TODO : DungeonMng 에서 _monsters 에도 제거
+        }
     }
+
+    protected virtual int decideAct() { return 0; }
+    protected virtual void attack(string msg) {}
+    protected virtual void skill_0(string msg) {}
+    protected virtual void skill_1(string msg) {}
+    protected virtual IEnumerator think() { yield return null; }   
 }

@@ -21,6 +21,7 @@ public class Boss : MonoBehaviour
     [SerializeField] protected Animator animator = null;
     [SerializeField] Transform bossO;      // 본체, (첫번째 자식)
     [SerializeField] public Rigidbody rigid;
+    [SerializeField] protected float targetDistance;
 
     // 공격 ======================================================================================================
     protected const int _annihilation = 99999;    // <! 전멸기
@@ -186,12 +187,13 @@ public class Boss : MonoBehaviour
             // this.transform.position -= new Vector3(1.8f, 0, 0);
         }
 
-        if (Vector3.Distance(_target.localPosition, this.transform.localPosition) > 4f)
+        targetDistance = Vector3.Distance(_target.localPosition, this.transform.localPosition);
+        if (targetDistance > 4f)
         {
-        rigid.MovePosition(Vector3.MoveTowards(
-            this.transform.localPosition,
-            _target.localPosition,
-            bossdata.getMoveSpeed * Time.deltaTime));
+            rigid.MovePosition(Vector3.MoveTowards(
+                this.transform.localPosition,
+                _target.localPosition,
+                bossdata.getMoveSpeed * Time.deltaTime));
         }
     }
 
@@ -204,7 +206,7 @@ public class Boss : MonoBehaviour
             _baseUI.hpbar[0].fillAmount = Mathf.Lerp(_baseUI.hpbar[0].fillAmount, 0, 5 * Time.deltaTime);
         }
     }
-    
+
     public virtual void Raid_Start() { }
     public virtual void Action(string msg) { }
 }

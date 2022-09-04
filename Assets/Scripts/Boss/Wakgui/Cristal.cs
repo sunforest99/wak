@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class Cristal : MonoBehaviour
 {
-    [SerializeField] GameObject bullet;
     [SerializeField] GameObject spawn;
 
     public WakguiObjectPool objectPool;
 
+    public int uniqueNum;       // 고유 번호 Instantiate 때 초기화해줌
+    public int spawnNum;        // 소환됬을때 번호
+
     int hp;
-    int count;
+    [SerializeField]int count;
 
     void Start()
     {
+        spawnNum = 0;
         count = 0;
         hp = 5;
-        spawn.transform.localRotation = Quaternion.Euler(70, 0, Random.Range(-360, 361));
+        spawn.transform.localRotation = Quaternion.Euler(70, 0, objectPool.rand[spawnNum]);
 
         StartCoroutine(CreateBullet());
     }
@@ -26,6 +29,7 @@ public class Cristal : MonoBehaviour
     {
         if (hp <= 0)
         {
+            NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0}:{1}", (int)WAKGUI_ACTION.CRISTAL_BROKEN, uniqueNum.ToString()));
             this.transform.localPosition = Vector3.zero;
             this.gameObject.SetActive(false);
         }
@@ -34,7 +38,7 @@ public class Cristal : MonoBehaviour
 
     IEnumerator CreateBullet()
     {
-        if (count < 1)
+        if (count < 5)
         {
             objectPool.setBulletActive(this.transform.position, spawn.transform.rotation.eulerAngles);
             count++;
