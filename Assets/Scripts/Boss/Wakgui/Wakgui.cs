@@ -10,13 +10,13 @@ public enum WAKGUI_ACTION
     BASE_SLASH,
     BASE_ROAR,
     BASE_RUSH,
-    PATTERN_POO,
-    PATTERN_KNIFE,
     PATTERN_JUMP,
     PATTERN_CRISTAL,
     PATTERN_WAVE,
-    PATTERN_COUNTER,
     PATTERN_CIRCLE,
+    PATTERN_POO,
+    PATTERN_KNIFE,
+    PATTERN_COUNTER,
     PATTERN_OUTCAST,
     TELEPORT,
     MARBLE_BROKEN,
@@ -376,8 +376,8 @@ public class Wakgui : Boss
      */
     void Base_Stap()
     {
+        bossdata.bossAction = (int)WAKGUI_ACTION.BASE_STAP;
         animator.SetTrigger("Stap");
-        bossdata.bossAction = (int)action;
     }
 
     /**
@@ -385,8 +385,8 @@ public class Wakgui : Boss
      */
     void Base_Slash()
     {
+        bossdata.bossAction = (int)WAKGUI_ACTION.BASE_SLASH;
         animator.SetTrigger("Slash");
-        bossdata.bossAction = (int)action;
     }
 
     /**
@@ -394,8 +394,8 @@ public class Wakgui : Boss
      */
     void Base_Roar()
     {
+        bossdata.bossAction = (int)WAKGUI_ACTION.BASE_ROAR;
         animator.SetTrigger("Roar");
-        bossdata.bossAction = (int)action;
     }
 
     /**
@@ -403,8 +403,8 @@ public class Wakgui : Boss
      */
     void Base_Rush()
     {
+        bossdata.bossAction = (int)WAKGUI_ACTION.BASE_RUSH;
         animator.SetTrigger("Rush");
-        bossdata.bossAction = (int)action;
     }
 
     /**
@@ -439,8 +439,8 @@ public class Wakgui : Boss
      */
     IEnumerator Pattern_Jump()
     {
+        bossdata.bossAction = (int)WAKGUI_ACTION.PATTERN_JUMP;
         animator.SetTrigger("Jump");
-        bossdata.bossAction = (int)action;
 
         yield return new WaitForSeconds(2.0f);
     }

@@ -3,8 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Boss", menuName = "ScriptableObject/BossData")]
-public class BossData : BaseMonsterData
+public class BossData : ScriptableObject
 {
+    [SerializeField] private int _startHp;          // <! 보스 총 체력
+    public int getStartHp { get { return _startHp; } }
+
+    [SerializeField] private string _name;      // <! 보스이름
+    public string getName { get { return _name; } }
+
+    [SerializeField] private float _moveSpeed;      // <! 보스 이동
+    public float getMoveSpeed { get { return _moveSpeed; } set { _moveSpeed = value; } }
+
+    [SerializeField] private int[] _damage;
+
+    [SerializeField] private Dictionary<int, int> _bossDamage;
+
     [SerializeField] private float _radetime;       // <! 레이드 시간
     public float radetime { get { return _radetime; } }
 
@@ -14,14 +27,6 @@ public class BossData : BaseMonsterData
     [SerializeField] private int _maxNesting;       // <! 체력바 중첩
     public int maxNesting { get { return _maxNesting; } }
 
-    [SerializeField] private int _maxKnife;       // <! 칼 최대 개수
-    public int maxKnife { get { return _maxKnife; } }
-    [SerializeField] private int _maxCristal;       // <! 수정 최대 개수
-    public int maxCristal { get { return _maxCristal; } }
-
-    [SerializeField] private int _maxWave;       // <! 파도 최대 개수
-    public int maxWave { get { return _maxWave; } }
-
     [SerializeField] private int _bossAction;
     public int bossAction { set { _bossAction = value; } get { return _bossAction; } }
 
@@ -30,8 +35,17 @@ public class BossData : BaseMonsterData
     [SerializeField] private BuffData[] _buffdata;
     public BuffData[] getBuffs { get { return _buffdata; } }
 
-    public override int getDamage() => base._damage[_bossAction];
-    public int getDamage(int action) => base._damage[action];
+    public int getDamage() => _damage[_bossAction];
+    public int getDamage(int action) => _damage[action];
+
+    [Header("이건 여기 있으면 안됨")]
+    [SerializeField] private int _maxKnife;       // <! 칼 최대 개수
+    public int maxKnife { get { return _maxKnife; } }
+    [SerializeField] private int _maxCristal;       // <! 수정 최대 개수
+    public int maxCristal { get { return _maxCristal; } }
+
+    [SerializeField] private int _maxWave;       // <! 파도 최대 개수
+    public int maxWave { get { return _maxWave; } }
 
     void Awake()
     {
