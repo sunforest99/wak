@@ -5571,10 +5571,10 @@ RectTransform:
   m_Father: {fileID: 1886982915}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 95, y: -28.630001}
-  m_SizeDelta: {x: 150, y: 17.26}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &330933926
 MonoBehaviour:
@@ -6002,7 +6002,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -140}
-  m_SizeDelta: {x: 190, y: 74.91}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &338476777
 MonoBehaviour:
@@ -7154,7 +7154,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &412382770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9301,7 +9301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &534651857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15797,10 +15797,10 @@ RectTransform:
   m_Father: {fileID: 1886982915}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 95, y: -48.585003}
-  m_SizeDelta: {x: 150, y: 12.65}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &936429215
 MonoBehaviour:
@@ -21290,10 +21290,10 @@ RectTransform:
   m_Father: {fileID: 338476776}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 190, y: 0}
-  m_SizeDelta: {x: 190, y: 74.91}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 190, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &1258208668
 CanvasRenderer:
@@ -22338,7 +22338,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -22936,6 +22936,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Warrior
       objectReference: {fileID: 0}
+    - target: {fileID: 1964371672506797104, guid: bd1b3300ab65ef14fa6940ab59db6547, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1964371672506797116, guid: bd1b3300ab65ef14fa6940ab59db6547, type: 3}
       propertyPath: m_RootOrder
       value: 20
@@ -23053,8 +23057,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: becd660cc16eb3740931caf94cad6a92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapRightTop: {x: 0, y: 0, z: 0}
-  mapLeftBotton: {x: 0, y: 0, z: 0}
+  mapRightTop: {x: 13, y: 0, z: 9}
+  mapLeftBotton: {x: -13, y: 0, z: -9}
 --- !u!212 &1350852236
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -26181,7 +26185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1520531006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29752,7 +29756,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1752761699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30829,10 +30833,10 @@ RectTransform:
   m_Father: {fileID: 1258208667}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 190, y: 0}
-  m_SizeDelta: {x: 190, y: 74.91}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1886982916
 MonoBehaviour:
@@ -34042,6 +34046,10 @@ PrefabInstance:
     - target: {fileID: 8580214147031351568, guid: d2e01497fdd25f24e93ef66563df1800, type: 3}
       propertyPath: m_Name
       value: Warning_Circle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8580214147031351568, guid: d2e01497fdd25f24e93ef66563df1800, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2e01497fdd25f24e93ef66563df1800, type: 3}
