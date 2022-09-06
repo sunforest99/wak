@@ -20,15 +20,20 @@ public class Waves : MonoBehaviour
     {
         damage = GameMng.I.boss.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_WAVE);
 
+        // _rigidbody.velocity = transform.TransformDirection(Vector3.left * 3f);
+    }
+
+   private void OnEnable() {
         switch (rand)
         {
+            case (int)POS.UP:
+                this.transform.localRotation = Quaternion.Euler(90.0f, 0, -90.0f);
+                break;
+                
             case (int)POS.DOWN:
                 this.transform.localRotation = Quaternion.Euler(90.0f, 0, 90.0f);
                 break;
 
-            case (int)POS.UP:
-                this.transform.localRotation = Quaternion.Euler(90.0f, 0, -90.0f);
-                break;
 
             case (int)POS.RIGHT:
                 this.transform.localRotation = Quaternion.Euler(90.0f, 0, 180.0f);
@@ -38,9 +43,9 @@ public class Waves : MonoBehaviour
                 this.transform.localRotation = Quaternion.Euler(90.0f, 0 ,0);
                 break;
         }
+
         _rigidbody.velocity = transform.TransformDirection(Vector3.left * 3f);
     }
-
     // void Update()
     // {
     //     if(this.transform.position.x < GameMng.I.mapLeftBotton.x ||
@@ -64,6 +69,7 @@ public class Waves : MonoBehaviour
         {
             GameMng.I.showEff(EFF_TYPE.REMOVE_EFF, this.transform.localPosition);
             this.transform.localPosition = Vector3.zero;
+            this.transform.localRotation =Quaternion.identity;
             this.gameObject.SetActive(false);
         }
     }

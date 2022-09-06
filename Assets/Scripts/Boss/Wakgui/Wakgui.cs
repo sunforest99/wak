@@ -59,7 +59,7 @@ public class Wakgui : Boss
     // 전멸기-구슬먹기 ==
 
     [Header("전멸기 구슬먹기")]
-    public List<Marble> marblelist;
+    public List<Marble> marblelist = new List<Marble>();
     bool checkCircle = false;           // !< 구슬부시기 패턴 채크
     bool checkOutcast = false;          // !< 왕따 패턴 체크
     bool checkPattern = false;
@@ -211,7 +211,7 @@ public class Wakgui : Boss
             else
             {
                 // pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
-                pattern_rand = (int)WAKGUI_ACTION.PATTERN_CRISTAL;
+                pattern_rand = (int)WAKGUI_ACTION.PATTERN_WAVE;
                 switch (pattern_rand)
                 {
                     case (int)WAKGUI_ACTION.PATTERN_POO:      // <! 똥 생성
@@ -275,13 +275,13 @@ public class Wakgui : Boss
         int rand = Random.Range(0, 4);
         switch (rand)
         {
-            case (int)POS.DOWN:
-                messageElement.Append(string.Format("{0:0.00}", Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x)) + ":" +
-                string.Format("{0:0.00}", GameMng.I.mapRightTop.z) + ":" + rand.ToString());
-                break;
             case (int)POS.UP:
                 messageElement.Append(string.Format("{0:0.00}", Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x)) + ":" +
                string.Format("{0:0.00}", GameMng.I.mapLeftBotton.z) + ":" + rand.ToString());
+                break;
+            case (int)POS.DOWN:
+                messageElement.Append(string.Format("{0:0.00}", Random.Range(GameMng.I.mapLeftBotton.x, GameMng.I.mapRightTop.x)) + ":" +
+                string.Format("{0:0.00}", GameMng.I.mapRightTop.z) + ":" + rand.ToString());
                 break;
             case (int)POS.RIGHT:
                 messageElement.Append(string.Format("{0:0.00}", GameMng.I.mapLeftBotton.x) + ":" +
@@ -360,7 +360,7 @@ public class Wakgui : Boss
                 visit[3] = int.Parse(txt[6]);
                 break;
             case (int)WAKGUI_ACTION.MARBLE_BROKEN:
-                Destroy(marblelist[int.Parse(txt[2])].gameObject);
+                marblelist[int.Parse(txt[2])].gameObject.SetActive(false);
                 break;
             case (int)WAKGUI_ACTION.CRISTAL_BROKEN:
                 objectPool.enableCirstal(int.Parse(txt[2]));
@@ -370,7 +370,6 @@ public class Wakgui : Boss
                 break;
         }
     }
-
     /**
      * @brief 기본공격 찌르기
      */

@@ -55,7 +55,7 @@ public class ChangeAction : MonoBehaviour
     {
         for (int i = 0; i < circlevec.Length; i++)
         {
-            GameObject temp = Instantiate(wakgui.getCircle[i], circlevec[wakgui.visit[i]], Quaternion.identity);
+            GameObject temp = Instantiate(wakgui.getCircle[i], circlevec[wakgui.visit[i]], Quaternion.Euler(20.0f, 0f, 0f));
             wakgui.marblelist.Add(temp.GetComponent<Marble>());
             wakgui.marblelist[i].uniqueNum = i;
         }

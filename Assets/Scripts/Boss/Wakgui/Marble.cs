@@ -18,7 +18,7 @@ public class Marble : DestroySelf
         if( hp <= 0)
         {
             NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0} : {1}", (int)WAKGUI_ACTION.MARBLE_BROKEN, uniqueNum));
-            destroySelf();
+            // destroySelf();
         }
     }
 
@@ -30,7 +30,9 @@ public class Marble : DestroySelf
             Debug.Log("전멸");
             GameMng.I.stateMng.user_HP_Numerical.Hp -=  GameMng.I.stateMng.user_HP_Numerical.fullHp;
         }
-        destroySelf();
+        
+        NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0} : {1}", (int)WAKGUI_ACTION.MARBLE_BROKEN, uniqueNum));
+        // destroySelf();
     }
 
     void OnTriggerEnter(Collider other)

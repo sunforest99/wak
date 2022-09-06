@@ -7708,6 +7708,7 @@ MonoBehaviour:
   damageEff: {fileID: 4668772827392785263, guid: 76c52887f4087024b90cee9df57ded60, type: 3}
   eff: {fileID: 2750168284063509466, guid: 8b12ac4bc9ac3724dbd978c80b3f0042, type: 3}
   backEff: {fileID: 4301312996644471659, guid: 8d7b60abba478e64f817aff5fe63c7b3, type: 3}
+  removeEff: {fileID: 3279469051611480287, guid: 702c7f42b22a15f478c62997230d1df5, type: 3}
   boss: {fileID: 0}
   estherManager: {fileID: 0}
 --- !u!4 &719042605
@@ -11208,7 +11209,7 @@ MonoBehaviour:
   address: 127.0.0.1
   myRoom: 0
   uniqueNumber: -1
-  roomOwner: 1
+  roomOwner: 0
 --- !u!4 &1003055261
 Transform:
   m_ObjectHideFlags: 0
