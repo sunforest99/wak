@@ -20,7 +20,7 @@ public class WakguiObjectPool : MonoBehaviour
     [SerializeField] Transform bulletParent;
 
     [Header("오브젝트 리스트")]
-    [SerializeField] private List<Waves> wavesPool;
+    [SerializeField] public List<Waves> wavesPool;
     [SerializeField] private List<GameObject> knifePool;
     [SerializeField] private List<Cristal> cristalPool;
     [SerializeField] private List<GameObject> bulletPool;
@@ -53,7 +53,7 @@ public class WakguiObjectPool : MonoBehaviour
             temp.transform.parent = cristalParent;
             temp.SetActive(false);
         }
-        for (int i = 0; i < 150; i++)
+        for (int i = 0; i < 1000; i++)
         {
             GameObject temp = Instantiate(bullet, this.transform);
             bulletPool.Add(temp);
@@ -87,9 +87,9 @@ public class WakguiObjectPool : MonoBehaviour
         {
             if (!wavesPool[i].gameObject.activeSelf)
             {
-                wavesPool[i].gameObject.SetActive(true);
                 wavesPool[i].transform.position = new Vector3(posX, posY, posZ);
                 wavesPool[i].rand = rand[i];
+                wavesPool[i].gameObject.SetActive(true);
                 break;
             }
         }
@@ -101,24 +101,24 @@ public class WakguiObjectPool : MonoBehaviour
         {
             if (!cristalPool[i].gameObject.activeSelf)
             {
-                cristalPool[i].gameObject.SetActive(true);
                 cristalPool[i].transform.position = new Vector3(posX, posY, posZ);
                 cristalPool[i].objectPool = this;
                 cristalPool[i].spawnNum = num;
+                cristalPool[i].gameObject.SetActive(true);
                 break;
             }
         }
     }
 
-    public void setBulletActive(Vector3 pos, Vector3 rotate)
+    public void setBulletActive(Vector3 pos, Quaternion rotate)
     {
         for (int i = 0; i < bulletPool.Count; i++)
         {
             if (!bulletPool[i].gameObject.activeSelf)
             {
-                bulletPool[i].gameObject.SetActive(true);
                 bulletPool[i].transform.position = pos;
-                bulletPool[i].transform.localRotation = Quaternion.Euler(rotate);
+                bulletPool[i].transform.localRotation = rotate;
+                bulletPool[i].gameObject.SetActive(true);
                 break;
             }
         }

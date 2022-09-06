@@ -19,7 +19,7 @@ public class Cristal : MonoBehaviour
         spawnNum = 0;
         count = 0;
         hp = 5;
-        spawn.transform.localRotation = Quaternion.Euler(70, 0, objectPool.rand[spawnNum]);
+        spawn.transform.localRotation = Quaternion.Euler(90, 0, objectPool.rand[spawnNum]);
 
         StartCoroutine(CreateBullet());
     }
@@ -33,14 +33,14 @@ public class Cristal : MonoBehaviour
             this.transform.localPosition = Vector3.zero;
             this.gameObject.SetActive(false);
         }
-        spawn.transform.Rotate(new Vector3(0.0f, 0.0f, 50.0f) * Time.deltaTime);
+        spawn.transform.Rotate(new Vector3(0.0f, 0.0f, 20.0f) * Time.deltaTime);
     }
 
     IEnumerator CreateBullet()
     {
-        if (count < 5)
+        if (count < 100)
         {
-            objectPool.setBulletActive(this.transform.position, spawn.transform.rotation.eulerAngles);
+            objectPool.setBulletActive(this.transform.position, spawn.transform.rotation);
             count++;
             yield return new WaitForSeconds(0.2f);
         }
