@@ -52,7 +52,6 @@ public class Monster : MonoBehaviour
     [SerializeField] protected Animator _anim;
     [SerializeField] protected Transform _body;         // 스프라이트들 부모 (첫번째 자식, 본체)
     [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private Material[] materials = new Material[2];
     [SerializeField] private List<SpriteRenderer> render = new List<SpriteRenderer>();  // <- 보스와 달리 몬스터는 render 모두 넣어줘야함 (이유: 그림자, hp바 등 모두 자식으로 관리하기때문)
     Dictionary<BUFF, MonsterDebuff> buffDatas = new Dictionary<BUFF, MonsterDebuff>();
 
@@ -92,23 +91,23 @@ public class Monster : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isMoving)
-        {
-            if (_target.position.x < transform.position.x)
-                _body.transform.rotation = Quaternion.Euler(20, 0, 0);
-            else
-                _body.transform.rotation = Quaternion.Euler(-20, 180, 0);
+        // if (isMoving)
+        // {
+        //     if (_target.position.x < transform.position.x)
+        //         _body.transform.rotation = Quaternion.Euler(20, 0, 0);
+        //     else
+        //         _body.transform.rotation = Quaternion.Euler(-20, 180, 0);
                 
-            // _target 한테 move
-            if (Vector3.Distance(_target.position, transform.position) > _nearness)
-            {
-                _rigidbody.MovePosition(Vector3.MoveTowards(
-                    transform.position,
-                    new Vector3(_target.position.x, transform.position.y, _target.position.z),
-                    _moveSpeed * Time.deltaTime
-                ));
-            }
-        }
+        //     // _target 한테 move
+        //     if (Vector3.Distance(_target.position, transform.position) > _nearness)
+        //     {
+        //         _rigidbody.MovePosition(Vector3.MoveTowards(
+        //             transform.position,
+        //             new Vector3(_target.position.x, transform.position.y, _target.position.z),
+        //             _moveSpeed * Time.deltaTime
+        //         ));
+        //     }
+        // }
     }
 
     /**
@@ -141,12 +140,12 @@ public class Monster : MonoBehaviour
                 break;
             case 1:
                 // 기본공격
-                _anim.SetTrigger("Attack");
+                // _anim.SetTrigger("Attack");
                 attack(msg);
                 break;
             case 2:
                 // 패턴1
-                _anim.SetTrigger("Skill_0");
+                // _anim.SetTrigger("Skill_0");
                 skill_0(msg);
                 break;
             default:
@@ -399,14 +398,14 @@ public class Monster : MonoBehaviour
     {
         for (int i = 0; i < render.Count; i++)
         {
-            render[i].material = materials[1];
+            render[i].material = GameMng.I.materials[1];
         }
 
         yield return new WaitForSeconds(.2f);
 
         for (int i = 0; i < render.Count; i++)
         {
-            render[i].material = materials[0];
+            render[i].material = GameMng.I.materials[0];
         }
     }
 

@@ -306,16 +306,16 @@ public class NetworkMng : MonoBehaviour
             v_users[txt[1]].stopMove();
             v_users[txt[1]]._rigidBody.position = new Vector3(float.Parse(txt[2]), v_users[txt[1]]._rigidBody.position.y, float.Parse(txt[3]));
         }
-        else if (txt[0].Equals("MONSTER_PATTERN"))
-        {
-            // txt[1] : 몬스터 고유 이름
-            // txt[2] : 몬스터 패턴
-            // txt[3~] : 데이터
-            GameMng.I._monsters[txt[1]].doSomething(
-                int.Parse(txt[2]),
-                msg // msg.Substring(17 + txt[1].Length + txt[2].Length)
-            );
-        }
+        // else if (txt[0].Equals("MONSTER_PATTERN"))
+        // {
+        //     // txt[1] : 몬스터 고유 이름
+        //     // txt[2] : 몬스터 패턴
+        //     // txt[3~] : 데이터
+        //     GameMng.I._monsters[txt[1]].doSomething(
+        //         int.Parse(txt[2]),
+        //         msg // msg.Substring(17 + txt[1].Length + txt[2].Length)
+        //     );
+        // }
         else if (txt[0].Equals("IN_USER"))  // 기존 맵에 있는 유저들 데이터
         {
             // TODO : 이 메세지를 받으려면 서버에 "CHANGE_ROOM"을 호출해야 하는데 씬을 이동한 후(LoadManager)에 받을 것. 이 메세지를 받았다면 로딩창을 내려도 됨

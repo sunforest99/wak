@@ -79,12 +79,13 @@ public class GameMng : MonoBehaviour
     public Queue<GameObject> effPool = new Queue<GameObject>();         // 일반 이펙트 풀
     public Queue<GameObject> backEffPool = new Queue<GameObject>();     // 백어택 이펙트 풀
     public Queue<GameObject> removeEffPool = new Queue<GameObject>();   // 사라지는 이펙트 풀
+    public Material[] materials = new Material[2];
 
 
     [Space(20)][Header("[  보스 관리 (여기 있으면 안됨)  ]")]  // ===========================================================================================================
     public Boss boss = null;                    // 보스 정보 //!< 이거 여기 없이 사용할 방법이 있다면 좋음
     public EstherManager estherManager = null;  // 에스더 정보  //!< bossData와 같이 보스맵에서 나갈때마다 초기화 해주어야 함
-    public Dictionary<string, Monster> _monsters = new Dictionary<string, Monster>();
+    // public Dictionary<string, Monster> _monsters = new Dictionary<string, Monster>();
 
 
     public static GameMng I

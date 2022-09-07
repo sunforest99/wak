@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SeaDu_New : Monster
+public class SeaDu : Monster
 {
-    [SerializeField] GameObject skill_0_prefab;
+    [SerializeField] GameObject skill_0_prefab;         // 캐릭터에게 총알 발사하는 스킬
     GameObject skill_0_pool_parent;
-    List<GameObject>    skill_0_pool_lu = new List<GameObject>(), skill_0_pool_ld = new List<GameObject>(),
-                        skill_0_pool_ru = new List<GameObject>(), skill_0_pool_rd = new List<GameObject>();
+    List<SeaDu_Bullet> bulletPool = new List<SeaDu_Bullet>();
 
     protected override void Start()
     {
@@ -18,14 +17,7 @@ public class SeaDu_New : Monster
         _moveSpeed = 2.5f;
 
         skill_0_pool_parent = Instantiate(new GameObject("pool"));
-        int i = 0;
-        while (i++ < 5)
-        {
-            skill_0_pool_lu.Add(Instantiate(skill_0_prefab, new Vector3(-1.5f * i, -1.52f, 1.15f * i), Quaternion.Euler(20, 0, 0), skill_0_pool_parent.transform));
-            skill_0_pool_ld.Add(Instantiate(skill_0_prefab, new Vector3(-1.5f * i, -1.52f, -1.15f * i), Quaternion.Euler(20, 0, 0), skill_0_pool_parent.transform));
-            skill_0_pool_ru.Add(Instantiate(skill_0_prefab, new Vector3(1.5f * i, -1.52f, 1.15f * i), Quaternion.Euler(20, 0, 0), skill_0_pool_parent.transform));
-            skill_0_pool_rd.Add(Instantiate(skill_0_prefab, new Vector3(1.5f * i, -1.52f, -1.15f * i), Quaternion.Euler(20, 0, 0), skill_0_pool_parent.transform));
-        }
+        initBulletPool();
     }
 
     protected override void attack(string msg)
@@ -38,8 +30,19 @@ public class SeaDu_New : Monster
         StartCoroutine(diagonalAttack());
     }
     
+    void initBulletPool()
+    {
+        int i = 0;
+        while (i++ < 3)
+        {
+            bulletPool.Add(
+                Instantiate(skill_0_prefab, Vector3.zero, Quaternion.identity, skill_0_pool_parent.transform).GetComponent<SeaDu_Bullet>()
+            );
+        }
+    }
+
     /**
-     * @brief 대각선으로 뿔 공격 소환
+     * @brief 캐릭터 방향으로 총알 발사
      */
     IEnumerator diagonalAttack()
     {
@@ -47,15 +50,52 @@ public class SeaDu_New : Monster
         
         skill_0_pool_parent.transform.position = transform.position;
 
-        int i = 0;
-        while (i < 5)
+        Vector3 moveTo = GameMng.I.character.transform.parent.position;
+        moveTo -= transform.position;
+        moveTo.y = GameMng.I.character.transform.parent.position.y;
+
+        float lookAngle =  Mathf.Atan2(moveTo.z, moveTo.x) * Mathf.Rad2Deg;
+
+        // Vector3 spawnPos = transform.position;
+        // spawnPos.y = 0.3f;
+        
+        bool successShoot = false;
+        for (int i = 0; i < 3; i++)
         {
-            // todo : 벽을 넘지는 않는지 검사해서 쏘기. mapsize 완성되면 하기
-            skill_0_pool_lu[i].SetActive(true);
-            skill_0_pool_ld[i].SetActive(true);
-            skill_0_pool_ru[i].SetActive(true);
-            skill_0_pool_rd[i].SetActive(true);
-            i++;
+            successShoot = false;
+            int j = 0;
+
+            Vector3 spawnPos = transform.position;
+            spawnPos.y = moveTo.y;
+
+            for (; j < bulletPool.Count; j++)
+            {
+                if (!bulletPool[j].gameObject.activeSelf)
+                {
+                    successShoot = true;
+                    bulletPool[j].transform.position = spawnPos;
+                    bulletPool[j].transform.rotation = Quaternion.Euler(90, 0, lookAngle);
+                    bulletPool[j].setVelocity();
+                    bulletPool[j].gameObject.SetActive(true);
+                    break;
+                }
+            }
+            if (!successShoot)
+            {
+                initBulletPool();
+                for (; j < bulletPool.Count; j++)
+                {
+                    if (!bulletPool[j].gameObject.activeSelf)
+                    {
+                        successShoot = true;
+                        bulletPool[j].transform.position = spawnPos;
+                        bulletPool[j].transform.rotation = Quaternion.Euler(90, 0, lookAngle);
+                        bulletPool[j].setVelocity();
+                        bulletPool[j].gameObject.SetActive(true);
+                        break;
+                    }
+                }
+            }
             yield return new WaitForSecondsRealtime(0.3f);
         }
     }
