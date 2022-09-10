@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
         itemLoad();
         QuestLoad();
 
-        StartCoroutine(waitingLoading());
+        // StartCoroutine(waitingLoading());
     }
 
     IEnumerator waitingLoading()
@@ -85,7 +85,7 @@ public class UIManager : MonoBehaviour
                         {
                             GameMng.I.dailogUI.gameObject.SetActive(true);
                             GameMng.I.npcData.isDialog = true;
-                            GameMng.I._keyMode = KEY_MODE.QUEST_MODE;
+                            GameMng.I._keyMode = KEY_MODE.UI_MODE;
 
                             MCamera.I.setTargetChange(hit.transform);
                             MCamera.I.zoomIn();

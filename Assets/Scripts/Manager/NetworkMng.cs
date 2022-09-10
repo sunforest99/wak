@@ -55,7 +55,7 @@ public class NetworkMng : MonoBehaviour
     int recvLen = 0;
 
     // 유저 데이터 =========================================================================================================
-    public ROOM_CODE myRoom = ROOM_CODE.FOREST;                  // 현재 내 위치
+    public ROOM_CODE myRoom = ROOM_CODE.HOME;                  // 현재 내 위치
     public string uniqueNumber = "";        // 나 자신을 가리키는 고유 숫자
     public Dictionary<string, Character> v_users = new Dictionary<string, Character>();        // 맵에 같이 있는 유저들
     public Dictionary<string, PartyData> v_party = new Dictionary<string, PartyData>();        // 파티원들  (v_users안에도 파티원들이 있긴함)
@@ -306,16 +306,16 @@ public class NetworkMng : MonoBehaviour
             v_users[txt[1]].stopMove();
             v_users[txt[1]]._rigidBody.position = new Vector3(float.Parse(txt[2]), v_users[txt[1]]._rigidBody.position.y, float.Parse(txt[3]));
         }
-        else if (txt[0].Equals("MONSTER_PATTERN"))
-        {
-            // txt[1] : 몬스터 고유 이름
-            // txt[2] : 몬스터 패턴
-            // txt[3~] : 데이터
-            GameMng.I._monsters[txt[1]].doSomething(
-                int.Parse(txt[2]),
-                msg // msg.Substring(17 + txt[1].Length + txt[2].Length)
-            );
-        }
+        // else if (txt[0].Equals("MONSTER_PATTERN"))
+        // {
+        //     // txt[1] : 몬스터 고유 이름
+        //     // txt[2] : 몬스터 패턴
+        //     // txt[3~] : 데이터
+        //     GameMng.I._monsters[txt[1]].doSomething(
+        //         int.Parse(txt[2]),
+        //         msg // msg.Substring(17 + txt[1].Length + txt[2].Length)
+        //     );
+        // }
         else if (txt[0].Equals("IN_USER"))  // 기존 맵에 있는 유저들 데이터
         {
             // TODO : 이 메세지를 받으려면 서버에 "CHANGE_ROOM"을 호출해야 하는데 씬을 이동한 후(LoadManager)에 받을 것. 이 메세지를 받았다면 로딩창을 내려도 됨
@@ -652,6 +652,9 @@ public class NetworkMng : MonoBehaviour
     {
         switch (roomCode)
         {
+            case ROOM_CODE.DUNGEON_0:
+                SceneManager.LoadScene("DungeonWakgui");
+                break;
             case ROOM_CODE.RAID_0:
                 SceneManager.LoadScene("BossWakguiScene");
                 break;

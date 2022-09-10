@@ -52,7 +52,6 @@ public class Monster : MonoBehaviour
     [SerializeField] protected Animator _anim;
     [SerializeField] protected Transform _body;         // 스프라이트들 부모 (첫번째 자식, 본체)
     [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private Material[] materials = new Material[2];
     [SerializeField] private List<SpriteRenderer> render = new List<SpriteRenderer>();  // <- 보스와 달리 몬스터는 render 모두 넣어줘야함 (이유: 그림자, hp바 등 모두 자식으로 관리하기때문)
     Dictionary<BUFF, MonsterDebuff> buffDatas = new Dictionary<BUFF, MonsterDebuff>();
 
@@ -61,9 +60,10 @@ public class Monster : MonoBehaviour
     protected float _hp;
     protected float _fullHp;
     protected float _moveSpeed;
-    protected int _damage;
+    protected int _damage;          // (가변) 데미지. 설정된 공격들의 데미지가 여기에 들어감
     protected int _nearness;        // 대상이랑 최소 얼마까지 가까워야 할지 (보통 기본 공격 사정거리 범위보다 조금 적게)
-
+    protected int ATTACK_DAMAGE;    // 공격 데미지
+    protected int SKILL_0_DAMAGE;   // 스킬 데미지
 
     [Space(20)][Header("[  몬스터 UI ]")]  // ===================================================================================================================================
     [SerializeField] GameObject hpbar;
@@ -72,12 +72,23 @@ public class Monster : MonoBehaviour
     int damageTemp;
     bool isBackAttack;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         // TODO : 나중에 MONSTER_START 명령어 호출되면 그때
         _target = GameMng.I.character.transform.parent;
 
         endAct();
+    }
+
+    void Start()
+    {
+        // 퍼플라이트 맵에서 생성되었을때
+        if (DungeonMng._dungeon_Type.Equals(DUNGEON_TYPE.MONSTER_PURPLER))
+        {
+            // TODO : 몬스터 강화
+            _hp *= 2;
+            
+        }
     }
 
     void Update()
@@ -118,26 +129,19 @@ public class Monster : MonoBehaviour
      */
     public void doSomething(int code, string msg = "")
     {
-        Debug.Log(code);
         isMoving = false;
 
         string[] txt = msg.Split(':');
         // txt[0] "MONSTER_PATTERN"
         // txt[1] 몬스터 고유 이름
         // txt[2~] 데이터
-
-        // 타겟 지정 할때는 가만히 있음
-        // 이후에는 계속 움직이면서 패턴함
+        
         switch (code)
         {
-            case -1:
-                // 휴식
-                endAct();
-                break;
             case 0:
-                // 타겟 지정
-                // setTarget(txt[2]);
-                endAct();
+                // 휴식
+                _damage = 0;
+                StartCoroutine(think());
                 break;
             case 1:
                 // 기본공격
@@ -160,9 +164,8 @@ public class Monster : MonoBehaviour
     void endAct()
     {
         _damage = 0;
-        //if (NetworkMng.I.roomOwner)
-                isMoving = true;
-        StartCoroutine(think());    // TODO : 방장만 생각하게
+        isMoving = true;
+        StartCoroutine(think());
     }
 
     /**
@@ -399,14 +402,14 @@ public class Monster : MonoBehaviour
     {
         for (int i = 0; i < render.Count; i++)
         {
-            render[i].material = materials[1];
+            render[i].material = GameMng.I.materials[1];
         }
 
         yield return new WaitForSeconds(.2f);
 
         for (int i = 0; i < render.Count; i++)
         {
-            render[i].material = materials[0];
+            render[i].material = GameMng.I.materials[0];
         }
     }
 
@@ -429,5 +432,10 @@ public class Monster : MonoBehaviour
     protected virtual void attack(string msg) {}
     protected virtual void skill_0(string msg) {}
     protected virtual void skill_1(string msg) {}
-    protected virtual IEnumerator think() { yield return null; }   
+    protected virtual IEnumerator think() { yield return null; }
+
+    protected virtual void OnDestroy()
+    {
+        DungeonMng.monsterDie();
+    }
 }

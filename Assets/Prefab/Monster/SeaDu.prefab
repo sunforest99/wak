@@ -553,6 +553,7 @@ GameObject:
   - component: {fileID: 3995522924913816891}
   - component: {fileID: 3995522924913816890}
   - component: {fileID: 3995522924913816889}
+  - component: {fileID: 692425615}
   m_Layer: 10
   m_Name: SeaDu
   m_TagString: Untagged
@@ -618,6 +619,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &692425615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3995522924913816888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59ff862d236e1bf4b9443112bd093f74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _anim: {fileID: 0}
+  _body: {fileID: 3995522924783206101}
+  _rigidbody: {fileID: 3995522924913816889}
+  render:
+  - {fileID: 3995522925400506136}
+  - {fileID: 3995522925581587031}
+  - {fileID: 3995522923972304201}
+  - {fileID: 3995522924886010087}
+  - {fileID: 3995522924362122388}
+  - {fileID: 3995522923457902755}
+  hpbar: {fileID: 3995522924858784148}
+  skill_0_prefab: {fileID: 6803863574918702623, guid: b177a8370aadf2241a9cd35e7af456b0, type: 3}
 --- !u!1 &3995522925400506142
 GameObject:
   m_ObjectHideFlags: 0
