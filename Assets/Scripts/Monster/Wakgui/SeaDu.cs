@@ -8,13 +8,16 @@ public class SeaDu : Monster
     GameObject skill_0_pool_parent;
     List<SeaDu_Bullet> bulletPool = new List<SeaDu_Bullet>();
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         _hp = 30000000;
         _fullHp = 30000000;
         _nearness = 2;
         _moveSpeed = 2.5f;
+
+        ATTACK_DAMAGE = 1000;
+        SKILL_0_DAMAGE = 2000;
 
         skill_0_pool_parent = Instantiate(new GameObject("pool"));
         initBulletPool();
@@ -22,11 +25,11 @@ public class SeaDu : Monster
 
     protected override void attack(string msg)
     {
-        _damage = 1000;
+        _damage = ATTACK_DAMAGE;
     }
     protected override void skill_0(string msg)
     {
-        _damage = 2000;
+        _damage = SKILL_0_DAMAGE;
         StartCoroutine(diagonalAttack());
     }
     
@@ -158,7 +161,7 @@ public class SeaDu : Monster
         return 2;               // 패턴 1
     }
 
-    void OnDestroy() {
-        Destroy(skill_0_pool_parent);
+    protected override void OnDestroy() {
+        Destroy(skill_0_pool_parent.gameObject);
     }
 }

@@ -60,9 +60,10 @@ public class Monster : MonoBehaviour
     protected float _hp;
     protected float _fullHp;
     protected float _moveSpeed;
-    protected int _damage;
+    protected int _damage;          // (가변) 데미지. 설정된 공격들의 데미지가 여기에 들어감
     protected int _nearness;        // 대상이랑 최소 얼마까지 가까워야 할지 (보통 기본 공격 사정거리 범위보다 조금 적게)
-
+    protected int ATTACK_DAMAGE;    // 공격 데미지
+    protected int SKILL_0_DAMAGE;   // 스킬 데미지
 
     [Space(20)][Header("[  몬스터 UI ]")]  // ===================================================================================================================================
     [SerializeField] GameObject hpbar;
@@ -71,12 +72,23 @@ public class Monster : MonoBehaviour
     int damageTemp;
     bool isBackAttack;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         // TODO : 나중에 MONSTER_START 명령어 호출되면 그때
         _target = GameMng.I.character.transform.parent;
 
         endAct();
+    }
+
+    void Start()
+    {
+        // 퍼플라이트 맵에서 생성되었을때
+        if (DungeonMng._dungeon_Type.Equals(DUNGEON_TYPE.MONSTER_PURPLER))
+        {
+            // TODO : 몬스터 강화
+            _hp *= 2;
+            
+        }
     }
 
     void Update()
@@ -91,23 +103,23 @@ public class Monster : MonoBehaviour
 
     void FixedUpdate()
     {
-        // if (isMoving)
-        // {
-        //     if (_target.position.x < transform.position.x)
-        //         _body.transform.rotation = Quaternion.Euler(20, 0, 0);
-        //     else
-        //         _body.transform.rotation = Quaternion.Euler(-20, 180, 0);
+        if (isMoving)
+        {
+            if (_target.position.x < transform.position.x)
+                _body.transform.rotation = Quaternion.Euler(20, 0, 0);
+            else
+                _body.transform.rotation = Quaternion.Euler(-20, 180, 0);
                 
-        //     // _target 한테 move
-        //     if (Vector3.Distance(_target.position, transform.position) > _nearness)
-        //     {
-        //         _rigidbody.MovePosition(Vector3.MoveTowards(
-        //             transform.position,
-        //             new Vector3(_target.position.x, transform.position.y, _target.position.z),
-        //             _moveSpeed * Time.deltaTime
-        //         ));
-        //     }
-        // }
+            // _target 한테 move
+            if (Vector3.Distance(_target.position, transform.position) > _nearness)
+            {
+                _rigidbody.MovePosition(Vector3.MoveTowards(
+                    transform.position,
+                    new Vector3(_target.position.x, transform.position.y, _target.position.z),
+                    _moveSpeed * Time.deltaTime
+                ));
+            }
+        }
     }
 
     /**
@@ -117,35 +129,28 @@ public class Monster : MonoBehaviour
      */
     public void doSomething(int code, string msg = "")
     {
-        Debug.Log(code);
         isMoving = false;
 
         string[] txt = msg.Split(':');
         // txt[0] "MONSTER_PATTERN"
         // txt[1] 몬스터 고유 이름
         // txt[2~] 데이터
-
-        // 타겟 지정 할때는 가만히 있음
-        // 이후에는 계속 움직이면서 패턴함
+        
         switch (code)
         {
-            case -1:
-                // 휴식
-                endAct();
-                break;
             case 0:
-                // 타겟 지정
-                // setTarget(txt[2]);
-                endAct();
+                // 휴식
+                _damage = 0;
+                StartCoroutine(think());
                 break;
             case 1:
                 // 기본공격
-                // _anim.SetTrigger("Attack");
+                _anim.SetTrigger("Attack");
                 attack(msg);
                 break;
             case 2:
                 // 패턴1
-                // _anim.SetTrigger("Skill_0");
+                _anim.SetTrigger("Skill_0");
                 skill_0(msg);
                 break;
             default:
@@ -159,9 +164,8 @@ public class Monster : MonoBehaviour
     void endAct()
     {
         _damage = 0;
-        //if (NetworkMng.I.roomOwner)
-                isMoving = true;
-        StartCoroutine(think());    // TODO : 방장만 생각하게
+        isMoving = true;
+        StartCoroutine(think());
     }
 
     /**
@@ -428,5 +432,10 @@ public class Monster : MonoBehaviour
     protected virtual void attack(string msg) {}
     protected virtual void skill_0(string msg) {}
     protected virtual void skill_1(string msg) {}
-    protected virtual IEnumerator think() { yield return null; }   
+    protected virtual IEnumerator think() { yield return null; }
+
+    protected virtual void OnDestroy()
+    {
+        DungeonMng.monsterDie();
+    }
 }

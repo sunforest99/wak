@@ -81,8 +81,10 @@ public enum ROOM_CODE
 
     // _LOCAL_MAP_,  ////////////// 이 아래 부터 로컬 전용 맵 (네트워크 통신 안함)
 
-    FOREST = 0,
-    TEMPLE,
+    HOME = 0,
+    // TEMPLE,         // 직업 선택 (초기 회원가입때 소켓 연결전에 들어오게 변경됨)
+    DUNGEON_0,      // 던전 0
+    DUNGEON_1,      // 던전 1
 
     _WORLD_MAP_,    /////////////// 이 아래 부터 월드 전용 맵 (네트워크 들어가며 모든 유저들 있을수 있음)
 
@@ -90,7 +92,6 @@ public enum ROOM_CODE
     
     _PARTY_MAP_,    /////////////// 이 아래 부터 파티 전용 맵
 
-    FIELD_0,        // 필드 0
     RAID_0,         // 레이드 0
     RAID_0_REPAIR,  // 레이드 0 정비소
     RAID_1,         // 레이드 1

@@ -55,7 +55,7 @@ public class NetworkMng : MonoBehaviour
     int recvLen = 0;
 
     // 유저 데이터 =========================================================================================================
-    public ROOM_CODE myRoom = ROOM_CODE.FOREST;                  // 현재 내 위치
+    public ROOM_CODE myRoom = ROOM_CODE.HOME;                  // 현재 내 위치
     public string uniqueNumber = "";        // 나 자신을 가리키는 고유 숫자
     public Dictionary<string, Character> v_users = new Dictionary<string, Character>();        // 맵에 같이 있는 유저들
     public Dictionary<string, PartyData> v_party = new Dictionary<string, PartyData>();        // 파티원들  (v_users안에도 파티원들이 있긴함)
@@ -652,6 +652,9 @@ public class NetworkMng : MonoBehaviour
     {
         switch (roomCode)
         {
+            case ROOM_CODE.DUNGEON_0:
+                SceneManager.LoadScene("DungeonWakgui");
+                break;
             case ROOM_CODE.RAID_0:
                 SceneManager.LoadScene("BossWakguiScene");
                 break;

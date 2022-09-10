@@ -7,7 +7,7 @@ public enum KEY_MODE
     PLAYER_MODE,    // 평상시, 캐릭터 이동할때
     TYPING_MODE,    // 엔터눌러서 채팅칠때
     MINIGAME_MODE,  // 미니게임 할때
-    QUEST_MODE      // NPC와 대화, 혹은 퀘스트 등에 대한 상황
+    UI_MODE      // NPC와 대화, 혹은 퀘스트 등에 대한 상황
 }
 
 public enum EFF_TYPE
@@ -361,16 +361,20 @@ public class GameMng : MonoBehaviour
         backEffPool.Clear();
         for (int i = 0; i < 10; i++)
         {
-            effPool.Enqueue(
-                Instantiate(eff, Vector3.zero, Quaternion.Euler(20, 0, 0))
-            );
+            // 마을에서는 생성 안함
+            if (!NetworkMng.I.myRoom.Equals(ROOM_CODE.HOME))
+            {
+                effPool.Enqueue(
+                    Instantiate(eff, Vector3.zero, Quaternion.Euler(20, 0, 0))
+                );
+                if (userData.job.Equals((int)JOB.WARRIER))  // 백어택 이펙트는 전사만 가짐
+                    backEffPool.Enqueue(
+                        Instantiate(backEff, Vector3.zero, Quaternion.Euler(20, 0, 0))
+                    );
+            }
             removeEffPool.Enqueue(
                 Instantiate(removeEff, Vector3.zero, Quaternion.Euler(20, 0, 0))
             );
-            if (userData.job.Equals((int)JOB.WARRIER))  // 백어택 이펙트는 전사만 가짐
-                backEffPool.Enqueue(
-                    Instantiate(backEff, Vector3.zero, Quaternion.Euler(20, 0, 0))
-                );
         }
     }
     public void showEff(EFF_TYPE type, Vector3 pos)

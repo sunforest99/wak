@@ -9,13 +9,16 @@ public class SeaDu_New : Monster
     List<GameObject>    skill_0_pool_lu = new List<GameObject>(), skill_0_pool_ld = new List<GameObject>(),
                         skill_0_pool_ru = new List<GameObject>(), skill_0_pool_rd = new List<GameObject>();
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         _hp = 30000000;
         _fullHp = 30000000;
         _nearness = 2;
-        _moveSpeed = 2.5f;
+        _moveSpeed = 3f;
+
+        ATTACK_DAMAGE = 1000;
+        SKILL_0_DAMAGE = 2000;
 
         skill_0_pool_parent = Instantiate(new GameObject("pool"));
         int i = 0;
@@ -30,11 +33,11 @@ public class SeaDu_New : Monster
 
     protected override void attack(string msg)
     {
-        _damage = 1000;
+        _damage = ATTACK_DAMAGE;
     }
     protected override void skill_0(string msg)
     {
-        _damage = 2000;
+        _damage = SKILL_0_DAMAGE;
         StartCoroutine(diagonalAttack());
     }
     
@@ -62,7 +65,8 @@ public class SeaDu_New : Monster
 
     protected override IEnumerator think()
     {
-        yield return new WaitForSecondsRealtime(4);
+        
+        yield return new WaitForSecondsRealtime(Random.Range(3f, 5f));
 
         int pattern = decideAct();
         
@@ -91,34 +95,25 @@ public class SeaDu_New : Monster
         /*
             뉴 심해두 패턴
 
-            10 : 대상 변경
-            90 :
-                대상과 거리가 가깝다면
-                    80 : 기본 공격
-                    30 : 패턴1
-                대상과 거리가 멀다면
-                    10 : 대상 변경
-                    10 : 휴식
-                    80 : 패턴1
+            대상과 거리가 가깝다면
+                75 : 기본 공격
+                25 : 패턴1
+            대상과 거리가 멀다면
+                20 : 휴식
+                80 : 패턴1
         */
-
-        if (rand < 10)
-            return 0;           // 대상 변경
-
         if (distance <= _nearness + 1)
         {
-            if (rand < 90)
+            if (rand < 75)
                 return 1;       // 기본 공격
             return 2;           // 패턴 1
         }
         if (rand < 20)
-            return 0;           // 대상 변경
-        else if (rand < 30)
-            return -1;          // 휴식
+            return 0;           // 휴식
         return 2;               // 패턴 1
     }
 
-    void OnDestroy() {
-        Destroy(skill_0_pool_parent);
+    protected override void OnDestroy() {
+        Destroy(skill_0_pool_parent.gameObject);
     }
 }
