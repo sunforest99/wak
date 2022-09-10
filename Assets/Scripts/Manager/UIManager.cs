@@ -42,11 +42,11 @@ public class UIManager : MonoBehaviour
         // 전직을 안했다는건 최초 숲으로 이동
         if (GameMng.I.userData.job.Equals(0))
         {
-            SceneManager.LoadScene("ForestScene");
+            SceneManager.LoadScene("TempleScene");
         }
         else
         {
-            NetworkMng.I.changeRoom(ROOM_CODE.RAID_0_REPAIR);   // TODO <- 대도시로 변경
+            NetworkMng.I.changeRoom(ROOM_CODE.HOME);   // TODO <- 대도시로 변경
         }
     }
 
