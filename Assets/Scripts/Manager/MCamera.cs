@@ -9,7 +9,7 @@ public class MCamera : MonoBehaviour
     // [Range(0.1f, 1f)] public float duration = 0.5f;
 
     public static MCamera I { get; private set; }
-    private CinemachineVirtualCamera _vCamera;
+    public CinemachineVirtualCamera _vCamera;
 
     // 카메라 흔들림 ==================================================================================
     private CinemachineBasicMultiChannelPerlin cPerlin;
@@ -60,7 +60,7 @@ public class MCamera : MonoBehaviour
         if (zoomTimer > 0)
         {
             zoomTimer -= Time.deltaTime;
-            _vCamera.m_Lens.OrthographicSize = Mathf.Lerp(zoomFrom, zoomTo, 1 - (zoomTimer / zoomTimerTotal));
+            _vCamera.m_Lens.FieldOfView = Mathf.Lerp(zoomFrom, zoomTo, 1 - (zoomTimer / zoomTimerTotal));
         }
     }
 
@@ -68,19 +68,49 @@ public class MCamera : MonoBehaviour
         _vCamera.Follow = target;
     }
 
+    /*
+     * @breif 화면 줌인. NPC 선택 모드일때 사용 (적은 줌인)
+     * @param time 줌인 속도
+     */
     public void zoomIn(float time = 0.4f)
     {
         zoomTimer = time;
         zoomTimerTotal = time;
-        zoomFrom = 8;
-        zoomTo = 4;
+        zoomFrom = 30;
+        zoomTo = 26;
     }
+    /*
+     * @breif 화면 줌인2. NPC 대화 모드일때 사용 (큰 줌인)
+     * @param time 줌인 속도
+     */
+    public void zoomIn2(float time = 0.4f)
+    {
+        zoomTimer = time;
+        zoomTimerTotal = time;
+        zoomFrom = 26;
+        zoomTo = 20;
+    }
+    /*
+     * @breif 화면 줌아웃. NPC 선택 모드일때 사용 (적은 줌아웃)
+     * @param time 줌아웃 속도
+     */
     public void zoomOut(float time = 0.4f)
     {
         zoomTimer = time;
         zoomTimerTotal = time;
-        zoomFrom = 4;
-        zoomTo = 8;
+        zoomFrom = 26;
+        zoomTo = 30;
+    }
+    /*
+     * @breif 화면 줌아웃2. NPC 대화 모드일때 사용 (큰 줌아웃)
+     * @param time 줌아웃 속도
+     */
+    public void zoomOut2(float time = 0.4f)
+    {
+        zoomTimer = time;
+        zoomTimerTotal = time;
+        zoomFrom = 20;
+        zoomTo = 30;
     }
 
     // void Start()

@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] TMPro.TextMeshProUGUI selectPlayerName;
     [SerializeField] UnityEngine.UI.Button selectPlayerInviteBT;
 
+
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
@@ -52,7 +54,7 @@ public class UIManager : MonoBehaviour
 
     private void Update() {
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && GameMng.I._keyMode.Equals(KEY_MODE.PLAYER_MODE))
         {
             // RaycastHit[] hits;
             // hits = Physics.RaycastAll(transform.position, transform.forward, 100.0F);
@@ -60,9 +62,7 @@ public class UIManager : MonoBehaviour
             // for (int i = 0; i < hits.Length; i++)
             // {
             //     RaycastHit hit = hits[i];
-            // }
-            Debug.Log("@@@@");
-            
+            // }            
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             
@@ -72,26 +72,36 @@ public class UIManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 100f, layerMask)) {
             // if (Physics.Raycast(ray.origin, ray.direction * 10000, out hit)) {
-                if (hit.transform.tag.Equals("Npc"))        // NPC 우선순위
+                if (hit.transform.CompareTag("Npc"))        // NPC 우선순위
                 {
+                    Debug.Log("NPC CLICK");
+
                     if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 2)
                     {
                         // 저장된 dialog 실행
                         // 근데 dialog 저장 방식이 맞는지 일단 확인
                         GameMng.I.npcData = hit.transform.GetComponent<Npcdata>();
-
-                        // 이미 대화중인지 체크
-                        if (!GameMng.I.dailogUI.gameObject.activeSelf)
+                        
+                        // 대화 거리가 없으면 그냥 닫기
+                        if (GameMng.I.npcData.dialogs == null)
                         {
-                            GameMng.I.dailogUI.gameObject.SetActive(true);
-                            GameMng.I.npcData.isDialog = true;
+                            GameMng.I.npcData = null;
+                            return;
+                        }
+
+                        // 이미 선택모드인지 체크
+                        if (!GameMng.I.npcUI.npcSelectUI.activeSelf)
+                        {
                             GameMng.I._keyMode = KEY_MODE.UI_MODE;
 
                             MCamera.I.setTargetChange(hit.transform);
                             MCamera.I.zoomIn();
 
                             // UI 레이어 제거
-                            Camera.main.cullingMask = ~(1 << LayerMask.NameToLayer("UI"));
+                            // MCamera.I._vCamera.
+                            Camera.main.cullingMask = ~(1 << LayerMask.NameToLayer("UI_Base"));
+
+                            GameMng.I.npcUI.npcSelectUI.SetActive(true);
                         }
                     }
                     else
@@ -100,7 +110,7 @@ public class UIManager : MonoBehaviour
                     }
                     return;
                 }
-                else if (hit.transform.tag.Equals("Character"))   // 나를 제외한 플레이어를 선택함
+                else if (hit.transform.CompareTag("Character"))   // 나를 제외한 플레이어를 선택함
                 {
                     Debug.Log("!!!!");
                     // txt[0] 닉네임
@@ -127,7 +137,7 @@ public class UIManager : MonoBehaviour
                     return;
                 }
                 // 핑 생성
-                else if (hit.transform.tag.Equals("Floor") && Input.GetKey(KeyCode.LeftControl))
+                else if (hit.transform.CompareTag("Floor") && Input.GetKey(KeyCode.LeftControl))
                 {
                     GameMng.I.createPing(hit.point + new Vector3(0, 0.54f, 0));
                     NetworkMng.I.SendMsg(string.Format("PING:{0}:{1}:{2}", hit.point.x, hit.point.y, hit.point.z + 0.54f));
@@ -163,6 +173,34 @@ public class UIManager : MonoBehaviour
     //         skill_icons[i].sprite = job_skill_icons[GameMng.I.userData.job - 1].icons[i];
     //     }
     // }
+
+    public void selectDialog()
+    {
+        GameMng.I.npcUI.showDialog();
+        
+        MCamera.I.zoomIn2();
+
+        GameMng.I.npcData.isDialog = true;
+    }
+
+    public void selectGift()
+    {
+
+    }
+
+    public void selectCancel()
+    {
+        GameMng.I.npcUI.npcSelectUI.SetActive(false);
+
+        GameMng.I._keyMode = KEY_MODE.PLAYER_MODE;
+
+        // UI 레이어 다시 ON
+        Camera.main.cullingMask |= 1 << LayerMask.NameToLayer("UI_Base");
+
+        MCamera.I.setTargetChange(GameMng.I.character.transform);
+        MCamera.I.zoomOut();
+    }
+
     void itemSave()
     {
         for(int i = 0; i < Character.haveItem.Count; i++)

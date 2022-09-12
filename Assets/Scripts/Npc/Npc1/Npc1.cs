@@ -40,11 +40,11 @@ public class Npc1 : Npcdata
         yield return "$ㅎㅇ player 1";
 
         // GameMng.I.dailogUI.selectBlock.SetActive(true);
-        GameMng.I.dailogUI.setSelectBlock("a", "b");
+        GameMng.I.npcUI.dialogUI.setSelectBlock("a", "b");
 
         yield return "$선택";
 
-        if(GameMng.I.dailogUI.flow)
+        if(GameMng.I.npcUI.dialogUI.flow)
         {
             yield return "대화의 흐름 1";
             yield return "$대화의 흐름 2";
@@ -58,10 +58,10 @@ public class Npc1 : Npcdata
         }
         
         yield return "asdf";
-        GameMng.I.dailogUI.selectBlock.SetActive(true);
+        GameMng.I.npcUI.dialogUI.selectBlock.SetActive(true);
         yield return "$선택1";
 
-        if(GameMng.I.dailogUI.flow)
+        if(GameMng.I.npcUI.dialogUI.flow)
         {
             yield return "대화의 흐름 4";
             yield return "대화의 흐름 5";

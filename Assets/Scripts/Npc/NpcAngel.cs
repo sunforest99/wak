@@ -76,7 +76,7 @@ public class NpcAngel : Npcdata
         yield return "아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트";
 
         //yield return "";    // 선택 메세지 띄우기 전에 틈을 주려면 빈 메세지 넣기
-        GameMng.I.dailogUI.setSelectBlock("선택 1", "선택 2");
+        GameMng.I.npcUI.dialogUI.setSelectBlock("선택 1", "선택 2");
         yield return "";    // <- 얘는 선택메세지 후에는 꼭 있어야함
 
         if (getFlow())

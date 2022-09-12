@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DialogUI : MonoBehaviour
 {
-    public RectTransform[] ui = new RectTransform[2];     // <! 0 npc, 1 플레이어
+    // public RectTransform[] ui = new RectTransform[2];     // <! 0 npc, 1 플레이어
     [SerializeField] private TMPro.TextMeshProUGUI npc_name_ui;
     [SerializeField] private TMPro.TextMeshProUGUI npc_chat_ui;
     // [SerializeField] private TMPro.TextMeshProUGUI player_name_ui;
@@ -32,10 +32,10 @@ public class DialogUI : MonoBehaviour
         set { player_chat_ui.text = value; }
     }
 
-    private void Awake()
-    {
-        GameMng.I.dailogUI = this;
-    }
+    // private void Awake()
+    // {
+    //     GameMng.I.dailogUI = this;
+    // }
 
     public void setSelectBlock(string s1, string s2)
     {

@@ -9,10 +9,10 @@ public class Npcdata : MonoBehaviour
     [HideInInspector] public bool isDialog;
     [SerializeField] protected string npcname;
     [SerializeField] TMPro.TextMeshPro speechTxt;
-    [SerializeField] GameObject speechBox;
+    [SerializeField] GameObject speechBG;
     // public GameObject tempDialog;     // <! 이름 바꾸기
 
-    protected IEnumerator dialogs;
+    public IEnumerator dialogs = null;
 
     [SerializeField]
     protected SpriteRenderer questIcon;
@@ -22,7 +22,7 @@ public class Npcdata : MonoBehaviour
         if (isDialog)
         {
             if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
-                    && !GameMng.I.dailogUI.selectBlock.activeSelf)
+                    && !GameMng.I.npcUI.dialogUI.selectBlock.activeSelf)
             {
                 NextDialog();
             }
@@ -40,17 +40,21 @@ public class Npcdata : MonoBehaviour
             if (dialogs.Current.ToString() == "")
                 return true;
             
-            GameMng.I.dailogUI.setNpcText = npcname;
+            // GameMng.I.npcUI.dialogUI.setNpcName = npcname;
+            
+            GameMng.I.npcUI.dialogUI.setNpcName = npcname;
+            GameMng.I.npcUI.dialogUI.setNpcText = dialogs.Current.ToString();
+
             // GameMng.I.dailogUI.setPlayerName = "Player";        // <! 나중에 닉네임 넣기
             if (dialogs.Current.ToString().FirstOrDefault() == '$')
             {
-                GameMng.I.dailogUI.setPlayerText = dialogs.Current.ToString().Remove(0, 1);
+                GameMng.I.npcUI.dialogUI.setPlayerText = dialogs.Current.ToString().Remove(0, 1);
                 // GameMng.I.dailogUI.ui[0].SetAsFirstSibling();
                 // GameMng.I.dailogUI.ui[1].SetAsLastSibling();
             }
             else
             {
-                GameMng.I.dailogUI.setNpcText = dialogs.Current.ToString();
+                GameMng.I.npcUI.dialogUI.setNpcText = dialogs.Current.ToString();
                 // GameMng.I.dailogUI.ui[0].SetAsLastSibling();
                 // GameMng.I.dailogUI.ui[1].SetAsFirstSibling();
             }
@@ -63,18 +67,18 @@ public class Npcdata : MonoBehaviour
         return true;
     }
 
-    void ExitDialog()
+    public void ExitDialog()
     {
         // Destroy(tempDialog);
         isDialog = false;
-        GameMng.I.dailogUI.gameObject.SetActive(false);
+        GameMng.I.npcUI.dialogUI.gameObject.SetActive(false);
         GameMng.I._keyMode = KEY_MODE.PLAYER_MODE;
 
         // UI 레이어 다시 ON
-        Camera.main.cullingMask |= 1 << LayerMask.NameToLayer("UI");
+        Camera.main.cullingMask |= 1 << LayerMask.NameToLayer("UI_Base");
 
         MCamera.I.setTargetChange(GameMng.I.character.transform);
-        MCamera.I.zoomOut();
+        MCamera.I.zoomOut2();
     }
 
     protected virtual IEnumerator NpcDialog()
@@ -112,7 +116,7 @@ public class Npcdata : MonoBehaviour
     protected bool getFlow()
     {
         MCamera.I.setTargetChange(this.transform);
-        return GameMng.I.dailogUI.flow;
+        return GameMng.I.npcUI.dialogUI.flow;
     }
 
     protected void setSpeech(string msg)
@@ -121,6 +125,6 @@ public class Npcdata : MonoBehaviour
 
         float x = speechTxt.preferredWidth;
         x = (x > 3) ? 3.5f : x + 0.5f;
-        speechBox.transform.localScale = new Vector2(x, speechTxt.preferredHeight + 0.5f);
+        speechBG.transform.localScale = new Vector2(x, speechTxt.preferredHeight + 0.5f);
     }
 }
