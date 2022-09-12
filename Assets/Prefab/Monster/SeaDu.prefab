@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3995522923457902753}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.45, y: -0.842, z: -0}
+  m_LocalPosition: {x: -0.45, y: -0.842, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -277,7 +277,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3995522924424745959}
   m_LocalRotation: {x: 0.17364816, y: -0, z: -0, w: 0.9848078}
-  m_LocalPosition: {x: -0.568, y: 1.703663, z: 0}
+  m_LocalPosition: {x: -0.241, y: 2.106, z: 0.146}
   m_LocalScale: {x: 0.3, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -554,6 +554,7 @@ GameObject:
   - component: {fileID: 3995522924913816890}
   - component: {fileID: 3995522924913816889}
   - component: {fileID: 692425615}
+  - component: {fileID: 4272475433104522812}
   m_Layer: 10
   m_Name: SeaDu
   m_TagString: Untagged
@@ -631,7 +632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ff862d236e1bf4b9443112bd093f74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _anim: {fileID: 0}
+  _anim: {fileID: 4272475433104522812}
   _body: {fileID: 3995522924783206101}
   _rigidbody: {fileID: 3995522924913816889}
   render:
@@ -643,6 +644,26 @@ MonoBehaviour:
   - {fileID: 3995522923457902755}
   hpbar: {fileID: 3995522924858784148}
   skill_0_prefab: {fileID: 6803863574918702623, guid: b177a8370aadf2241a9cd35e7af456b0, type: 3}
+--- !u!95 &4272475433104522812
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3995522924913816888}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a5dd53f47a451b64c904d35894cb13d7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3995522925400506142
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,7 +689,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3995522925400506142}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.397, y: 0.779, z: 0}
+  m_LocalPosition: {x: -0.268, y: 1.005, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

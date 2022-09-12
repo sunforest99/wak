@@ -51,7 +51,7 @@ public class Monster : MonoBehaviour
     protected Transform _target = null;
     [SerializeField] protected Animator _anim;
     [SerializeField] protected Transform _body;         // 스프라이트들 부모 (첫번째 자식, 본체)
-    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] protected Rigidbody _rigidbody;
     [SerializeField] private List<SpriteRenderer> render = new List<SpriteRenderer>();  // <- 보스와 달리 몬스터는 render 모두 넣어줘야함 (이유: 그림자, hp바 등 모두 자식으로 관리하기때문)
     Dictionary<BUFF, MonsterDebuff> buffDatas = new Dictionary<BUFF, MonsterDebuff>();
 
@@ -61,7 +61,7 @@ public class Monster : MonoBehaviour
     protected float _fullHp;
     protected float _moveSpeed;
     protected int _damage;          // (가변) 데미지. 설정된 공격들의 데미지가 여기에 들어감
-    protected int _nearness;        // 대상이랑 최소 얼마까지 가까워야 할지 (보통 기본 공격 사정거리 범위보다 조금 적게)
+    protected float _nearness;      // 대상이랑 최소 얼마까지 가까워야 할지 (보통 기본 공격 사정거리 범위보다 조금 적게)
     protected int ATTACK_DAMAGE;    // 공격 데미지
     protected int SKILL_0_DAMAGE;   // 스킬 데미지
 

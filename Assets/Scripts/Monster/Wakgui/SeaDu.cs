@@ -13,8 +13,8 @@ public class SeaDu : Monster
         base.Awake();
         _hp = 30000000;
         _fullHp = 30000000;
-        _nearness = 2;
-        _moveSpeed = 2.5f;
+        _nearness = 3.5f;
+        _moveSpeed = 0.1f;
 
         ATTACK_DAMAGE = 1000;
         SKILL_0_DAMAGE = 2000;
@@ -26,17 +26,20 @@ public class SeaDu : Monster
     protected override void attack(string msg)
     {
         _damage = ATTACK_DAMAGE;
+        int xRand = Random.Range(0, 2) == 0 ? -1 : 1;
+        int zRand = Random.Range(0, 2) == 0 ? -1 : 1;
+        _rigidbody.AddForce(new Vector3(8 * xRand, 0, 8 * zRand), ForceMode.Impulse);
     }
     protected override void skill_0(string msg)
     {
         _damage = SKILL_0_DAMAGE;
-        StartCoroutine(diagonalAttack());
+        StartCoroutine(fireAttack());
     }
     
     void initBulletPool()
     {
         int i = 0;
-        while (i++ < 3)
+        while (i++ < 5)
         {
             bulletPool.Add(
                 Instantiate(skill_0_prefab, Vector3.zero, Quaternion.identity, skill_0_pool_parent.transform).GetComponent<SeaDu_Bullet>()
@@ -47,26 +50,26 @@ public class SeaDu : Monster
     /**
      * @brief 캐릭터 방향으로 총알 발사
      */
-    IEnumerator diagonalAttack()
+    IEnumerator fireAttack()
     {
-        yield return new WaitForSecondsRealtime(1);
-        
-        skill_0_pool_parent.transform.position = transform.position;
-
-        Vector3 moveTo = GameMng.I.character.transform.parent.position;
-        moveTo -= transform.position;
-        moveTo.y = GameMng.I.character.transform.parent.position.y;
-
-        float lookAngle =  Mathf.Atan2(moveTo.z, moveTo.x) * Mathf.Rad2Deg;
+        yield return new WaitForSeconds(0.4f);
 
         // Vector3 spawnPos = transform.position;
         // spawnPos.y = 0.3f;
         
         bool successShoot = false;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
             successShoot = false;
             int j = 0;
+
+            skill_0_pool_parent.transform.position = transform.position;
+
+            Vector3 moveTo = GameMng.I.character.transform.parent.position;
+            moveTo -= transform.position;
+            moveTo.y = GameMng.I.character.transform.parent.position.y;
+
+            float lookAngle = Mathf.Atan2(moveTo.z, moveTo.x) * Mathf.Rad2Deg;
 
             Vector3 spawnPos = transform.position;
             spawnPos.y = moveTo.y;
@@ -99,13 +102,13 @@ public class SeaDu : Monster
                     }
                 }
             }
-            yield return new WaitForSecondsRealtime(0.3f);
+            yield return new WaitForSecondsRealtime(0.2f);
         }
     }
 
     protected override IEnumerator think()
     {
-        yield return new WaitForSecondsRealtime(4);
+        yield return new WaitForSecondsRealtime(Random.Range(2f, 2.5f));
 
         int pattern = decideAct();
         
@@ -132,32 +135,23 @@ public class SeaDu : Monster
         int rand = Random.Range(0, 100);
 
         /*
-            뉴 심해두 패턴
+            심해두 패턴
 
-            10 : 대상 변경
-            90 :
-                대상과 거리가 가깝다면
-                    80 : 기본 공격
-                    30 : 패턴1
-                대상과 거리가 멀다면
-                    10 : 대상 변경
-                    10 : 휴식
-                    80 : 패턴1
+            대상과 거리가 가깝다면
+                80 : 기본 공격
+                20 : 패턴1
+            대상과 거리가 멀다면
+                20 : 기본 공격
+                80 : 패턴1
         */
-
-        if (rand < 10)
-            return 0;           // 대상 변경
-
         if (distance <= _nearness + 1)
         {
-            if (rand < 90)
+            if (rand < 80)
                 return 1;       // 기본 공격
             return 2;           // 패턴 1
         }
         if (rand < 20)
-            return 0;           // 대상 변경
-        else if (rand < 30)
-            return -1;          // 휴식
+            return 1;           // 기본 공격
         return 2;               // 패턴 1
     }
 

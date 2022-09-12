@@ -6,7 +6,7 @@ public class SeaDu_Bullet : MonoBehaviour
 {
     [SerializeField] Rigidbody _rigidbody;
 
-    [SerializeField] float speed = 5.0f;
+    [SerializeField] float speed = 6.0f;
 
     public int damage = 1;
 

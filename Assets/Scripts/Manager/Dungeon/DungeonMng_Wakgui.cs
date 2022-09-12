@@ -34,9 +34,7 @@ public class DungeonMng_Wakgui : DungeonMng
 
         // TODO : 몬스터 만들면서 강화 및 회복 능력 부여
         Vector3[] posArr = {
-            new Vector3(-4.16f, 1.325f, 0),
-            new Vector3(3.98f, 1.325f, -2.02f),
-            new Vector3(-2.04f, 1.325f, -5.62f)
+            new Vector3(-3f, 1.26f, 9)
         };
 
         // TODO : 몬스터 다르게 하기 등록
@@ -44,7 +42,7 @@ public class DungeonMng_Wakgui : DungeonMng
         {
             // 뉴심해두 몬스터 생성
             Instantiate(
-                monster_seaduNew,
+                monster_seadu,
                 posArr[i],
                 Quaternion.identity
             );
