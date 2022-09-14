@@ -19,7 +19,7 @@ public class SeaDu : Monster
         ATTACK_DAMAGE = 1000;
         SKILL_0_DAMAGE = 2000;
 
-        skill_0_pool_parent = Instantiate(new GameObject("pool"));
+        skill_0_pool_parent = new GameObject("pool");
         initBulletPool();
     }
 
@@ -156,6 +156,7 @@ public class SeaDu : Monster
     }
 
     protected override void OnDestroy() {
+        base.OnDestroy();
         Destroy(skill_0_pool_parent.gameObject);
     }
 }

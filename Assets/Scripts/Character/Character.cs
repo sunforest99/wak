@@ -51,6 +51,28 @@ public enum SKILL_CODE
     ATTACK
 }
 
+public enum Skill_TREE
+{
+    // 데미지
+    DAMAGE_1, DAMAGE_2, DAMAGE_3,
+    CRITICAL_PER_1, CRITICAL_PER_2, CRITICAL_PER_3,
+    INC_BACK_1, INC_BACK_2, INC_BACK_3,
+    // 강인함
+    TAKEN_1, TAKEN_2, TAKEN_3,
+    HP_1, HP_2, HP_3,
+    HEAL_1, HEAL_2, HEAL_3,
+    // 기민함
+    SPEED_1, SPEED_2, SPEED_3,
+    DASH_1, DASH_2, DASH_3,
+    WAKEUP_1, WAKEUP_2, WAKEUP_3,
+    // 능력
+    SKILL_0_COOL_0, SKILL_0_COOL_1, SKILL_0_DMG_0, SKILL_0_DMG_1,
+    SKILL_1_COOL_0, SKILL_1_COOL_1, SKILL_1_DMG_0, SKILL_1_DMG_1,
+    SKILL_2_COOL_0, SKILL_2_COOL_1, SKILL_2_DMG_0, SKILL_2_DMG_1,
+    SKILL_3_COOL_0, SKILL_3_COOL_1, SKILL_3_DMG_0, SKILL_3_DMG_1,
+    SKILL_4_COOL_0, SKILL_4_COOL_1, SKILL_4_DMG_0, SKILL_4_DMG_1
+}
+
 public class Character : MonoBehaviour
 {
     // 캐릭터 ====================================================================================================
@@ -266,6 +288,13 @@ public class Character : MonoBehaviour
     {
         isMoving = false;
         _anim.SetBool("Move", false);
+    }
+
+    public void setStopAndReset()
+    {
+        stopMove();
+        _moveDir = Vector3.zero;
+        _moveDirBefore = Vector3.zero;
     }
 
     void inputKey()

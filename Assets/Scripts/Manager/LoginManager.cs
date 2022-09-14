@@ -43,7 +43,9 @@ public class UserData
     public List<Quest_Schema> sub_quest;
     public List<int> quest_done;
     public List<int> slot = new List<int>();
-    public float level;
+    public List<Skill_TREE> upgrade = new List<Skill_TREE>();
+    public int love;
+    public List<int> npc = new List<int>();
     
     public void printData() 
     { 

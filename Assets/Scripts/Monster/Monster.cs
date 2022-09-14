@@ -85,9 +85,10 @@ public class Monster : MonoBehaviour
         // 퍼플라이트 맵에서 생성되었을때
         if (DungeonMng._dungeon_Type.Equals(DUNGEON_TYPE.MONSTER_PURPLER))
         {
-            // TODO : 몬스터 강화
             _hp *= 2;
-            
+            _fullHp *= 2;
+            ATTACK_DAMAGE = Mathf.FloorToInt(ATTACK_DAMAGE * 1.5f);
+            SKILL_0_DAMAGE = Mathf.FloorToInt(SKILL_0_DAMAGE * 1.5f);
         }
     }
 

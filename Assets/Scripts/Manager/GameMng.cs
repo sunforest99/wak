@@ -245,7 +245,7 @@ public class GameMng : MonoBehaviour
         if (Character.main_quest_progress >= Character.main_quest.progressContent.Length)
         {
             // 경험치 지급
-            rewardExp(Character.main_quest.rewardExp);
+            // rewardExp(Character.main_quest.rewardExp);
 
             // 보상 아이템 지급
             rewardItem(Character.main_quest.rewardItem);
@@ -273,7 +273,7 @@ public class GameMng : MonoBehaviour
         if (Character.sub_quest_progress[questName] >= Character.sub_quest[questName].progressContent.Length)
         {
             // 경험치 지급
-            rewardExp(Character.sub_quest[questName].rewardExp);
+            // rewardExp(Character.sub_quest[questName].rewardExp);
 
             // 보상 아이템 지급
             rewardItem(Character.sub_quest[questName].rewardItem);
@@ -301,15 +301,15 @@ public class GameMng : MonoBehaviour
         }
     }
 
-    void rewardExp(float reward)
-    {
-        if (Mathf.FloorToInt(userData.level) <
-            Mathf.FloorToInt(userData.level + reward))
-        {
-            // 레벨업 애니메이션 작동
-        }
-        userData.level += reward;
-    }
+    // void rewardExp(float reward)
+    // {
+    //     // if (Mathf.FloorToInt(userData.level) <
+    //     //     Mathf.FloorToInt(userData.level + reward))
+    //     // {
+    //     //     // 레벨업 애니메이션 작동
+    //     // }
+    //     // userData.level += reward;
+    // }
 
     void rewardItem(ItemData[] reward)
     {
