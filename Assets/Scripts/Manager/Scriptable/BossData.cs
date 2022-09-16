@@ -38,15 +38,6 @@ public class BossData : ScriptableObject
     public int getDamage() => _damage[_bossAction];
     public int getDamage(int action) => _damage[action];
 
-    [Header("이건 여기 있으면 안됨")]
-    [SerializeField] private int _maxKnife;       // <! 칼 최대 개수
-    public int maxKnife { get { return _maxKnife; } }
-    [SerializeField] private int _maxCristal;       // <! 수정 최대 개수
-    public int maxCristal { get { return _maxCristal; } }
-
-    [SerializeField] private int _maxWave;       // <! 파도 최대 개수
-    public int maxWave { get { return _maxWave; } }
-
     void Awake()
     {
         ColorUtility.TryParseHtmlString("#9B111E", out color);

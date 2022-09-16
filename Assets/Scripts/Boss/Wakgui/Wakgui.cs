@@ -45,6 +45,9 @@ public class Wakgui : Boss
     [SerializeField] private int baseAttackCount;       // <! 기본패턴 몇번 후 패턴 사용할 것인지 (나중에 바꿀듯)
     [SerializeField] pattenObj patten;      // <! 패턴 프리팹 담는 구조체
     public bool isThink;
+    private const int _maxKnife = 8;
+    private const int _maxCristal = 4;
+    private const int _maxWave = 8;
 
     // 패턴-똥 시간 ==
     float pooSpawnTime;
@@ -70,11 +73,8 @@ public class Wakgui : Boss
     // ??
     [Header("기타")]
     public int circle_answer;
-    public List<string> targetList;      // 보스 타겟 설정하는거
-    public string getTarget => targetList[Random.Range(0, targetList.Count)];        // 타겟 렌덤
     public List<Vector3> spawnPattenVec = new List<Vector3>();
     public bool jump;
-    StringBuilder messageElement = new StringBuilder();
 
     public WakguiObjectPool objectPool;
 
@@ -83,16 +83,13 @@ public class Wakgui : Boss
         base.BossInitialize();
         GameMng.I.boss = this;
 
-        // NetworkMng.I.roomOwner = true;
         if (NetworkMng.I.roomOwner)
         {
-            StartCoroutine(RaidStart());
+            StartCoroutine(SendRaidStartMsg());
         }
-
-        // StartCoroutine(Teleport("Pattern_Circle"));
     }
 
-    IEnumerator RaidStart()
+    IEnumerator SendRaidStartMsg()
     {
         yield return new WaitForSeconds(3.0f);
         NetworkMng.I.SendMsg("RAID_START");
@@ -115,7 +112,7 @@ public class Wakgui : Boss
             base.RaidTimer();
             base.ChangeHpText();
 
-            if(base.targetDistance < 4f && !isThink)
+            if(base._targetDistance < 6f && !isThink)
             {
                 Think();
             }
@@ -161,13 +158,6 @@ public class Wakgui : Boss
         {
             base.SetZeroHp();
         }
-    }
-
-    void SendBossPattern(WAKGUI_ACTION action, string msg = "")
-    {
-        // 뒤에 추가로 데이터가 필요로 하지 않은 패턴은 msg를 공백으로 보내서 split을 줄임
-        // 만약 이거때문에 버그가 잦다면 붙여도 무관
-        NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0}{1}", (int)action, msg != "" ? ":" + msg : msg));
     }
 
     public void Think()
@@ -219,7 +209,7 @@ public class Wakgui : Boss
                         baseAttackCount = 0;
                         break;
                     case (int)WAKGUI_ACTION.PATTERN_KNIFE:      // <! 칼날 찌르기
-                        BaseMakeMsg(bossData.maxKnife, WAKGUI_ACTION.PATTERN_KNIFE);
+                        BaseMakeMsg(_maxKnife, WAKGUI_ACTION.PATTERN_KNIFE);
                         SendBossPattern(WAKGUI_ACTION.PATTERN_KNIFE, messageElement.ToString());               // TODO, 뒤에 칼날 생성될 위치,각도를 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
                         baseAttackCount = 0;
                         break;
@@ -228,16 +218,16 @@ public class Wakgui : Boss
                         baseAttackCount = 0;
                         break;
                     case (int)WAKGUI_ACTION.PATTERN_CRISTAL:      // <! 수정 생성
-                        BaseMakeMsg(bossdata.maxCristal, WAKGUI_ACTION.PATTERN_CRISTAL);
+                        BaseMakeMsg(_maxCristal, WAKGUI_ACTION.PATTERN_CRISTAL);
                         SendBossPattern(WAKGUI_ACTION.PATTERN_CRISTAL, messageElement.ToString());         // TODO, 뒤에 수정 생성될 위치 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
                         baseAttackCount = 0;
                         break;
                     case (int)WAKGUI_ACTION.PATTERN_WAVE:      // <! 파도
                         messageElement.Clear();
-                        for (int i = 0; i < bossData.maxWave; i++)
+                        for (int i = 0; i < _maxWave; i++)
                         {
                             Pattern_Wave_Think();
-                            if (i != bossdata.maxWave - 1)
+                            if (i != _maxWave - 1)
                                 messageElement.Append(":");
                         }
                         SendBossPattern(WAKGUI_ACTION.PATTERN_WAVE, messageElement.ToString());            // TODO, 뒤에 파도 생성될 위치,방향 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
