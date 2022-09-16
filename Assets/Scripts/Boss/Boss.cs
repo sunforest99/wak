@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 
 [System.Serializable]
 public struct bossbaseUI
@@ -21,7 +22,11 @@ public class Boss : MonoBehaviour
     [SerializeField] protected Animator animator = null;
     [SerializeField] Transform bossO;      // 본체, (첫번째 자식)
     [SerializeField] public Rigidbody rigid;
-    [SerializeField] protected float targetDistance;
+    [SerializeField] protected float _targetDistance;
+    [SerializeField] protected float _thinkDistance;     // 패턴 하는 거리
+    protected StringBuilder messageElement = new StringBuilder();
+    protected List<string> targetList;      // 보스 타겟 설정하는거
+    protected string getTarget => targetList[Random.Range(0, targetList.Count)];        // 타겟 렌덤
 
     // 공격 ======================================================================================================
     protected const int _annihilation = 99999;    // <! 전멸기
@@ -187,8 +192,8 @@ public class Boss : MonoBehaviour
             // this.transform.position -= new Vector3(1.8f, 0, 0);
         }
 
-        targetDistance = Vector3.Distance(_target.localPosition, this.transform.localPosition);
-        if (targetDistance > 4f)
+        _targetDistance = Vector3.Distance(_target.localPosition, this.transform.localPosition);
+        if (_targetDistance > 4f)
         {
             rigid.MovePosition(Vector3.MoveTowards(
                 this.transform.localPosition,
@@ -206,6 +211,14 @@ public class Boss : MonoBehaviour
             _baseUI.hpbar[0].fillAmount = Mathf.Lerp(_baseUI.hpbar[0].fillAmount, 0, 5 * Time.deltaTime);
         }
     }
+
+    protected void SendBossPattern(WAKGUI_ACTION action, string msg = "")
+    {
+        // 뒤에 추가로 데이터가 필요로 하지 않은 패턴은 msg를 공백으로 보내서 split을 줄임
+        // 만약 이거때문에 버그가 잦다면 붙여도 무관
+        NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0}{1}", (int)action, msg != "" ? ":" + msg : msg));
+    }
+
 
     public virtual void Raid_Start() { }
     public virtual void Action(string msg) { }
