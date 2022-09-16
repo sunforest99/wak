@@ -58,21 +58,31 @@ public class BossCollider : MonoBehaviour
         // Skill_disposable_me : 나의 일회용 스킬 공격 (분리된 것들)
         if (other.gameObject.CompareTag("Weapon") || other.gameObject.CompareTag("Weapon_disposable_me") || other.gameObject.CompareTag("Skill") || other.gameObject.CompareTag("Skill_disposable_me"))
         {
+            // 보스가 맞은게 공격인지 소환식 혹은 일반 스킬들인지 확인
+            SkillData skillData = other.gameObject.CompareTag("Weapon") ?
+                    Character.usingSkill : (other.gameObject.CompareTag("Skill") || other.gameObject.CompareTag("Skill_disposable_me")) ?
+                    GameMng.I.character.skilldatas[int.Parse(other.gameObject.name)] :
+                    null /* "Weapon_disposable_me" */;
+
             // 버프 존재하는 스킬에 맞은건지 확인 ======================================================================================================================
-            if (Character.usingSkill && Character.usingSkill.getBuffData && Character.usingSkill.getBuffData.isBossDebuf)
+            if (skillData && skillData.getBuffData && skillData.getBuffData.isBossDebuf)
             {
-                BuffActive(Character.usingSkill.getBuffData);
+                BuffActive(skillData.getBuffData);
             }
 
             // 크리티컬 계산 ==========================================================================================================================================
-            bool isCritical;
-            isCritical = CheckCritical();
+            bool isCritical = CheckCritical();
 
             // 타격 효과 ===============================================================================================================================================
             StartCoroutine(HitBlink());
-            MCamera.I.shake(5f, .1f);
+            if (skillData)
+                MCamera.I.shake(skillData.getIntensity, skillData.getShakeTime);
+            else if (GameMng.I.userData.job.Equals((int)JOB.WARRIER))
+                MCamera.I.shake(5, .1f);
+            else    // 법사 or 힐러 평타
+                MCamera.I.shake(4, .1f);
 
-            if (Character.usingSkill && Character.usingSkill.isBackAttackSkill)
+            if (skillData && skillData.isBackAttackSkill)
             {
                 // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 ===================================================================================================
                 if (this.transform.localRotation.y == 180 && this.transform.position.x + 1 > other.transform.parent.transform.position.x)
@@ -117,7 +127,7 @@ public class BossCollider : MonoBehaviour
             }
 
             // 평타면서 전사라면 공격 방향으로 밀려나는 효과 주기 ==========================================================================================================
-            if (!Character.usingSkill && GameMng.I.userData.job.Equals((int)JOB.WARRIER)) {
+            if (!skillData && GameMng.I.userData.job.Equals((int)JOB.WARRIER)) {
                 NetworkMng.I.SendMsg(string.Format("FORCE:{0}:{1}", this.transform.position.x < other.transform.parent.transform.position.x ? -2 : 2, -1.2f));
                 GameMng.I.character.addForceImpulse(new Vector3(this.transform.position.x < other.transform.parent.transform.position.x ? -2 : 2, 0, -1.2f));
             }
@@ -126,10 +136,7 @@ public class BossCollider : MonoBehaviour
             if (!boss.isAnnihilation)
             {
                 damageTemp = GameMng.I.getCharacterDamage(
-                    other.gameObject.CompareTag("Weapon") ? 
-                        Character.usingSkill : (other.gameObject.CompareTag("Skill") || other.gameObject.CompareTag("Skill_disposable_me")) ?
-                        GameMng.I.character.skilldatas[ int.Parse(other.gameObject.name) ] :
-                        null,       // "Weapon_disposable_me"
+                    skillData,
                     isCritical,
                     isBackAttack
                 );

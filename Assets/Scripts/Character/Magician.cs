@@ -11,8 +11,6 @@ public class Magician : Character
         _job = JOB.MAGICIAN;
         DASH_SPEED = 12;
         MOVE_SPEED = 9;
-        DASH_COOLTIME = 7;
-        WAKEUP_COOLTIME = 11;
 
         // if 이게 내꺼라면
         if (_isPlayer)
@@ -185,6 +183,11 @@ public class Magician : Character
 
     void settingStat()
     {
-        _stat = new Stat(1000000, 2000000, 1, 1, 1, 1, 10, 1.2f);
+        _stat = new Stat(
+            1       /* 받는 피해량 퍼센트 */,
+            7       /* 대쉬 쿨타임 */,
+            11      /* 기상기 쿨타임 */,
+            9       /* 이동 속도 */
+        );
     }
 }

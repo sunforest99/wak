@@ -9,8 +9,6 @@ public class Warrier : Character
         _job = JOB.WARRIER;
         DASH_SPEED = 12;
         MOVE_SPEED = 8;
-        DASH_COOLTIME = 6;
-        WAKEUP_COOLTIME = 10;
 
         // if 이게 내꺼라면
         if (_isPlayer)
@@ -76,6 +74,11 @@ public class Warrier : Character
 
     void settingStat()
     {
-        _stat = new Stat(1000000, 2000000, 1, 1, 1, 1, 10, 1.2f);
+        _stat = new Stat(
+            1       /* 받는 피해량 퍼센트 */,
+            8       /* 대쉬 쿨타임 */,
+            12      /* 기상기 쿨타임 */,
+            10      /* 이동 속도 */
+        );
     }
 }

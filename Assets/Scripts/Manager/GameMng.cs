@@ -140,11 +140,10 @@ public class GameMng : MonoBehaviour
         if (usingSkill)        // <! 스킬 대미지
             return usingSkill.CalcSkillDamage(
                 isCrital, isBackAttack,
-                Character._stat.minDamage, Character._stat.maxDamage, Character._stat.incDamagePer, Character._stat.criticalPer, Character._stat.incBackattackPer
+                Character._stat.minDamage, Character._stat.maxDamage, Character._stat.incBackattackPer
             );
         else        // <! 평타 데미지
-            return 20000;
-        // Random.Range(Character._stat.minDamage, Character._stat.maxDamage);
+            return Random.Range(Character._stat.minDamage / 20, Character._stat.maxDamage / 20);
     }
 
 

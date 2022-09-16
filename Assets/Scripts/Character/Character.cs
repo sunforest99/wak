@@ -3,76 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public enum CHARACTER_ACTION
-{
-    IDLE,                   // 일반 상태, 움직이거나 스킬 사용이 가능한 상태
-    CANT_ANYTHING,          // 스킬 쓰는 상태, 아무것도 못함
-    SLEEP_CANT_ANYTHING,    // 기절 상태, 기상기 외에는 아무것도 못함
-    ATTACK_CANT_ANYTHING,   // 기본 공격, 연속 기본공격 입력외에는 아무것도 못함
-    CAN_MOVE                // 스킬 쓰는 상태, 캔슬이 가능한 상태
-}
-
-public struct Stat
-{
-    public Stat(int minDamage, int maxDamage,
-    float incDamagePer, float takenDamagePer, float moveSpeedPer, float takenHealPer, float criticalPer, float incBackattackPer)
-    {
-        this.minDamage = minDamage;
-        this.maxDamage = maxDamage;
-        this.incDamagePer = incDamagePer;
-        this.takenDamagePer = takenDamagePer;
-        this.moveSpeedPer = moveSpeedPer;
-        this.takenHealPer = takenHealPer;
-        this.criticalPer = criticalPer;
-        this.incBackattackPer = incBackattackPer;
-
-
-        // 장착중인 무기, 장비에 따라 추가 스탯 변동 일어나게
-        // if (GameMng.I.userData.character.weapon)
-    }
-    public int minDamage, maxDamage;    // 실 최소 ~ 최대 데미지
-    public float incDamagePer;          // 공격력 증가 퍼센트
-    public float takenDamagePer;        // 받는 피해량 퍼센트
-    public float moveSpeedPer;          // 이동 속도 퍼센트
-    public float takenHealPer;          // 받는 회복량 퍼센트
-    public float criticalPer;           // 치명타 확률  ex) 값이 10이라면 10%
-    public float incBackattackPer;      // 백어택 증가량 퍼센트  ex) 1.2 라면  데미지 120%
-}
-
-public enum SKILL_CODE
-{
-    SKILL_1,
-    SKILL_2,
-    SKILL_3,
-    SKILL_4,
-    SKILL_5,
-    DASH,
-    WAKEUP,
-    ATTACK
-}
-
-public enum Skill_TREE
-{
-    // 데미지
-    DAMAGE_1, DAMAGE_2, DAMAGE_3,
-    CRITICAL_PER_1, CRITICAL_PER_2, CRITICAL_PER_3,
-    INC_BACK_1, INC_BACK_2, INC_BACK_3,
-    // 강인함
-    TAKEN_1, TAKEN_2, TAKEN_3,
-    HP_1, HP_2, HP_3,
-    HEAL_1, HEAL_2, HEAL_3,
-    // 기민함
-    SPEED_1, SPEED_2, SPEED_3,
-    DASH_1, DASH_2, DASH_3,
-    WAKEUP_1, WAKEUP_2, WAKEUP_3,
-    // 능력
-    SKILL_0_COOL_0, SKILL_0_COOL_1, SKILL_0_DMG_0, SKILL_0_DMG_1,
-    SKILL_1_COOL_0, SKILL_1_COOL_1, SKILL_1_DMG_0, SKILL_1_DMG_1,
-    SKILL_2_COOL_0, SKILL_2_COOL_1, SKILL_2_DMG_0, SKILL_2_DMG_1,
-    SKILL_3_COOL_0, SKILL_3_COOL_1, SKILL_3_DMG_0, SKILL_3_DMG_1,
-    SKILL_4_COOL_0, SKILL_4_COOL_1, SKILL_4_DMG_0, SKILL_4_DMG_1
-}
-
 public class Character : MonoBehaviour
 {
     // 캐릭터 ====================================================================================================
@@ -92,8 +22,8 @@ public class Character : MonoBehaviour
     public static Stat _stat;
     protected float DASH_SPEED = 20;
     protected float MOVE_SPEED = 5;
-    protected static float DASH_COOLTIME = 3;
-    protected static float WAKEUP_COOLTIME = 10;
+    // protected static float DASH_COOLTIME = 3;
+    // protected static float WAKEUP_COOLTIME = 10;
 
     // 행동 ======================================================================================================
     Vector3 _moveDir;       // 캐릭터 움직이는 방향
@@ -168,13 +98,13 @@ public class Character : MonoBehaviour
         if (skillnum == 5)
         {
             GameMng.I.skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
-            cooltime = DASH_COOLTIME;
+            cooltime = _stat.dashCool;
         }
         // 기상기
         else if (skillnum == 6)
         {
             GameMng.I.skill_Img[skillnum].transform.parent.gameObject.SetActive(true);
-            cooltime = WAKEUP_COOLTIME;
+            cooltime = _stat.wakeUpCool;
         }
         // 스킬
         else
