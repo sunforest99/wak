@@ -5,7 +5,7 @@ using UnityEngine;
 public class SeaDu_New : Monster
 {
     [SerializeField] GameObject skill_0_prefab;         // 대각선으로 지면에서 뿔 생성하는 스킬
-    GameObject skill_0_pool_parent;
+    public GameObject skill_0_pool_parent;
     List<GameObject>    skill_0_pool_lu = new List<GameObject>(), skill_0_pool_ld = new List<GameObject>(),
                         skill_0_pool_ru = new List<GameObject>(), skill_0_pool_rd = new List<GameObject>();
 
@@ -20,7 +20,7 @@ public class SeaDu_New : Monster
         ATTACK_DAMAGE = 1000;
         SKILL_0_DAMAGE = 2000;
 
-        skill_0_pool_parent = Instantiate(new GameObject("pool"));
+        skill_0_pool_parent = new GameObject("pool");
         int i = 0;
         while (i++ < 5)
         {
@@ -114,6 +114,7 @@ public class SeaDu_New : Monster
     }
 
     protected override void OnDestroy() {
+        base.OnDestroy();
         Destroy(skill_0_pool_parent.gameObject);
     }
 }

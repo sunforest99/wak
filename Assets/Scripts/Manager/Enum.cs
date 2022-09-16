@@ -3,19 +3,22 @@
 // =====================================================
 public enum ITEM_TYPE
 {
-    CONSUMABLE_ITEM,            // 사용 아이템
+    BATTLE_ITEM,                // 배틀 아이템
     WEAPON_ITEM,                // 장비 아이템 - 무기
     HEAD_ITEM,                  // 장비 아이템 - 머리
-    BATTLE_ITEM,                // 배틀 아이템
-    UNUSEFUL_ITEM               // 무쓸모 아이템 - 잡템
+    FAVORITE_ITEM,              // NPC 호감도 아이템
+    UNUSEFUL_ITEM,              // 무쓸모 아이템 - 잡템
+    CONSUMABLE_ITEM,            // 사용 아이템
 }
 
 public enum ITEM_INDEX
 {
-    POTION = 0,
+    _BATTLE_ITEM_INDEX_ = 0,
+    POTION,
     CLEANSER,
     SPEEDUP,
-    WEAPON_ITEM_INDEX,
+
+    _WEAPON_ITEM_INDEX_ = 100,
     STICK,
     BROOM,
     BAT,
@@ -26,7 +29,29 @@ public enum ITEM_INDEX
     STAFF,
     ROSE,
     SWORD,
-    CONSUMABLE_ITEM_INDEX,
+
+    _FAVORITE_ITEM_INDEX_ = 200,
+    SCIENCE_AWARD,
+    LANOVEL,
+    AIR,
+    FISH,
+    MAGIC_WAND,
+    WINE,
+    NINJA,
+    HAIR_ROLE,
+    KANOLAYU,
+    YANG_GANG,
+    STORYBOOK,
+    DRAGON_BALL,
+    MONEY,
+    MOVEY_DVD,
+    ARMY,
+    TOOTH,
+    DONGGASSE,
+    SWIP_SHIRT,
+    ROBOT,
+
+    _CONSUMABLE_ITEM_INDEX_ = 300,
     REDMUSHROOM,
     NONE
 }
@@ -53,6 +78,17 @@ public enum JOB
     WARRIER,        // 전사
     MAGICIAN,       // 법사
     HEALER          // 힐러
+}
+
+public enum NPC
+{
+    BUJUNG,         // 부정형
+    CHUNSIK,        // 곽춘식
+    GWONMIN,        // 권민
+    MANDOO,         // 김치만두
+    BUG,            // 단답벌레
+    WAKPAGO,        // 왁파고
+    __NONE__
 }
 
 [System.Serializable]

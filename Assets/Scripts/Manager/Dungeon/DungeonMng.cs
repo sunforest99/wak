@@ -29,7 +29,9 @@ public class DungeonMng : MonoBehaviour
 
     [Space(20)][Header("[  던전 공용 프리팹  ]")]  // ==========================================================================================================================
     [SerializeField] protected GameObject purpleLight;                  // 몬스터 강화 오브젝트
-
+    [SerializeField] protected GameObject[] npc = new GameObject[6];    // 던전에서 획득 가능한 NPC들, (enum.cs 의 NPC 와 순서가 같아야함)
+    [SerializeField] protected GameObject campFire;                     // 휴식 오브젝트
+    [SerializeField] protected GameObject npc_shop;                     // 상점 npc  (소피아(왁귀) | 캘리칼리(계륵))
 
     void Start()
     {
@@ -55,26 +57,32 @@ public class DungeonMng : MonoBehaviour
     void initDungeon()
     {
         _leftMonster = 0;
-        getNextWall.SetActive(false);
-        
+        campFire.SetActive(false);
+        npc_shop.SetActive(false);
+
         if (_dungeon_Type.Equals(DUNGEON_TYPE.RANDOM))
             _dungeon_Type = randomDungeon();
         
         switch (_dungeon_Type)
         {
             case DUNGEON_TYPE.MONSTER:
+                getNextWall.SetActive(true);
                 dungeonMonster();
                 break;
             case DUNGEON_TYPE.MONSTER_PURPLER:
+                getNextWall.SetActive(true);
                 dungeonMonsterPurple();
                 break;
             case DUNGEON_TYPE.NPC:
+                getNextWall.SetActive(false);
                 dungeonNPC();
                 break;
             case DUNGEON_TYPE.REST:
-                dungeonReset();
+                getNextWall.SetActive(false);
+                dungeonRest();
                 break;
             case DUNGEON_TYPE.SHOP:
+                getNextWall.SetActive(false);
                 dungeonShop();
                 break;
         }
@@ -126,13 +134,15 @@ public class DungeonMng : MonoBehaviour
     protected virtual void dungeonMonster() {}
     protected virtual void dungeonMonsterPurple() {}
     protected virtual void dungeonNPC() {}
-    protected virtual void dungeonReset() {}
+    protected virtual void dungeonRest() {}
     protected virtual void dungeonShop() {}
     protected virtual void dungeonRandom() {}
 
     public static void monsterDie()
     {
         _leftMonster--;
+        
+        Debug.Log(_leftMonster);
 
         if (_leftMonster.Equals(0))
         {

@@ -12,6 +12,7 @@ public class NextDungeonDoor : MonoBehaviour
             _mapUI.SetActive(true);
 
             GameMng.I.character.transform.parent.position = Vector3.zero;
+            GameMng.I.character.setStopAndReset();
 
             GameMng.I._keyMode = KEY_MODE.UI_MODE;
         }

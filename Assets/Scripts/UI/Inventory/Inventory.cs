@@ -74,9 +74,13 @@ public class Inventory : MonoBehaviour
         createSlot(itemtype);
         getSlots(kind);
         if (Character.haveItem[kind].Count == 0)
+        {
+            Debug.Log("NO ITEM");
             contentOnOff(false);
+        }
         else
         {
+            Debug.Log(Character.haveItem[kind].Count);
             contentOnOff(true);
             contentSet(getActiveObject().itemData);
             getClickIndex = getActiveObject().itemData.itemIndex;

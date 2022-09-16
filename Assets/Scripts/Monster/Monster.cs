@@ -85,9 +85,10 @@ public class Monster : MonoBehaviour
         // 퍼플라이트 맵에서 생성되었을때
         if (DungeonMng._dungeon_Type.Equals(DUNGEON_TYPE.MONSTER_PURPLER))
         {
-            // TODO : 몬스터 강화
             _hp *= 2;
-            
+            _fullHp *= 2;
+            ATTACK_DAMAGE = Mathf.FloorToInt(ATTACK_DAMAGE * 1.5f);
+            SKILL_0_DAMAGE = Mathf.FloorToInt(SKILL_0_DAMAGE * 1.5f);
         }
     }
 
@@ -372,7 +373,7 @@ public class Monster : MonoBehaviour
             // 평타면서 전사라면 공격 방향으로 밀려나는 효과 주기 ==========================================================================================================
             if (!skillData && GameMng.I.userData.job.Equals((int)JOB.WARRIER))
             {
-                NetworkMng.I.SendMsg(string.Format("FORCE:{0}:{1}", this.transform.position.x < other.transform.parent.transform.position.x ? -2 : 2, -1.2f));
+                // NetworkMng.I.SendMsg(string.Format("FORCE:{0}:{1}", this.transform.position.x < other.transform.parent.transform.position.x ? -2 : 2, -1.2f));
                 GameMng.I.character.addForceImpulse(new Vector3(this.transform.position.x < other.transform.parent.transform.position.x ? -2 : 2, 0, -1.2f));
             }
 
@@ -388,8 +389,7 @@ public class Monster : MonoBehaviour
                 damageTemp,
                 isCritical
             );
-            NetworkMng.I.SendMsg(string.Format("DAMAGE:{0}:{1}", this.transform.name, damageTemp));
-            // boss._nestingHp -= damageTemp;
+            // NetworkMng.I.SendMsg(string.Format("DAMAGE:{0}:{1}", this.transform.name, damageTemp));
 
             getDamage(damageTemp);
         }

@@ -11,7 +11,9 @@ public class Npcdata : MonoBehaviour
     [SerializeField] TMPro.TextMeshPro speechTxt;
     [SerializeField] GameObject speechBG;
     // public GameObject tempDialog;     // <! 이름 바꾸기
-
+    
+    public ITEM_INDEX favoriteItem;         // 호감도 아이템
+    
     public IEnumerator dialogs = null;
 
     [SerializeField]

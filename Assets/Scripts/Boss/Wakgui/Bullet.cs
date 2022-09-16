@@ -19,9 +19,13 @@ public class Bullet : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Character"))
+        if (other.CompareTag("Player"))
         {
             GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+            ActiveFalse();
+        }
+        else if (other.CompareTag("Character"))
+        {
             ActiveFalse();
         }
         else if (other.CompareTag("Map_Wall"))

@@ -138,9 +138,6 @@ MonoBehaviour:
   _anim: {fileID: 1475975878}
   _body: {fileID: 6633882295015727361}
   _rigidbody: {fileID: 6633882294574003823}
-  materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  - {fileID: 2100000, guid: 25d24d5ecebdf4249b92c2b40e3917ed, type: 2}
   render:
   - {fileID: 6633882294897117206}
   - {fileID: 6633882294819101798}
@@ -148,6 +145,7 @@ MonoBehaviour:
   - {fileID: 6633882294649476206}
   hpbar: {fileID: 6633882296014717143}
   skill_0_prefab: {fileID: 8853797046772262730, guid: 088a8dfac20e3a4419b3901cc65529ac, type: 3}
+  skill_0_pool_parent: {fileID: 0}
 --- !u!65 &6633882294574003816
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -470,9 +468,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6633882294923249859}
   - component: {fileID: 6633882294923249884}
-  m_Layer: 10
-  m_Name: Attack_Collider
-  m_TagString: Untagged
+  - component: {fileID: 942157350}
+  m_Layer: 0
+  m_Name: SeaDu_New_Attack
+  m_TagString: Monster_Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -500,11 +499,23 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6633882294923249858}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &942157350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6633882294923249858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e32e942bd548148a8f772986b425cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6633882295015727371
 GameObject:
   m_ObjectHideFlags: 0

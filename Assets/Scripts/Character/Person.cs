@@ -13,7 +13,12 @@ public class Person : Character
         // DASH_COOLTIME = 6;
         // WAKEUP_COOLTIME = 10;
     
-        _stat = new Stat(100, 100, 1, 1, 1, 1, 15, 1);
+        _stat = new Stat(
+            1       /* 받는 피해량 퍼센트 */,
+            5       /* 대쉬 쿨타임 */,
+            10      /* 기상기 쿨타임 */,
+            9       /* 이동 속도 */
+        );
     }
     
 }

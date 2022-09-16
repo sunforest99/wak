@@ -22,30 +22,30 @@ public class SkillUI : MonoBehaviour
         }
     }
 
-    bool CheckSkillLevel() => GameMng.I.character.skilldatas[currentSkillIndex].skillLevel >= 1 &&
-    GameMng.I.character.skilldatas[currentSkillIndex].skillLevel <= 3 ? true : false;
+    // bool CheckSkillLevel() => GameMng.I.character.skilldatas[currentSkillIndex].skillLevel >= 1 &&
+    // GameMng.I.character.skilldatas[currentSkillIndex].skillLevel <= 3 ? true : false;
 
-    public void ClickSkill(int num)
-    {
-        currentSkillIndex = num;
-        skillLevel.text = GameMng.I.character.skilldatas[num].skillLevel.ToString();
-    }
+    // public void ClickSkill(int num)
+    // {
+    //     currentSkillIndex = num;
+    //     skillLevel.text = GameMng.I.character.skilldatas[num].skillLevel.ToString();
+    // }
 
-    public void SkillLevelUp()
-    {
-        if (GameMng.I.character.skilldatas[currentSkillIndex].skillLevel < 3)
-        {
-            GameMng.I.character.skilldatas[currentSkillIndex].skillLevel++;
-            skillLevel.text = GameMng.I.character.skilldatas[currentSkillIndex].skillLevel.ToString();
-        }
-    }
+    // public void SkillLevelUp()
+    // {
+    //     if (GameMng.I.character.skilldatas[currentSkillIndex].skillLevel < 3)
+    //     {
+    //         GameMng.I.character.skilldatas[currentSkillIndex].skillLevel++;
+    //         skillLevel.text = GameMng.I.character.skilldatas[currentSkillIndex].skillLevel.ToString();
+    //     }
+    // }
 
-    public void SkillLevelDown()
-    {
-        if (GameMng.I.character.skilldatas[currentSkillIndex].skillLevel > 1)
-        {
-            GameMng.I.character.skilldatas[currentSkillIndex].skillLevel--;
-            skillLevel.text = GameMng.I.character.skilldatas[currentSkillIndex].skillLevel.ToString();
-        }
-    }
+    // public void SkillLevelDown()
+    // {
+    //     if (GameMng.I.character.skilldatas[currentSkillIndex].skillLevel > 1)
+    //     {
+    //         GameMng.I.character.skilldatas[currentSkillIndex].skillLevel--;
+    //         skillLevel.text = GameMng.I.character.skilldatas[currentSkillIndex].skillLevel.ToString();
+    //     }
+    // }
 }

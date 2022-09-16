@@ -8,7 +8,15 @@ public class SeaDu_Bullet : MonoBehaviour
 
     [SerializeField] float speed = 6.0f;
 
-    public int damage = 1;
+    int damage = 2000;
+
+    void Start()
+    {   
+        if (DungeonMng._dungeon_Type.Equals(DUNGEON_TYPE.MONSTER_PURPLER))
+        {
+            damage *= Mathf.FloorToInt(damage * 1.5f);
+        }
+    }
 
     public void setVelocity() {
         _rigidbody.velocity = transform.TransformDirection(Vector3.right * speed);
@@ -16,9 +24,13 @@ public class SeaDu_Bullet : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Character"))
+        if (other.CompareTag("Player"))
         {
             GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+            ActiveFalse();
+        }
+        else if (other.CompareTag("Character"))
+        {
             ActiveFalse();
         }
         else if (other.CompareTag("Map_Wall"))
