@@ -23901,7 +23901,9 @@ MonoBehaviour:
     sub_quest: []
     quest_done: 
     slot: 
-    level: 10
+    upgrade: 
+    love: 0
+    npc: 
   stateMng: {fileID: 158263597}
   character: {fileID: 0}
   characterPrefab:
@@ -30017,6 +30019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64135f9b000f16a458407b8f72c36f81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvas: {fileID: 0}
   dialogUI: {fileID: 1958228122}
   npcSelectUI: {fileID: 19364683}
 --- !u!114 &1783328712
@@ -36043,6 +36046,10 @@ PrefabInstance:
     - target: {fileID: 8004185915449101094, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
       propertyPath: m_Name
       value: Boss_Wakgui
+      objectReference: {fileID: 0}
+    - target: {fileID: 8734851997878533910, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
+      propertyPath: m_TagString
+      value: Boss_Weapon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
