@@ -4,12 +4,22 @@ using UnityEngine;
 
 public class Healer : Character
 {
+    GameObject fanservice;
+
     public override void init()
     {
         _job = JOB.HEALER;
         DASH_SPEED = 12;
         MOVE_SPEED = 9;
         
+        fanservice = Instantiate(GameMng.I.healerSkillPrefab[3], Vector3.zero, Quaternion.Euler(90, 0, 0));
+        fanservice.GetComponent<FanService>().parent = this.transform.parent;
+        if (_isPlayer)
+        {
+            fanservice.tag = "Skill";
+            fanservice.name = "4";
+        }
+
         // if 이게 내꺼라면
         if (_isPlayer)
             settingStat();        
@@ -133,6 +143,9 @@ public class Healer : Character
     }
     public override void skill_5(Vector2 skillPos, bool isMe = false)
     {
+        fanservice.transform.position = new Vector3(transform.parent.position.x, -0.199f, transform.parent.position.z);
+        fanservice.SetActive(true);
+
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Music");
     }

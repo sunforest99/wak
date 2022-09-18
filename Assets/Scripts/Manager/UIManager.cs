@@ -74,8 +74,6 @@ public class UIManager : MonoBehaviour
             // if (Physics.Raycast(ray.origin, ray.direction * 10000, out hit)) {
                 if (hit.transform.CompareTag("Npc"))        // NPC 우선순위
                 {
-                    Debug.Log("NPC CLICK");
-
                     if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 2)
                     {
                         // 저장된 dialog 실행
@@ -142,7 +140,19 @@ public class UIManager : MonoBehaviour
                     GameMng.I.createPing(hit.point + new Vector3(0, 0.54f, 0));
                     NetworkMng.I.SendMsg(string.Format("PING:{0}:{1}:{2}", hit.point.x, hit.point.y, hit.point.z + 0.54f));
                 }
-
+                else if (hit.transform.CompareTag("Build"))
+                {
+                    if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 2)
+                    {
+                        hit.transform.GetComponent<Build>().activeBuild();
+                        GameMng.I._keyMode = KEY_MODE.UI_MODE;
+                    }
+                    else
+                    {
+                        GameMng.I.showNotice("거리가 너무 멉니다.");
+                    }
+                    return;
+                }
                 selectPlayerName.transform.parent.gameObject.SetActive(false);
             }
         }  

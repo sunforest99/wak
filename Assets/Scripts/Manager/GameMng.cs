@@ -14,6 +14,7 @@ public enum EFF_TYPE
 {
     EFF,
     BACK_EFF,
+    TAKEN_EFF,
     REMOVE_EFF
 }
 
@@ -75,9 +76,11 @@ public class GameMng : MonoBehaviour
     public Transform damageEff;         // 데미지 량 띄워주는 이펙트
     public GameObject eff;              // 일반 이펙트
     public GameObject backEff;          // 백어텍 이펙트
+    public GameObject takenEff;         // 받는 피해 이펙트
     public GameObject removeEff;        // 사라지는 이펙트
     public Queue<GameObject> effPool = new Queue<GameObject>();         // 일반 이펙트 풀
     public Queue<GameObject> backEffPool = new Queue<GameObject>();     // 백어택 이펙트 풀
+    public Queue<GameObject> takenEffPool = new Queue<GameObject>();    // 내가 데미지 입는 이펙트 풀
     public Queue<GameObject> removeEffPool = new Queue<GameObject>();   // 사라지는 이펙트 풀
     public Material[] materials = new Material[2];
 
@@ -357,12 +360,16 @@ public class GameMng : MonoBehaviour
     {
         effPool.Clear();
         removeEffPool.Clear();
+        takenEffPool.Clear();
         backEffPool.Clear();
-        for (int i = 0; i < 10; i++)
+        // 마을에서는 생성 안함
+        if (!NetworkMng.I.myRoom.Equals(ROOM_CODE.HOME))
         {
-            // 마을에서는 생성 안함
-            if (!NetworkMng.I.myRoom.Equals(ROOM_CODE.HOME))
+            for (int i = 0; i < 5; i++)
             {
+                takenEffPool.Enqueue(
+                    Instantiate(takenEff, Vector3.zero, Quaternion.Euler(20, 0, 0))
+                );
                 effPool.Enqueue(
                     Instantiate(eff, Vector3.zero, Quaternion.Euler(20, 0, 0))
                 );
@@ -371,6 +378,9 @@ public class GameMng : MonoBehaviour
                         Instantiate(backEff, Vector3.zero, Quaternion.Euler(20, 0, 0))
                     );
             }
+        }
+        for (int i = 0; i < 10; i++)
+        {
             removeEffPool.Enqueue(
                 Instantiate(removeEff, Vector3.zero, Quaternion.Euler(20, 0, 0))
             );
@@ -393,6 +403,12 @@ public class GameMng : MonoBehaviour
                 else
                     obj = Instantiate(backEff, Vector3.zero, Quaternion.Euler(20, 0, 0));
                 break;
+            case EFF_TYPE.TAKEN_EFF:
+                if (takenEffPool.Count > 0)
+                    obj = takenEffPool.Dequeue();
+                else
+                    obj = Instantiate(takenEff, Vector3.zero, Quaternion.Euler(20, 0, 0));
+                break;
             default:
                 if (removeEffPool.Count > 0)
                     obj = removeEffPool.Dequeue();
@@ -414,6 +430,9 @@ public class GameMng : MonoBehaviour
                 break;
             case EFF_TYPE.BACK_EFF:
                 backEffPool.Enqueue(obj);
+                break;
+            case EFF_TYPE.TAKEN_EFF:
+                takenEffPool.Enqueue(obj);
                 break;
             default:
                 removeEffPool.Enqueue(obj);
