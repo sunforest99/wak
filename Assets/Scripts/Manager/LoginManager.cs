@@ -8,6 +8,8 @@ public class Character_Schema {
     public int hair;
     public int face;
     public int weapon;
+    public int shirts;
+    public int pants;
 }
 [System.Serializable] 
 public class Item_Schema {

@@ -157,7 +157,7 @@ public class Inventory : MonoBehaviour
             slotTemp.transform.parent = inventoryBase[kind].transform;
             slotTemp.transform.SetAsLastSibling();
             slotTemp.inventorySc = this;
-            if (slotTemp.itemData.itemType != ITEM_TYPE.WEAPON_ITEM && slotTemp.itemData.itemType != ITEM_TYPE.HEAD_ITEM)
+            if (slotTemp.itemData.itemType != ITEM_TYPE.WEAPON_ITEM && slotTemp.itemData.itemType != ITEM_TYPE.SHIRTS_ITEM && slotTemp.itemData.itemType != ITEM_TYPE.PANTS_ITEM)
             {
                 slotTemp.text_Count.gameObject.SetActive(true);
                 slotTemp.text_Count.text = "x" + Character.haveItem[kind][i].itemCount.ToString();
