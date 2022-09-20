@@ -33,6 +33,14 @@ public class ActiveSelf : MonoBehaviour
     /*
      * @breif 사라지는 이펙트가 active false 할때 사용 (풀에 다시 넣는 용도)
      */
+    public void ActiveOffTakenEffPool()
+    {
+        GameMng.I.endEff(EFF_TYPE.TAKEN_EFF, this.gameObject);
+    }
+
+    /*
+     * @breif 사라지는 이펙트가 active false 할때 사용 (풀에 다시 넣는 용도)
+     */
     public void ActiveOffRemoveEffPool()
     {
         GameMng.I.endEff(EFF_TYPE.REMOVE_EFF, this.gameObject);

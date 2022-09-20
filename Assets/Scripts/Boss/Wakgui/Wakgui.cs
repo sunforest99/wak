@@ -82,6 +82,7 @@ public class Wakgui : Boss
     {
         base.BossInitialize();
         GameMng.I.boss = this;
+        base._minDistance = 4.0f;
 
         if (NetworkMng.I.roomOwner)
         {
@@ -108,11 +109,13 @@ public class Wakgui : Boss
     {
         if (_currentHp >= 0)
         {
+            _targetDistance = Vector3.Distance(_target.position, this.transform.position);
+            
             base.ChangeHpbar();
             base.RaidTimer();
             base.ChangeHpText();
 
-            if(base._targetDistance < 6f && !isThink)
+            if(base._targetDistance < 6f && !isThink && _target != null)
             {
                 Think();
             }
@@ -138,7 +141,7 @@ public class Wakgui : Boss
                 }
                 if (NetworkMng.I.roomOwner)
                 {
-                    SendBossPattern(WAKGUI_ACTION.PATTERN_CIRCLE, Random.Range(0, 6).ToString() + ":" +
+                    SendBossPattern((int)WAKGUI_ACTION.PATTERN_CIRCLE, Random.Range(0, 6).ToString() + ":" +
                     visit[0] + ":" + visit[1] + ":" + visit[2] + ":" + visit[3]);
                 }
                 // StopCoroutine(Action());
@@ -150,7 +153,7 @@ public class Wakgui : Boss
                 checkOutcast = true;
                 _isAnnihilation = true;
                 if (NetworkMng.I.roomOwner)
-                    SendBossPattern(WAKGUI_ACTION.PATTERN_OUTCAST, Random.Range(0, 4).ToString());
+                    SendBossPattern((int)WAKGUI_ACTION.PATTERN_OUTCAST, Random.Range(0, 4).ToString());
                 // StopCoroutine(Action());
             }
         }
@@ -176,23 +179,23 @@ public class Wakgui : Boss
                 switch (pattern_rand)
                 {
                     case (int)WAKGUI_ACTION.IDLE:
-                        SendBossPattern(WAKGUI_ACTION.IDLE, getTarget);
+                        SendBossPattern((int)WAKGUI_ACTION.IDLE, getTarget);
                         // SendBossPattern(WAKGUI_ACTION.IDLE,  /*타겟의 uniqueNumber*/));
                         break;
                     case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기
-                        SendBossPattern(WAKGUI_ACTION.BASE_STAP);
+                        SendBossPattern((int)WAKGUI_ACTION.BASE_STAP);
                         baseAttackCount++;
                         break;
                     case (int)WAKGUI_ACTION.BASE_SLASH:      // <! 내려찍기
-                        SendBossPattern(WAKGUI_ACTION.BASE_SLASH);
+                        SendBossPattern((int)WAKGUI_ACTION.BASE_SLASH);
                         baseAttackCount++;
                         break;
                     case (int)WAKGUI_ACTION.BASE_ROAR:      // <! 포효
-                        SendBossPattern(WAKGUI_ACTION.BASE_ROAR);
+                        SendBossPattern((int)WAKGUI_ACTION.BASE_ROAR);
                         baseAttackCount++;
                         break;
                     case (int)WAKGUI_ACTION.BASE_RUSH:      // <! 돌진
-                        SendBossPattern(WAKGUI_ACTION.BASE_RUSH);
+                        SendBossPattern((int)WAKGUI_ACTION.BASE_RUSH);
                         baseAttackCount++;
                         break;
                 }
@@ -205,21 +208,21 @@ public class Wakgui : Boss
                 switch (pattern_rand)
                 {
                     case (int)WAKGUI_ACTION.PATTERN_POO:      // <! 똥 생성
-                        SendBossPattern(WAKGUI_ACTION.PATTERN_POO);
+                        SendBossPattern((int)WAKGUI_ACTION.PATTERN_POO);
                         baseAttackCount = 0;
                         break;
                     case (int)WAKGUI_ACTION.PATTERN_KNIFE:      // <! 칼날 찌르기
                         BaseMakeMsg(_maxKnife, WAKGUI_ACTION.PATTERN_KNIFE);
-                        SendBossPattern(WAKGUI_ACTION.PATTERN_KNIFE, messageElement.ToString());               // TODO, 뒤에 칼날 생성될 위치,각도를 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
+                        SendBossPattern((int)WAKGUI_ACTION.PATTERN_KNIFE, messageElement.ToString());               // TODO, 뒤에 칼날 생성될 위치,각도를 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
                         baseAttackCount = 0;
                         break;
                     case (int)WAKGUI_ACTION.PATTERN_JUMP:      // <! 점프 공격
-                        SendBossPattern(WAKGUI_ACTION.PATTERN_JUMP);                     // TODO, 뒤에 점프 공격할 대상의 uniqueNumber 보내줘야함.
+                        SendBossPattern((int)WAKGUI_ACTION.PATTERN_JUMP);                     // TODO, 뒤에 점프 공격할 대상의 uniqueNumber 보내줘야함.
                         baseAttackCount = 0;
                         break;
                     case (int)WAKGUI_ACTION.PATTERN_CRISTAL:      // <! 수정 생성
                         BaseMakeMsg(_maxCristal, WAKGUI_ACTION.PATTERN_CRISTAL);
-                        SendBossPattern(WAKGUI_ACTION.PATTERN_CRISTAL, messageElement.ToString());         // TODO, 뒤에 수정 생성될 위치 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
+                        SendBossPattern((int)WAKGUI_ACTION.PATTERN_CRISTAL, messageElement.ToString());         // TODO, 뒤에 수정 생성될 위치 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
                         baseAttackCount = 0;
                         break;
                     case (int)WAKGUI_ACTION.PATTERN_WAVE:      // <! 파도
@@ -230,11 +233,11 @@ public class Wakgui : Boss
                             if (i != _maxWave - 1)
                                 messageElement.Append(":");
                         }
-                        SendBossPattern(WAKGUI_ACTION.PATTERN_WAVE, messageElement.ToString());            // TODO, 뒤에 파도 생성될 위치,방향 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
+                        SendBossPattern((int)WAKGUI_ACTION.PATTERN_WAVE, messageElement.ToString());            // TODO, 뒤에 파도 생성될 위치,방향 한번에 보내주는것이 가장 좋음. 아니라면 일일이 데이터 새로 보내야함
                         baseAttackCount = 0;
                         break;
                     case (int)WAKGUI_ACTION.PATTERN_COUNTER:      // <! 반격기
-                        SendBossPattern(WAKGUI_ACTION.PATTERN_COUNTER);
+                        SendBossPattern((int)WAKGUI_ACTION.PATTERN_COUNTER);
                         baseAttackCount = 0;
                         break;
                 }
@@ -296,7 +299,7 @@ public class Wakgui : Boss
 
         if (NetworkMng.I.roomOwner)
         {
-            SendBossPattern(WAKGUI_ACTION.IDLE, NetworkMng.I.uniqueNumber);
+            SendBossPattern((int)WAKGUI_ACTION.IDLE, NetworkMng.I.uniqueNumber);
         }
         // StartCoroutine(Think());
     }
@@ -310,6 +313,7 @@ public class Wakgui : Boss
                 // SendBossPattern(WAKGUI_ACTION.IDLE,  /*타겟의 uniqueNumber*/));
                 // Action();
                 _target = NetworkMng.I.v_users[txt[2]].transform.parent;
+                isThink = false;
                 // StartCoroutine(Think());
                 break;
             case (int)WAKGUI_ACTION.BASE_STAP:      // <! 찌르기

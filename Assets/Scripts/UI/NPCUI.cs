@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 public class NPCUI : MonoBehaviour
 {
     [SerializeField] Canvas _canvas;
-    
+    public GameObject _startLoad;
+
     public DialogUI dialogUI;
     public GameObject npcSelectUI;
 

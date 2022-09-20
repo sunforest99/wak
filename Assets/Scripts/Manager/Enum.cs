@@ -4,9 +4,13 @@
 public enum ITEM_TYPE
 {
     BATTLE_ITEM,                // 배틀 아이템
+
     WEAPON_ITEM,                // 장비 아이템 - 무기
-    HEAD_ITEM,                  // 장비 아이템 - 머리
+    SHIRTS_ITEM,                // 장비 아이템 - 머리
+    PANTS_ITEM,                 // 장비 아이템 - 하의
+
     FAVORITE_ITEM,              // NPC 호감도 아이템
+
     UNUSEFUL_ITEM,              // 무쓸모 아이템 - 잡템
     CONSUMABLE_ITEM,            // 사용 아이템
 }
@@ -29,6 +33,14 @@ public enum ITEM_INDEX
     STAFF,
     ROSE,
     SWORD,
+
+    SHIRTS_0,
+    SHIRTS_1,
+    SHIRTS_2,
+
+    PANTS_0,
+    PANTS_1,
+    PANTS_2,
 
     _FAVORITE_ITEM_INDEX_ = 200,
     SCIENCE_AWARD,

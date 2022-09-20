@@ -22,11 +22,14 @@ public class Boss : MonoBehaviour
     [SerializeField] protected Animator animator = null;
     [SerializeField] Transform bossO;      // 본체, (첫번째 자식)
     [SerializeField] public Rigidbody rigid;
-    [SerializeField] protected float _targetDistance;
+    public float _targetDistance;
+    [SerializeField] protected float _minDistance;      // 보스가 최대한 갈수 있는 거리
     [SerializeField] protected float _thinkDistance;     // 패턴 하는 거리
     protected StringBuilder messageElement = new StringBuilder();
-    protected List<string> targetList;      // 보스 타겟 설정하는거
+    [SerializeField] protected List<string> targetList = new List<string>();      // 보스 타겟 설정하는거
     protected string getTarget => targetList[Random.Range(0, targetList.Count)];        // 타겟 렌덤
+    [SerializeField] protected Transform _target;   // 나중에 4명 추가하는걸루
+    public Transform target { get { return _target; } }
 
     // 공격 ======================================================================================================
     protected const int _annihilation = 99999;    // <! 전멸기
@@ -46,8 +49,6 @@ public class Boss : MonoBehaviour
 
 
     // 체력 ======================================================================================================
-    [SerializeField] protected Transform _target;   // 나중에 4명 추가하는걸루
-    public Transform target { get { return _target; } }
     protected Vector3 _dir;                         // 보스와 타겟 방향
     public int _nestingHp;                          // 중첩 체력
     protected int _currentNesting;                  // 지금 체력바
@@ -75,6 +76,7 @@ public class Boss : MonoBehaviour
      */
     protected void BossInitialize()
     {
+        this._targetDistance = 9999;
         this._radetime = bossdata.radetime;
         this._baseUI.bossnameText.text = bossdata.getName;
         this._currentHp = bossdata.getStartHp;
@@ -192,12 +194,12 @@ public class Boss : MonoBehaviour
             // this.transform.position -= new Vector3(1.8f, 0, 0);
         }
 
-        _targetDistance = Vector3.Distance(_target.localPosition, this.transform.localPosition);
-        if (_targetDistance > 4f)
+        // _targetDistance = Vector3.Distance(_target.position, this.transform.position);
+        if (_targetDistance > _minDistance)
         {
             rigid.MovePosition(Vector3.MoveTowards(
-                this.transform.localPosition,
-                _target.localPosition,
+                this.transform.position,
+                _target.position,
                 bossdata.getMoveSpeed * Time.deltaTime));
         }
     }
@@ -212,11 +214,11 @@ public class Boss : MonoBehaviour
         }
     }
 
-    protected void SendBossPattern(WAKGUI_ACTION action, string msg = "")
+    protected void SendBossPattern(int action, string msg = "")
     {
         // 뒤에 추가로 데이터가 필요로 하지 않은 패턴은 msg를 공백으로 보내서 split을 줄임
         // 만약 이거때문에 버그가 잦다면 붙여도 무관
-        NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0}{1}", (int)action, msg != "" ? ":" + msg : msg));
+        NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0}{1}", action, msg != "" ? ":" + msg : msg));
     }
 
 

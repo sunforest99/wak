@@ -15,6 +15,7 @@ public class NextDungeonDoor : MonoBehaviour
             GameMng.I.character.setStopAndReset();
 
             GameMng.I._keyMode = KEY_MODE.UI_MODE;
+            GameMng.I.npcUI._startLoad.SetActive(true);
         }
     }
 }

@@ -157,7 +157,45 @@ public struct Stat
         else if (GameMng.I.userData.upgrade.Contains(Skill_TREE.SKILL_4_DMG_0))     this.skill_4_dmg = 1.1f;
 
         // 장착중인 무기, 장비에 따라 추가 스탯 변동 일어나게
-        // if (GameMng.I.userData.character.weapon)
+        switch ((ITEM_INDEX)GameMng.I.userData.character.weapon)
+        {
+            case ITEM_INDEX.STICK:
+                // 전체 DMG 10% 증가
+                this.minDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
+                this.maxDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
+                // 이속 10% 감소
+                this.moveSpeedPer *= 0.9f;
+                break;
+                
+            case ITEM_INDEX.BAT:
+                break;
+                
+            case ITEM_INDEX.CANDY:
+                break;
+                
+        }
+        switch ((ITEM_INDEX)GameMng.I.userData.character.shirts)
+        {
+            case ITEM_INDEX.SHIRTS_0:
+                break;
+                
+            case ITEM_INDEX.SHIRTS_1:
+                break;
+                
+            case ITEM_INDEX.SHIRTS_2:
+                break;
+        }
+        switch ((ITEM_INDEX)GameMng.I.userData.character.pants)
+        {
+            case ITEM_INDEX.PANTS_0:
+                break;
+                
+            case ITEM_INDEX.PANTS_1:
+                break;
+                
+            case ITEM_INDEX.PANTS_2:
+                break;
+        }
     }
 }
 

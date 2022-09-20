@@ -118,13 +118,13 @@ public class SeaDu : Monster
             // searchTarget();
             doSomething(pattern);
 
-            NetworkMng.I.SendMsg(string.Format("MONSTER_PATTERN:{0}:{1}", name, pattern));
+            // NetworkMng.I.SendMsg(string.Format("MONSTER_PATTERN:{0}:{1}", name, pattern));
         }
         else
         {
             doSomething(pattern);
 
-            NetworkMng.I.SendMsg(string.Format("MONSTER_PATTERN:{0}:{1}", name, pattern));
+            // NetworkMng.I.SendMsg(string.Format("MONSTER_PATTERN:{0}:{1}", name, pattern));
         }
         
     }

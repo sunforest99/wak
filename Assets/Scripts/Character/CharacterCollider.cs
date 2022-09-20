@@ -5,6 +5,12 @@ using UnityEngine;
 public class CharacterCollider : MonoBehaviour
 {
     int poolCount = 0;
+
+    /*
+     * @brief 아이템 획득시 인벤토리 새로고침
+     * @param n 아이템 타입 (0:배틀아이템)(1:장비)(2:호감도)(3:사용아이템)
+     * @param _item 아이템 정보
+     */
     void itemSetting(int n, Item _item)
     {
         if (n == 1)
@@ -44,7 +50,7 @@ public class CharacterCollider : MonoBehaviour
     void getItemEXP(Item item, int idx)
     {
         GameMng.I.getItemPool[idx].EXP_Img.sprite = item.itemData.itemSp;
-        if (item.itemData.itemType != ITEM_TYPE.WEAPON_ITEM && item.itemData.itemType != ITEM_TYPE.HEAD_ITEM)
+        if (item.itemData.itemType != ITEM_TYPE.WEAPON_ITEM && item.itemData.itemType != ITEM_TYPE.SHIRTS_ITEM && item.itemData.itemType != ITEM_TYPE.PANTS_ITEM)
             GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName + " x" + item.itemCount.ToString();
         else
             GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName;
@@ -73,16 +79,19 @@ public class CharacterCollider : MonoBehaviour
             Item item = other.gameObject.GetComponent<ItemObj>().saveItem;
             switch (item.itemData.itemType)
             {
-                case ITEM_TYPE.BATTLE_ITEM:
-                    itemSetting(0, item);
-                    break;
-                case ITEM_TYPE.HEAD_ITEM:
+                // 배틀 아이템은 이제 획득 아이템이 아니게 되었음
+                // case ITEM_TYPE.BATTLE_ITEM:
+                //     itemSetting(0, item);
+                //     break;
                 case ITEM_TYPE.WEAPON_ITEM:
+                case ITEM_TYPE.SHIRTS_ITEM:
+                case ITEM_TYPE.PANTS_ITEM:
                     itemSetting(1, item);
                     break;
                 case ITEM_TYPE.CONSUMABLE_ITEM:
                     itemSetting(2, item);
                     break;
+                case ITEM_TYPE.FAVORITE_ITEM:
                 case ITEM_TYPE.UNUSEFUL_ITEM:
                     itemSetting(3, item);
                     break;

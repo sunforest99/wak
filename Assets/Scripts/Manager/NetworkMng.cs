@@ -652,6 +652,9 @@ public class NetworkMng : MonoBehaviour
     {
         switch (roomCode)
         {
+            case ROOM_CODE.HOME:
+                SceneManager.LoadScene("MainScene");
+                break;
             case ROOM_CODE.DUNGEON_0:
                 SceneManager.LoadScene("DungeonWakgui");
                 break;
