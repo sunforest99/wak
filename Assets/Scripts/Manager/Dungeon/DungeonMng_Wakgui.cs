@@ -34,20 +34,36 @@ public class DungeonMng_Wakgui : DungeonMng
         _leftMonster = posArr.Length;
     }
     protected override void dungeonMonsterPurple() {
-        Instantiate(purpleLight, new Vector3(0, 0.88f, 10), Quaternion.Euler(20, 0, 0));
+        // Instantiate(purpleLight, new Vector3(0, 0.88f, 10), Quaternion.Euler(20, 0, 0));
 
-        // TODO : 몬스터 만들면서 강화 및 회복 능력 부여
+        // // TODO : 몬스터 만들면서 강화 및 회복 능력 부여
+        // Vector3[] posArr = {
+        //     new Vector3(-3f, 1.26f, 9),
+        //     new Vector3(3f, 1.26f, 9.2f)
+        // };
+
+        // // TODO : 몬스터 다르게 하기 등록
+        // for (int i = 0; i < posArr.Length; i++)
+        // {
+        //     // 뉴심해두 몬스터 생성
+        //     Instantiate(
+        //         monster_seadu,
+        //         posArr[i],
+        //         Quaternion.identity
+        //     );
+        // }
+        
+        // _leftMonster = posArr.Length;
+
         Vector3[] posArr = {
-            new Vector3(-3f, 1.26f, 9),
             new Vector3(3f, 1.26f, 9.2f)
         };
 
-        // TODO : 몬스터 다르게 하기 등록
         for (int i = 0; i < posArr.Length; i++)
         {
             // 뉴심해두 몬스터 생성
             Instantiate(
-                monster_seadu,
+                monster_octopusdu,
                 posArr[i],
                 Quaternion.identity
             );

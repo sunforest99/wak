@@ -289,11 +289,12 @@ public class Wakgui : Boss
 
     public override void Raid_Start()
     {
+        NetworkMng.I.v_users.Add(NetworkMng.I.uniqueNumber, GameMng.I.character);
+        
         foreach (var trans in NetworkMng.I.v_users)
         {
             targetList.Add(trans.Key);
         }
-        NetworkMng.I.v_users.Add(NetworkMng.I.uniqueNumber, GameMng.I.character);
 
         animator.SetTrigger("idle");
 
@@ -479,7 +480,7 @@ public class Wakgui : Boss
     {
         int tempDmg = _currentHp;
         animator.SetTrigger("Counter");
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSecondsRealtime(1.0f);
         while (action == WAKGUI_ACTION.PATTERN_COUNTER)
         {
             if (tempDmg - _currentHp > 1000000)
@@ -513,7 +514,7 @@ public class Wakgui : Boss
         marblelist.Clear();
         animator.SetInteger("RandCircle", circle_answer);
 
-        yield return new WaitForSeconds(15.0f);
+        yield return new WaitForSecondsRealtime(15.0f);
         action = WAKGUI_ACTION.IDLE;
         _isAnnihilation = false;
         checkPattern = false;
@@ -523,7 +524,7 @@ public class Wakgui : Boss
 
     public IEnumerator Pattern_Outcast()
     {
-        yield return new WaitForSeconds(15.0f);
+        yield return new WaitForSecondsRealtime(15.0f);
         action = WAKGUI_ACTION.IDLE;
         _isAnnihilation = false;
 
