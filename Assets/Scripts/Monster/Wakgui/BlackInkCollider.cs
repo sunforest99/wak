@@ -5,6 +5,8 @@ using UnityEngine;
 public class BlackInkCollider : DestroySelf
 {
     int damage = 2000;
+    float contactTime = 0;
+
 
     void Start()
     {   
@@ -18,7 +20,21 @@ public class BlackInkCollider : DestroySelf
     {
         if (other.CompareTag("Player"))
         {
+            contactTime = 0;
             GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            contactTime += Time.deltaTime;
+            if (contactTime >= 0.1f) {
+                GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+                // 디버프를 줄 지 고민중
+                contactTime -= 0.1f;
+            }
         }
     }
 
