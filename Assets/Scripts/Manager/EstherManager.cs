@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ISEDOL
+{
+    VIICHAN,
+    INE,
+    COTTON,
+    LILPA,
+    JINGBURER,
+    GOSEGU
+}
+
 public class EstherManager : MonoBehaviour
 {
     [SerializeField] Animator estherAnim;
@@ -10,8 +20,12 @@ public class EstherManager : MonoBehaviour
     
     [SerializeField] GameObject appearEffect;       // 에스더 소환되는 이펙트
     [SerializeField] Animator appearLightAnim;      // 에스더 관련 라이트
-    [SerializeField] GameObject[] estherAppear;     // 에스더들 등장 일러스트
+    [SerializeField] GameObject[] estherAppear;     // 에스더들 등장 일러스트 (ISEDOL enum과 항상 동일)
     [SerializeField] GameObject[] estherAttack;     // 에스더 공격
+                                                    //       < 귀상어두 >     |     < 계륵 >
+                                                    //        0 : 비챤       |      0 : 릴파
+                                                    //        1 : 아이네     |      1 : 징버거
+                                                    //        2 : 주르르     |      
     // 에스더 소환 순서
     // 1. 에스더 소환되는 이펙트
     // 2. 에스더 관련 라이트로 변경
@@ -21,15 +35,20 @@ public class EstherManager : MonoBehaviour
     void Start()
     {
         GameMng.I.estherManager = this;
-        setGauge(0);
 
-        NetworkMng.I.myRoom = ROOM_CODE.RAID_0;
+        // TODO : 클라마다 Start와 Update 시작이 다름. 방장만 게이지 관리
+        setGauge(0);
+       
+        NetworkMng.I.myRoom = ROOM_CODE.RAID_0; // TODO : 나중에는 무조건 변경된 이후에야 이곳이 열리기 때문에 지워도 됨
+        // if (NetworkMng.I.myRoom.Equals(ROOM_CODE.RAID_0))
     }
 
     void Update()
     {
         if (gauge < 1f) {
-            addGauge(0.5f * Time.deltaTime);
+            if (NetworkMng.I.roomOwner) {
+                addGauge(0.5f * Time.deltaTime);
+            }
             if (gauge >= 1f) {
                 estherAnim.SetBool("isFull", true);
             }
@@ -43,13 +62,14 @@ public class EstherManager : MonoBehaviour
                     if (!float.IsNegativeInfinity(point.x))
                     {
                         NetworkMng.I.SendMsg(string.Format("ESTHER:{0}:{1}:{2}:{3}", 0, NetworkMng.I.uniqueNumber, point.x, point.z));
-                        useEsther(0, GameMng.I.character.transform.parent.position, point, true);
+                        useEsther(ISEDOL.VIICHAN, GameMng.I.character.transform.parent.position, point, true);
                     }
                 }
                 // 계륵 - 릴파
                 else if (NetworkMng.I.myRoom.Equals(ROOM_CODE.RAID_1))
                 {
-                    // ....
+                    NetworkMng.I.SendMsg(string.Format("ESTHER:{0}:{1}:{2}:{3}", 3, NetworkMng.I.uniqueNumber, 0, 0));
+                    useEsther(ISEDOL.LILPA, GameMng.I.character.transform.parent.position, Vector3.zero, true);
                 }
             }
             else if (Input.GetKeyDown(KeyCode.X)) {
@@ -57,7 +77,7 @@ public class EstherManager : MonoBehaviour
                 if (NetworkMng.I.myRoom.Equals(ROOM_CODE.RAID_0))
                 {
                     NetworkMng.I.SendMsg(string.Format("ESTHER:{0}:{1}:{2}:{3}", 1, NetworkMng.I.uniqueNumber, 0, 0));
-                    useEsther(0, GameMng.I.character.transform.parent.position, Vector3.zero, true);
+                    useEsther(ISEDOL.INE, GameMng.I.character.transform.parent.position, Vector3.zero, true);
                 }
                 // 계륵 - 징버거
                 else if (NetworkMng.I.myRoom.Equals(ROOM_CODE.RAID_1))
@@ -66,7 +86,8 @@ public class EstherManager : MonoBehaviour
 
                     if (!float.IsNegativeInfinity(point.x))
                     {
-                        // ....
+                        NetworkMng.I.SendMsg(string.Format("ESTHER:{0}:{1}:{2}:{3}", 4, NetworkMng.I.uniqueNumber, point.x, point.z));
+                        useEsther(ISEDOL.JINGBURER, GameMng.I.character.transform.parent.position, point, true);
                     }
                 }
             }
@@ -75,49 +96,16 @@ public class EstherManager : MonoBehaviour
                 if (NetworkMng.I.myRoom.Equals(ROOM_CODE.RAID_0))
                 {
                     NetworkMng.I.SendMsg(string.Format("ESTHER:{0}:{1}:{2}:{3}", 2, NetworkMng.I.uniqueNumber, 0, 0));
-                    useEsther(0, GameMng.I.character.transform.parent.position, Vector3.zero, true);
+                    useEsther(ISEDOL.COTTON, GameMng.I.character.transform.parent.position, Vector3.zero, true);
                 }
                 // 계륵 - 고세구
                 else if (NetworkMng.I.myRoom.Equals(ROOM_CODE.RAID_1))
                 {
-                    // ....
+                    NetworkMng.I.SendMsg(string.Format("ESTHER:{0}:{1}:{2}:{3}", 5, NetworkMng.I.uniqueNumber, 0, 0));
+                    useEsther(ISEDOL.GOSEGU, GameMng.I.character.transform.parent.position, Vector3.zero, true);
                 }
             }
         }
-    }
-
-    /*
-    * @brief 비챤 에스더 사용
-    * @param effectPos 에스더 '소환' 이펙트 위치 (사용자 위치)
-    * @param spawnPos 에스더 공격 위치
-    * @param isMe 시전자인지 유무 (시전자만 데미지 계산 함)
-    */
-    public IEnumerator useEstherViichan(Vector3 effectPos = new Vector3(), Vector3 spawnPos = new Vector3(), bool isMe = false)
-    {
-        // 1. 에스더 소환되는 이펙트
-        effectPos.x += (effectPos.x < spawnPos.x) ? -3 : 3;
-        effectPos.y = 0;
-        appearEffect.transform.position = effectPos;
-        appearEffect.SetActive(true);
-        
-        // 2. 에스더 관련 라이트로 변경
-        appearLightAnim.SetTrigger("0");
-        
-        // (1초 뒤)
-        yield return new WaitForSeconds(0.5f);
-
-        // 3. 에스더 일러스트 작동
-        estherAppear[0].SetActive(true);
-
-        // (1초 뒤)
-        yield return new WaitForSeconds(1);
-
-        // 4. 에스더 공격 (일러 애니메이션 도중
-        spawnPos.y = 0;
-        estherAttack[0].transform.position = spawnPos;
-        if (isMe)
-            estherAttack[0].tag = "Esther_Attack_Skill";       // 시전자만 데미지 체크하기
-        estherAttack[0].SetActive(true);
     }
 
     /*
@@ -126,28 +114,45 @@ public class EstherManager : MonoBehaviour
     * @param effectPos 에스더 '소환' 이펙트 위치 (사용자 위치)
     * @param spawnPos 에스더 공격 위치
     */
-    public void useEsther(int estherCode, Vector3 effectPos = new Vector3(), Vector3 spawnPos = new Vector3(), bool isMe = false)
+    public void useEsther(ISEDOL estherCode, Vector3 effectPos = new Vector3(), Vector3 spawnPos = new Vector3(), bool isMe = false)
     {
         setGauge(0);
         estherAnim.SetBool("isFull", false);
 
+        // 1. 에스더 소환되는 이펙트
+        playAppearEffect(effectPos);
+
         switch (estherCode)
         {
-            case 0: // 비챤
-                StartCoroutine(useEstherViichan(effectPos, spawnPos, isMe));
+            case ISEDOL.VIICHAN: // 비챤
+                StartCoroutine(useEstherViichan(effectPos.x, spawnPos, isMe));
                 break;
-            case 1: // 아이네
+            case ISEDOL.INE: // 아이네
+                StartCoroutine(useEstherIne(isMe));
                 break;
-            case 2: // 주르르
+            case ISEDOL.COTTON: // 주르르
+                StartCoroutine(useEstherCotton(isMe));
                 break;
-            case 3: // 릴파
+            case ISEDOL.LILPA: // 릴파
+                StartCoroutine(useEstherLilpa(isMe));
                 break;
-            case 4: // 징버거
+            case ISEDOL.JINGBURER: // 징버거
+                StartCoroutine(useEstherJingburger(spawnPos, isMe));
                 break;
-            case 5: // 고세구
+            case ISEDOL.GOSEGU: // 고세구
+                StartCoroutine(useEstherGosegu(isMe));
                 break;
         }
     }
+
+    void playAppearEffect(Vector3 effectPos)
+    {
+        // effectPos.x += (effectPos.x < spawnPos.x) ? -3 : 3;
+        effectPos.y = 0;
+        appearEffect.transform.position = effectPos;
+        appearEffect.SetActive(true);
+    }
+
 
     void setGauge(float mount) {
         gauge = mount;
@@ -157,6 +162,8 @@ public class EstherManager : MonoBehaviour
     public void addGauge(float mount) {
         gauge += mount;
         gaugeImg.fillAmount = gauge;
+
+        NetworkMng.I.SendMsg(string.Format("ESTHER_GAUGE:{0}", gauge));
     }
 
     Vector3 getMouseHitPoint()
@@ -172,4 +179,159 @@ public class EstherManager : MonoBehaviour
         return Vector3.negativeInfinity;
     }
 
+
+    /*
+     * @brief 비챤 에스더 사용
+     * @param effectPos 에스더 '소환' 이펙트 위치 (사용자 위치)
+     * @param spawnPos 에스더 공격 위치
+     * @param isMe 시전자인지 유무 (시전자만 데미지 계산 함)
+     */
+    public IEnumerator useEstherViichan(float effectPosX, Vector3 spawnPos = new Vector3(), bool isMe = false)
+    {
+        // 1. 에스더 소환되는 이펙트
+        // effectPos.x += (effectPos.x < spawnPos.x) ? -3 : 3;
+        // effectPos.y = 0;
+        // appearEffect.transform.position = effectPos;
+        // appearEffect.SetActive(true);
+        
+        // 2. 에스더 관련 라이트로 변경
+        appearLightAnim.SetTrigger("0");
+        
+        // (0.5초 뒤)
+        yield return new WaitForSeconds(0.5f);
+
+        // 3. 에스더 일러스트 작동
+        estherAppear[(int)ISEDOL.VIICHAN].SetActive(true);
+
+        // (1초 뒤)
+        yield return new WaitForSeconds(1);
+
+        // 4. 에스더 공격 (일러 애니메이션 도중
+        spawnPos.y = 0;
+        estherAttack[0].transform.position = spawnPos;
+        if (isMe)
+            estherAttack[0].tag = "Esther_Attack_Skill";       // 시전자만 데미지 체크하기
+        if (effectPosX < spawnPos.x)
+            estherAttack[0].transform.rotation = Quaternion.identity;
+        else
+            estherAttack[0].transform.rotation = Quaternion.Euler(0, 180, 0);
+        estherAttack[0].SetActive(true);
+    }
+
+    /*
+     * @brief 아이네 에스더 사용
+     * @param isMe 시전자인지 유무 (시전자만 데미지 계산 함)
+     */
+    public IEnumerator useEstherIne(bool isMe = false)
+    {
+        // 2. 에스더 관련 라이트로 변경
+        appearLightAnim.SetTrigger("1");
+
+        // (0.5초 뒤)
+        yield return new WaitForSeconds(0.5f);
+
+        // 3. 에스더 일러스트 작동
+        estherAppear[(int)ISEDOL.INE].SetActive(true);
+
+        // 4. 에스더 공격 (일러 애니메이션 도중
+        for (int i = 0; i < NetworkMng.I.v_users.Count; i++)
+        {
+            // 피가 0 이상이면, (살아있으면)
+            // if 
+            // 아이네 이펙트 생성하고 그 캐릭터한테 붙이기 (쉴드)
+        }
+    }
+
+    /*
+     * @brief 주르르 에스더 사용
+     * @param isMe 시전자인지 유무 (시전자만 데미지 계산 함)
+     */
+    public IEnumerator useEstherCotton(bool isMe = false)
+    {
+        // 2. 에스더 관련 라이트로 변경
+        appearLightAnim.SetTrigger("2");
+
+        // (0.5초 뒤)
+        yield return new WaitForSeconds(0.5f);
+
+        // 3. 에스더 일러스트 작동
+        estherAppear[(int)ISEDOL.COTTON].SetActive(true);
+
+        // 4. 에스더 공격 (일러 애니메이션 도중
+        for (int i = 0; i < NetworkMng.I.v_users.Count; i++)
+        {
+            // 피가 0 이상이면, (살아있으면)
+            // if 
+            // 주르르 이펙트 생성하고 그 캐릭터한테 붙이기 (쿨감 & 뎀감)
+
+        }
+    }
+
+    /*
+     * @brief 릴파 에스더 사용
+     * @param isMe 시전자인지 유무 (시전자만 데미지 계산 함)
+     */
+    public IEnumerator useEstherLilpa(bool isMe = false)
+    {
+        // 2. 에스더 관련 라이트로 변경
+        appearLightAnim.SetTrigger("3");
+
+        // (0.5초 뒤)
+        yield return new WaitForSeconds(0.5f);
+
+        // 3. 에스더 일러스트 작동
+        estherAppear[(int)ISEDOL.LILPA].SetActive(true);
+
+        // 4. 에스더 공격 (일러 애니메이션 도중
+        Vector3 bossPos = GameMng.I.boss.transform.position;
+        estherAttack[0].transform.position = bossPos;
+        estherAttack[0].transform.parent = GameMng.I.boss.transform;
+        estherAttack[0].SetActive(true);
+
+        if (isMe)
+            for (int i = 0; i < NetworkMng.I.v_users.Count; i++)
+            {
+                // NetworkMng.I.SendMsg(string.Format("ESTHER_DAMAGE:{0}:{1}:{2}:{3}", bossPos.x, bossPos.y, bossPos.z, 1000 /* TODO : 데미지 */));
+                NetworkMng.I.SendMsg(string.Format("ESTHER_DAMAGE2:{0}:{1}:{2}:{3}:{4}:{5}:{6}:{7}:{8}:{9}", 
+                                                    /* TODO : 데미지 */
+                                                    1000,1000,1000,1000,1000,
+                                                    1000,1000,1000,1000,1000));
+            }
+    }
+    
+    /*
+     * @brief 징버거 에스더 사용
+     * @param isMe 시전자인지 유무 (시전자만 데미지 계산 함)
+     */
+    public IEnumerator useEstherJingburger(Vector3 spawnPos = new Vector3(), bool isMe = false)
+    {
+        // 2. 에스더 관련 라이트로 변경
+        appearLightAnim.SetTrigger("4");
+
+        // (0.5초 뒤)
+        yield return new WaitForSeconds(0.5f);
+
+        // 3. 에스더 일러스트 작동
+        estherAppear[(int)ISEDOL.JINGBURER].SetActive(true);
+
+        // 4. 에스더 공격 (일러 애니메이션 도중
+        estherAttack[1].transform.position = spawnPos;
+        estherAttack[1].SetActive(true);
+    }
+
+    /*
+     * @brief 고세구 에스더 사용
+     * @param isMe 시전자인지 유무 (시전자만 데미지 계산 함)
+     */
+    public IEnumerator useEstherGosegu(bool isMe = false)
+    {
+        // 2. 에스더 관련 라이트로 변경
+        appearLightAnim.SetTrigger("5");
+
+        // (0.5초 뒤)
+        yield return new WaitForSeconds(0.5f);
+
+        // 3. 에스더 일러스트 작동
+        estherAppear[(int)ISEDOL.GOSEGU].SetActive(true);
+    }
 }

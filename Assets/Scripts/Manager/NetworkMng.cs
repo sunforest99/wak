@@ -441,7 +441,7 @@ public class NetworkMng : MonoBehaviour
             // txt[2] 에스더 소환 자
             // txt[3,4] 에스더 소환 위치 x, 
             GameMng.I.estherManager.useEsther(
-                int.Parse(txt[1]),
+                (ISEDOL)Enum.Parse(typeof(ISEDOL), txt[1]),
                 v_users[txt[2]].transform.parent.position,
                 new Vector3(float.Parse(txt[3]), 0, float.Parse(txt[4]))
             );
