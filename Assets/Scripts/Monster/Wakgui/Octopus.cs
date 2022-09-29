@@ -46,7 +46,7 @@ public class Octopus : Monster
      */
     public void fireBlackInk()
     {
-        Instantiate(attack_prefab, transform.position, Quaternion.identity).GetComponent<BlackInk>().startThrow();
+        Instantiate(attack_prefab, transform.position + new Vector3(0, 2, 0), Quaternion.identity).GetComponent<BlackInk>().startThrow();
     }
 
 
@@ -85,23 +85,14 @@ public class Octopus : Monster
         int rand = Random.Range(0, 100);
 
         /*
-            뉴 심해두 패턴
+            문어두 패턴
 
-            대상과 거리가 가깝다면
-                75 : 기본 공격
-                25 : 패턴1
+            50 : 기본 공격
+            50 : 패턴1
             대상과 거리가 멀다면
-                20 : 휴식
-                80 : 패턴1
         */
-        if (distance <= _nearness + 1)
-        {
-            if (rand < 75)
-                return 1;       // 기본 공격
-            return 2;           // 패턴 1
-        }
-        if (rand < 20)
-            return 0;           // 휴식
+        if (rand < 50)
+            return 1;
         return 2;               // 패턴 1
     }
 
