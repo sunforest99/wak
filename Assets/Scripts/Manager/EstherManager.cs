@@ -11,7 +11,14 @@ public enum ISEDOL
     JINGBURER,
     GOSEGU
 }
-
+public enum ESTHER_BUFF
+{
+    NONE,
+    JINGBURER_BUFF,
+    INE_BUFF,
+    COTTON_BUFF,
+    GOSEGU_BUFF
+}
 public class EstherManager : MonoBehaviour
 {
     [SerializeField] Animator estherAnim;
@@ -31,7 +38,9 @@ public class EstherManager : MonoBehaviour
     // 2. 에스더 관련 라이트로 변경
     // 3. 에스더 일러스트 작동
     // 3-2. 에스더 공격 (일러 애니메이션 도중)
-
+    
+    public ESTHER_BUFF _esther_buff_state;
+    
     void Start()
     {
         GameMng.I.estherManager = this;

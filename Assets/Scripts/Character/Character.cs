@@ -116,6 +116,12 @@ public class Character : MonoBehaviour
             }
             cooltime = usingSkill.getCoolTime;
         }
+        
+        // 에스더 버프 중이라면 쿨타임 -1 감소 버프
+        if (GameMng.I.estherManager._esther_buff_state.Equals(ESTHER_BUFF.COTTON_BUFF))
+        {
+            cooltime -= 1;
+        }
 
         checkSkill[skillnum] = true;
         float time = 0.0f;

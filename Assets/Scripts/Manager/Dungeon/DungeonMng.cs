@@ -142,8 +142,6 @@ public class DungeonMng : MonoBehaviour
     {
         _leftMonster--;
         
-        Debug.Log(_leftMonster);
-
         if (_leftMonster.Equals(0))
         {
             // 다음 던전으로 들어갈 수 있는 문 열림

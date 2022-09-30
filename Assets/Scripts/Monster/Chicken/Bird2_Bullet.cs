@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SeaDu_Bullet : MonoBehaviour
+public class Bird2_Bullet : MonoBehaviour
 {
     [SerializeField] Rigidbody _rigidbody;
 
-    [SerializeField] float speed = 6.0f;
+    [SerializeField] float speed = 12.0f;
 
     int damage = 2000;
 
@@ -29,10 +29,6 @@ public class SeaDu_Bullet : MonoBehaviour
             GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
             ActiveFalse();
         }
-        // else if (other.CompareTag("Character"))
-        // {
-        //     ActiveFalse();
-        // }
         else if (other.CompareTag("Map_Wall"))
         {
             GameMng.I.showEff(EFF_TYPE.REMOVE_EFF, this.transform.position);
