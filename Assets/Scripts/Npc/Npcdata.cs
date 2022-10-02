@@ -7,7 +7,7 @@ using System.Linq;
 public class Npcdata : MonoBehaviour
 {
     [HideInInspector] public bool isDialog;
-    [SerializeField] protected string npcname;
+    protected string npcname;
     [SerializeField] TMPro.TextMeshPro speechTxt;
     [SerializeField] GameObject speechBG;
     // public GameObject tempDialog;     // <! 이름 바꾸기

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 [System.Serializable] 
 public class Character_Schema {
@@ -75,6 +76,8 @@ public class UserDataPacket : MessagePacket
 
 public class LoginManager : MonoBehaviour
 {
+    [SerializeField] GameObject customizeCanvas;
+    
     string BASE_URL = "localhost:3000/";
     public delegate void responseFunc(string res);
 
@@ -114,6 +117,23 @@ public class LoginManager : MonoBehaviour
                 dataPacket.data.printData();
                 if (dataPacket.success) {
                     // 로그인 성공
+
+                    if (dataPacket.data.character.hair.Equals(-1))
+                    {
+                        // 커스터마이징 안되어 있음
+                        customizeCanvas.SetActive(true);
+                    }
+                    else if (dataPacket.data.job.Equals(0))
+                    {
+                        // 직업 선택 안되어 있음
+                        SceneManager.LoadScene("TempleScene");
+                    }
+                    else
+                    {
+                        // 마을로!
+                        
+                    }
+
                 } else {
                     // 실패
                 }

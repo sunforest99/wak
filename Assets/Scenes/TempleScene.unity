@@ -10357,7 +10357,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapNameTxt: {fileID: 0}
   mapName: "(\uC784\uC2DC) \uC2E0\uC804"
-  isFocusingMap: 0
   onlineMap: 0
   mapBG: {fileID: 0}
 --- !u!65 &1923531829
@@ -11122,10 +11121,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 70072446, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1611888530, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
       propertyPath: questBook
       value: 
@@ -11134,41 +11129,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Angel
       objectReference: {fileID: 0}
-    - target: {fileID: 5074543892152866329, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5074543892152866334, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.84024745
-      objectReference: {fileID: 0}
-    - target: {fileID: 5074543892152866334, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.5422031
-      objectReference: {fileID: 0}
-    - target: {fileID: 5074543892152866334, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5074543892152866334, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5074543892152866334, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 65.668
-      objectReference: {fileID: 0}
     - target: {fileID: 5855718294757656406, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
       propertyPath: m_RootOrder
       value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5855718294757656406, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5855718294757656406, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 5855718294757656406, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
       propertyPath: m_LocalPosition.x
