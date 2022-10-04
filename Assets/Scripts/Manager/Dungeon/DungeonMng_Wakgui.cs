@@ -25,7 +25,7 @@ public class DungeonMng_Wakgui : DungeonMng
         {
             // 뉴심해두 몬스터 생성
             Instantiate(
-                monster_seaduNew,
+                monster_seadu,
                 posArr[i],
                 Quaternion.identity
             );

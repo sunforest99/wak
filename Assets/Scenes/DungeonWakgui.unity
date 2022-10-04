@@ -16639,7 +16639,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1111963815
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -22734,6 +22734,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\uC18C\uD53C\uC544"
       objectReference: {fileID: 0}
+    - target: {fileID: 4933285718809823690, guid: 6a1f0d99cac4cb84196a64322e7182ef, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a1f0d99cac4cb84196a64322e7182ef, type: 3}
 --- !u!1 &1527399130
@@ -26352,8 +26356,8 @@ MonoBehaviour:
   - {fileID: 4723054551740063541, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
   campFire: {fileID: 1316147116}
   npc_shop: {fileID: 1371846131}
-  monster_seadu: {fileID: 2490693737369890119, guid: c1b044000507d8a4095b7df3f76d0599, type: 3}
-  monster_seaduNew: {fileID: 2490693737369890119, guid: c1b044000507d8a4095b7df3f76d0599, type: 3}
+  monster_seadu: {fileID: 3995522924913816888, guid: 54554c089de4da949a6b54bf1273db94, type: 3}
+  monster_seaduNew: {fileID: 6633882294574003820, guid: 94520c09d63d0c64a862619fb1ec40fd, type: 3}
   monster_octopusdu: {fileID: 7410838684900474498, guid: 6e39a450f46294e4293e8d0e861b2159, type: 3}
 --- !u!1 &1788369261
 GameObject:

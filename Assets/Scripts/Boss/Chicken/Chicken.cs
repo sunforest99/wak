@@ -18,7 +18,9 @@ public enum CHICKEN_ACTION
     PATTERN_COUNTER_1,      // 패턴 카운터 (비반격기)
     PATTERN_FALLING_ROCK,   // 패턴 낙석
     PATTERN_REMEMBER,       // 패턴 오레하(기억해서 피하기)
-    ISTHINK
+    PATTERN_EGG,
+    PATTERN_SPHINX,
+    EGG_BROKEN
 }
 
 public class Chicken : Boss
@@ -28,10 +30,19 @@ public class Chicken : Boss
     [SerializeField] private GameObject rockTarget;
     private int baseAttackCount;
     public ChickenObjectPool objectPool = null;
+
+    [Header("오레하 패턴")]
     [SerializeField] private Animator remember = null;
 
+    [Header("납치 패턴")]
+    [SerializeField] private GameObject eggGame = null;
+    [SerializeField] private List<Egg> eggs = new List<Egg>();
+
+    [Header("스핑크스")]
+    [SerializeField] private GameObject sphinx = null;
     [SerializeField] private CHICKEN_ACTION action;
     public CHICKEN_ACTION getAction { get { return action; } }
+
 
     [Header("기타")]
     [SerializeField] public bool isThink = false;
@@ -94,82 +105,90 @@ public class Chicken : Boss
         int rand = 0;
         if (NetworkMng.I.roomOwner)
         {
-            if (baseAttackCount < 9)
-            {
-                pattern_rand = Random.Range((int)CHICKEN_ACTION.IDLE + 1, (int)CHICKEN_ACTION.BASE_RETREAT + 1);
-                // pattern_rand = (int)CHICKEN_ACTION.BASE_SPEAR;
-                switch (pattern_rand)
-                {
-                    case (int)CHICKEN_ACTION.IDLE:
-                        SendBossPattern(pattern_rand, getTarget);
-                        // isThink = false;
-                        break;
-                    case (int)CHICKEN_ACTION.BASE_SPEAR:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount++;
-                        break;
-                    case (int)CHICKEN_ACTION.BASE_OBA:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount++;
-                        break;
-                    case (int)CHICKEN_ACTION.BASE_ROAR:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount++;
-                        break;
-                    case (int)CHICKEN_ACTION.BASE_WING:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount++;
-                        break;
-                    case (int)CHICKEN_ACTION.BASE_JUMP_ATTACK:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount++;
-                        break;
-                    case (int)CHICKEN_ACTION.BASE_FOOT:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount++;
-                        break;
-                    case (int)CHICKEN_ACTION.BASE_FART:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount++;
-                        break;
-                    case (int)CHICKEN_ACTION.BASE_RETREAT:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount++;
-                        break;
-                }
-            }
-            else
-            {
-                pattern_rand = Random.Range((int)CHICKEN_ACTION.PATTERN_BIRDS, (int)CHICKEN_ACTION.PATTERN_REMEMBER + 1);
-                // pattern_rand = (int)CHICKEN_ACTION.PATTERN_REMEMBER;
-                switch (pattern_rand)
-                {
-                    case (int)CHICKEN_ACTION.PATTERN_BIRDS:
-                        rand = Random.Range(0, 4);
-                        SendBossPattern(pattern_rand, rand.ToString());
-                        baseAttackCount = 0;
-                        break;
-                    case (int)CHICKEN_ACTION.PATTERN_COUNTER_0:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount = 0;
-                        break;
-                    case (int)CHICKEN_ACTION.PATTERN_COUNTER_1:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount = 0;
-                        break;
-                    case (int)CHICKEN_ACTION.PATTERN_FALLING_ROCK:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount = 0;
-                        break;
-                    case (int)CHICKEN_ACTION.PATTERN_REMEMBER:
+            // if (baseAttackCount < 9)
+            // {
+            //     pattern_rand = Random.Range((int)CHICKEN_ACTION.IDLE + 1, (int)CHICKEN_ACTION.BASE_RETREAT + 1);
+            //     // pattern_rand = (int)CHICKEN_ACTION.BASE_SPEAR;
+            //     switch (pattern_rand)
+            //     {
+            //         case (int)CHICKEN_ACTION.IDLE:
+            //             SendBossPattern(pattern_rand, getTarget);
+            //             // isThink = false;
+            //             break;
+            //         case (int)CHICKEN_ACTION.BASE_SPEAR:
+            //             SendBossPattern(pattern_rand);
+            //             baseAttackCount++;
+            //             break;
+            //         case (int)CHICKEN_ACTION.BASE_OBA:
+            //             SendBossPattern(pattern_rand);
+            //             baseAttackCount++;
+            //             break;
+            //         case (int)CHICKEN_ACTION.BASE_ROAR:
+            //             SendBossPattern(pattern_rand);
+            //             baseAttackCount++;
+            //             break;
+            //         case (int)CHICKEN_ACTION.BASE_WING:
+            //             SendBossPattern(pattern_rand);
+            //             baseAttackCount++;
+            //             break;
+            //         case (int)CHICKEN_ACTION.BASE_JUMP_ATTACK:
+            //             SendBossPattern(pattern_rand);
+            //             baseAttackCount++;
+            //             break;
+            //         case (int)CHICKEN_ACTION.BASE_FOOT:
+            //             SendBossPattern(pattern_rand);
+            //             baseAttackCount++;
+            //             break;
+            //         case (int)CHICKEN_ACTION.BASE_FART:
+            //             SendBossPattern(pattern_rand);
+            //             baseAttackCount++;
+            //             break;
+            //         case (int)CHICKEN_ACTION.BASE_RETREAT:
+            //             SendBossPattern(pattern_rand);
+            //             baseAttackCount++;
+            //             break;
+            //     }
+            // }
+            // else
+            // {
+            // pattern_rand = Random.Range((int)CHICKEN_ACTION.PATTERN_BIRDS, (int)CHICKEN_ACTION.PATTERN_REMEMBER + 1);
+            // pattern_rand = (int)CHICKEN_ACTION.PATTERN_REMEMBER;
+            // pattern_rand = (int)CHICKEN_ACTION.PATTERN_EGG;
+            // switch (pattern_rand)
+            // {
+            //     case (int)CHICKEN_ACTION.PATTERN_BIRDS:
+            //         rand = Random.Range(0, 4);
+            //         SendBossPattern(pattern_rand, rand.ToString());
+            //         baseAttackCount = 0;
+            //         break;
+            //     case (int)CHICKEN_ACTION.PATTERN_COUNTER_0:
+            //         SendBossPattern(pattern_rand);
+            //         baseAttackCount = 0;
+            //         break;
+            //     case (int)CHICKEN_ACTION.PATTERN_COUNTER_1:
+            //         SendBossPattern(pattern_rand);
+            //         baseAttackCount = 0;
+            //         break;
+            //     case (int)CHICKEN_ACTION.PATTERN_FALLING_ROCK:
+            //         SendBossPattern(pattern_rand);
+            //         baseAttackCount = 0;
+            //         break;
+            //     case (int)CHICKEN_ACTION.PATTERN_REMEMBER:
+            //         action = CHICKEN_ACTION.PATTERN_REMEMBER;
+            //         rand = Random.Range(0, 2);
+            //         SendBossPattern(pattern_rand, rand.ToString());
+            //         baseAttackCount = 0;
+            //         break;
+            //     case (int)CHICKEN_ACTION.PATTERN_EGG:
+            //         baseAttackCount = 0;
+            //         rand = Random.Range(0, 5);
+            //         SendBossPattern(pattern_rand, rand.ToString() + ":" + getTarget);
+            //         break;
+            // }
+            // }
 
-                        action = CHICKEN_ACTION.PATTERN_REMEMBER;
-                        rand = Random.Range(0, 2);
-                        SendBossPattern(pattern_rand, rand.ToString());
-                        baseAttackCount = 0;
-                        break;
-                }
-            }
+            pattern_rand = (int)CHICKEN_ACTION.PATTERN_SPHINX;
+            SendBossPattern(pattern_rand);
         }
     }
 
@@ -220,6 +239,15 @@ public class Chicken : Boss
                 break;
             case (int)CHICKEN_ACTION.PATTERN_REMEMBER:
                 StartCoroutine(Pattern_Remember(int.Parse(txt[2])));
+                break;
+            case (int)CHICKEN_ACTION.PATTERN_EGG:
+                StartCoroutine(Pattern_Egg(int.Parse(txt[2]), txt[3]));
+                break;
+            case (int)CHICKEN_ACTION.EGG_BROKEN:
+                Egg_Break(int.Parse(txt[2]));
+                break;
+            case (int)CHICKEN_ACTION.PATTERN_SPHINX:
+                Pattern_Sphinx();
                 break;
         }
     }
@@ -366,6 +394,54 @@ public class Chicken : Boss
             case 1:
                 remember.SetTrigger("remember_1");
                 break;
+        }
+    }
+
+    IEnumerator Pattern_Egg(int eggNum, string userNum)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject temp = Instantiate(eggGame, new Vector3(-9.0f + (i * 6f), 1f, -6.59f), Quaternion.identity);
+            eggs.Add(temp.GetComponent<Egg>());
+            eggs[i].uniqueNum = i;
+            if (i == eggNum)
+            {
+                eggs[i].character = NetworkMng.I.v_users[userNum];  // 타깃 설정 
+                eggs[i].character._action = CHARACTER_ACTION.CANT_ANYTHING;     // 타깃 못움직이게 설정
+                eggs[i].character.gameObject.transform.position = eggs[i].transform.position;   // 타깃 위치 설정 
+                eggs[i].character.tag = "Untagged";
+            }
+        }
+
+        yield return new WaitForSecondsRealtime(10.0f);
+
+        for (int i = 0; i < eggs.Count; i++)
+        {
+            if (eggs[i].gameObject.activeSelf)
+            {
+                if (eggs[i].character != null)
+                {
+                    // 대충 유저 죽음
+                    NetworkMng.I.SendMsg(string.Format("USER_DIE:{0}", eggs[i].characterId));
+                }
+            }
+        }
+
+    }
+
+    void Egg_Break(int index)
+    {
+        eggs[index].transform.position = Vector3.zero;
+        eggs[index].gameObject.SetActive(false);
+    }
+
+    void Pattern_Sphinx()
+    {
+        action = CHICKEN_ACTION.PATTERN_SPHINX;
+
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject temp = Instantiate(sphinx, new Vector3(-9.0f + (i * 6f), 1f, -6.59f), Quaternion.identity);
         }
     }
 }

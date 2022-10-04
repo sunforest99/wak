@@ -48,7 +48,7 @@ public class EstherManager : MonoBehaviour
         // TODO : 클라마다 Start와 Update 시작이 다름. 방장만 게이지 관리
         setGauge(0);
        
-        NetworkMng.I.myRoom = ROOM_CODE.RAID_0; // TODO : 나중에는 무조건 변경된 이후에야 이곳이 열리기 때문에 지워도 됨
+        NetworkMng.I.myRoom = ROOM_CODE.RAID_1; // TODO : 나중에는 무조건 변경된 이후에야 이곳이 열리기 때문에 지워도 됨
         // if (NetworkMng.I.myRoom.Equals(ROOM_CODE.RAID_0))
     }
 
