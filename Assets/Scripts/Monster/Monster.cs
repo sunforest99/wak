@@ -102,7 +102,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (isMoving)
         {

@@ -29,10 +29,10 @@ public class SeaDu_Bullet : MonoBehaviour
             GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
             ActiveFalse();
         }
-        else if (other.CompareTag("Character"))
-        {
-            ActiveFalse();
-        }
+        // else if (other.CompareTag("Character"))
+        // {
+        //     ActiveFalse();
+        // }
         else if (other.CompareTag("Map_Wall"))
         {
             GameMng.I.showEff(EFF_TYPE.REMOVE_EFF, this.transform.position);

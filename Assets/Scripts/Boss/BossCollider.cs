@@ -140,6 +140,12 @@ public class BossCollider : MonoBehaviour
                     isCritical,
                     isBackAttack
                 );
+                
+                // 에스더 버프 중이라면 데미지 증가 120% 증가 버프
+                if (GameMng.I.estherManager._esther_buff_state.Equals(ESTHER_BUFF.COTTON_BUFF))
+                {
+                    damageTemp = Mathf.CeilToInt(damageTemp * 1.2f);
+                }
 
                 GameMng.I.createDamage(
                     other.ClosestPoint(transform.position) + new Vector3(0, 3f, 0),

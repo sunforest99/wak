@@ -33,7 +33,7 @@ public class DungeonMng : MonoBehaviour
     [SerializeField] protected GameObject campFire;                     // 휴식 오브젝트
     [SerializeField] protected GameObject npc_shop;                     // 상점 npc  (소피아(왁귀) | 캘리칼리(계륵))
 
-    void Start()
+    protected virtual void Start()
     {
         GameMng.I._keyMode = KEY_MODE.UI_MODE;
         _mapUI.SetActive(true);
@@ -142,8 +142,6 @@ public class DungeonMng : MonoBehaviour
     {
         _leftMonster--;
         
-        Debug.Log(_leftMonster);
-
         if (_leftMonster.Equals(0))
         {
             // 다음 던전으로 들어갈 수 있는 문 열림

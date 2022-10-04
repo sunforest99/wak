@@ -31,7 +31,7 @@ public class GameMng : MonoBehaviour
     public GameObject[] characterPrefab = new GameObject[3];
     public GameObject[] magicianSkillPrefab = new GameObject[4];     // 기본공격, 바람, 용둔, 침스터콜
     public GameObject[] healerSkillPrefab = new GameObject[3];  // 기본공격, 나무, 레이저
-    public bool isFocusing = true;      // 캐릭터에게 포커싱 맞출지 (카메라가 따라올지 유무)
+    // public bool isFocusing = true;      // 캐릭터에게 포커싱 맞출지 (카메라가 따라올지 유무)
 
     [Space(20)][Header("[  기본 UI 관리  ]")]  // ==========================================================================================================================
     public NPCUI npcUI;                 // NPC 클릭시 선택 UI (대화UI, 선물UI)

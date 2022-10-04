@@ -129,9 +129,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 593
-        y: 41
+        y: 94
         width: 455
-        height: 670
+        height: 617
       alignment: 9
       pivot: {x: 0.5, y: 0.08549488}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -196,7 +196,7 @@ TextureImporter:
         width: 563
         height: 122
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -204,6 +204,27 @@ TextureImporter:
       bones: []
       spriteID: 8db21721cf40950419588487bdcc1f4d
       internalID: 174070074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: doors_5
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 36
+        width: 195
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05549a1e6a1abc1439a08f59b74e18c9
+      internalID: -298972110
       vertices: []
       indices: 
       edges: []
@@ -223,6 +244,7 @@ TextureImporter:
       doors_0: 1754537092
       doors_3: 1765413188
       doors_4: 174070074
+      doors_5: -298972110
       doors_2: 2031172717
   spritePackingTag: 
   pSDRemoveMatte: 0

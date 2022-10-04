@@ -11,7 +11,14 @@ public enum ISEDOL
     JINGBURER,
     GOSEGU
 }
-
+public enum ESTHER_BUFF
+{
+    NONE,
+    JINGBURER_BUFF,
+    INE_BUFF,
+    COTTON_BUFF,
+    GOSEGU_BUFF
+}
 public class EstherManager : MonoBehaviour
 {
     [SerializeField] Animator estherAnim;
@@ -21,17 +28,19 @@ public class EstherManager : MonoBehaviour
     [SerializeField] GameObject appearEffect;       // 에스더 소환되는 이펙트
     [SerializeField] Animator appearLightAnim;      // 에스더 관련 라이트
     [SerializeField] GameObject[] estherAppear;     // 에스더들 등장 일러스트 (ISEDOL enum과 항상 동일)
-    [SerializeField] GameObject[] estherAttack;     // 에스더 공격
-                                                    //       < 귀상어두 >     |     < 계륵 >
-                                                    //        0 : 비챤       |      0 : 릴파
-                                                    //        1 : 아이네     |      1 : 징버거
+    [SerializeField] GameObject[] estherSkill;     // 에스더 공격
+                                                    //       < 귀상어두 >    |     < 계륵 >
+                                                    //        0 : 비챤       |      3 : 릴파
+                                                    //        1 : 아이네     |      4 : 징버거
                                                     //        2 : 주르르     |      
     // 에스더 소환 순서
     // 1. 에스더 소환되는 이펙트
     // 2. 에스더 관련 라이트로 변경
     // 3. 에스더 일러스트 작동
     // 3-2. 에스더 공격 (일러 애니메이션 도중)
-
+    
+    public ESTHER_BUFF _esther_buff_state;
+    
     void Start()
     {
         GameMng.I.estherManager = this;
@@ -39,7 +48,7 @@ public class EstherManager : MonoBehaviour
         // TODO : 클라마다 Start와 Update 시작이 다름. 방장만 게이지 관리
         setGauge(0);
        
-        NetworkMng.I.myRoom = ROOM_CODE.RAID_0; // TODO : 나중에는 무조건 변경된 이후에야 이곳이 열리기 때문에 지워도 됨
+        NetworkMng.I.myRoom = ROOM_CODE.RAID_1; // TODO : 나중에는 무조건 변경된 이후에야 이곳이 열리기 때문에 지워도 됨
         // if (NetworkMng.I.myRoom.Equals(ROOM_CODE.RAID_0))
     }
 
@@ -208,14 +217,14 @@ public class EstherManager : MonoBehaviour
 
         // 4. 에스더 공격 (일러 애니메이션 도중
         spawnPos.y = 0;
-        estherAttack[0].transform.position = spawnPos;
+        estherSkill[0].transform.position = spawnPos;
         if (isMe)
-            estherAttack[0].tag = "Esther_Attack_Skill";       // 시전자만 데미지 체크하기
+            estherSkill[0].tag = "Esther_Attack_Skill";       // 시전자만 데미지 체크하기
         if (effectPosX < spawnPos.x)
-            estherAttack[0].transform.rotation = Quaternion.identity;
+            estherSkill[0].transform.rotation = Quaternion.identity;
         else
-            estherAttack[0].transform.rotation = Quaternion.Euler(0, 180, 0);
-        estherAttack[0].SetActive(true);
+            estherSkill[0].transform.rotation = Quaternion.Euler(0, 180, 0);
+        estherSkill[0].SetActive(true);
     }
 
     /*
@@ -234,11 +243,12 @@ public class EstherManager : MonoBehaviour
         estherAppear[(int)ISEDOL.INE].SetActive(true);
 
         // 4. 에스더 공격 (일러 애니메이션 도중
-        for (int i = 0; i < NetworkMng.I.v_users.Count; i++)
+        foreach (var user in NetworkMng.I.v_users)
         {
             // 피가 0 이상이면, (살아있으면)
             // if 
             // 아이네 이펙트 생성하고 그 캐릭터한테 붙이기 (쉴드)
+            Instantiate(estherSkill[1], transform.position, Quaternion.identity, user.Value.transform);
         }
     }
 
@@ -258,12 +268,12 @@ public class EstherManager : MonoBehaviour
         estherAppear[(int)ISEDOL.COTTON].SetActive(true);
 
         // 4. 에스더 공격 (일러 애니메이션 도중
-        for (int i = 0; i < NetworkMng.I.v_users.Count; i++)
+        foreach (var user in NetworkMng.I.v_users)
         {
             // 피가 0 이상이면, (살아있으면)
             // if 
             // 주르르 이펙트 생성하고 그 캐릭터한테 붙이기 (쿨감 & 뎀감)
-
+            Instantiate(estherSkill[2], transform.position, Quaternion.identity, user.Value.transform);
         }
     }
 
@@ -283,10 +293,10 @@ public class EstherManager : MonoBehaviour
         estherAppear[(int)ISEDOL.LILPA].SetActive(true);
 
         // 4. 에스더 공격 (일러 애니메이션 도중
-        Vector3 bossPos = GameMng.I.boss.transform.position;
-        estherAttack[0].transform.position = bossPos;
-        estherAttack[0].transform.parent = GameMng.I.boss.transform;
-        estherAttack[0].SetActive(true);
+        // Vector3 bossPos = GameMng.I.boss.transform.position;
+        // estherSkill[0].transform.position = bossPos;
+        // estherSkill[0].transform.parent = GameMng.I.boss.transform;
+        estherSkill[3].SetActive(true);
 
         if (isMe)
             for (int i = 0; i < NetworkMng.I.v_users.Count; i++)
@@ -315,8 +325,8 @@ public class EstherManager : MonoBehaviour
         estherAppear[(int)ISEDOL.JINGBURER].SetActive(true);
 
         // 4. 에스더 공격 (일러 애니메이션 도중
-        estherAttack[1].transform.position = spawnPos;
-        estherAttack[1].SetActive(true);
+        estherSkill[4].transform.position = spawnPos;
+        estherSkill[4].SetActive(true);
     }
 
     /*
