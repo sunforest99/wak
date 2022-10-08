@@ -8,6 +8,8 @@ public class NPCUI : MonoBehaviour
     [SerializeField] Canvas _canvas;
     public GameObject _startLoad;
 
+    public UnityEngine.UI.Image npcFavoriteItemImg;
+
     public DialogUI dialogUI;
     public GameObject npcSelectUI;
 
@@ -38,7 +40,7 @@ public class NPCUI : MonoBehaviour
     public void amIHaveFavoriteItem()
     {
         // TODO : haveItem 의 idx가 ITEM_INDEX 순서와 맞게
-        int idx = Character.haveItem[2].FindIndex(name => name.itemData.itemName == GameMng.I.npcData.favoriteItem.ToString());
+        int idx = Character.haveItem[2].FindIndex(name => name.itemData.itemName == GameMng.I.npcData.favoriteItem.itemIndex.ToString());
         
         // 못찾으면
         if (idx < 0)
@@ -54,7 +56,7 @@ public class NPCUI : MonoBehaviour
     public void giveFavoriteItem()
     {
         // TODO : haveItem 의 idx가 ITEM_INDEX 순서와 맞게
-        int idx = Character.haveItem[2].FindIndex(name => name.itemData.itemName == GameMng.I.npcData.favoriteItem.ToString());
+        int idx = Character.haveItem[2].FindIndex(name => name.itemData.itemName == GameMng.I.npcData.favoriteItem.itemIndex.ToString());
 
         // 아이템 개수가 안맞으면 이 함수에 들어올수 없지만 혹시 모르니
         if (idx >= 0)
