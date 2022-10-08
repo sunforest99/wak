@@ -5837,21 +5837,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: ___camp_fire
       objectReference: {fileID: 0}
-    - target: {fileID: 2936627748947365204, guid: 125a2f77cf89b2541ae578df899c6635, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2985765231922290507, guid: 125a2f77cf89b2541ae578df899c6635, type: 3}
       propertyPath: m_RootOrder
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2985765231922290507, guid: 125a2f77cf89b2541ae578df899c6635, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.29
       objectReference: {fileID: 0}
     - target: {fileID: 2985765231922290507, guid: 125a2f77cf89b2541ae578df899c6635, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.943
+      value: -0.191
       objectReference: {fileID: 0}
     - target: {fileID: 2985765231922290507, guid: 125a2f77cf89b2541ae578df899c6635, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5859,11 +5855,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2985765231922290507, guid: 125a2f77cf89b2541ae578df899c6635, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9848078
       objectReference: {fileID: 0}
     - target: {fileID: 2985765231922290507, guid: 125a2f77cf89b2541ae578df899c6635, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.17364816
       objectReference: {fileID: 0}
     - target: {fileID: 2985765231922290507, guid: 125a2f77cf89b2541ae578df899c6635, type: 3}
       propertyPath: m_LocalRotation.y
@@ -5875,7 +5871,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2985765231922290507, guid: 125a2f77cf89b2541ae578df899c6635, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2985765231922290507, guid: 125a2f77cf89b2541ae578df899c6635, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -12829,6 +12825,7 @@ MonoBehaviour:
   materials:
   - {fileID: 2100000, guid: 2968845b0a0166c44a7d249746d4303c, type: 2}
   - {fileID: 2100000, guid: 25d24d5ecebdf4249b92c2b40e3917ed, type: 2}
+  itemObj: {fileID: 5358752772899639577, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
   boss: {fileID: 0}
   estherManager: {fileID: 0}
 --- !u!4 &878328438
@@ -16681,7 +16678,7 @@ SpriteRenderer:
   m_SortingLayerID: -833444747
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: -579026600, guid: 7173ed52ef88268448cfc2b72b8fe679, type: 3}
+  m_Sprite: {fileID: -1146717562, guid: 18ce54764c55ed34181c00beca9a112a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -16700,7 +16697,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1111963814}
   m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 1.2, y: 0, z: 9.03}
+  m_LocalPosition: {x: 1.2, y: 2.23, z: 9.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17833,7 +17830,7 @@ GameObject:
   - component: {fileID: 1240490236}
   m_Layer: 11
   m_Name: "___\uB9F5"
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -17858,7 +17855,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2968845b0a0166c44a7d249746d4303c, type: 2}
+  - {fileID: 2100000, guid: 499b8c117471b9e43b0a3f243493665e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -22692,7 +22689,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4933285718809823685, guid: 6a1f0d99cac4cb84196a64322e7182ef, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.52
+      value: -1.78
       objectReference: {fileID: 0}
     - target: {fileID: 4933285718809823685, guid: 6a1f0d99cac4cb84196a64322e7182ef, type: 3}
       propertyPath: m_LocalPosition.y
@@ -26356,9 +26353,9 @@ MonoBehaviour:
   - {fileID: 4723054551740063541, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
   campFire: {fileID: 1316147116}
   npc_shop: {fileID: 1371846131}
-  monster_seadu: {fileID: 3995522924913816888, guid: 54554c089de4da949a6b54bf1273db94, type: 3}
-  monster_seaduNew: {fileID: 6633882294574003820, guid: 94520c09d63d0c64a862619fb1ec40fd, type: 3}
-  monster_octopusdu: {fileID: 7410838684900474498, guid: 6e39a450f46294e4293e8d0e861b2159, type: 3}
+  monster_seadu: {fileID: 5453467557759407415, guid: 260af3e5b99c6ab4e96a9986da944918, type: 3}
+  monster_seaduNew: {fileID: 5453467557759407415, guid: 260af3e5b99c6ab4e96a9986da944918, type: 3}
+  monster_octopusdu: {fileID: 2490693737369890119, guid: c1b044000507d8a4095b7df3f76d0599, type: 3}
 --- !u!1 &1788369261
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Build_Storage : Build
+public class Build_UIOpen : Build
 {
-    [SerializeField] GameObject inventoryUI;
+    [SerializeField] GameObject UI;
 
     public override void activeBuild()
     {
-        inventoryUI.SetActive(true);
+        UI.SetActive(true);
     }
 }

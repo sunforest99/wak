@@ -10,7 +10,7 @@ public class Soul : MonoBehaviour
     
     void Start()
     {
-        
+        MCamera.I.setTargetChange(this.transform);
     }
 
     void Update()

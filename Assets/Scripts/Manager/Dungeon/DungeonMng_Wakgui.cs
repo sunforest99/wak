@@ -15,9 +15,7 @@ public class DungeonMng_Wakgui : DungeonMng
     {
         // TODO : 좌표 여러개 추가하기
         Vector3[] posArr = {
-            new Vector3(-4.16f, 1.325f, 10),
-            new Vector3(3.98f, 1.325f, 8.02f),
-            new Vector3(-2.04f, 1.325f, 5.62f)
+            new Vector3(-4.16f, 1.325f, 10)
         };
 
         // TODO : 몬스터 다르게 하기 등록

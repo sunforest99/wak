@@ -76,7 +76,8 @@ public class MCamera : MonoBehaviour
     {
         zoomTimer = time;
         zoomTimerTotal = time;
-        zoomFrom = 30;
+        // zoomFrom = 30;
+        zoomFrom = _vCamera.m_Lens.FieldOfView;
         zoomTo = 26;
     }
     /*
@@ -87,7 +88,8 @@ public class MCamera : MonoBehaviour
     {
         zoomTimer = time;
         zoomTimerTotal = time;
-        zoomFrom = 26;
+        // zoomFrom = 26;
+        zoomFrom = _vCamera.m_Lens.FieldOfView;
         zoomTo = 20;
     }
     /*
@@ -98,7 +100,8 @@ public class MCamera : MonoBehaviour
     {
         zoomTimer = time;
         zoomTimerTotal = time;
-        zoomFrom = 26;
+        // zoomFrom = 26;
+        zoomFrom = _vCamera.m_Lens.FieldOfView;
         zoomTo = 30;
     }
     /*
@@ -109,7 +112,8 @@ public class MCamera : MonoBehaviour
     {
         zoomTimer = time;
         zoomTimerTotal = time;
-        zoomFrom = 20;
+        // zoomFrom = 20;
+        zoomFrom = _vCamera.m_Lens.FieldOfView;
         zoomTo = 30;
     }
 

@@ -4,14 +4,41 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public class ShieldBuff : MonoBehaviour
+{
+    // BuffData의 데이터
+    public int duration;                        // 지속시간 (카운트를 위해 정수)
+    public float mount;                         // 쉴드량
+    
+    // 관리용 데이터
+    public float countdown;
+
+    public ShieldBuff(int duration)
+    {
+        this.duration = duration;
+        this.countdown = duration;
+    }
+
+    public void resetCountdown()
+    {
+        this.countdown = this.duration;
+    }
+
+    public bool isActive()
+    {
+        return this.countdown <= this.duration;
+    }
+}
+
 [System.Serializable]
 public struct Player_HP_Numerical
 {          // 체력에 필요한 수치 구조체
     public float fullHp;                    // 최대 체력
     public float fullShield;                // 최대 쉴드 << 필요한지 모르겠음
     public float Hp;                        // 현재 체력
-    public float Shield;                    // 현재 쉴드
+    public float Shield_Mount;                    // 현재 쉴드
     public float Shield_Pos;                // 쉴드 위치
+    public ShieldBuff Shield;
 }
 
 [System.Serializable]
@@ -39,12 +66,16 @@ public class StateMng : MonoBehaviour
     [SerializeField] TextMeshProUGUI PlayerHPText;                                          // 중하단 플레이어 체력 텍스트
     public Player_HP_Numerical[] Party_HP_Numerical = new Player_HP_Numerical[4]; // 좌측 UI 플레이어 수치
     public Player_HP_Numerical user_HP_Numerical;
-
+    // public ShieldBuff user_shield = new Shil[4]_;
+    
     public int nPlayerBuffCount;                                                                   // 플레이어의 버프 갯수
     public int nPlayerDeBuffCount;
     public BuffData b;
     float fImageSize;
     float fPlayerImgSize;
+
+
+
 
     void Start()
     {
@@ -52,13 +83,13 @@ public class StateMng : MonoBehaviour
         fPlayerImgSize = 358.0f;
         Party_HP_Numerical[0].fullHp = Party_HP_Numerical[0].fullShield = user_HP_Numerical.fullHp = 95959;
         Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp = user_HP_Numerical.fullHp;
-        Party_HP_Numerical[0].Shield = user_HP_Numerical.Shield = 0;
+        Party_HP_Numerical[0].Shield_Mount = user_HP_Numerical.Shield_Mount = 0;
         for (int i = 1; i < 4; i++)
         {
             Party_HP_Numerical[i].fullHp = 100;
             Party_HP_Numerical[i].fullShield = 100;
             Party_HP_Numerical[i].Hp = 100;
-            Party_HP_Numerical[i].Shield = 10;
+            Party_HP_Numerical[i].Shield_Mount = 10;
         }
         nPlayerBuffCount = 0;
         nPlayerDeBuffCount = 0;
@@ -66,8 +97,17 @@ public class StateMng : MonoBehaviour
 
     void Update()
     {
+        // 쉴드량 매 초마다 카운팅
+        // foreach (var bf in ShieldBuff)
+        // {
+        //     if (bf.Value.isActive())
+        //         bf.Value.countdown += Time.deltaTime;
+        // }
+
         ShieldPos();
         PlayerHP();
+
+        
     }
 
     void ShieldPos()
@@ -75,8 +115,8 @@ public class StateMng : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             PartyHPImg[i].rectTransform.localScale = new Vector3(Party_HP_Numerical[i].Hp / Party_HP_Numerical[i].fullHp, 1.0f, 1.0f);
-            PartyShieldImg[i].rectTransform.localScale = new Vector3(Party_HP_Numerical[i].Shield / Party_HP_Numerical[i].fullShield, 1.0f, 1.0f);
-            if (Party_HP_Numerical[i].Hp + Party_HP_Numerical[i].Shield <= Party_HP_Numerical[i].fullHp)
+            PartyShieldImg[i].rectTransform.localScale = new Vector3(Party_HP_Numerical[i].Shield_Mount / Party_HP_Numerical[i].fullShield, 1.0f, 1.0f);
+            if (Party_HP_Numerical[i].Hp + Party_HP_Numerical[i].Shield_Mount <= Party_HP_Numerical[i].fullHp)
             {
                 Party_HP_Numerical[i].Shield_Pos = PartyHPImg[i].rectTransform.anchoredPosition.x + (fImageSize * PlayerHPImg.rectTransform.localScale.x);
                 PartyShieldImg[i].rectTransform.pivot = new Vector2(0.0f, 0.5f);
@@ -93,14 +133,14 @@ public class StateMng : MonoBehaviour
     void PlayerHP()
     {
         Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp;
-        Party_HP_Numerical[0].Shield = user_HP_Numerical.Shield;
+        Party_HP_Numerical[0].Shield_Mount = user_HP_Numerical.Shield_Mount;
 
         PlayerHPText.text = user_HP_Numerical.Hp.ToString() + " / " + user_HP_Numerical.fullHp.ToString();
         Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp;
-        Party_HP_Numerical[0].Shield = user_HP_Numerical.Shield;
+        Party_HP_Numerical[0].Shield_Mount = user_HP_Numerical.Shield_Mount;
         PlayerHPImg.rectTransform.localScale = new Vector3(user_HP_Numerical.Hp / user_HP_Numerical.fullHp, 1.0f, 1.0f);
-        PlayerShieldImg.rectTransform.localScale = new Vector3(user_HP_Numerical.Shield / user_HP_Numerical.fullHp, 1.0f, 1.0f);
-        if (user_HP_Numerical.Hp + user_HP_Numerical.Shield <= user_HP_Numerical.fullHp)
+        PlayerShieldImg.rectTransform.localScale = new Vector3(user_HP_Numerical.Shield_Mount / user_HP_Numerical.fullHp, 1.0f, 1.0f);
+        if (user_HP_Numerical.Hp + user_HP_Numerical.Shield_Mount <= user_HP_Numerical.fullHp)
         {
             user_HP_Numerical.Shield_Pos = PlayerHPImg.rectTransform.anchoredPosition.x + (fPlayerImgSize * PlayerHPImg.rectTransform.localScale.x);
             PlayerShieldImg.rectTransform.pivot = new Vector2(0.0f, 0.5f);

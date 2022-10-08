@@ -15,6 +15,11 @@ public enum ITEM_TYPE
     CONSUMABLE_ITEM,            // 사용 아이템
 }
 
+/*
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    추가할때 Resources/ItemData 에도 파일 만들어 주어야함
+*/
 public enum ITEM_INDEX
 {
     _BATTLE_ITEM_INDEX_ = 0,
@@ -33,7 +38,9 @@ public enum ITEM_INDEX
     STAFF,
     ROSE,
     SWORD,
+    _WEAPON_ITEM_INDEX_END_,
 
+    _EQUIP_ITEM_INDEX,
     SHIRTS_0,
     SHIRTS_1,
     SHIRTS_2,
@@ -41,6 +48,7 @@ public enum ITEM_INDEX
     PANTS_0,
     PANTS_1,
     PANTS_2,
+    _EQUIP_ITEM_INDEX_END_,
 
     _FAVORITE_ITEM_INDEX_ = 200,
     SCIENCE_AWARD,
@@ -62,9 +70,11 @@ public enum ITEM_INDEX
     DONGGASSE,
     SWIP_SHIRT,
     ROBOT,
+    _FAVORITE_ITEM_INDEX_END_,
 
     _CONSUMABLE_ITEM_INDEX_ = 300,
     REDMUSHROOM,
+
     NONE
 }
 

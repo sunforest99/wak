@@ -84,6 +84,8 @@ public class GameMng : MonoBehaviour
     public Queue<GameObject> removeEffPool = new Queue<GameObject>();   // 사라지는 이펙트 풀
     public Material[] materials = new Material[2];
 
+    [Space(20)][Header("[  아이템 관리  ]")]  // ==============================================================================================================================
+    public GameObject itemObj;
 
     [Space(20)][Header("[  보스 관리 (여기 있으면 안됨)  ]")]  // ===========================================================================================================
     public Boss boss = null;                    // 보스 정보 //!< 이거 여기 없이 사용할 방법이 있다면 좋음

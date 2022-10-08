@@ -71,9 +71,11 @@ public class UIManager : MonoBehaviour
             // int layerMask = 1 << LayerMask.NameToLayer("Character");
 
             if (Physics.Raycast(ray, out hit, 100f, layerMask)) {
+                    Debug.Log("____");
             // if (Physics.Raycast(ray.origin, ray.direction * 10000, out hit)) {
                 if (hit.transform.CompareTag("Npc"))        // NPC 우선순위
                 {
+                    Debug.Log("!!!!!!!!!!!!!!!!!!!!");
                     if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 2)
                     {
                         // 저장된 dialog 실행
@@ -84,7 +86,7 @@ public class UIManager : MonoBehaviour
                         if (GameMng.I.npcData.dialogs == null)
                         {
                             GameMng.I.npcData = null;
-                            return;
+                            // return;
                         }
 
                         // 이미 선택모드인지 체크

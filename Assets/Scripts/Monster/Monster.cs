@@ -425,6 +425,33 @@ public class Monster : MonoBehaviour
         {
             Destroy(gameObject);
             // TODO : DungeonMng 에서 _monsters 에도 제거
+
+            int rand = Random.Range(0, 100);
+            if (rand < 40)          // 40% 확률로 호감도 아이템
+                rand = Random.Range((int)ITEM_INDEX._FAVORITE_ITEM_INDEX_ + 1, (int)ITEM_INDEX._FAVORITE_ITEM_INDEX_END_);
+            else if (rand < 75)     // 35% 확률로 장비 아이템
+                rand = Random.Range((int)ITEM_INDEX._EQUIP_ITEM_INDEX + 1, (int)ITEM_INDEX._EQUIP_ITEM_INDEX_END_);
+            else if (rand < 90)     // 15% 확률로 무기 아이템
+                rand = Random.Range((int)ITEM_INDEX._WEAPON_ITEM_INDEX_ + 1, (int)ITEM_INDEX._WEAPON_ITEM_INDEX_END_);
+            else                    // 10% 아무것도 안뜸
+                return;
+            
+            Debug.Log( ITEM_INDEX._EQUIP_ITEM_INDEX );
+            Debug.Log( (ITEM_INDEX)rand );
+            Debug.Log( ((ITEM_INDEX)rand).ToString() );
+
+            GameObject obj = Instantiate(
+                GameMng.I.itemObj,
+                transform.position,
+                Quaternion.Euler(20, 0, 0)
+            );
+            obj.GetComponent<ItemObj>().saveItem = 
+                new Item(
+                    Resources.Load<ItemData>(
+                        $"ItemData/{((ITEM_INDEX)rand).ToString()}"),
+                        1
+                );
+            obj.SetActive(true);
         }
     }
 
