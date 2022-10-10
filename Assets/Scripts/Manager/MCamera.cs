@@ -76,7 +76,8 @@ public class MCamera : MonoBehaviour
     {
         zoomTimer = time;
         zoomTimerTotal = time;
-        zoomFrom = 30;
+        // zoomFrom = 30;
+        zoomFrom = _vCamera.m_Lens.FieldOfView;
         zoomTo = 26;
     }
     /*
@@ -87,8 +88,21 @@ public class MCamera : MonoBehaviour
     {
         zoomTimer = time;
         zoomTimerTotal = time;
-        zoomFrom = 26;
+        // zoomFrom = 26;
+        zoomFrom = _vCamera.m_Lens.FieldOfView;
         zoomTo = 20;
+    }
+    /*
+     * @breif 화면 줌인3. NPC 대화 모드일때 사용 (큰 줌인)
+     * @param time 줌인 속도
+     */
+    public void zoomIn3(float time = 0.3f)
+    {
+        zoomTimer = time;
+        zoomTimerTotal = time;
+        // zoomFrom = 26;
+        zoomFrom = _vCamera.m_Lens.FieldOfView;
+        zoomTo = 15;
     }
     /*
      * @breif 화면 줌아웃. NPC 선택 모드일때 사용 (적은 줌아웃)
@@ -98,7 +112,8 @@ public class MCamera : MonoBehaviour
     {
         zoomTimer = time;
         zoomTimerTotal = time;
-        zoomFrom = 26;
+        // zoomFrom = 26;
+        zoomFrom = _vCamera.m_Lens.FieldOfView;
         zoomTo = 30;
     }
     /*
@@ -109,8 +124,21 @@ public class MCamera : MonoBehaviour
     {
         zoomTimer = time;
         zoomTimerTotal = time;
-        zoomFrom = 20;
+        // zoomFrom = 20;
+        zoomFrom = _vCamera.m_Lens.FieldOfView;
         zoomTo = 30;
+    }
+    /*
+     * @breif 화면 줌아웃2. NPC 대화 모드일때 사용 (큰 줌아웃)
+     * @param time 줌아웃 속도
+     */
+    public void zoomOut3(float time = 0.3f)
+    {
+        zoomTimer = time;
+        zoomTimerTotal = time;
+        // zoomFrom = 20;
+        zoomFrom = _vCamera.m_Lens.FieldOfView;
+        zoomTo = 20;
     }
 
     // void Start()

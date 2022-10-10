@@ -28,7 +28,7 @@ public class Marble : DestroySelf
         if (!answer)
         {
             Debug.Log("전멸");
-            GameMng.I.stateMng.user_HP_Numerical.Hp -=  GameMng.I.stateMng.user_HP_Numerical.fullHp;
+            GameMng.I.stateMng.forcedDeath();
         }
         
         NetworkMng.I.SendMsg(string.Format("BOSS_PATTERN:{0} : {1}", (int)WAKGUI_ACTION.MARBLE_BROKEN, uniqueNum));

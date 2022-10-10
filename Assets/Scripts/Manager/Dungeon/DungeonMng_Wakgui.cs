@@ -15,9 +15,7 @@ public class DungeonMng_Wakgui : DungeonMng
     {
         // TODO : 좌표 여러개 추가하기
         Vector3[] posArr = {
-            new Vector3(-4.16f, 1.325f, 10),
-            new Vector3(3.98f, 1.325f, 8.02f),
-            new Vector3(-2.04f, 1.325f, 5.62f)
+            new Vector3(-4.16f, 1.325f, 10)
         };
 
         // TODO : 몬스터 다르게 하기 등록
@@ -72,6 +70,8 @@ public class DungeonMng_Wakgui : DungeonMng
         _leftMonster = posArr.Length;
     }
     protected override void dungeonNPC() {
+        prison.SetActive(true);
+
         List<int> notGainNPC = new List<int>();
 
         for (int i = 0; i < (int)NPC.__NONE__; i++)
@@ -86,7 +86,7 @@ public class DungeonMng_Wakgui : DungeonMng
         if (notGainNPC.Count > 0)
         {
             int rand = Random.Range(0, notGainNPC.Count);
-            Instantiate(npc[notGainNPC[rand]], new Vector3(0, 0.88f, 10), Quaternion.Euler(20, 0, 0));
+            Instantiate(npc[notGainNPC[rand]], new Vector3(0, 0.88f, 8.256f), Quaternion.Euler(20, 0, 0));
 
             GameMng.I.userData.npc.Add(notGainNPC[rand]);
         }

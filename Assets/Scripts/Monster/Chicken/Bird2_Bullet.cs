@@ -26,7 +26,7 @@ public class Bird2_Bullet : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+            GameMng.I.stateMng.takeDamage(damage);
             ActiveFalse();
         }
         else if (other.CompareTag("Map_Wall"))

@@ -20,7 +20,7 @@ public class Octopus_Leg : MonoBehaviour
         {
             // TODO : 기절 추가할지 고민
             // GameMng.I.character.sleep();
-            GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+            GameMng.I.stateMng.takeDamage(damage);
         }
     }
 

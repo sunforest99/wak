@@ -33,7 +33,7 @@ public class Sphinx : DestroySelf
                     Character temp = col.transform.GetChild(0).GetComponent<Character>();
                     if (temp.nickName == GameMng.I.character.nickName)
                     {
-                        GameMng.I.stateMng.user_HP_Numerical.Hp -= GameMng.I.stateMng.user_HP_Numerical.fullHp;
+                        GameMng.I.stateMng.forcedDeath();
                     }
                 }
             }

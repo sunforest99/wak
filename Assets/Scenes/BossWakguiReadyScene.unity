@@ -11461,7 +11461,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13613,7 +13613,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1192006707
 GameObject:
@@ -13973,7 +13973,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5358752772899639581, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14431,7 +14431,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapNameTxt: {fileID: 0}
   mapName: "(\uC784\uC2DC) \uBCF4\uC2A4\uC815\uBE44\uC18C"
-  isFocusingMap: 0
   onlineMap: 1
   mapBG: {fileID: 8300000, guid: 3c78496d9cf68c64fa92389f02b5c66b, type: 3}
 --- !u!65 &1240490236
@@ -14642,7 +14641,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6281128334967869759, guid: cb7c468d2dae0a44cb90b3c7a9a324c9, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6281128334967869759, guid: cb7c468d2dae0a44cb90b3c7a9a324c9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -15134,6 +15133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 0}
+  _startLoad: {fileID: 0}
   dialogUI: {fileID: 751126325}
   npcSelectUI: {fileID: 1890058183}
 --- !u!114 &1285694272
@@ -24831,6 +24831,8 @@ MonoBehaviour:
       hair: 0
       face: 0
       weapon: 0
+      shirts: 0
+      pants: 0
     skills: []
     main_quest:
       quest_code: 0
@@ -24857,7 +24859,6 @@ MonoBehaviour:
   - {fileID: 5773230615940195967, guid: 3abc9bb865b6b8c47a2f45090fc08ac1, type: 3}
   - {fileID: 1722294880455484922, guid: 06c93946e55aaf6408984eb87033d2a4, type: 3}
   - {fileID: 2003640612720691984, guid: 77da5a3c1dce5d94b9076fc9d3fbc374, type: 3}
-  isFocusing: 1
   npcUI: {fileID: 1285694271}
   BattleItemUI:
     ItemImg:
@@ -24911,10 +24912,12 @@ MonoBehaviour:
   damageEff: {fileID: 4668772827392785263, guid: 76c52887f4087024b90cee9df57ded60, type: 3}
   eff: {fileID: 2750168284063509466, guid: 8b12ac4bc9ac3724dbd978c80b3f0042, type: 3}
   backEff: {fileID: 4301312996644471659, guid: 8d7b60abba478e64f817aff5fe63c7b3, type: 3}
+  takenEff: {fileID: 0}
   removeEff: {fileID: 3279469051611480287, guid: 702c7f42b22a15f478c62997230d1df5, type: 3}
   materials:
   - {fileID: 2100000, guid: 2968845b0a0166c44a7d249746d4303c, type: 2}
   - {fileID: 2100000, guid: 25d24d5ecebdf4249b92c2b40e3917ed, type: 2}
+  itemObj: {fileID: 5358752772899639577, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
   boss: {fileID: 0}
   estherManager: {fileID: 0}
 --- !u!4 &2032756466
@@ -24941,7 +24944,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4657231755677225247, guid: 77618c670228ae7428179b7222e7cc31, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4657231755677225247, guid: 77618c670228ae7428179b7222e7cc31, type: 3}
       propertyPath: m_LocalPosition.x

@@ -33,7 +33,7 @@ public class Knife_portal : MonoBehaviour
         {
             Debug.Log("칼 데미지 : " + damage);
             GameMng.I.character.sleep();
-            GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+            GameMng.I.stateMng.takeDamage(damage);
         }
     }
 }

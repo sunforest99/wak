@@ -80,12 +80,14 @@ public class UIManager : MonoBehaviour
                         // 근데 dialog 저장 방식이 맞는지 일단 확인
                         GameMng.I.npcData = hit.transform.GetComponent<Npcdata>();
                         
+                        GameMng.I.npcUI.npcFavoriteItemImg.sprite = GameMng.I.npcData.favoriteItem.itemSp;
+
                         // 대화 거리가 없으면 그냥 닫기
-                        if (GameMng.I.npcData.dialogs == null)
-                        {
-                            GameMng.I.npcData = null;
-                            return;
-                        }
+                        // if (GameMng.I.npcData.dialogs == null)
+                        // {
+                        //     GameMng.I.npcData = null;
+                        //     return;
+                        // }
 
                         // 이미 선택모드인지 체크
                         if (!GameMng.I.npcUI.npcSelectUI.activeSelf)
@@ -196,8 +198,27 @@ public class UIManager : MonoBehaviour
 
     public void selectGift()
     {
-
+        StartCoroutine(giftAnim());
     }
+
+    IEnumerator giftAnim()
+    {
+        Debug.Log(1);
+        MCamera.I.zoomIn3();
+        GameMng.I.npcUI.npcSelectUI.SetActive(false);
+
+        yield return new WaitForSeconds(0.8f);
+
+        Debug.Log(2);
+        GameMng.I.npcData._anim.SetTrigger("Happy");
+        
+        yield return new WaitForSeconds(1.8f);
+        
+        Debug.Log(3);
+        MCamera.I.zoomOut3();
+        GameMng.I.npcUI.npcSelectUI.SetActive(true);
+    }
+
 
     public void selectCancel()
     {

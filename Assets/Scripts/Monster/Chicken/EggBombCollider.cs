@@ -18,7 +18,7 @@ public class EggBombCollider : DestroySelf
     {
         if (other.CompareTag("Player"))
         {
-            GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+            GameMng.I.stateMng.takeDamage(damage);
         }
     }
 }

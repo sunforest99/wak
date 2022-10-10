@@ -11,9 +11,9 @@ public class SeaDu_New_Attack : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             if (DungeonMng._dungeon_Type.Equals(DUNGEON_TYPE.MONSTER_PURPLER))
-                GameMng.I.stateMng.user_HP_Numerical.Hp -= Random.Range(19000, 20000);
+                GameMng.I.stateMng.takeDamage(Random.Range(19000, 20000));
             else
-                GameMng.I.stateMng.user_HP_Numerical.Hp -= Random.Range(9000, 10000);
+                GameMng.I.stateMng.takeDamage(Random.Range(9000, 10000));
         }
     }
 }
