@@ -269,16 +269,21 @@ public class Chicken : Boss
         }
     }
 
+    // 내려찍기
     void Base_Spear()
     {
         action = CHICKEN_ACTION.BASE_SPEAR;
         animator.SetTrigger("Attack");
     }
+
+    // 오뱅알 EggBomb
     void Base_Oba()
     {
         action = CHICKEN_ACTION.BASE_OBA;
         animator.SetTrigger("EggBomb");
     }
+
+    // 표효
     void Base_Roar()
     {
         action = CHICKEN_ACTION.BASE_ROAR;
@@ -289,27 +294,36 @@ public class Chicken : Boss
         action = CHICKEN_ACTION.BASE_WING;
         animator.SetTrigger("Wing");
     }
+    
+    // 내려찍기
     void Base_JumpAttack()
     {
         action = CHICKEN_ACTION.BASE_JUMP_ATTACK;
         animator.SetTrigger("JumpAttack");
     }
+
+    // 발준때 페턴
     void Base_Foot()
     {
         action = CHICKEN_ACTION.BASE_FOOT;
         animator.SetTrigger("FootAttack");
     }
+
+    // 패턴 방귀
     void Base_Fart()
     {
         action = CHICKEN_ACTION.BASE_FART;
         animator.SetTrigger("Fart");
     }
+
+    // 후퇴 패턴
     void Base_RetReat()
     {
         action = CHICKEN_ACTION.BASE_RETREAT;
         animator.SetTrigger("Retreat");
     }
 
+    // 새떼 패턴
     IEnumerator Pattern_Bird(int rand)
     {
         action = CHICKEN_ACTION.PATTERN_BIRDS;
@@ -320,6 +334,7 @@ public class Chicken : Boss
         objectPool.setBridActive(rand);
     }
 
+    // 반격 패턴
     IEnumerator Pattern_Counter(int action)
     {
         int tempDmg = _currentHp;
@@ -363,12 +378,13 @@ public class Chicken : Boss
         }
     }
 
+    // 패턴 낙석 생성되면 캐릭터 자식에서 빼주기
     IEnumerator Pattern_FallingRock()
     {
         foreach (var trans in NetworkMng.I.v_users.Values)
         {
             GameObject temp = Instantiate(rockTarget, trans.transform.position, Quaternion.identity);
-            temp.transform.SetParent(trans.transform);
+            temp.transform.SetParent(trans.transform);      // 낙석 오브젝트를 캐릭터 자식으로 넣음
 
             yield return new WaitForSecondsRealtime(1.0f);      // 에니메이션 
         }
@@ -380,7 +396,8 @@ public class Chicken : Boss
         }
     }
 
-    IEnumerator Pattern_Remember(int rand)
+    // 오레하 패턴 대미지 모션? 필요
+    IEnumerator Pattern_Remember(int rand) 
     {
         action = CHICKEN_ACTION.PATTERN_REMEMBER;
         animator.SetTrigger("Fly");
@@ -397,6 +414,7 @@ public class Chicken : Boss
         }
     }
 
+    // 확정 사살기
     IEnumerator Pattern_Egg(int eggNum, string userNum)
     {
         for (int i = 0; i < 4; i++)
@@ -429,12 +447,14 @@ public class Chicken : Boss
 
     }
 
+    // 알 파괴
     void Egg_Break(int index)
     {
         eggs[index].transform.position = Vector3.zero;
         eggs[index].gameObject.SetActive(false);
     }
 
+    // TODO : 스핑크스 패턴 애니메이션 구현후 답 적용
     void Pattern_Sphinx()
     {
         action = CHICKEN_ACTION.PATTERN_SPHINX;
