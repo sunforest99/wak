@@ -8,7 +8,7 @@ public class ShieldBuff : MonoBehaviour
 {
     // BuffData의 데이터
     public int duration;                        // 지속시간 (카운트를 위해 정수)
-    public float mount;                         // 쉴드량
+    public int mount;                         // 쉴드량
     
     // 관리용 데이터
     public float countdown;
@@ -33,12 +33,11 @@ public class ShieldBuff : MonoBehaviour
 [System.Serializable]
 public struct Player_HP_Numerical
 {          // 체력에 필요한 수치 구조체
-    public float fullHp;                    // 최대 체력
-    public float fullShield;                // 최대 쉴드 << 필요한지 모르겠음
-    public float Hp;                        // 현재 체력
-    public float Shield_Mount;                    // 현재 쉴드
+    public int fullHp;                    // 최대 체력
+    public int fullShield;                // 최대 쉴드 << 필요한지 모르겠음
+    public int Hp;                        // 현재 체력
+    public int Shield_Mount;              // 현재 쉴드
     public float Shield_Pos;                // 쉴드 위치
-    public ShieldBuff Shield;
 }
 
 [System.Serializable]
@@ -66,6 +65,7 @@ public class StateMng : MonoBehaviour
     [SerializeField] TextMeshProUGUI PlayerHPText;                                          // 중하단 플레이어 체력 텍스트
     public Player_HP_Numerical[] Party_HP_Numerical = new Player_HP_Numerical[4]; // 좌측 UI 플레이어 수치
     public Player_HP_Numerical user_HP_Numerical;
+    public List<ShieldBuff> user_Shield_Numerical;
     // public ShieldBuff user_shield = new Shil[4]_;
     
     public int nPlayerBuffCount;                                                                   // 플레이어의 버프 갯수
@@ -98,16 +98,28 @@ public class StateMng : MonoBehaviour
     void Update()
     {
         // 쉴드량 매 초마다 카운팅
-        // foreach (var bf in ShieldBuff)
+        // for (int i = 0; i < Party_HP_Numerical.Length; i++)
         // {
-        //     if (bf.Value.isActive())
-        //         bf.Value.countdown += Time.deltaTime;
+        //     for (int j = Party_HP_Numerical[i].Shield.Count - 1; j >= 0; j--)
+        //     {
+        //         Party_HP_Numerical[i].Shield[j].countdown += Time.deltaTime;
+        //         if (Party_HP_Numerical[i].Shield[j].countdown >= Party_HP_Numerical[i].Shield[j].duration) {
+        //             // 유지시간 끝났으면 삭제
+        //             Party_HP_Numerical[i].Shield.RemoveAt(j);
+        //         }
+        //     }
         // }
+        for (int j = user_Shield_Numerical.Count - 1; j >= 0; j--)
+        {
+            user_Shield_Numerical[j].countdown += Time.deltaTime;
+            if (user_Shield_Numerical[j].countdown >= user_Shield_Numerical[j].duration) {
+                user_Shield_Numerical.RemoveAt(j);          // 쉴드 유지시간 끝났으면 삭제
+                // TODO : 네트워크에 내 바뀐 체력 보내줌
+            }
+        }
 
         ShieldPos();
         PlayerHP();
-
-        
     }
 
     void ShieldPos()
@@ -212,5 +224,44 @@ public class StateMng : MonoBehaviour
         }
         else
             partybuffGroups[player].userBuff[(int)buff].duration = partybuffGroups[player].userBuff[(int)buff].buffData.duration;
+    }
+
+    public void forcedDeath()
+    {
+        user_HP_Numerical.Hp = 0;
+        user_Shield_Numerical.Clear();
+    }
+
+    public void takeDamage(int dmg)
+    {
+        int temp = -1;
+        for (int j = 0; j < user_Shield_Numerical.Count; j++)
+        {
+            // 가장 먼저 들어온 쉴드 먼저 데미지를 받음
+            user_Shield_Numerical[j].mount -= dmg;
+
+            if (user_Shield_Numerical[j].mount < 0)
+            {
+                dmg = -user_Shield_Numerical[j].mount;
+                temp = j + 1;
+            }
+            else
+            {
+                dmg = 0;
+                break;
+            }
+        }
+
+        if (temp > 0)
+            user_Shield_Numerical.RemoveRange(0, temp);
+
+        user_HP_Numerical.Hp -= dmg;
+
+        if (user_HP_Numerical.Hp <= 0)
+        {
+            // 사망
+        }
+
+        // TODO : 네트워크에 내 변경된 HP 보내기
     }
 }

@@ -37,7 +37,7 @@ public class Egg : MonoBehaviour
         if (character == null)
         {
             // 터지는 액션 취기  (대충))
-            GameMng.I.stateMng.user_HP_Numerical.Hp -= 1000;
+            GameMng.I.stateMng.takeDamage(1000);
         }
         else
         {

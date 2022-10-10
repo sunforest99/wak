@@ -32,7 +32,7 @@ public class Poo : DestroySelf
         if (other.CompareTag("Player"))
         {
             GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.boss.bossData.getBuffs[1]);
-            GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+            GameMng.I.stateMng.takeDamage(damage);
         }
     }
 }

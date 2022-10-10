@@ -70,6 +70,8 @@ public class DungeonMng_Wakgui : DungeonMng
         _leftMonster = posArr.Length;
     }
     protected override void dungeonNPC() {
+        prison.SetActive(true);
+
         List<int> notGainNPC = new List<int>();
 
         for (int i = 0; i < (int)NPC.__NONE__; i++)
@@ -84,7 +86,7 @@ public class DungeonMng_Wakgui : DungeonMng
         if (notGainNPC.Count > 0)
         {
             int rand = Random.Range(0, notGainNPC.Count);
-            Instantiate(npc[notGainNPC[rand]], new Vector3(0, 0.88f, 10), Quaternion.Euler(20, 0, 0));
+            Instantiate(npc[notGainNPC[rand]], new Vector3(0, 0.88f, 8.256f), Quaternion.Euler(20, 0, 0));
 
             GameMng.I.userData.npc.Add(notGainNPC[rand]);
         }

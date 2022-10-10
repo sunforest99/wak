@@ -14,21 +14,28 @@ public class ItemObj : MonoBehaviour
     void Start()
     {
         itemSprRender.sprite = saveItem.itemData.itemSp;
-        _rigidbody.AddForce(new Vector3(Random.Range(-1f, 1f), 5, Random.Range(-1f, 1f)), ForceMode.Impulse);
+        _rigidbody.AddForce(new Vector3(Random.Range(-1.5f, 1.5f), 10, Random.Range(-1.5f, 1.5f)), ForceMode.Impulse);
     }
 
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.CompareTag("Floor") && !activeReady)
         {
+            activeReady = true;
+            StartCoroutine(activeOn());
+        }
+    }
+
+    private void OnCollisionStay(Collision other) {
+        if (other.gameObject.CompareTag("Floor") && !activeReady)
+        {
+            activeReady = true;
             StartCoroutine(activeOn());
         }
     }
 
     IEnumerator activeOn()
     {
-        activeReady = true;
-        // this.gameObject.tag = "Item";
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         this.gameObject.tag = "Item";
     }
 }

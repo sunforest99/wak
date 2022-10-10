@@ -35,14 +35,14 @@ public class Totem : DestroySelf
             case TOTEM_TYPE.RECT:
                 if (CheckCount("Rect") != 3)
                 {
-                    GameMng.I.stateMng.user_HP_Numerical.Hp -= GameMng.I.stateMng.user_HP_Numerical.fullHp;
+                    GameMng.I.stateMng.forcedDeath();
                     Debug.Log("사각형 실패 \"" + CheckCount("Rect") + "\"");
                 }
                 break;
             case TOTEM_TYPE.TRIANGLE:
                 if (CheckCount("Triangle") != 1)
                 {
-                    GameMng.I.stateMng.user_HP_Numerical.Hp -= GameMng.I.stateMng.user_HP_Numerical.fullHp;
+                    GameMng.I.stateMng.forcedDeath();
                     Debug.Log("삼각형 실패 \"" + CheckCount("Triangle") + "\"");
                 }
                 break;

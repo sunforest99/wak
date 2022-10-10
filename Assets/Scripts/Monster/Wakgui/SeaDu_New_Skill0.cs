@@ -18,7 +18,7 @@ public class SeaDu_New_Skill0 : ActiveSelf
     {
         if (other.CompareTag("Player"))
         {
-            GameMng.I.stateMng.user_HP_Numerical.Hp -= damage;
+            GameMng.I.stateMng.takeDamage(damage);
         }
         else if (other.CompareTag("Map_Wall"))
         {

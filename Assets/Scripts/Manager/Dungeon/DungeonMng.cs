@@ -32,6 +32,7 @@ public class DungeonMng : MonoBehaviour
     [SerializeField] protected GameObject[] npc = new GameObject[6];    // 던전에서 획득 가능한 NPC들, (enum.cs 의 NPC 와 순서가 같아야함)
     [SerializeField] protected GameObject campFire;                     // 휴식 오브젝트
     [SerializeField] protected GameObject npc_shop;                     // 상점 npc  (소피아(왁귀) | 캘리칼리(계륵))
+    [SerializeField] protected GameObject prison;                       // NPC 갇혀있는 감옥
 
     protected virtual void Start()
     {
