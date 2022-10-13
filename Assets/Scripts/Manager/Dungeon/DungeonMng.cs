@@ -124,6 +124,13 @@ public class DungeonMng : MonoBehaviour
         resetDungeon();
         initDungeon();
     }
+    public void selectShopDungeon(Transform clickedBT) {
+        curLocationUI.transform.position = clickedBT.position;
+        
+        _dungeon_Type = DUNGEON_TYPE.SHOP;
+        resetDungeon();
+        initDungeon();
+    }
     public void selectRandomDungeon(Transform clickedBT) {
         curLocationUI.transform.position = clickedBT.position;
         

@@ -18,4 +18,6 @@ public class ItemData : ScriptableObject
 
     public int count;                               // 아이템 갯수
     public int duration;                            // 아이템 쿨타임
+
+    public int itemCost;                            // 아이템 비용
 }
