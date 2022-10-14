@@ -71,6 +71,9 @@ public class UIManager : MonoBehaviour
             // int layerMask = 1 << LayerMask.NameToLayer("Character");
 
             if (Physics.Raycast(ray, out hit, 100f, layerMask)) {
+
+                Debug.Log("HIT " + hit.transform.tag);
+
             // if (Physics.Raycast(ray.origin, ray.direction * 10000, out hit)) {
                 if (hit.transform.CompareTag("Npc"))        // NPC 우선순위
                 {
@@ -144,13 +147,14 @@ public class UIManager : MonoBehaviour
                 }
                 else if (hit.transform.CompareTag("Build"))
                 {
-                    if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 2)
+                    if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 3.5f)
                     {
                         hit.transform.GetComponent<Build>().activeBuild();
                         GameMng.I._keyMode = KEY_MODE.UI_MODE;
                     }
                     else
                     {
+                        Debug.Log("SO FAR");
                         GameMng.I.showNotice("거리가 너무 멉니다.");
                     }
                     return;

@@ -49,6 +49,7 @@ public class UserData
     public List<Skill_TREE> upgrade = new List<Skill_TREE>();
     public int love;
     public List<int> npc = new List<int>();
+    public int coin;
     
     public void printData() 
     { 
