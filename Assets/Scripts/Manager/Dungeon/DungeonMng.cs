@@ -121,6 +121,12 @@ public class DungeonMng : MonoBehaviour
         curLocationUI.transform.position = clickedBT.position;
         
         _dungeon_Type = DUNGEON_TYPE.REST;
+
+        // 배틀아이템 개수 리셋 (충전)
+        Character.equipBattleItem[0].itemCount  = Character.equipBattleItem[0].itemData.count;
+        Character.equipBattleItem[1].itemCount  = Character.equipBattleItem[1].itemData.count;
+        Character.equipBattleItem[2].itemCount  = Character.equipBattleItem[2].itemData.count;
+
         resetDungeon();
         initDungeon();
     }

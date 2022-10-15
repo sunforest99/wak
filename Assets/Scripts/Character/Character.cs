@@ -151,12 +151,12 @@ public class Character : MonoBehaviour
     {
         usingBattleItem[itemnum] = true;
         equipBattleItem[itemnum].itemCount--;
-        if(equipBattleItem[itemnum].itemCount <= 0)
-        {
-            int idx = haveItem[0].FindIndex(name => name.itemData.itemName == equipBattleItem[itemnum].itemData.itemName);
-            haveItem[0].RemoveAt(idx);
-            GameMng.I.userData.inventory[0].RemoveAt(idx);
-        }
+        // if(equipBattleItem[itemnum].itemCount <= 0)
+        // {
+        //     int idx = haveItem[0].FindIndex(name => name.itemData.itemName == equipBattleItem[itemnum].itemData.itemName);
+        //     haveItem[0].RemoveAt(idx);
+        //     GameMng.I.userData.inventory[0].RemoveAt(idx);
+        // }
         GameMng.I.BattleItemUI.ItemText[itemnum].text = equipBattleItem[itemnum].itemCount.ToString();
         float cooltime = equipBattleItem[itemnum].itemData.duration;
 
@@ -482,12 +482,12 @@ public class Character : MonoBehaviour
                 }
                 break;
 
-            case ITEM_INDEX.SPEEDUP:
+            // case ITEM_INDEX.SPEEDUP:
 
-                float save = MOVE_SPEED;
-                MOVE_SPEED = MOVE_SPEED * 200 / 100;
-                StartCoroutine(SpeedUp(5, save));
-                break;
+            //     float save = MOVE_SPEED;
+            //     MOVE_SPEED = MOVE_SPEED * 200 / 100;
+            //     StartCoroutine(SpeedUp(5, save));
+            //     break;
         }
     }
 

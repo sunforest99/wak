@@ -24,9 +24,12 @@ public enum ITEM_INDEX
 {
     _BATTLE_ITEM_INDEX_ = 0,
     POTION,
+    POTION_2,
     CLEANSER,
-    SPEEDUP,
-
+    SHIELD,
+    DMGUP,
+    SHIELDUP,
+    
     _WEAPON_ITEM_INDEX_ = 100,
     STICK,
     BROOM,

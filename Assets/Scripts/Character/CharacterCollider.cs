@@ -30,19 +30,19 @@ public class CharacterCollider : MonoBehaviour
             {
                 Character.haveItem[n][index].itemCount += _item.itemCount;
                 GameMng.I.userData.inventory[n][index].mount += _item.itemCount;
-                if (_item.itemData.itemType == ITEM_TYPE.BATTLE_ITEM)
-                {
-                    for (int i = 0; i < Character.equipBattleItem.Length; i++)
-                    {
-                        if (Character.equipBattleItem[i] == null)
-                            continue;
-                        if (Character.equipBattleItem[i].itemData.itemIndex == Character.haveItem[n][index].itemData.itemIndex)
-                        {
-                            GameMng.I.BattleItemUI.ItemText[i].text = Character.equipBattleItem[i].itemCount.ToString();
-                            break;
-                        }
-                    }
-                }
+                // if (_item.itemData.itemType == ITEM_TYPE.BATTLE_ITEM)
+                // {
+                //     for (int i = 0; i < Character.equipBattleItem.Length; i++)
+                //     {
+                //         if (Character.equipBattleItem[i] == null)
+                //             continue;
+                //         if (Character.equipBattleItem[i].itemData.itemIndex == Character.haveItem[n][index].itemData.itemIndex)
+                //         {
+                //             GameMng.I.BattleItemUI.ItemText[i].text = Character.equipBattleItem[i].itemCount.ToString();
+                //             break;
+                //         }
+                //     }
+                // }
             }
         }
     }
