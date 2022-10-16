@@ -222,7 +222,7 @@ public class GameMng : MonoBehaviour
     {
         noticeMessage.gameObject.SetActive(false);
         noticeMessage.text = msg;
-        noticeMessage.gameObject.SetActive(false);
+        noticeMessage.gameObject.SetActive(true);
     }
 
     /**
