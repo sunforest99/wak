@@ -25,7 +25,9 @@ public class LoadManager : MonoBehaviour
             {
                 NetworkMng.I.v_users.Add(
                     party.Key,
-                    GameMng.I.createPlayer(party.Key, (int)party.Value.job, party.Value.nickName)
+                    GameMng.I.createPlayer(
+                        party.Key, (int)party.Value.job, party.Value.nickName,
+                        party.Value.hair, party.Value.face, party.Value.shirts, party.Value.pants, party.Value.weapon)
                 );
             }    
         }

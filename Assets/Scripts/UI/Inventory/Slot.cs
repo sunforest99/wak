@@ -40,6 +40,6 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
     public void clickSlot()
     {
-        inventorySc.getClickIndex = itemData.itemIndex;
+        inventorySc.getClickIndex = itemData;
     }
 }

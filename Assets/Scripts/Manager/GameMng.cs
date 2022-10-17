@@ -158,11 +158,14 @@ public class GameMng : MonoBehaviour
         Instantiate(pingPrefab, pos, Quaternion.identity);
     }
 
-    public Character createPlayer(string uniqueNumber, int job, string nickName, float posX = 0, float posY = 0)
+    public Character createPlayer(string uniqueNumber, int job, string nickName, 
+        string hair, string face, string shirts, string pants, string weapon,
+        float posX = 0, float posY = 0)
     {
         GameObject temp = Instantiate(characterPrefab[job], new Vector3(posX, 0, posY), Quaternion.identity);
         Character cha = temp.transform.GetChild(0).GetComponent<Character>();
         cha.nickName = nickName;
+        cha.initCharacter(hair, face, shirts, pants, weapon);
         temp.name = nickName + ":" + uniqueNumber;
 
         return cha;
@@ -170,7 +173,10 @@ public class GameMng : MonoBehaviour
 
     public void createMe()
     {
-        character = createPlayer(NetworkMng.I.uniqueNumber, userData.job, userData.user_nickname);
+        character = createPlayer(
+            NetworkMng.I.uniqueNumber, userData.job, userData.user_nickname,
+            userData.character.hair.ToString(), userData.character.face.ToString(), userData.character.shirts.ToString(),
+            userData.character.pants.ToString(), userData.character.weapon.ToString());
         character.isMe();
 
         if (userData.job.Equals(0))     // 무직(초반 캐릭터)는 스킬과 아이템이 없음

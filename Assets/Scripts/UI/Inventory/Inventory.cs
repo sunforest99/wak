@@ -23,7 +23,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] TMPro.TextMeshProUGUI battleContentText;
 
     int itemtype = 0;
-    public ITEM_INDEX getClickIndex = 0;
+    public ItemData getClickIndex;
     private ItemData getClickBattleItemIndex;
 
     void Awake()
@@ -74,7 +74,7 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            getClickIndex = slotPool[0].itemData.itemIndex;
+            getClickIndex = slotPool[0].itemData;
             contentOnOff(true);
             contentImg.sprite = getActiveObject().itemData.itemSp;
             contentText.text = getActiveObject().itemData.itemName + "\n" + getActiveObject().itemData.content;
@@ -86,7 +86,7 @@ public class Inventory : MonoBehaviour
         {
             if (Character.equipBattleItem[i] == null)
                 continue;
-            if (Character.equipBattleItem[i].itemData.itemIndex == getClickIndex)
+            if (Character.equipBattleItem[i].itemData.itemIndex == getClickIndex.itemIndex)
             {
                 // selectBattleItems[i].transform.position = 
                 // descBattleImage.
@@ -113,7 +113,7 @@ public class Inventory : MonoBehaviour
     public void btnKind(int kind)
     {
         deleteSlot(itemtype);
-        getClickIndex = 0;
+        // getClickIndex = 0;
         itemtype = kind;
         createSlot(itemtype);
         getSlots(kind);
@@ -127,7 +127,7 @@ public class Inventory : MonoBehaviour
             Debug.Log(Character.haveItem[kind].Count);
             contentOnOff(true);
             contentSet(getActiveObject().itemData);
-            getClickIndex = getActiveObject().itemData.itemIndex;
+            getClickIndex = getActiveObject().itemData;
         }
     }
 
@@ -183,6 +183,26 @@ public class Inventory : MonoBehaviour
     public void equipBtn()
     {
         Debug.Log("아이템 장착");
+
+        if (ITEM_INDEX._WEAPON_ITEM_INDEX_ < getClickIndex.itemIndex && getClickIndex.itemIndex < ITEM_INDEX._WEAPON_ITEM_INDEX_END_)
+        {
+            GameMng.I.userData.character.weapon = (int)getClickIndex.itemIndex;
+            GameMng.I.character._weapon.sprite = getClickIndex.itemSp;
+        }
+        // TODO : 옷 정해지면
+        else if (ITEM_INDEX._WEAPON_ITEM_INDEX_ < getClickIndex.itemIndex && getClickIndex.itemIndex < ITEM_INDEX._WEAPON_ITEM_INDEX_END_)
+        {
+            GameMng.I.userData.character.shirts = (int)getClickIndex.itemIndex;
+            GameMng.I.character._shirts.sprite = getClickIndex.itemSp;
+        }
+        // TODO : 바지 정해지면
+        else if (ITEM_INDEX._WEAPON_ITEM_INDEX_ < getClickIndex.itemIndex && getClickIndex.itemIndex < ITEM_INDEX._WEAPON_ITEM_INDEX_END_)
+        {
+            GameMng.I.userData.character.pants = (int)getClickIndex.itemIndex;
+            GameMng.I.character._pants.sprite = getClickIndex.itemSp;
+        }
+
+        NetworkMng.I.SendMsg(string.Format("CHANGE_CLOTHES:{0}", (int)getClickIndex.itemIndex));
     }
 
     public void useConsumableItemBtn()
@@ -250,7 +270,7 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < Character.haveItem[itemtype].Count; i++)
         {
-            if (Character.haveItem[itemtype][i].itemData.itemIndex == getClickIndex)
+            if (Character.haveItem[itemtype][i].itemData.itemIndex == getClickIndex.itemIndex)
             {
                 contentImg.sprite = Character.haveItem[itemtype][i].itemData.itemSp;
                 contentText.text = Character.haveItem[itemtype][i].itemData.itemName + "\n" + Character.haveItem[itemtype][i].itemData.content;

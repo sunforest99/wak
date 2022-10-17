@@ -31,16 +31,18 @@ public enum ITEM_INDEX
     SHIELDUP,
     
     _WEAPON_ITEM_INDEX_ = 100,
-    STICK,
-    BROOM,
-    BAT,
-    CANDY,
+    STICK,          // 나뭇가지
+    STAFF,          // 일반 완드
+    SWORD,
     SANGHYUN,
     WAKCHORI,
-    WAND,
-    STAFF,
+    BAT,
+    WAND,           // 완드 (뱀파이어 서바이벌)
+    BROOM,          // 빗자루
+    CANDY,
     ROSE,
-    SWORD,
+    JA,
+    MIC,
     _WEAPON_ITEM_INDEX_END_,
 
     _EQUIP_ITEM_INDEX,
