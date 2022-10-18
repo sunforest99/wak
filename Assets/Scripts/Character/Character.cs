@@ -543,9 +543,7 @@ public class Character : MonoBehaviour
 
     public void initCharacter(string hair, string face, string shirts, string pants, string weapon)
     {
-        this._hair.name = hair;
         this._hair.sprite = Resources.Load<Sprite>($"Character/Hair/{hair}");
-        this._face.name = face;
         this._face.sprite = Resources.Load<Sprite>($"Character/Face/{face}");
         changeShirts(shirts);
         changePants(pants);
@@ -554,19 +552,16 @@ public class Character : MonoBehaviour
 
     public void changeShirts(string shirts)
     {
-        this._shirts.name = shirts;
         this._shirts.sprite = Resources.Load<Sprite>($"Character/Shirts/{shirts}");
     }
 
     public void changePants(string pants)
     {
-        this._pants.name = pants;
         this._pants.sprite = Resources.Load<Sprite>($"Character/Pants/{pants}");
     }
 
     public void changeWeapon(string weapon)
     {
-        this._weapon.name = weapon;
         this._weapon.sprite = Resources.Load<Sprite>($"Character/Weapon/{weapon}");
     }
     

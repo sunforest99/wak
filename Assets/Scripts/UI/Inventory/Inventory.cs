@@ -182,27 +182,26 @@ public class Inventory : MonoBehaviour
 
     public void equipBtn()
     {
-        Debug.Log("아이템 장착");
-
         if (ITEM_INDEX._WEAPON_ITEM_INDEX_ < getClickIndex.itemIndex && getClickIndex.itemIndex < ITEM_INDEX._WEAPON_ITEM_INDEX_END_)
         {
             GameMng.I.userData.character.weapon = (int)getClickIndex.itemIndex;
             GameMng.I.character._weapon.sprite = getClickIndex.itemSp;
+            NetworkMng.I.SendMsg(string.Format("CHANGE_CLOTHES:2:{0}", (int)getClickIndex.itemIndex));
         }
         // TODO : 옷 정해지면
         else if (ITEM_INDEX._WEAPON_ITEM_INDEX_ < getClickIndex.itemIndex && getClickIndex.itemIndex < ITEM_INDEX._WEAPON_ITEM_INDEX_END_)
         {
             GameMng.I.userData.character.shirts = (int)getClickIndex.itemIndex;
             GameMng.I.character._shirts.sprite = getClickIndex.itemSp;
+            NetworkMng.I.SendMsg(string.Format("CHANGE_CLOTHES:0:{0}", (int)getClickIndex.itemIndex));
         }
         // TODO : 바지 정해지면
         else if (ITEM_INDEX._WEAPON_ITEM_INDEX_ < getClickIndex.itemIndex && getClickIndex.itemIndex < ITEM_INDEX._WEAPON_ITEM_INDEX_END_)
         {
             GameMng.I.userData.character.pants = (int)getClickIndex.itemIndex;
             GameMng.I.character._pants.sprite = getClickIndex.itemSp;
+            NetworkMng.I.SendMsg(string.Format("CHANGE_CLOTHES:1:{0}", (int)getClickIndex.itemIndex));
         }
-
-        NetworkMng.I.SendMsg(string.Format("CHANGE_CLOTHES:{0}", (int)getClickIndex.itemIndex));
     }
 
     public void useConsumableItemBtn()

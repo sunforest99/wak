@@ -49,8 +49,10 @@ public struct PartyData
                 break;
             }
         }
-        
     }
+    public void setShirts(string shirts) { this.shirts = shirts; }
+    public void setPants(string pants) { this.pants = pants; }
+    public void setWeapon(string weapon) { this.weapon = weapon; }
 }
 
 public class NetworkMng : MonoBehaviour
@@ -506,6 +508,27 @@ public class NetworkMng : MonoBehaviour
         {
             GameMng.I.createPing(new Vector3(float.Parse(txt[1]), float.Parse(txt[2]), float.Parse(txt[3])));
         }
+        else if (txt[0].Equals("CHANGE_CLOTHES"))
+        {
+            // txt[1] : uniqueNumber
+            // txt[2] : 부위 (0:상의, 1:바지, 2:무기)
+            // txt[3] : 파일이름
+            if (txt[2].Equals("0")) v_users[txt[1]].changeShirts(txt[3]);
+            else if (txt[2].Equals("1")) v_users[txt[1]].changePants(txt[3]);
+            else if (txt[2].Equals("2")) v_users[txt[1]].changeWeapon(txt[3]);
+
+            if (v_party.Count > 0) {
+                if (v_party.ContainsKey(txt[1])) {
+                    if (txt[2].Equals("0")) v_party[txt[1]].setShirts(txt[3]);
+                    else if (txt[2].Equals("1")) v_party[txt[1]].setPants(txt[3]);
+                    else if (txt[2].Equals("2")) v_party[txt[1]].setWeapon(txt[3]);
+                }
+            }
+        }
+        else if (txt[0].Equals("CHANGE_SPEED"))
+        {
+            // v_users[txt[1]].
+        }
         else if (txt[0].Equals("CONNECT"))
         {
             // TODO : 기타 다른 정보까지 알려줄일 있으면 알려줘야함
@@ -754,8 +777,8 @@ public class NetworkMng : MonoBehaviour
             v_party.Add(
                 txt[i],
                 new PartyData(txt[i + 1], (JOB)Enum.Parse(typeof(JOB), txt[i + 2]),
-                    v_users[txt[i]]._hair.name, v_users[txt[i]]._face.name, v_users[txt[i]]._shirts.name, 
-                    v_users[txt[i]]._pants.name, v_users[txt[i]]._weapon.name)
+                    v_users[txt[i]]._hair.sprite.name, v_users[txt[i]]._face.sprite.name, v_users[txt[i]]._shirts.sprite.name, 
+                    v_users[txt[i]]._pants.sprite.name, v_users[txt[i]]._weapon.sprite.name)
             );
             GameMng.I.stateMng.PartyName[v_party[txt[i]].partyNumber].text = txt[i + 1];
             // GameMng.I.stateMng.PartyName[v_party[txt[i]].partyNumber].name = txt[i];      // 오브젝트 이름에 uniqueNumber 담기
@@ -782,8 +805,8 @@ public class NetworkMng : MonoBehaviour
             newUniqueNumber,
             new PartyData(
                 newNickname, (JOB)Enum.Parse(typeof(JOB), newJob),
-                v_users[newUniqueNumber]._hair.name, v_users[newUniqueNumber]._face.name, v_users[newUniqueNumber]._shirts.name, 
-                v_users[newUniqueNumber]._pants.name, v_users[newUniqueNumber]._weapon.name
+                v_users[newUniqueNumber]._hair.sprite.name, v_users[newUniqueNumber]._face.sprite.name, v_users[newUniqueNumber]._shirts.sprite.name, 
+                v_users[newUniqueNumber]._pants.sprite.name, v_users[newUniqueNumber]._weapon.sprite.name
             )
         );
 

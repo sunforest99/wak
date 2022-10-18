@@ -6110,7 +6110,6 @@ GameObject:
   - component: {fileID: 253921021}
   - component: {fileID: 253921020}
   - component: {fileID: 253921019}
-  - component: {fileID: 253921018}
   m_Layer: 0
   m_Name: Skill4
   m_TagString: Untagged
@@ -6143,23 +6142,6 @@ RectTransform:
   m_AnchoredPosition: {x: 299, y: -141.99998}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &253921018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 253921016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9268d4ee87b4a4d90b60835f57957c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: "\uB2A5\uB825-\uC2A4\uD0AC4"
-  prevNode: 
-  center: {fileID: 0}
-  skill: {fileID: 0}
-  hogamdo: 0
 --- !u!114 &253921019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24243,7 +24225,6 @@ GameObject:
   - component: {fileID: 774936190}
   - component: {fileID: 774936189}
   - component: {fileID: 774936188}
-  - component: {fileID: 774936187}
   m_Layer: 0
   m_Name: Skill2
   m_TagString: Untagged
@@ -24276,23 +24257,6 @@ RectTransform:
   m_AnchoredPosition: {x: -299, y: -142.00002}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &774936187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 774936185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9268d4ee87b4a4d90b60835f57957c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: "\uB2A5\uB825-\uC2A4\uD0AC2"
-  prevNode: 
-  center: {fileID: 0}
-  skill: {fileID: 0}
-  hogamdo: 0
 --- !u!114 &774936188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32190,7 +32154,6 @@ GameObject:
   - component: {fileID: 1050988092}
   - component: {fileID: 1050988091}
   - component: {fileID: 1050988090}
-  - component: {fileID: 1050988089}
   m_Layer: 0
   m_Name: Skill5
   m_TagString: Untagged
@@ -32223,23 +32186,6 @@ RectTransform:
   m_AnchoredPosition: {x: 606, y: -142}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1050988089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1050988087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9268d4ee87b4a4d90b60835f57957c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: "\uB2A5\uB825-\uC2A4\uD0AC5"
-  prevNode: 
-  center: {fileID: 0}
-  skill: {fileID: 0}
-  hogamdo: 0
 --- !u!114 &1050988090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35205,11 +35151,11 @@ MonoBehaviour:
     user_nickname: 22
     job: 1
     character:
-      hair: 0
-      face: 0
-      weapon: 0
-      shirts: 0
-      pants: 0
+      hair: 1
+      face: 1
+      weapon: 104
+      shirts: 152
+      pants: 171
     skills: []
     main_quest:
       quest_code: 0
@@ -41866,7 +41812,6 @@ GameObject:
   - component: {fileID: 1405857380}
   - component: {fileID: 1405857379}
   - component: {fileID: 1405857378}
-  - component: {fileID: 1405857377}
   m_Layer: 0
   m_Name: Skill3
   m_TagString: Untagged
@@ -41899,23 +41844,6 @@ RectTransform:
   m_AnchoredPosition: {x: -3.0000105, y: -142}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1405857377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1405857375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9268d4ee87b4a4d90b60835f57957c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: "\uB2A5\uB825-\uC2A4\uD0AC3"
-  prevNode: 
-  center: {fileID: 0}
-  skill: {fileID: 0}
-  hogamdo: 0
 --- !u!114 &1405857378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46315,7 +46243,6 @@ GameObject:
   - component: {fileID: 1532569350}
   - component: {fileID: 1532569349}
   - component: {fileID: 1532569348}
-  - component: {fileID: 1532569347}
   m_Layer: 0
   m_Name: Skill1
   m_TagString: Untagged
@@ -46348,23 +46275,6 @@ RectTransform:
   m_AnchoredPosition: {x: -593, y: -141.99998}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1532569347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1532569345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9268d4ee87b4a4d90b60835f57957c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: "\uB2A5\uB825-\uC2A4\uD0AC1"
-  prevNode: 
-  center: {fileID: 0}
-  skill: {fileID: 0}
-  hogamdo: 0
 --- !u!114 &1532569348
 MonoBehaviour:
   m_ObjectHideFlags: 0

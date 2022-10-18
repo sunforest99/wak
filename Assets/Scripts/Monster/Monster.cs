@@ -441,10 +441,12 @@ public class Monster : MonoBehaviour
             }
 
             int rand = Random.Range(0, 100);
-            if (rand < 35)          // 35% 확률로 호감도 아이템
+            if (rand < 34)          // 34% 확률로 호감도 아이템
                 rand = Random.Range((int)ITEM_INDEX._FAVORITE_ITEM_INDEX_ + 1, (int)ITEM_INDEX._FAVORITE_ITEM_INDEX_END_);
-            else if (rand < 60)     // 25% 확률로 장비 아이템
-                rand = Random.Range((int)ITEM_INDEX._EQUIP_ITEM_INDEX + 1, (int)ITEM_INDEX._EQUIP_ITEM_INDEX_END_);
+            else if (rand < 47)     // 13% 확률로 상의 아이템
+                rand = Random.Range((int)ITEM_INDEX._SHIRTS_ITEM_INDEX + 1, (int)ITEM_INDEX._SHIRTS_ITEM_INDEX_END_);
+            else if (rand < 60)     // 13% 확률로 하의 아이템
+                rand = Random.Range((int)ITEM_INDEX._PANTS_ITEM_INDEX + 1, (int)ITEM_INDEX._PANTS_ITEM_INDEX_END_);
             else if (rand < 75)     // 15% 확률로 무기 아이템
                 rand = Random.Range((int)ITEM_INDEX._WEAPON_ITEM_INDEX_ + 1, (int)ITEM_INDEX._WEAPON_ITEM_INDEX_END_);
             else                    // 25% 아무것도 안뜸

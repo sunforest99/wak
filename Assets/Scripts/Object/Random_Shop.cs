@@ -26,8 +26,10 @@ public class Random_Shop : MonoBehaviour
                 // rand = Random.Range((int)ITEM_INDEX._FAVORITE_ITEM_INDEX_ + 1, (int)ITEM_INDEX._FAVORITE_ITEM_INDEX_END_);
                 if (per < 20)           // 20% 확률로 호감도 아이템
                     rand = Random.Range((int)ITEM_INDEX._FAVORITE_ITEM_INDEX_ + 1, (int)ITEM_INDEX._FAVORITE_ITEM_INDEX_END_);
-                else if (per < 50)      // 30% 확률로 장비 아이템
-                    rand = Random.Range((int)ITEM_INDEX._EQUIP_ITEM_INDEX + 1, (int)ITEM_INDEX._EQUIP_ITEM_INDEX_END_);
+                else if (per < 35)      // 15% 확률로 상의 아이템
+                    rand = Random.Range((int)ITEM_INDEX._SHIRTS_ITEM_INDEX + 1, (int)ITEM_INDEX._SHIRTS_ITEM_INDEX_END_);
+                else if (per < 50)      // 15% 확률로 하의 아이템
+                    rand = Random.Range((int)ITEM_INDEX._PANTS_ITEM_INDEX + 1, (int)ITEM_INDEX._PANTS_ITEM_INDEX_END_);
                 else                    // 50% 확률로 무기 아이템
                     rand = Random.Range((int)ITEM_INDEX._WEAPON_ITEM_INDEX_ + 1, (int)ITEM_INDEX._WEAPON_ITEM_INDEX_END_);
                 // Debug.Log("@" + rand);
