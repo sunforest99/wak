@@ -156,27 +156,103 @@ public struct Stat
         if (GameMng.I.userData.upgrade.Contains(Skill_TREE.SKILL_4_DMG_1))          this.skill_4_dmg = 1.2f;
         else if (GameMng.I.userData.upgrade.Contains(Skill_TREE.SKILL_4_DMG_0))     this.skill_4_dmg = 1.1f;
 
+        #region Equip Weapon
         // 장착중인 무기, 장비에 따라 추가 스탯 변동 일어나게
         switch ((ITEM_INDEX)GameMng.I.userData.character.weapon)
         {
             case ITEM_INDEX.STICK:
+                // 크리티컬 확률 5% 증가
+                this.criticalPer += 5;
+                break;
+            case ITEM_INDEX.STAFF:
+                // 전체 DMG 10% 증가
+                this.minDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
+                this.maxDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
+                // 체력 8% 감소
+                this.incHPPer -= 0.08f;
+                break;
+            case ITEM_INDEX.SWORD:
+                // 크리티컬 확률 15% 증가
+                this.criticalPer += 15;
+                // 받는피해 5% 증가
+                this.takenDamagePer *= 1.05f;
+                break;
+            case ITEM_INDEX.SANGHYUN:
+                // 백어택 피해량 15% 증가
+                this.incBackattackPer += 0.15f;
+                // 받는피해 5% 증가
+                this.takenDamagePer *= 1.05f;
+                break;
+            case ITEM_INDEX.WAKCHORI:
+                // 크리티컬 확률 15% 증가
+                this.criticalPer += 15;
+                // 이속 10% 감소
+                this.moveSpeedPer *= 0.9f;
+                break;
+            case ITEM_INDEX.BAT:
+                // 백어택 피해량 15% 증가
+                this.incBackattackPer += 0.15f;
+                // 체력 8% 감소
+                this.incHPPer -= 0.08f;
+                break;
+            case ITEM_INDEX.WAND:
+                // 크리티컬 확률 15% 증가
+                this.criticalPer += 15;
+                // 받는 회복량 15% 감소
+                this.takenHealPer -= 0.15f;
+                break;
+            case ITEM_INDEX.BROOM:
+                // 크리티컬 확률 15% 증가
+                this.criticalPer += 15;
+                // 체력 8% 감소
+                this.incHPPer -= 0.08f;
+                break;                
+            case ITEM_INDEX.CANDY:
                 // 전체 DMG 10% 증가
                 this.minDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
                 this.maxDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
                 // 이속 10% 감소
                 this.moveSpeedPer *= 0.9f;
                 break;
-                
-            case ITEM_INDEX.BAT:
-                break;
-                
-            case ITEM_INDEX.CANDY:
-                break;
-                
+            case ITEM_INDEX.ROSE:
+                // 전체 DMG 10% 증가
+                this.minDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
+                this.maxDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
+                // 받는 회복량 15% 감소
+                this.takenHealPer -= 0.15f;
+                break;                
+            case ITEM_INDEX.JA:
+                // 백어택 피해량 15% 증가
+                this.incBackattackPer += 0.15f;
+                // 받는 회복량 15% 감소
+                this.takenHealPer -= 0.15f;
+                break;                
+            case ITEM_INDEX.MIC:
+                // 백어택 피해량 15% 증가
+                this.incBackattackPer += 0.15f;
+                // 이속 10% 감소
+                this.moveSpeedPer *= 0.9f;
+                break;                
+            // case ITEM_INDEX.:
+                // // 전체 DMG 10% 증가
+                // this.minDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
+                // this.maxDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
+                // // 받는피해 5% 증가
+                // this.takenDamagePer *= 1.05f;
+                // break;
         }
+        #endregion
         switch ((ITEM_INDEX)GameMng.I.userData.character.shirts)
         {
             case ITEM_INDEX.SHIRTS_0:
+                // 받는 회복량 5% 증가
+                this.takenHealPer += 0.5f;
+                // 받는피해 2% 감소
+                this.takenDamagePer *= 0.98f;
+                // 체력 2% 증가
+                this.incHPPer += 0.02f;
+                // 이속 4% 증가
+                this.moveSpeedPer *= 1.04f;
                 break;
                 
             case ITEM_INDEX.SHIRTS_1:

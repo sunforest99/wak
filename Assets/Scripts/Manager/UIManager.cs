@@ -71,6 +71,9 @@ public class UIManager : MonoBehaviour
             // int layerMask = 1 << LayerMask.NameToLayer("Character");
 
             if (Physics.Raycast(ray, out hit, 100f, layerMask)) {
+
+                Debug.Log("HIT " + hit.transform.tag);
+
             // if (Physics.Raycast(ray.origin, ray.direction * 10000, out hit)) {
                 if (hit.transform.CompareTag("Npc"))        // NPC 우선순위
                 {
@@ -144,13 +147,14 @@ public class UIManager : MonoBehaviour
                 }
                 else if (hit.transform.CompareTag("Build"))
                 {
-                    if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 2)
+                    if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 3.5f)
                     {
                         hit.transform.GetComponent<Build>().activeBuild();
                         GameMng.I._keyMode = KEY_MODE.UI_MODE;
                     }
                     else
                     {
+                        Debug.Log("SO FAR");
                         GameMng.I.showNotice("거리가 너무 멉니다.");
                     }
                     return;
@@ -254,6 +258,25 @@ public class UIManager : MonoBehaviour
                 Character.haveItem[i].Add(new Item(Resources.Load<ItemData>($"ItemData/{((ITEM_INDEX)GameMng.I.userData.inventory[i][j].item_code).ToString()}"), GameMng.I.userData.inventory[i][j].mount));
             }
         }
+
+        Character.equipBattleItem[0] = new Item(
+            Resources.Load<ItemData>("ItemData/POTION"),
+            3
+        );
+        Character.equipBattleItem[1] = new Item(
+            Resources.Load<ItemData>("ItemData/CLEANSER"),
+            2
+        );
+        Character.equipBattleItem[2] = new Item(
+            Resources.Load<ItemData>("ItemData/DMGUP"),
+            2
+        );
+        // Character.equipBattleItem[0].itemData = Resources.Load<ItemData>("ItemData/POTION");
+        // Character.equipBattleItem[0].itemCount = Character.equipBattleItem[0].itemData.count;
+        // Character.equipBattleItem[1].itemData = Resources.Load<ItemData>("ItemData/CLEANSER");
+        // Character.equipBattleItem[1].itemCount = Character.equipBattleItem[1].itemData.count;
+        // Character.equipBattleItem[2].itemData = Resources.Load<ItemData>("ItemData/DMGUP");
+        // Character.equipBattleItem[2].itemCount = Character.equipBattleItem[2].itemData.count;
     }
 
     void QuestLoad()

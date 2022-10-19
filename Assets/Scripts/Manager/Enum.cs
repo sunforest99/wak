@@ -24,31 +24,46 @@ public enum ITEM_INDEX
 {
     _BATTLE_ITEM_INDEX_ = 0,
     POTION,
+    POTION_2,
     CLEANSER,
-    SPEEDUP,
-
+    SHIELD,
+    DMGUP,
+    SHIELDUP,
+    
     _WEAPON_ITEM_INDEX_ = 100,
-    STICK,
-    BROOM,
-    BAT,
-    CANDY,
+    STICK,          // 나뭇가지
+    STAFF,          // 일반 완드
+    SWORD,
     SANGHYUN,
     WAKCHORI,
-    WAND,
-    STAFF,
+    BAT,
+    WAND,           // 완드 (뱀파이어 서바이벌)
+    BROOM,          // 빗자루
+    CANDY,
     ROSE,
-    SWORD,
+    JA,
+    MIC,
     _WEAPON_ITEM_INDEX_END_,
 
-    _EQUIP_ITEM_INDEX,
+    _SHIRTS_ITEM_INDEX = 150,
     SHIRTS_0,
     SHIRTS_1,
     SHIRTS_2,
+    SHIRTS_3,
+    SHIRTS_4,
+    SHIRTS_5,
+    SHIRTS_6,
+    _SHIRTS_ITEM_INDEX_END_,
 
+    _PANTS_ITEM_INDEX = 170,
     PANTS_0,
     PANTS_1,
     PANTS_2,
-    _EQUIP_ITEM_INDEX_END_,
+    PANTS_3,
+    PANTS_4,
+    PANTS_5,
+    PANTS_6,
+    _PANTS_ITEM_INDEX_END_,
 
     _FAVORITE_ITEM_INDEX_ = 200,
     SCIENCE_AWARD,

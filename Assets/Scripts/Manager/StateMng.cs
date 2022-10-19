@@ -234,6 +234,9 @@ public class StateMng : MonoBehaviour
 
     public void takeDamage(int dmg)
     {
+        // 받는 피해 감소 적용
+        dmg = Mathf.FloorToInt(dmg * Character._stat.takenDamagePer);
+
         int temp = -1;
         for (int j = 0; j < user_Shield_Numerical.Count; j++)
         {

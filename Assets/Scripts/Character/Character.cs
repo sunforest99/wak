@@ -12,6 +12,9 @@ public class Character : MonoBehaviour
     // [SerializeField] BoxCollider _collider;
     [SerializeField] GameObject _attackCollider;
 
+    // 캐릭터 커스터마이징 =======================================================================================
+    public SpriteRenderer _hair, _face, _shirts, _pants, _weapon;
+
     // 데이터 ====================================================================================================
     public bool _isPlayer = false;
     public string nickName = "";
@@ -151,12 +154,12 @@ public class Character : MonoBehaviour
     {
         usingBattleItem[itemnum] = true;
         equipBattleItem[itemnum].itemCount--;
-        if(equipBattleItem[itemnum].itemCount <= 0)
-        {
-            int idx = haveItem[0].FindIndex(name => name.itemData.itemName == equipBattleItem[itemnum].itemData.itemName);
-            haveItem[0].RemoveAt(idx);
-            GameMng.I.userData.inventory[0].RemoveAt(idx);
-        }
+        // if(equipBattleItem[itemnum].itemCount <= 0)
+        // {
+        //     int idx = haveItem[0].FindIndex(name => name.itemData.itemName == equipBattleItem[itemnum].itemData.itemName);
+        //     haveItem[0].RemoveAt(idx);
+        //     GameMng.I.userData.inventory[0].RemoveAt(idx);
+        // }
         GameMng.I.BattleItemUI.ItemText[itemnum].text = equipBattleItem[itemnum].itemCount.ToString();
         float cooltime = equipBattleItem[itemnum].itemData.duration;
 
@@ -469,24 +472,26 @@ public class Character : MonoBehaviour
         switch (kind)
         {
             case ITEM_INDEX.POTION:
-                if (GameMng.I.stateMng.user_HP_Numerical.Hp < GameMng.I.stateMng.user_HP_Numerical.fullHp)
-                    GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 20 / 100);
+                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.33);
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
                 break;
-
+            case ITEM_INDEX.POTION_2:
+                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.24);
+                if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
+                    GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
+                break;
             case ITEM_INDEX.CLEANSER:
                 if (GameMng.I.stateMng.nPlayerDeBuffCount > 0)
                 {
                     int rand = Random.Range(1, GameMng.I.stateMng.nPlayerDeBuffCount + 1);
                 }
                 break;
-
-            case ITEM_INDEX.SPEEDUP:
-
-                float save = MOVE_SPEED;
-                MOVE_SPEED = MOVE_SPEED * 200 / 100;
-                StartCoroutine(SpeedUp(5, save));
+            case ITEM_INDEX.SHIELD:
+                break;
+            case ITEM_INDEX.DMGUP:
+                break;
+            case ITEM_INDEX.SHIELDUP:
                 break;
         }
     }
@@ -538,6 +543,30 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void initCharacter(string hair, string face, string shirts, string pants, string weapon)
+    {
+        this._hair.sprite = Resources.Load<Sprite>($"Character/Hair/{hair}");
+        this._face.sprite = Resources.Load<Sprite>($"Character/Face/{face}");
+        changeShirts(shirts);
+        changePants(pants);
+        changeWeapon(weapon);
+    }
+
+    public void changeShirts(string shirts)
+    {
+        this._shirts.sprite = Resources.Load<Sprite>($"Character/Shirts/{shirts}");
+    }
+
+    public void changePants(string pants)
+    {
+        this._pants.sprite = Resources.Load<Sprite>($"Character/Pants/{pants}");
+    }
+
+    public void changeWeapon(string weapon)
+    {
+        this._weapon.sprite = Resources.Load<Sprite>($"Character/Weapon/{weapon}");
+    }
+    
     void OnDestroy()
     {
         for (int i = 0; i < 3; i++)

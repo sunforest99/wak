@@ -14,6 +14,12 @@ public class ItemObj : MonoBehaviour
     void Start()
     {
         itemSprRender.sprite = saveItem.itemData.itemSp;
+        if (saveItem.itemData.itemType.Equals(ITEM_TYPE.FAVORITE_ITEM))
+            transform.localScale = Vector3.one;
+        else if (saveItem.itemData.itemType.Equals(ITEM_TYPE.SHIRTS_ITEM))
+            transform.localScale = new Vector3(0.7f, 0.7f, 1);
+        else if (saveItem.itemData.itemType.Equals(ITEM_TYPE.PANTS_ITEM))
+            transform.localScale = new Vector3(0.9f, 0.9f, 1);
         _rigidbody.AddForce(new Vector3(Random.Range(-1.5f, 1.5f), 10, Random.Range(-1.5f, 1.5f)), ForceMode.Impulse);
     }
 

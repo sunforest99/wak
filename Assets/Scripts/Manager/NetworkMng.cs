@@ -15,13 +15,21 @@ public struct PartyData
     public string nickName;
     public JOB job;
     public int partyNumber;
+    public string hair, face, weapon, shirts, pants;
 
     // 장착 아이템들 (머리, 무기..)
-    public PartyData(string nickName, JOB job, int partyNumber = 0)
+    public PartyData(string nickName, JOB job,
+                    string hair, string face, string shirts, string pants, string weapon,
+                    int partyNumber = 0)
     {
         this.nickName = nickName;
         this.job = job;
         this.partyNumber = 0;
+        this.hair = hair;
+        this.face = face;
+        this.shirts = shirts;
+        this.pants = pants;
+        this.weapon = weapon;
 
         bool partyNumCheck = true;
         for (int i = 1; i < 4; i++)     // '나'는 v_party에 들어가지도 않고 항상 0이기때문에 제외
@@ -41,8 +49,10 @@ public struct PartyData
                 break;
             }
         }
-        
     }
+    public void setShirts(string shirts) { this.shirts = shirts; }
+    public void setPants(string pants) { this.pants = pants; }
+    public void setWeapon(string weapon) { this.weapon = weapon; }
 }
 
 public class NetworkMng : MonoBehaviour
@@ -260,7 +270,9 @@ public class NetworkMng : MonoBehaviour
             // ADD_USER : 새로온유저uniqueNumber : 직업 : 닉네임
             v_users.Add(
                 txt[1], 
-                GameMng.I.createPlayer(txt[1], int.Parse(txt[2]), txt[3])
+                GameMng.I.createPlayer(txt[1], int.Parse(txt[2]), txt[3],
+                    txt[4], txt[5], txt[6], txt[7], txt[8]
+                )
             );
         }
         else if (txt[0].Equals("SKILL"))
@@ -325,11 +337,15 @@ public class NetworkMng : MonoBehaviour
             if (txt.Equals("IN_USER"))       // 유저데이터가 없다면 맵에 나밖에 없음 현재
                 return;
             
-            for (int i = 1; i < txt.Length; i += 5)
+            for (int i = 1; i < txt.Length; i += 10)
             {
                 v_users.Add(
                     txt[i], 
-                    GameMng.I.createPlayer(txt[i], int.Parse(txt[i + 1]), txt[i + 2], float.Parse(txt[i + 3]), float.Parse(txt[i + 4]))
+                    GameMng.I.createPlayer(
+                        txt[i], int.Parse(txt[i + 1]), txt[i + 2], 
+                        txt[i + 5], txt[i + 6], txt[i + 7], txt[i + 8], txt[i + 9],
+                        float.Parse(txt[i + 3]), float.Parse(txt[i + 4])
+                    )
                 );
             }
         }
@@ -492,10 +508,33 @@ public class NetworkMng : MonoBehaviour
         {
             GameMng.I.createPing(new Vector3(float.Parse(txt[1]), float.Parse(txt[2]), float.Parse(txt[3])));
         }
+        else if (txt[0].Equals("CHANGE_CLOTHES"))
+        {
+            // txt[1] : uniqueNumber
+            // txt[2] : 부위 (0:상의, 1:바지, 2:무기)
+            // txt[3] : 파일이름
+            if (txt[2].Equals("0")) v_users[txt[1]].changeShirts(txt[3]);
+            else if (txt[2].Equals("1")) v_users[txt[1]].changePants(txt[3]);
+            else if (txt[2].Equals("2")) v_users[txt[1]].changeWeapon(txt[3]);
+
+            if (v_party.Count > 0) {
+                if (v_party.ContainsKey(txt[1])) {
+                    if (txt[2].Equals("0")) v_party[txt[1]].setShirts(txt[3]);
+                    else if (txt[2].Equals("1")) v_party[txt[1]].setPants(txt[3]);
+                    else if (txt[2].Equals("2")) v_party[txt[1]].setWeapon(txt[3]);
+                }
+            }
+        }
+        else if (txt[0].Equals("CHANGE_SPEED"))
+        {
+            // v_users[txt[1]].
+        }
         else if (txt[0].Equals("CONNECT"))
         {
             // TODO : 기타 다른 정보까지 알려줄일 있으면 알려줘야함
-            SendMsg(string.Format("LOGIN:{0}:{1}", GameMng.I.userData.user_nickname, GameMng.I.userData.job));
+            SendMsg(string.Format("LOGIN:{0}:{1}:{2}:{3}:{4}:{5}:{6}", GameMng.I.userData.user_nickname, GameMng.I.userData.job,
+                    GameMng.I.userData.character.hair, GameMng.I.userData.character.face, GameMng.I.userData.character.shirts, 
+                    GameMng.I.userData.character.pants, GameMng.I.userData.character.weapon));
         }
         else if (txt[0].Equals("UNIQUE"))
         {
@@ -737,7 +776,9 @@ public class NetworkMng : MonoBehaviour
         {
             v_party.Add(
                 txt[i],
-                new PartyData(txt[i + 1], (JOB)Enum.Parse(typeof(JOB), txt[i + 2]))
+                new PartyData(txt[i + 1], (JOB)Enum.Parse(typeof(JOB), txt[i + 2]),
+                    v_users[txt[i]]._hair.sprite.name, v_users[txt[i]]._face.sprite.name, v_users[txt[i]]._shirts.sprite.name, 
+                    v_users[txt[i]]._pants.sprite.name, v_users[txt[i]]._weapon.sprite.name)
             );
             GameMng.I.stateMng.PartyName[v_party[txt[i]].partyNumber].text = txt[i + 1];
             // GameMng.I.stateMng.PartyName[v_party[txt[i]].partyNumber].name = txt[i];      // 오브젝트 이름에 uniqueNumber 담기
@@ -762,7 +803,11 @@ public class NetworkMng : MonoBehaviour
     {
         v_party.Add(
             newUniqueNumber,
-            new PartyData(newNickname, (JOB)Enum.Parse(typeof(JOB), newJob))
+            new PartyData(
+                newNickname, (JOB)Enum.Parse(typeof(JOB), newJob),
+                v_users[newUniqueNumber]._hair.sprite.name, v_users[newUniqueNumber]._face.sprite.name, v_users[newUniqueNumber]._shirts.sprite.name, 
+                v_users[newUniqueNumber]._pants.sprite.name, v_users[newUniqueNumber]._weapon.sprite.name
+            )
         );
 
         if (v_party.Count.Equals(1))    // 파티원잉 처음 한명 들어온 것이기에 내 UI도 추가로 켜줘야함
