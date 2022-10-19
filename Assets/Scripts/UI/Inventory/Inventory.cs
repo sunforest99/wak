@@ -182,21 +182,19 @@ public class Inventory : MonoBehaviour
 
     public void equipBtn()
     {
-        if (ITEM_INDEX._WEAPON_ITEM_INDEX_ < getClickIndex.itemIndex && getClickIndex.itemIndex < ITEM_INDEX._WEAPON_ITEM_INDEX_END_)
+        if (getClickIndex.itemType.Equals(ITEM_TYPE.WEAPON_ITEM))
         {
             GameMng.I.userData.character.weapon = (int)getClickIndex.itemIndex;
             GameMng.I.character._weapon.sprite = getClickIndex.itemSp;
             NetworkMng.I.SendMsg(string.Format("CHANGE_CLOTHES:2:{0}", (int)getClickIndex.itemIndex));
         }
-        // TODO : 옷 정해지면
-        else if (ITEM_INDEX._WEAPON_ITEM_INDEX_ < getClickIndex.itemIndex && getClickIndex.itemIndex < ITEM_INDEX._WEAPON_ITEM_INDEX_END_)
+        else if (getClickIndex.itemType.Equals(ITEM_TYPE.SHIRTS_ITEM))
         {
             GameMng.I.userData.character.shirts = (int)getClickIndex.itemIndex;
             GameMng.I.character._shirts.sprite = getClickIndex.itemSp;
             NetworkMng.I.SendMsg(string.Format("CHANGE_CLOTHES:0:{0}", (int)getClickIndex.itemIndex));
         }
-        // TODO : 바지 정해지면
-        else if (ITEM_INDEX._WEAPON_ITEM_INDEX_ < getClickIndex.itemIndex && getClickIndex.itemIndex < ITEM_INDEX._WEAPON_ITEM_INDEX_END_)
+        else if (getClickIndex.itemType.Equals(ITEM_TYPE.PANTS_ITEM))
         {
             GameMng.I.userData.character.pants = (int)getClickIndex.itemIndex;
             GameMng.I.character._pants.sprite = getClickIndex.itemSp;

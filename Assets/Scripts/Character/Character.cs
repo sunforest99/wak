@@ -472,25 +472,27 @@ public class Character : MonoBehaviour
         switch (kind)
         {
             case ITEM_INDEX.POTION:
-                if (GameMng.I.stateMng.user_HP_Numerical.Hp < GameMng.I.stateMng.user_HP_Numerical.fullHp)
-                    GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 20 / 100);
+                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.33);
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
                 break;
-
+            case ITEM_INDEX.POTION_2:
+                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.24);
+                if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
+                    GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
+                break;
             case ITEM_INDEX.CLEANSER:
                 if (GameMng.I.stateMng.nPlayerDeBuffCount > 0)
                 {
                     int rand = Random.Range(1, GameMng.I.stateMng.nPlayerDeBuffCount + 1);
                 }
                 break;
-
-            // case ITEM_INDEX.SPEEDUP:
-
-            //     float save = MOVE_SPEED;
-            //     MOVE_SPEED = MOVE_SPEED * 200 / 100;
-            //     StartCoroutine(SpeedUp(5, save));
-            //     break;
+            case ITEM_INDEX.SHIELD:
+                break;
+            case ITEM_INDEX.DMGUP:
+                break;
+            case ITEM_INDEX.SHIELDUP:
+                break;
         }
     }
 

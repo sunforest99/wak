@@ -532,7 +532,7 @@ public class NetworkMng : MonoBehaviour
         else if (txt[0].Equals("CONNECT"))
         {
             // TODO : 기타 다른 정보까지 알려줄일 있으면 알려줘야함
-            SendMsg(string.Format("LOGIN:{0}:{1}:{3}:{4}:{5}:{6}:{7}", GameMng.I.userData.user_nickname, GameMng.I.userData.job,
+            SendMsg(string.Format("LOGIN:{0}:{1}:{2}:{3}:{4}:{5}:{6}", GameMng.I.userData.user_nickname, GameMng.I.userData.job,
                     GameMng.I.userData.character.hair, GameMng.I.userData.character.face, GameMng.I.userData.character.shirts, 
                     GameMng.I.userData.character.pants, GameMng.I.userData.character.weapon));
         }
