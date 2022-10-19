@@ -81,10 +81,10 @@ public class StateMng : MonoBehaviour
     {
         fImageSize = 148.0f;
         fPlayerImgSize = 358.0f;
-        Party_HP_Numerical[0].fullHp = Party_HP_Numerical[0].fullShield = user_HP_Numerical.fullHp = 95959;
+        Party_HP_Numerical[0].fullHp = Party_HP_Numerical[0].fullShield = user_HP_Numerical.fullHp = Mathf.FloorToInt(942477 * Character._stat.incHPPer);
         Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp = user_HP_Numerical.fullHp;
-        Party_HP_Numerical[0].Shield_Mount = user_HP_Numerical.Shield_Mount = 0;
-        for (int i = 1; i < 4; i++)
+        // Party_HP_Numerical[0].Shield_Mount = user_HP_Numerical.Shield_Mount = 0;
+        for (int i = 0; i < 4; i++)
         {
             Party_HP_Numerical[i].fullHp = 100;
             Party_HP_Numerical[i].fullShield = 100;

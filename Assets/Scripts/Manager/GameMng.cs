@@ -34,6 +34,7 @@ public class GameMng : MonoBehaviour
     // public bool isFocusing = true;      // 캐릭터에게 포커싱 맞출지 (카메라가 따라올지 유무)
 
     [Space(20)][Header("[  기본 UI 관리  ]")]  // ==========================================================================================================================
+    public Animator _loadAnim;          // 로딩 관리하는 UI Animator
     public NPCUI npcUI;                 // NPC 클릭시 선택 UI (대화UI, 선물UI)
     public ItemSlotUI BattleItemUI;     // (체력바 위) 배틀아이템 UI
     public Transform skillUI;           // (좌측하단) 스킬 UI들 부모

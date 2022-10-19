@@ -101,7 +101,7 @@ public class SkillData : ScriptableObject
 
         // 백어택시 백어택 데미지 증가량 반영
         if (isBackAttack)
-            dmg *= Character._stat.incBackattackPer;
+            dmg *= incBackattackPer;
 
         return (int)dmg;
     }

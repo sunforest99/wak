@@ -5853,7 +5853,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 248285154}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 3.86, y: 2.95, z: 1.18}
+  m_LocalPosition: {x: -4.71, y: 2.95, z: 1.18}
   m_LocalScale: {x: 0.3, y: 0.6, z: 0.33333325}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16618,7 +16618,10 @@ MonoBehaviour:
   contentText: {fileID: 911813801}
   selectSp: {fileID: 21300000, guid: 7901e169736cb854e949535d947a2d34, type: 3}
   unselectSp: {fileID: 21300000, guid: 82db31e22aa858447b5d0efd8e939297, type: 3}
-  getClickIndex: 0
+  selectBattleItems: []
+  descBattleImage: {fileID: 0}
+  battleContentText: {fileID: 0}
+  getClickIndex: {fileID: 0}
 --- !u!1 &800239383
 GameObject:
   m_ObjectHideFlags: 0
@@ -25956,6 +25959,7 @@ MonoBehaviour:
     upgrade: 
     love: 0
     npc: 
+    coin: 0
   stateMng: {fileID: 158263597}
   character: {fileID: 0}
   characterPrefab:
@@ -26032,6 +26036,8 @@ MonoBehaviour:
   materials:
   - {fileID: 2100000, guid: 2968845b0a0166c44a7d249746d4303c, type: 2}
   - {fileID: 2100000, guid: 25d24d5ecebdf4249b92c2b40e3917ed, type: 2}
+  itemGetEff: {fileID: 0}
+  itemObj: {fileID: 0}
   boss: {fileID: 0}
   estherManager: {fileID: 0}
 --- !u!4 &1327367953
@@ -32084,6 +32090,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvas: {fileID: 0}
   _startLoad: {fileID: 0}
+  npcFavoriteItemImg: {fileID: 0}
   dialogUI: {fileID: 1958228122}
   npcSelectUI: {fileID: 19364683}
 --- !u!114 &1783328712

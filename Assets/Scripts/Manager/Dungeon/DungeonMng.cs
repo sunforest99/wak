@@ -37,8 +37,17 @@ public class DungeonMng : MonoBehaviour
     protected virtual void Start()
     {
         GameMng.I._keyMode = KEY_MODE.UI_MODE;
-        _mapUI.SetActive(true);
+        // _mapUI.SetActive(true);
         getNextWall = _nextWall;
+
+        StartCoroutine(showMapUI());
+    }
+
+    IEnumerator showMapUI()
+    {
+        yield return new WaitForSeconds(2);
+
+        _mapUI.SetActive(true);
     }
 
     DUNGEON_TYPE randomDungeon()

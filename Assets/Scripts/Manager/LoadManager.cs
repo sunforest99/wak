@@ -58,5 +58,17 @@ public class LoadManager : MonoBehaviour
 
         // 로딩  끝
         // ==
+
+        GameMng.I._loadAnim.SetTrigger("LoadDone");
+        StartCoroutine(loadingDone());
+    }
+
+    IEnumerator loadingDone()
+    {
+        yield return new WaitForSeconds(3);
+
+        // MCamera.I.loadDone();
+
+        GameMng.I._keyMode = KEY_MODE.PLAYER_MODE;
     }
 }

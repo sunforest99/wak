@@ -467,17 +467,42 @@ public class Character : MonoBehaviour
             item.apply_count = 0;
     }
 
+    
+    IEnumerator DmgUp()
+    {
+        int saveMinDmg = Character._stat.minDamage;
+        int saveMaxDmg = Character._stat.maxDamage;
+        
+        Character._stat.minDamage = Mathf.FloorToInt(saveMinDmg * 1.25f);
+        Character._stat.maxDamage = Mathf.FloorToInt(saveMaxDmg * 1.25f);
+
+        yield return new WaitForSeconds(5.0f);
+
+        Character._stat.minDamage = saveMinDmg;
+        Character._stat.maxDamage = saveMaxDmg;
+    }
+    IEnumerator ShieldUp()
+    {
+        float saveTakenDmgPer = Character._stat.takenDamagePer;
+        
+        Character._stat.takenDamagePer = saveTakenDmgPer * 0.8f;
+
+        yield return new WaitForSeconds(5.0f);
+
+        Character._stat.takenDamagePer = saveTakenDmgPer;
+    }
+
     void useItem(ITEM_INDEX kind)
     {
         switch (kind)
         {
             case ITEM_INDEX.POTION:
-                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.33);
+                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.33 * Character._stat.takenHealPer);
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
                 break;
             case ITEM_INDEX.POTION_2:
-                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.24);
+                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.24 * Character._stat.takenHealPer);
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
                 break;
@@ -490,8 +515,10 @@ public class Character : MonoBehaviour
             case ITEM_INDEX.SHIELD:
                 break;
             case ITEM_INDEX.DMGUP:
+                StartCoroutine(DmgUp());
                 break;
             case ITEM_INDEX.SHIELDUP:
+                StartCoroutine(ShieldUp());
                 break;
         }
     }

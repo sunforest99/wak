@@ -72,6 +72,7 @@ public class NetworkMng : MonoBehaviour
     public bool roomOwner = false;
     int voteAgree = 0, voteRefuse = 0;
 
+
     static NetworkMng _instance;
     public static NetworkMng I
     {
@@ -186,6 +187,10 @@ public class NetworkMng : MonoBehaviour
      */
     public void SendMsg(string txt)
     {
+        // 로컬맵이라면 안보냄
+        if (myRoom < ROOM_CODE._WORLD_MAP_)
+            return;
+
         try
         {
             if (socket != null && socket.Connected)
@@ -573,6 +578,8 @@ public class NetworkMng : MonoBehaviour
      */ 
     public void changeRoom(ROOM_CODE changeToRoom)
     {
+        GameMng.I._keyMode = KEY_MODE.UI_MODE;
+
         // (내가 현재 있는맵)이 파티 전용맵이라면 기존 방 유저들에게 내가 사라지는 메세지를 보낼 필요가없음.
         //  파티 전용맵인지 구분해서 메세지 간소화
         // SendMsg(string.Format("{0}:{1}", 
@@ -587,9 +594,17 @@ public class NetworkMng : MonoBehaviour
         // 씬 변경되는 과정에서 기타 데이터들이 들어올 수도 있음을 방지하기 위해 제일 먼저 보냄
         SendMsg(string.Format("CHANGE_ROOM:{0}", (int)changeToRoom));
 
-        ChangeScene(changeToRoom);
+        GameMng.I._loadAnim.SetTrigger("LoadStart");
+        StartCoroutine(changingScene(changeToRoom));
 
         // 이후 변경된 새 방의 LoadManager 의 Start() 에서 관리
+    }
+
+    IEnumerator changingScene(ROOM_CODE changeToRoom)
+    {
+        yield return new WaitForSeconds(3);
+
+        ChangeScene(changeToRoom);
     }
 
     /**

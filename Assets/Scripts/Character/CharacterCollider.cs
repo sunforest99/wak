@@ -88,12 +88,15 @@ public class CharacterCollider : MonoBehaviour
                 case ITEM_TYPE.PANTS_ITEM:
                     itemSetting(1, item);
                     break;
-                case ITEM_TYPE.CONSUMABLE_ITEM:
+                case ITEM_TYPE.FAVORITE_ITEM:
                     itemSetting(2, item);
                     break;
-                case ITEM_TYPE.FAVORITE_ITEM:
-                case ITEM_TYPE.UNUSEFUL_ITEM:
+                case ITEM_TYPE.CONSUMABLE_ITEM:
                     itemSetting(3, item);
+                    break;
+                default:
+                    if (item.itemData.itemIndex.Equals(ITEM_INDEX.NONE))
+                        GameMng.I.userData.coin += item.itemCount;
                     break;
             }
             

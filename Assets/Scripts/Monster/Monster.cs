@@ -264,7 +264,6 @@ public class Monster : MonoBehaviour
         float criticalrand = Random.Range(0.0f, 100.0f);
         float criticalPer = Character._stat.criticalPer;
 
-
         if (buffDatas.ContainsKey(BUFF.BUFF_GAL))
         {
             if (buffDatas[BUFF.BUFF_GAL].isActive())
@@ -434,7 +433,7 @@ public class Monster : MonoBehaviour
                 );
                 coinObj.GetComponent<ItemObj>().saveItem = 
                     new Item(
-                        Resources.Load<ItemData>("ItemData/coin"),
+                        Resources.Load<ItemData>("ItemData/COIN"),
                         1
                     );
                 coinObj.SetActive(true);
