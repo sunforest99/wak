@@ -250,6 +250,11 @@ public class EstherManager : MonoBehaviour
             // 아이네 이펙트 생성하고 그 캐릭터한테 붙이기 (쉴드)
             Instantiate(estherSkill[1], transform.position, Quaternion.identity, user.Value.transform);
         }
+        
+        GameMng.I.stateMng.user_Shield_Numerical.Add(
+            new ShieldBuff(8, Mathf.FloorToInt(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.9f))
+        );
+        GameMng.I.stateMng.removeRandomDebuff();
     }
 
     /*

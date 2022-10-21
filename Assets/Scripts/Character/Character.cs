@@ -469,27 +469,22 @@ public class Character : MonoBehaviour
 
     
     IEnumerator DmgUp()
-    {
-        int saveMinDmg = Character._stat.minDamage;
-        int saveMaxDmg = Character._stat.maxDamage;
-        
-        Character._stat.minDamage = Mathf.FloorToInt(saveMinDmg * 1.25f);
-        Character._stat.maxDamage = Mathf.FloorToInt(saveMaxDmg * 1.25f);
+    {        
+        Character._stat.minDamage = Mathf.FloorToInt(Character._stat.minDamage * 1.25f);
+        Character._stat.maxDamage = Mathf.FloorToInt(Character._stat.maxDamage * 1.25f);
 
         yield return new WaitForSeconds(5.0f);
 
-        Character._stat.minDamage = saveMinDmg;
-        Character._stat.maxDamage = saveMaxDmg;
+        Character._stat.minDamage = Mathf.CeilToInt(Character._stat.minDamage / 1.25f);
+        Character._stat.maxDamage = Mathf.CeilToInt(Character._stat.maxDamage / 1.25f);
     }
     IEnumerator ShieldUp()
     {
-        float saveTakenDmgPer = Character._stat.takenDamagePer;
-        
-        Character._stat.takenDamagePer = saveTakenDmgPer * 0.8f;
+        Character._stat.takenDamagePer = Character._stat.takenDamagePer * 0.8f;
 
         yield return new WaitForSeconds(5.0f);
 
-        Character._stat.takenDamagePer = saveTakenDmgPer;
+        Character._stat.takenDamagePer = Character._stat.takenDamagePer / 0.8f;
     }
 
     void useItem(ITEM_INDEX kind)
@@ -507,12 +502,12 @@ public class Character : MonoBehaviour
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
                 break;
             case ITEM_INDEX.CLEANSER:
-                if (GameMng.I.stateMng.nPlayerDeBuffCount > 0)
-                {
-                    int rand = Random.Range(1, GameMng.I.stateMng.nPlayerDeBuffCount + 1);
-                }
+                GameMng.I.stateMng.removeRandomDebuff();
                 break;
             case ITEM_INDEX.SHIELD:
+                GameMng.I.stateMng.user_Shield_Numerical.Add(
+                    new ShieldBuff(5, Mathf.FloorToInt(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.3f))
+                );
                 break;
             case ITEM_INDEX.DMGUP:
                 StartCoroutine(DmgUp());

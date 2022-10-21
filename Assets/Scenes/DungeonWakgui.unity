@@ -4086,67 +4086,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &968166634
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_RootOrder
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.87
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 8.256
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9848078
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.17364816
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862822, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_Name
-      value: "\uD574\uB8E8\uC11D"
-      objectReference: {fileID: 0}
-    - target: {fileID: 2528679227193862822, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
 --- !u!1 &970183209
 GameObject:
   m_ObjectHideFlags: 0
@@ -5261,7 +5200,7 @@ PrefabInstance:
     - target: {fileID: 6281128334967869752, guid: cb7c468d2dae0a44cb90b3c7a9a324c9, type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 1583158712}
+      objectReference: {fileID: 0}
     - target: {fileID: 6281128334967869752, guid: cb7c468d2dae0a44cb90b3c7a9a324c9, type: 3}
       propertyPath: m_Lens.GateFit
       value: 2
@@ -7217,11 +7156,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!4 &1583158712 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2528679227193862821, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-  m_PrefabInstance: {fileID: 968166634}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1603793919
 GameObject:
   m_ObjectHideFlags: 0
@@ -7739,22 +7673,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1659144626 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2528679228617361211, guid: 1b39a299fffd6004f903adabba455db8, type: 3}
-  m_PrefabInstance: {fileID: 968166634}
-  m_PrefabAsset: {fileID: 0}
---- !u!210 &1659144628
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1659144626}
-  m_Enabled: 1
-  m_SortingLayerID: -833444747
-  m_SortingLayer: 5
-  m_SortingOrder: 0
 --- !u!1 &1660568405
 GameObject:
   m_ObjectHideFlags: 0

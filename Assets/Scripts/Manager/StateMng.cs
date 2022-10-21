@@ -13,10 +13,11 @@ public class ShieldBuff : MonoBehaviour
     // 관리용 데이터
     public float countdown;
 
-    public ShieldBuff(int duration)
+    public ShieldBuff(int duration, int mount)
     {
         this.duration = duration;
         this.countdown = duration;
+        this.mount = mount;
     }
 
     public void resetCountdown()
@@ -234,8 +235,13 @@ public class StateMng : MonoBehaviour
 
     public void takeDamage(int dmg)
     {
+        Debug.Log("데미지 : " + dmg);
+        Debug.Log("받는 피해 증가량 : " + Character._stat.takenDamagePer);
+        
         // 받는 피해 감소 적용
         dmg = Mathf.FloorToInt(dmg * Character._stat.takenDamagePer);
+
+        Debug.Log("결과 데미지 : " + dmg);
 
         int temp = -1;
         for (int j = 0; j < user_Shield_Numerical.Count; j++)
@@ -266,5 +272,36 @@ public class StateMng : MonoBehaviour
         }
 
         // TODO : 네트워크에 내 변경된 HP 보내기
+    }
+
+    public void removeAllDebuff()
+    {
+        for (int i = 0; i < partybuffGroups[0].userBuff.Length; i++)
+        {
+            partybuffGroups[0].userBuff[i].isApply = false;
+        }
+    }
+
+    public void removeRandomDebuff()
+    {
+        List<int> debuffIdxList = new List<int>();
+        for (int i = 0; i < partybuffGroups[0].userBuff.Length; i++)
+        {
+            if (partybuffGroups[0].userBuff[i].isApply && isDebuff(partybuffGroups[0].userBuff[i].buffData.BuffKind))
+            {
+                debuffIdxList.Add(i);
+            }
+        }
+
+        if (debuffIdxList.Count > 0) {
+            int randIdx = Random.Range(0, debuffIdxList.Count);
+
+            partybuffGroups[0].userBuff[ debuffIdxList[randIdx] ].isApply = false;
+        }
+    }
+
+    public bool isDebuff(BUFF b)
+    {
+        return b.Equals(BUFF.DEBUFF_BUPAE) || b.Equals(BUFF.DEBUFF_CHIMSIK) || b.Equals(BUFF.DEBUFF_JAMSIK) || b.Equals(BUFF.DEBUFF_SHIELD);
     }
 }

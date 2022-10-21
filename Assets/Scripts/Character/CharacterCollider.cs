@@ -13,7 +13,7 @@ public class CharacterCollider : MonoBehaviour
      */
     void itemSetting(int n, Item _item)
     {
-        if (n == 1)
+        if (n == 0)
         {
             Character.haveItem[n].Add(_item);
             GameMng.I.userData.inventory[n].Add(new Item_Schema((int)_item.itemData.itemIndex, _item.itemCount));
@@ -55,8 +55,8 @@ public class CharacterCollider : MonoBehaviour
         else
             GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName;
 
-            GameMng.I.getItemPool[idx].EXP_Game.SetActive(false);
-            GameMng.I.getItemPool[idx].EXP_Game.SetActive(true);
+        GameMng.I.getItemPool[idx].EXP_Game.SetActive(false);
+        GameMng.I.getItemPool[idx].EXP_Game.SetActive(true);
         // for (int i = idx; i >= 0; i--) {
         //     GameMng.I.getItemPool[i].EXP_Game.SetActive(false);
         //     GameMng.I.getItemPool[i].EXP_Game.SetActive(true);
@@ -86,13 +86,13 @@ public class CharacterCollider : MonoBehaviour
                 case ITEM_TYPE.WEAPON_ITEM:
                 case ITEM_TYPE.SHIRTS_ITEM:
                 case ITEM_TYPE.PANTS_ITEM:
-                    itemSetting(1, item);
+                    itemSetting(0, item);
                     break;
                 case ITEM_TYPE.FAVORITE_ITEM:
-                    itemSetting(2, item);
+                    itemSetting(1, item);
                     break;
                 case ITEM_TYPE.CONSUMABLE_ITEM:
-                    itemSetting(3, item);
+                    itemSetting(2, item);
                     break;
                 default:
                     if (item.itemData.itemIndex.Equals(ITEM_INDEX.NONE))

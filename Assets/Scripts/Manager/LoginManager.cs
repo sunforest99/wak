@@ -42,10 +42,9 @@ public class UserData
     public Character_Schema character;
     public List<List<Item_Schema>> inventory = new List<List<Item_Schema>>();
     public List<Skill_Schema> skills = new List<Skill_Schema>();
-    public Quest_Schema main_quest;
+    // public Quest_Schema main_quest;
     public List<Quest_Schema> sub_quest;
     public List<int> quest_done;
-    public List<int> slot = new List<int>();
     public List<Skill_TREE> upgrade = new List<Skill_TREE>();
     public int love;
     public List<int> npc = new List<int>();

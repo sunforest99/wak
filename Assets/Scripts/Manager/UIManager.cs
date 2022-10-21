@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        GameMng.I.userData.main_quest.quest_code = 1;
+        // GameMng.I.userData.main_quest.quest_code = 1;
         
         itemLoad();
         QuestLoad();
@@ -282,15 +282,16 @@ public class UIManager : MonoBehaviour
     void QuestLoad()
     {
         // 메인 퀘스트 so 파일명은 진행 순서에 따라서 MAIN_${} 으로 결정됨.
-        Character.main_quest = Resources.Load<QuestData>($"QuestData/Main/MAIN_{GameMng.I.userData.main_quest.quest_code}");
-        Character.main_quest_progress = 0;      // TODO : DB 데이터로 최신화 할 것
-        GameMng.I.myQuestName[0].text = Character.main_quest.questName;
-        GameMng.I.myQuestContent[0].text = Character.main_quest.progressContent[Character.main_quest_progress];
+        // Character.main_quest = Resources.Load<QuestData>($"QuestData/Main/MAIN_{GameMng.I.userData.main_quest.quest_code}");
+        // Character.main_quest_progress = 0;      // TODO : DB 데이터로 최신화 할 것
+        // GameMng.I.myQuestName[0].text = Character.main_quest.questName;
+        // GameMng.I.myQuestContent[0].text = Character.main_quest.progressContent[Character.main_quest_progress];
         
         string subQuestName = "";
 
         // 서브 퀘스트 so 파일명은 ENUM에 모두 저장함.
-        for(int i = 0; i < GameMng.I.userData.sub_quest.Count; i++)
+        int i = 0;
+        for(; i < GameMng.I.userData.sub_quest.Count; i++)
         {
             subQuestName = ((QUEST_CODE)GameMng.I.userData.sub_quest[i].quest_code).ToString();
             Character.sub_quest.Add(
@@ -300,11 +301,15 @@ public class UIManager : MonoBehaviour
             Character.sub_quest_progress[subQuestName] = 0;      // TODO : DB 데이터로 최신화 할 것
 
             // 퀘스트 UI에는 최대 5개 까지만 보여줌. TODO : 화면에 띄울 퀘스트를 선택해서 보여주게 하려면 바꿔야함.
-            if (i+1 < 5)
+            if (i < 5)
             {
-                GameMng.I.myQuestName[i+1].text = Character.sub_quest[subQuestName].questName;
-                GameMng.I.myQuestContent[i+1].text = Character.sub_quest[subQuestName].progressContent[Character.sub_quest_progress[subQuestName]];
+                // 메인퀘스트가 사라졌음. 만약 메인퀘가 다시 추가되면 i+1 이 되어야함
+                GameMng.I.myQuestName[i].text = Character.sub_quest[subQuestName].questName;
+                GameMng.I.myQuestContent[i].text = Character.sub_quest[subQuestName].progressContent[Character.sub_quest_progress[subQuestName]];
             }
+        }
+        for (; i < 5; i++) {
+            GameMng.I.myQuestName[i].transform.parent.parent.gameObject.SetActive(false);
         }
     }
 }

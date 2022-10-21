@@ -118,6 +118,12 @@ public class DungeonMng : MonoBehaviour
         _dungeon_Type = DUNGEON_TYPE.MONSTER_PURPLER;
         resetDungeon();
         initDungeon();
+
+        // [퍼플라이트]퀘스트 0단계 (퍼플라이트 던전방문하기)를 진행하고 있었다면 클리어
+        if (Character.sub_quest.ContainsKey(QUEST_CODE.PURPLE_LIGHT.ToString())) {
+            if (Character.sub_quest_progress[QUEST_CODE.PURPLE_LIGHT.ToString()].Equals(0))
+                GameMng.I.nextSubQuest(QUEST_CODE.PURPLE_LIGHT);
+        }
     }
     public void selectNPCDungeon(Transform clickedBT) {
         curLocationUI.transform.position = clickedBT.position;

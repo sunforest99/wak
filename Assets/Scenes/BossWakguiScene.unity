@@ -1127,6 +1127,67 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1001 &41289836
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1827880634184240415, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_Name
+      value: jing_skill
+      objectReference: {fileID: 0}
+    - target: {fileID: 1827880634184240415, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062535790481110359, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_RootOrder
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062535790481110359, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062535790481110359, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062535790481110359, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062535790481110359, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062535790481110359, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062535790481110359, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062535790481110359, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062535790481110359, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062535790481110359, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062535790481110359, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6cde28ab10f0b8542a8628a22fc3594c, type: 3}
 --- !u!1 &75740469
 GameObject:
   m_ObjectHideFlags: 0
@@ -25978,6 +26039,7 @@ MonoBehaviour:
   - {fileID: 1722294880455484922, guid: 06c93946e55aaf6408984eb87033d2a4, type: 3}
   - {fileID: 2003640612720691984, guid: 77da5a3c1dce5d94b9076fc9d3fbc374, type: 3}
   - {fileID: 157997430140006651, guid: a04f25147b78fd94cb531c4775075255, type: 3}
+  _loadAnim: {fileID: 0}
   npcUI: {fileID: 1783328711}
   BattleItemUI:
     ItemImg:
@@ -32089,7 +32151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 0}
-  _startLoad: {fileID: 0}
   npcFavoriteItemImg: {fileID: 0}
   dialogUI: {fileID: 1958228122}
   npcSelectUI: {fileID: 19364683}

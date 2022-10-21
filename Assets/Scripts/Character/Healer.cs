@@ -108,6 +108,9 @@ public class Healer : Character
     public override void skill_2(Vector2 skillPos, bool isMe = false)
     {
         // TODO : 나한테 쉴드 줌
+        GameMng.I.stateMng.user_Shield_Numerical.Add(
+            new ShieldBuff(5, Mathf.FloorToInt(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.3f))
+        );
         
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Thief");

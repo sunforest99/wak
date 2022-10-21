@@ -43,7 +43,8 @@ public class GameMng : MonoBehaviour
     public ChatMng chatMng;
     public TMPro.TextMeshProUGUI[] myQuestName;       // 내가 진행중인 퀘스트 이름 text
     public TMPro.TextMeshProUGUI[] myQuestContent;    // 내가 진행중인 퀘스트 내용 text
-    
+    public GameObject questAlert;           // 퀘스트 진행 완료등에 알려주는 UI
+    public TMPro.TextMeshProUGUI questAlertTxt;         // 
     public Sprite[] questTypeSpr;         // 메인퀘스트, 서브퀘스트 Sprite 파일
 
     /* 스킬 */
@@ -244,6 +245,18 @@ public class GameMng : MonoBehaviour
             Resources.Load<QuestData>($"QuestData/Sub/{subQuestName}") 
         );
         Character.sub_quest_progress[subQuestName] = 0;
+
+        int idx = 0;
+        foreach (var q in Character.sub_quest) {
+            // 메인퀘스트가 사라졌음. 만약 메인퀘가 다시 추가되면 i+1 이 되어야함
+            GameMng.I.myQuestName[idx].text = q.Value.questName;
+            GameMng.I.myQuestContent[idx].text = q.Value.progressContent[0];
+            GameMng.I.myQuestName[idx].transform.parent.parent.gameObject.SetActive(true);
+            if (idx++ >= 5) break;       // 퀘스트 UI에는 최대 5개 까지만 보여줌.
+        }
+        for (; idx < 5; idx++) {
+            GameMng.I.myQuestName[idx].transform.parent.parent.gameObject.SetActive(false);
+        }
     }
     /*
      * @brief 메인 퀘스트 진행률을 높일때 사용. 퀘스트 완료까지 체크함
@@ -281,6 +294,8 @@ public class GameMng : MonoBehaviour
         string questName = questCode.ToString();
         
         Character.sub_quest_progress[questName]++;
+        GameMng.I.questAlertTxt.text = Character.sub_quest[questName].questName;
+        GameMng.I.questAlert.SetActive(true);
 
         if (Character.sub_quest_progress[questName] >= Character.sub_quest[questName].progressContent.Length)
         {
@@ -310,6 +325,17 @@ public class GameMng : MonoBehaviour
             //         break;
             //     }
             // }
+            int idx = 0;
+            foreach (var q in Character.sub_quest) {
+                // 메인퀘스트가 사라졌음. 만약 메인퀘가 다시 추가되면 i+1 이 되어야함
+                GameMng.I.myQuestName[idx].text = q.Value.questName;
+                GameMng.I.myQuestContent[idx].text = q.Value.progressContent[ Character.sub_quest_progress[q.Key] ];
+                GameMng.I.myQuestName[idx].transform.parent.parent.gameObject.SetActive(true);
+                if (idx++ >= 5) break;       // 퀘스트 UI에는 최대 5개 까지만 보여줌.
+            }
+            for (; idx < 5; idx++) {
+                GameMng.I.myQuestName[idx].transform.parent.parent.gameObject.SetActive(false);
+            }
         }
     }
 

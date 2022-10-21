@@ -96,7 +96,9 @@ public enum ITEM_INDEX
 public enum QUEST_CODE
 {
     /* 서브 퀘스트 이름 */
-    TEMP_QUEST_0
+    TEMP_QUEST_0,
+    PURPLE_LIGHT,
+    R_U_HUMAN
 }
 
 public enum BUFF

@@ -127,11 +127,12 @@ public class NpcAngel : Npcdata
 
     protected IEnumerator Talk_SubQuest_0()
     {
-        yield return "...";
-        yield return ".....";
+        yield return "혹시 " + GameMng.I.userData.user_nickname + "님, 퍼플라이트라고 들어 보셨나요?";
+        yield return "던전내 가끔씩 나타나는 현상인데 몬스터들을 더욱 무섭게 만든다고 합니다!";
+        yield return "퍼플라이트를 폐기해야합니다 !!";
 
         // 대화 시작과 동시에 서브 퀘스트 시작함을 알림
-        GameMng.I.StartSubQuest(QUEST_CODE.TEMP_QUEST_0);
+        GameMng.I.StartSubQuest(QUEST_CODE.PURPLE_LIGHT);
         // GameMng.I.nextSubQuest(QUEST_CODE.TEMP_QUEST_0);
     }
 
