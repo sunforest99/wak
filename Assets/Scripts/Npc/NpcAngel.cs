@@ -22,30 +22,30 @@ public class NpcAngel : Npcdata
         questBook.SetActive(false);
         StopCoroutine(checkPlayerDistance());
 
-        // 선행 (메인)퀘스트를 했는지
-        if (Character.main_quest.questCode.Equals(3))
-        {
-            base.dialogs = Talk_MainQuest_3();
-            setQuestIcon(QUEST_TYPE.MAIN);
-            // setSpeech("빛이 당신과 함께하길..");
-        }
-        else if (Character.main_quest.questCode.Equals(4))
-        {
-            questBook.SetActive(true);
-            base.dialogs = Talk_MainQuest_4();
-            setQuestIcon(QUEST_TYPE.MAIN);
-        }
-        else if (Character.main_quest.questCode.Equals(5))
-        {
-            base.dialogs = Talk_MainQuest_5();
-            setQuestIcon(QUEST_TYPE.MAIN);
-        }
-        else {
-            base.dialogs = null;
-            setQuestIcon();
-            setSpeech("빛이 당신과 함께하길..");
-            StartCoroutine(checkPlayerDistance());
-        }
+        // // 선행 (메인)퀘스트를 했는지
+        // if (Character.main_quest.questCode.Equals(3))
+        // {
+        //     base.dialogs = Talk_MainQuest_3();
+        //     setQuestIcon(QUEST_TYPE.MAIN);
+        //     // setSpeech("빛이 당신과 함께하길..");
+        // }
+        // else if (Character.main_quest.questCode.Equals(4))
+        // {
+        //     questBook.SetActive(true);
+        //     base.dialogs = Talk_MainQuest_4();
+        //     setQuestIcon(QUEST_TYPE.MAIN);
+        // }
+        // else if (Character.main_quest.questCode.Equals(5))
+        // {
+        //     base.dialogs = Talk_MainQuest_5();
+        //     setQuestIcon(QUEST_TYPE.MAIN);
+        // }
+        // else {
+        //     base.dialogs = null;
+        //     setQuestIcon();
+        //     setSpeech("빛이 당신과 함께하길..");
+        //     StartCoroutine(checkPlayerDistance());
+        // }
         // 한 퀘스트에 여러 대화가 있다면 그때는 .quest_progress로 분리
         
         
@@ -67,63 +67,6 @@ public class NpcAngel : Npcdata
         //     // 자식?
         // }
     }
-
-    protected IEnumerator Talk_MainQuest_3()
-    {
-        yield return "...";
-        yield return ".....";
-        yield return "아무튼 많은 텍스트";
-        yield return "아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트아무튼 많은 텍스트";
-
-        //yield return "";    // 선택 메세지 띄우기 전에 틈을 주려면 빈 메세지 넣기
-        GameMng.I.npcUI.dialogUI.setSelectBlock("선택 1", "선택 2");
-        yield return "";    // <- 얘는 선택메세지 후에는 꼭 있어야함
-
-        if (getFlow())
-        {
-            yield return "선택1에 따른 대사";
-        }
-        else
-        {
-            yield return "선택2에 따른 대사 - 1";
-            yield return "선택2에 따른 대사 - 2";
-        }
-
-        yield return "앞에 있는 책을 통해 힘을 드리겠습니다";
-
-        GameMng.I.nextMainQuest();
-        checkQuest();
-    }
-
-    protected IEnumerator Talk_MainQuest_4()
-    {
-        if (Character.main_quest_progress.Equals(0))
-        {
-            yield return "앞의 책을 통해 전직해주세요..";
-            yield return ";;";
-            base.dialogs = Talk_MainQuest_4();          // <- 만약 이후 퀘가 있어서 다시 말걸어야 한다면 꼭 마지막에 다시 선언
-        }
-        else
-        {
-            yield return "그런 힘을 선택하다니...";
-            yield return "와!";
-
-            GameMng.I.nextMainQuest();
-            checkQuest();
-        }
-    }
-
-    protected IEnumerator Talk_MainQuest_5()
-    {
-        yield return "이제 대도시로 보내드리겠습니다.";
-        yield return "행운을 빕니다.";
-
-        // TODO : 왁귀 정비소로 이동
-        SceneManager.LoadScene("BossWakguiReadyScene");
-        // GameMng.I.nextMainQuest();
-        // checkQuest();
-    }
-
 
     protected IEnumerator Talk_SubQuest_0()
     {

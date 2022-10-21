@@ -48,7 +48,7 @@ public class Character : MonoBehaviour
     // 아이템 ====================================================================================================
     public static Item[] equipBattleItem = new Item[3];
     public static List<List<Item>> haveItem = new List<List<Item>>();       // 소유중인 인벤토리 데이터 (나중에 위치 옮기기)
-    public static QuestData main_quest;                                     // 메인 퀘스트 데이터 (나중에 위치 옮기기)
+    // public static QuestData main_quest;                                     // 메인 퀘스트 데이터 (나중에 위치 옮기기)
     public static Dictionary<string, QuestData> sub_quest = new Dictionary<string, QuestData>();        // 서브 퀘스트들 데이터 (나중에 위치 옮기기)
     public static int main_quest_progress = 0;
     public static Dictionary<string, int> sub_quest_progress = new Dictionary<string, int>();

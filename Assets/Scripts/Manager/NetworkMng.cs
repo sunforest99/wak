@@ -128,7 +128,7 @@ public class NetworkMng : MonoBehaviour
                 
 
                 Debug.Log("서버가 닫혀있습니다. : " + err.ToString());
-                SendMsg("LOG:SocketException err");
+                SendMsg("LOG:SocketException err", true);
                 // Logout();
             }
             catch (Exception ex)
@@ -137,7 +137,7 @@ public class NetworkMng : MonoBehaviour
                 
                 GameMng.I.noticeMessage.text = "------------------- ERROR 개반자에게 문의 : " + ex.ToString();
 
-                SendMsg("LOG:Exception err");
+                SendMsg("LOG:Exception err", true);
                 Logout();
             }
         }
@@ -184,11 +184,12 @@ public class NetworkMng : MonoBehaviour
     /**
      * @brief 서버에게 패킷 전달
      * @param txt 패킷 내용
+     * @param forcedSend 상황에 상관없이 강제로 보내는지 여부
      */
-    public void SendMsg(string txt)
+    public void SendMsg(string txt, bool forcedSend = false)
     {
-        // 로컬맵이라면 안보냄
-        if (myRoom < ROOM_CODE._WORLD_MAP_)
+        // 로컬맵이라면 안보냄 (강제로 보내는 상황이라면 보냄)
+        if (myRoom < ROOM_CODE._WORLD_MAP_ && !forcedSend)
             return;
 
         try
@@ -247,13 +248,13 @@ public class NetworkMng : MonoBehaviour
                     }
                     else
                     {
-                        SendMsg("LOG:nRead");
+                        SendMsg("LOG:nRead", true);
                     }
                 }
             }
             else
             {
-                SendMsg("LOG:socket.Connected");
+                SendMsg("LOG:socket.Connected", true);
             }
             yield return null;
         }
@@ -371,9 +372,10 @@ public class NetworkMng : MonoBehaviour
             // 파티원 HP가 변경됨
             // txt[1] 변경된 파티원 uniqueNumber
             // txt[2] 변경된 체력 퍼센트
-
-            // 뒤에 체력 percent가 붙을 수 있게
-            // GameMng.I.stateMng.Party_HP_Numerical[v_party[txt[1]].partyNumber].
+            GameMng.I.stateMng.Party_HP_Numerical[v_party[txt[1]].partyNumber].hpPer = float.Parse(txt[2]);
+            GameMng.I.stateMng.Party_HP_Numerical[v_party[txt[1]].partyNumber].shieldPer = float.Parse(txt[3]);
+            GameMng.I.stateMng.ShieldPos();
+            // GameMng.I.stateMng.ShieldPos();
         }
         else if (txt[0].Equals("PARTY_BUFF"))
         {
@@ -539,7 +541,7 @@ public class NetworkMng : MonoBehaviour
             // TODO : 기타 다른 정보까지 알려줄일 있으면 알려줘야함
             SendMsg(string.Format("LOGIN:{0}:{1}:{2}:{3}:{4}:{5}:{6}", GameMng.I.userData.user_nickname, GameMng.I.userData.job,
                     GameMng.I.userData.character.hair, GameMng.I.userData.character.face, GameMng.I.userData.character.shirts, 
-                    GameMng.I.userData.character.pants, GameMng.I.userData.character.weapon));
+                    GameMng.I.userData.character.pants, GameMng.I.userData.character.weapon), true);
         }
         else if (txt[0].Equals("UNIQUE"))
         {
@@ -565,11 +567,11 @@ public class NetworkMng : MonoBehaviour
             // 광장이 아니였을 때
             // if (myRoom != 0)
             //     SendMsg(string.Format("OUT_ROOM:{0}", myRoom));
-            SendMsg("DISCONNECT");
+            SendMsg("DISCONNECT", true);
             Thread.Sleep(500);
             socket.Close();
         }
-        SendMsg("LOG:OnDestroy");
+        SendMsg("LOG:OnDestroy", true);
         StopCoroutine(PacketProc());
     }
 
@@ -592,7 +594,7 @@ public class NetworkMng : MonoBehaviour
         myRoom = changeToRoom;  
 
         // 씬 변경되는 과정에서 기타 데이터들이 들어올 수도 있음을 방지하기 위해 제일 먼저 보냄
-        SendMsg(string.Format("CHANGE_ROOM:{0}", (int)changeToRoom));
+        SendMsg(string.Format("CHANGE_ROOM:{0}", (int)changeToRoom), true);
 
         GameMng.I._loadAnim.SetTrigger("LoadStart");
         StartCoroutine(changingScene(changeToRoom));

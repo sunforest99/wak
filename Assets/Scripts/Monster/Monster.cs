@@ -228,29 +228,30 @@ public class Monster : MonoBehaviour
             // 가장 피 적은 캐릭터
             case 3:
             case 4:
-                compareValue = GameMng.I.stateMng.user_HP_Numerical.Hp;
-                for (int i = 0; i < 4; i++)
-                {
-                    // 파티원들 중
-                    if (GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.activeSelf)
-                    {
-                        // 체력이 가장 적은
-                        if (GameMng.I.stateMng.Party_HP_Numerical[i].Hp < compareValue)
-                        {
-                            compareValue = GameMng.I.stateMng.Party_HP_Numerical[i].Hp;
-                            chooseTarget = GameMng.I.stateMng.PartyName[i].text;        // 닉네임 가져옴
-                        }
-                    }
-                }
-                // 찾은 유저 닉네임을 고유 번호로 변환하기 위해 검색
-                foreach (var user in NetworkMng.I.v_party)
-                {
-                    if (user.Value.nickName.Equals(chooseTarget))
-                    {
-                        chooseTarget = user.Key;
-                        break;
-                    }
-                }
+                Debug.LogError("여길 들어온다고?");
+                // compareValue = GameMng.I.stateMng.user_HP_Numerical.Hp;
+                // for (int i = 0; i < 4; i++)
+                // {
+                //     // 파티원들 중
+                //     if (GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.activeSelf)
+                //     {
+                //         // 체력이 가장 적은
+                //         if (GameMng.I.stateMng.Party_HP_Numerical[i].Hp < compareValue)
+                //         {
+                //             compareValue = GameMng.I.stateMng.Party_HP_Numerical[i].Hp;
+                //             chooseTarget = GameMng.I.stateMng.PartyName[i].text;        // 닉네임 가져옴
+                //         }
+                //     }
+                // }
+                // // 찾은 유저 닉네임을 고유 번호로 변환하기 위해 검색
+                // foreach (var user in NetworkMng.I.v_party)
+                // {
+                //     if (user.Value.nickName.Equals(chooseTarget))
+                //     {
+                //         chooseTarget = user.Key;
+                //         break;
+                //     }
+                // }
                 break;
         }
         NetworkMng.I.SendMsg(string.Format("MONSTER_PATTERN:{0}:{1}:{2}", name, 0, chooseTarget));

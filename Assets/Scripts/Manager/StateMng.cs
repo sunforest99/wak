@@ -31,14 +31,23 @@ public class ShieldBuff : MonoBehaviour
     }
 }
 
+
 [System.Serializable]
-public struct Player_HP_Numerical
+public struct User_HP_Numerical
 {          // 체력에 필요한 수치 구조체
     public int fullHp;                    // 최대 체력
-    public int fullShield;                // 최대 쉴드 << 필요한지 모르겠음
+    //public int fullShield;                // 최대 쉴드 << 필요한지 모르겠음
     public int Hp;                        // 현재 체력
-    public int Shield_Mount;              // 현재 쉴드
+    // public int Shield_Mount;              // 현재 쉴드
+    public float shieldPer;
     public float Shield_Pos;                // 쉴드 위치
+}
+[System.Serializable]
+public struct Player_HP_Numerical
+{
+    public float hpPer;
+    public float shieldPer;
+    public float Shield_Pos;
 }
 
 [System.Serializable]
@@ -65,7 +74,7 @@ public class StateMng : MonoBehaviour
     [SerializeField] Image PlayerShieldImg;
     [SerializeField] TextMeshProUGUI PlayerHPText;                                          // 중하단 플레이어 체력 텍스트
     public Player_HP_Numerical[] Party_HP_Numerical = new Player_HP_Numerical[4]; // 좌측 UI 플레이어 수치
-    public Player_HP_Numerical user_HP_Numerical;
+    public User_HP_Numerical user_HP_Numerical;
     public List<ShieldBuff> user_Shield_Numerical;
     // public ShieldBuff user_shield = new Shil[4]_;
     
@@ -82,18 +91,19 @@ public class StateMng : MonoBehaviour
     {
         fImageSize = 148.0f;
         fPlayerImgSize = 358.0f;
-        Party_HP_Numerical[0].fullHp = Party_HP_Numerical[0].fullShield = user_HP_Numerical.fullHp = Mathf.FloorToInt(942477 * Character._stat.incHPPer);
-        Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp = user_HP_Numerical.fullHp;
-        // Party_HP_Numerical[0].Shield_Mount = user_HP_Numerical.Shield_Mount = 0;
+        user_HP_Numerical.Hp = user_HP_Numerical.fullHp = 1;
+        
         for (int i = 0; i < 4; i++)
         {
-            Party_HP_Numerical[i].fullHp = 100;
-            Party_HP_Numerical[i].fullShield = 100;
-            Party_HP_Numerical[i].Hp = 100;
-            Party_HP_Numerical[i].Shield_Mount = 10;
+            Party_HP_Numerical[i].hpPer = 1;
+            Party_HP_Numerical[i].shieldPer = 1;
         }
         nPlayerBuffCount = 0;
         nPlayerDeBuffCount = 0;
+        
+        ShieldPos();
+        PlayerHP();
+
     }
 
     void Update()
@@ -118,24 +128,25 @@ public class StateMng : MonoBehaviour
                 // TODO : 네트워크에 내 바뀐 체력 보내줌
             }
         }
-
-        ShieldPos();
-        PlayerHP();
+        
     }
 
-    void ShieldPos()
+    public void ShieldPos()
     {
         for (int i = 0; i < 4; i++)
         {
-            PartyHPImg[i].rectTransform.localScale = new Vector3(Party_HP_Numerical[i].Hp / Party_HP_Numerical[i].fullHp, 1.0f, 1.0f);
-            PartyShieldImg[i].rectTransform.localScale = new Vector3(Party_HP_Numerical[i].Shield_Mount / Party_HP_Numerical[i].fullShield, 1.0f, 1.0f);
-            if (Party_HP_Numerical[i].Hp + Party_HP_Numerical[i].Shield_Mount <= Party_HP_Numerical[i].fullHp)
+            // 파티창 HP 퍼센테이지 적용
+            PartyHPImg[i].rectTransform.localScale = new Vector3(Party_HP_Numerical[i].hpPer, 1.0f, 1.0f);
+            // 파티창 쉴드 퍼센테이지 적용
+            PartyShieldImg[i].rectTransform.localScale = new Vector3(Party_HP_Numerical[i].shieldPer, 1.0f, 1.0f);
+            if (Party_HP_Numerical[i].hpPer + Party_HP_Numerical[i].shieldPer <= 1)
             {
                 Party_HP_Numerical[i].Shield_Pos = PartyHPImg[i].rectTransform.anchoredPosition.x + (fImageSize * PlayerHPImg.rectTransform.localScale.x);
                 PartyShieldImg[i].rectTransform.pivot = new Vector2(0.0f, 0.5f);
             }
             else
-            {       // <! 풀체력보다 클때
+            {
+                // 풀체력보다 클때
                 PartyShieldImg[i].rectTransform.pivot = new Vector2(1.0f, 0.5f);
                 Party_HP_Numerical[i].Shield_Pos = fImageSize / 2;
             }
@@ -143,23 +154,30 @@ public class StateMng : MonoBehaviour
         }
     }
 
-    void PlayerHP()
+    public void PlayerHP()
     {
-        Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp;
-        Party_HP_Numerical[0].Shield_Mount = user_HP_Numerical.Shield_Mount;
+        // 내 파티창 HP 퍼센테이지
+        Party_HP_Numerical[0].hpPer = user_HP_Numerical.Hp / (float)user_HP_Numerical.fullHp;
 
+        // 내 파티창 쉴드 퍼센테이지
+        if (user_HP_Numerical.shieldPer > 1)
+            user_HP_Numerical.shieldPer = 1;
+        Party_HP_Numerical[0].shieldPer = user_HP_Numerical.shieldPer;
+
+        // 내 체력창 HP 상태
         PlayerHPText.text = user_HP_Numerical.Hp.ToString() + " / " + user_HP_Numerical.fullHp.ToString();
-        Party_HP_Numerical[0].Hp = user_HP_Numerical.Hp;
-        Party_HP_Numerical[0].Shield_Mount = user_HP_Numerical.Shield_Mount;
-        PlayerHPImg.rectTransform.localScale = new Vector3(user_HP_Numerical.Hp / user_HP_Numerical.fullHp, 1.0f, 1.0f);
-        PlayerShieldImg.rectTransform.localScale = new Vector3(user_HP_Numerical.Shield_Mount / user_HP_Numerical.fullHp, 1.0f, 1.0f);
-        if (user_HP_Numerical.Hp + user_HP_Numerical.Shield_Mount <= user_HP_Numerical.fullHp)
+        PlayerHPImg.rectTransform.localScale = new Vector3(Party_HP_Numerical[0].hpPer, 1.0f, 1.0f);
+        PlayerShieldImg.rectTransform.localScale = new Vector3(user_HP_Numerical.shieldPer, 1.0f, 1.0f);
+
+        if (Party_HP_Numerical[0].hpPer + user_HP_Numerical.shieldPer <= 1)
         {
+            // 쉴드 일반적인 상태
             user_HP_Numerical.Shield_Pos = PlayerHPImg.rectTransform.anchoredPosition.x + (fPlayerImgSize * PlayerHPImg.rectTransform.localScale.x);
             PlayerShieldImg.rectTransform.pivot = new Vector2(0.0f, 0.5f);
         }
         else
-        {       // <! 풀체력보다 클때
+        {
+            // (현재체력 + 쉴드)가 총체력보다 크면 오버된 양만큼 우측에 추가로 표현함
             PlayerShieldImg.rectTransform.pivot = new Vector2(1.0f, 0.5f);
             user_HP_Numerical.Shield_Pos = fPlayerImgSize / 2;
         }
@@ -235,13 +253,8 @@ public class StateMng : MonoBehaviour
 
     public void takeDamage(int dmg)
     {
-        Debug.Log("데미지 : " + dmg);
-        Debug.Log("받는 피해 증가량 : " + Character._stat.takenDamagePer);
-        
         // 받는 피해 감소 적용
         dmg = Mathf.FloorToInt(dmg * Character._stat.takenDamagePer);
-
-        Debug.Log("결과 데미지 : " + dmg);
 
         int temp = -1;
         for (int j = 0; j < user_Shield_Numerical.Count; j++)
@@ -249,7 +262,7 @@ public class StateMng : MonoBehaviour
             // 가장 먼저 들어온 쉴드 먼저 데미지를 받음
             user_Shield_Numerical[j].mount -= dmg;
 
-            if (user_Shield_Numerical[j].mount < 0)
+            if (user_Shield_Numerical[j].mount <= 0)
             {
                 dmg = -user_Shield_Numerical[j].mount;
                 temp = j + 1;
@@ -265,6 +278,20 @@ public class StateMng : MonoBehaviour
             user_Shield_Numerical.RemoveRange(0, temp);
 
         user_HP_Numerical.Hp -= dmg;
+        
+        // 쉴드량 퍼센테이지 계산
+        float shieldMount = 0;
+        for (int j = 0; j < user_Shield_Numerical.Count; j++) {
+            shieldMount += user_Shield_Numerical[j].mount;
+        }
+        shieldMount = shieldMount / (float)user_HP_Numerical.fullHp;
+        if (shieldMount > 1)
+            shieldMount = 1;
+        user_HP_Numerical.shieldPer =  shieldMount;
+        
+        ShieldPos();
+        PlayerHP();
+
 
         if (user_HP_Numerical.Hp <= 0)
         {
@@ -272,6 +299,10 @@ public class StateMng : MonoBehaviour
         }
 
         // TODO : 네트워크에 내 변경된 HP 보내기
+        NetworkMng.I.SendMsg(string.Format("CHANGE_HP:{0}:{1}", 
+            user_HP_Numerical.Hp / (float)user_HP_Numerical.fullHp,
+            shieldMount
+        ));
     }
 
     public void removeAllDebuff()

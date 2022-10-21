@@ -261,29 +261,29 @@ public class GameMng : MonoBehaviour
     /*
      * @brief 메인 퀘스트 진행률을 높일때 사용. 퀘스트 완료까지 체크함
      */
-    public void nextMainQuest()
-    {
-        // 대화를 모두 진행했다면 해당 퀘스트의 진행률을 올림
-        Character.main_quest_progress++;
+    // public void nextMainQuest()
+    // {
+    //     // 대화를 모두 진행했다면 해당 퀘스트의 진행률을 올림
+    //     Character.main_quest_progress++;
         
-        // 퀘스트마다 있는 진행률을 완료했다면 다음 퀘스트로 이동
-        if (Character.main_quest_progress >= Character.main_quest.progressContent.Length)
-        {
-            // 경험치 지급
-            // rewardExp(Character.main_quest.rewardExp);
+    //     // 퀘스트마다 있는 진행률을 완료했다면 다음 퀘스트로 이동
+    //     if (Character.main_quest_progress >= Character.main_quest.progressContent.Length)
+    //     {
+    //         // 경험치 지급
+    //         // rewardExp(Character.main_quest.rewardExp);
 
-            // 보상 아이템 지급
-            rewardItem(Character.main_quest.rewardItem);
+    //         // 보상 아이템 지급
+    //         rewardItem(Character.main_quest.rewardItem);
 
-            Character.main_quest = Resources.Load<QuestData>($"QuestData/Main/MAIN_{Character.main_quest.questCode + 1}");
-            Character.main_quest_progress = 0;
-        }
-        else
-        {
-            // 퀘스트 자체가 완료된것이 아니기 때문에 퀘스트 내용 UI만 변경함
-            myQuestContent[0].text = Character.main_quest.progressContent[Character.main_quest_progress];
-        }
-    }
+    //         Character.main_quest = Resources.Load<QuestData>($"QuestData/Main/MAIN_{Character.main_quest.questCode + 1}");
+    //         Character.main_quest_progress = 0;
+    //     }
+    //     else
+    //     {
+    //         // 퀘스트 자체가 완료된것이 아니기 때문에 퀘스트 내용 UI만 변경함
+    //         myQuestContent[0].text = Character.main_quest.progressContent[Character.main_quest_progress];
+    //     }
+    // }
 
     /*
      * @brief 서브 퀘스트 진행률을 높일때 사용. 퀘스트 완료까지 체크함
