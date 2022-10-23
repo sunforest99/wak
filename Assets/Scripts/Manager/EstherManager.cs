@@ -33,6 +33,9 @@ public class EstherManager : MonoBehaviour
                                                     //        0 : 비챤       |      3 : 릴파
                                                     //        1 : 아이네     |      4 : 징버거
                                                     //        2 : 주르르     |      
+    [SerializeField] BuffData[] estherBuffDatas;    // 0: 주르르
+                                                    // 1: 고세구
+
     // 에스더 소환 순서
     // 1. 에스더 소환되는 이펙트
     // 2. 에스더 관련 라이트로 변경
@@ -272,14 +275,15 @@ public class EstherManager : MonoBehaviour
         // 3. 에스더 일러스트 작동
         estherAppear[(int)ISEDOL.COTTON].SetActive(true);
 
-        // 4. 에스더 공격 (일러 애니메이션 도중
+        // 4. 에스더 버프
         foreach (var user in NetworkMng.I.v_users)
         {
             // 피가 0 이상이면, (살아있으면)
-            // if 
             // 주르르 이펙트 생성하고 그 캐릭터한테 붙이기 (쿨감 & 뎀감)
-            Instantiate(estherSkill[2], transform.position, Quaternion.identity, user.Value.transform);
+            if (GameMng.I.stateMng.Party_HP_Numerical[ NetworkMng.I.v_party[user.Key].partyNumber ].hpPer > 0)
+                Instantiate(estherSkill[2], transform.position, Quaternion.identity, user.Value.transform);
         }
+        GameMng.I.stateMng.ActiveBuff(estherBuffDatas[1]);
     }
 
     /*
@@ -348,5 +352,8 @@ public class EstherManager : MonoBehaviour
 
         // 3. 에스더 일러스트 작동
         estherAppear[(int)ISEDOL.GOSEGU].SetActive(true);
+
+        // 4. 버프 적용
+        GameMng.I.stateMng.ActiveBuff(estherBuffDatas[1]);
     }
 }

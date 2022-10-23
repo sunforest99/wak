@@ -234,12 +234,12 @@ public class BossCollider : MonoBehaviour
         {
             if (boss.bossDeBuffs[i].gameObject.activeInHierarchy && boss.bossDeBuffs[i].buffData.name == hitbuffData.name)
             {
-                boss.bossDeBuffs[i].duration = Character.usingSkill.getBuffData.duration;
+                boss.bossDeBuffs[i].duration = hitbuffData.duration;
                 break;
             }
             else if (!boss.bossDeBuffs[i].gameObject.activeInHierarchy)
             {
-                boss.bossDeBuffs[i].buffData = Character.usingSkill.getBuffData;
+                boss.bossDeBuffs[i].buffData = hitbuffData;
                 boss.bossDeBuffs[i].gameObject.SetActive(true);
                 break;
             }

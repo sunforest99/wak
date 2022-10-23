@@ -112,6 +112,10 @@ public class Healer : Character
             new ShieldBuff(5, Mathf.FloorToInt(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.3f))
         );
         
+        GameMng.I.stateMng.ActiveBuff(
+            skilldatas[1].getBuffData
+        );
+
         _action = CHARACTER_ACTION.CANT_ANYTHING;
         _anim.SetTrigger("Skill_Thief");
     }

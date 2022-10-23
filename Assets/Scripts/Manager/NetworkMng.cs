@@ -549,11 +549,9 @@ public class NetworkMng : MonoBehaviour
         }
         else if (txt[0].Equals("BUFF"))
         {
-            if(v_users.Count != 0)
-            {
-                for(int user = 0; user < v_users.Count; user++)
-                    GameMng.I.stateMng.partyActiveBuff(user, (BUFF)(int.Parse(txt[2])));
-            }
+            // txt[1] : uniqueNumber
+            // txt[2] : 버프 종류
+            GameMng.I.stateMng.partyActiveBuff(v_party[txt[1]].partyNumber, txt[2]);
         }
     }
 

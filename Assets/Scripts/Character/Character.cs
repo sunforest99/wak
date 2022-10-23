@@ -121,6 +121,7 @@ public class Character : MonoBehaviour
         }
         
         // 에스더 버프 중이라면 쿨타임 -1 감소 버프
+        if (GameMng.I.estherManager)
         if (GameMng.I.estherManager._esther_buff_state.Equals(ESTHER_BUFF.COTTON_BUFF))
         {
             cooltime -= 1;
@@ -510,9 +511,11 @@ public class Character : MonoBehaviour
                 );
                 break;
             case ITEM_INDEX.DMGUP:
+                GameMng.I.stateMng.ActiveOwnBuff(Resources.Load<BuffData>("Buff/BUFF_NESIGYUNG"));
                 StartCoroutine(DmgUp());
                 break;
             case ITEM_INDEX.SHIELDUP:
+                GameMng.I.stateMng.ActiveOwnBuff(Resources.Load<BuffData>("Buff/BUFF_NESIGYUNG"));
                 StartCoroutine(ShieldUp());
                 break;
         }

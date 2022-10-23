@@ -101,6 +101,7 @@ public enum QUEST_CODE
     R_U_HUMAN
 }
 
+// 새로 추가되면 무조건 종류상관없이 뒤에 
 public enum BUFF
 {
     BUFF_GAL = 0,
@@ -108,7 +109,12 @@ public enum BUFF
     DEBUFF_BUPAE,
     DEBUFF_CHIMSIK,
     DEBUFF_JAMSIK,
-    DEBUFF_SHIELD
+    DEBUFF_SHIELD,
+    BUFF_NESIGYUNG,
+    BUFF_SANPELLE,
+    BUFF_GOSEGU,
+    BUFF_COTTON
+    
 }
 
 public enum JOB

@@ -96,7 +96,7 @@ public class StateMng : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             Party_HP_Numerical[i].hpPer = 1;
-            Party_HP_Numerical[i].shieldPer = 1;
+            Party_HP_Numerical[i].shieldPer = 0;
         }
         nPlayerBuffCount = 0;
         nPlayerDeBuffCount = 0;
@@ -184,20 +184,26 @@ public class StateMng : MonoBehaviour
         PlayerShieldImg.rectTransform.anchoredPosition = new Vector2(user_HP_Numerical.Shield_Pos, 0.0f);
     }
 
+    /**
+     * @brief 파티창 버프/디버프 활성화 (스킬 사용 등으로, 다른 유저가 체크할 수 있는 부분)
+     * @param buffData 버프
+     */
     public void ActiveBuff(BuffData buffData)
     {
         for (int i = 0; i < partybuffGroups.Length; i++)
         {
             for (int j = 0; j < partybuffGroups[i].userBuff.Length; j++)
             {
-                if (partybuffGroups[i].userBuff[j].isApply && partybuffGroups[i].userBuff[j].buffData.name == buffData.name)
+                // 이미 활성화중인 버프가 다시 들어온거라면 시간 리셋
+                if (partybuffGroups[i].userBuff[j].isApply && partybuffGroups[i].userBuff[j].buffData.BuffKind == buffData.BuffKind)
                 {
                     partybuffGroups[i].userBuff[j].duration = buffData.duration;
                     break;
                 }
+                // 버프가 새로 들어왔다면 활성화
                 else if (!partybuffGroups[i].userBuff[j].isApply)
                 {
-                    ActiveOwnBuff(Character.usingSkill.getBuffData);
+                    // ActiveOwnBuff(Character.usingSkill.getBuffData);
                     partybuffGroups[i].userBuff[j].buffData = buffData;
                     partybuffGroups[i].userBuff[j].gameObject.SetActive(true);
                     partybuffGroups[i].userBuff[j].isApply = true;
@@ -207,17 +213,39 @@ public class StateMng : MonoBehaviour
         }
     }
 
+    /**
+     * @brief 내 영향으로 받는 버프/디버프 활성화  (아이템 사용이나 보스한테 맞는 등으로, 다른 유저가 체크하지 못하는 부분)
+     * @param buffData 버프
+     */
     public void ActiveOwnBuff(BuffData buffData)
     {
+        for (int j = 0; j < partybuffGroups[0].userBuff.Length; j++)
+        {
+            // 이미 활성화중인 버프가 다시 들어온거라면 시간 리셋
+            if (partybuffGroups[0].userBuff[j].isApply && partybuffGroups[0].userBuff[j].buffData.BuffKind == buffData.BuffKind)
+            {
+                partybuffGroups[0].userBuff[j].duration = buffData.duration;
+                break;
+            }
+            // 버프가 새로 들어왔다면 활성화
+            else if (!partybuffGroups[0].userBuff[j].isApply)
+            {
+                partybuffGroups[0].userBuff[j].buffData = buffData;
+                partybuffGroups[0].userBuff[j].gameObject.SetActive(true);
+                partybuffGroups[0].userBuff[j].isApply = true;
+                break;
+            }
+        }
+
         for (int i = 0; i < ownBuff.Length; i++)
         {
-            if (ownBuff[i].isApply && ownBuff[i].buffData.name == buffData.name && buffData.check_nesting)
+            if (ownBuff[i].isApply && ownBuff[i].buffData.BuffKind == buffData.BuffKind && buffData.check_nesting)
             {
                 ownBuff[i].count++;
                 ownBuff[i].duration = buffData.duration;
                 break;
             }
-            else if (ownBuff[i].isApply && ownBuff[i].buffData.name == buffData.name)
+            else if (ownBuff[i].isApply && ownBuff[i].buffData.BuffKind == buffData.BuffKind)
             {
                 ownBuff[i].duration = buffData.duration;
                 break;
@@ -230,19 +258,37 @@ public class StateMng : MonoBehaviour
                 break;
             }
         }
-        NetworkMng.I.SendMsg(string.Format("BUFF:{0}:{1}", NetworkMng.I.uniqueNumber, (int)buffData.BuffKind));
+        // Net 에 보내는 buffData.buffKind 값이 idx로 인지하는게 틀림
+        NetworkMng.I.SendMsg(string.Format("BUFF:{0}:{1}", NetworkMng.I.uniqueNumber, buffData.BuffKind.ToString()));
     }
 
-    public void partyActiveBuff(int player, BUFF buff)
+    /**
+     * @brief 파티창 버프 활성화(네트워크용)
+     * @param player 플레이어 파티 index
+     * @param buff 버프 idx (insepector 순서와 BUFF 순서가 같아야함)
+     */
+    public void partyActiveBuff(int player, string buff)
     {
-        if (!partybuffGroups[player].userBuff[(int)buff].isApply)
+        BuffData buffData = Resources.Load<BuffData>($"Buff/{buff}");
+    
+        for (int j = 0; j < partybuffGroups[player].userBuff.Length; j++)
         {
-            partybuffGroups[player].userBuff[(int)buff].buffData = buffDatas[(int)buff];
-            partybuffGroups[player].userBuff[(int)buff].isApply = true;
-            partybuffGroups[player].userBuff[(int)buff].gameObject.SetActive(true);
+            // 이미 활성화중인 버프가 다시 들어온거라면 시간 리셋
+            if (partybuffGroups[player].userBuff[j].isApply && partybuffGroups[player].userBuff[j].buffData.BuffKind.ToString() == buff)
+            {
+                partybuffGroups[player].userBuff[j].duration = buffData.duration;
+                break;
+            }
+            // 버프가 새로 들어왔다면 활성화
+            else if (!partybuffGroups[player].userBuff[j].isApply)
+            {
+                // ActiveOwnBuff(Character.usingSkill.getBuffData);
+                partybuffGroups[player].userBuff[j].buffData = buffData;
+                partybuffGroups[player].userBuff[j].gameObject.SetActive(true);
+                partybuffGroups[player].userBuff[j].isApply = true;
+                break;
+            }
         }
-        else
-            partybuffGroups[player].userBuff[(int)buff].duration = partybuffGroups[player].userBuff[(int)buff].buffData.duration;
     }
 
     public void forcedDeath()
