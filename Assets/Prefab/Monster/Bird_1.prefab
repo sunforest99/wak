@@ -133,7 +133,8 @@ GameObject:
   - component: {fileID: 6057958273525827716}
   - component: {fileID: 7702725000080758431}
   - component: {fileID: 9053404322289726999}
-  m_Layer: 10
+  - component: {fileID: 8979718636623342393}
+  m_Layer: 0
   m_Name: Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,6 +221,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8979718636623342393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3155209000638167738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2554f5d7711e2644adf97b3cbde0671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3679203530156152280
 GameObject:
   m_ObjectHideFlags: 0

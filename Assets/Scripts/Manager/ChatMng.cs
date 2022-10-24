@@ -9,6 +9,7 @@ public class ChatMng : MonoBehaviour
     [SerializeField] Animator chatAnim;
     [SerializeField] GameObject chatPanel;
     public string myChatField;
+    KEY_MODE beforeKeyMode = KEY_MODE.PLAYER_MODE;
 
     void Update()
     {
@@ -16,9 +17,10 @@ public class ChatMng : MonoBehaviour
         {
             //if (!chatPanel.activeSelf)
 
-            // 기본상태에섯 엔터를 누르면 채팅 모드로 전환
-            if (GameMng.I._keyMode.Equals(KEY_MODE.PLAYER_MODE))
+            // 채팅모드가 아닐때 엔터를 누르면 채팅 모드로 전환
+            if (!GameMng.I._keyMode.Equals(KEY_MODE.TYPING_MODE))
             {
+                beforeKeyMode = GameMng.I._keyMode;
                 GameMng.I._keyMode = KEY_MODE.TYPING_MODE;
                 chatAnim.SetTrigger("ChatOpen");
                 chatInput.readOnly = false;
@@ -34,7 +36,7 @@ public class ChatMng : MonoBehaviour
             {
                 chatInput.readOnly = true;
 
-                GameMng.I._keyMode = KEY_MODE.PLAYER_MODE;
+                GameMng.I._keyMode = beforeKeyMode;
                 chatAnim.SetTrigger("ChatClose");
                 //chatPanel.SetActive(false);
             }
@@ -43,7 +45,7 @@ public class ChatMng : MonoBehaviour
             else if (myChatField != "" && GameMng.I._keyMode.Equals(KEY_MODE.TYPING_MODE))
             {
                 chatInput.readOnly = true;
-                GameMng.I._keyMode = KEY_MODE.PLAYER_MODE;
+                GameMng.I._keyMode = beforeKeyMode;
                 chatAnim.SetTrigger("MessageOpen");
                 NetworkMng.I.SendMsg(string.Format("CHAT:{0}", myChatField));
                 chatLogs.text += string.Format("\n[{0}] : {1} ({2})", GameMng.I.userData.user_nickname, myChatField, System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute);

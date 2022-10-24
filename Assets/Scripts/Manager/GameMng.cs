@@ -31,6 +31,7 @@ public class GameMng : MonoBehaviour
     public GameObject[] characterPrefab = new GameObject[3];
     public GameObject[] magicianSkillPrefab = new GameObject[4];     // 기본공격, 바람, 용둔, 침스터콜
     public GameObject[] healerSkillPrefab = new GameObject[3];  // 기본공격, 나무, 레이저
+    public GameObject soulPrefab;
     // public bool isFocusing = true;      // 캐릭터에게 포커싱 맞출지 (카메라가 따라올지 유무)
 
     [Space(20)][Header("[  기본 UI 관리  ]")]  // ==========================================================================================================================
@@ -46,7 +47,8 @@ public class GameMng : MonoBehaviour
     public GameObject questAlert;           // 퀘스트 진행 완료등에 알려주는 UI
     public TMPro.TextMeshProUGUI questAlertTxt;         // 
     public Sprite[] questTypeSpr;         // 메인퀘스트, 서브퀘스트 Sprite 파일
-
+    public DieUI dieUI;
+    
     /* 스킬 */
     [HideInInspector] public List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
     [HideInInspector] public List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();

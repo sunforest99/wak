@@ -375,6 +375,9 @@ public class NetworkMng : MonoBehaviour
             GameMng.I.stateMng.Party_HP_Numerical[v_party[txt[1]].partyNumber].hpPer = float.Parse(txt[2]);
             GameMng.I.stateMng.Party_HP_Numerical[v_party[txt[1]].partyNumber].shieldPer = float.Parse(txt[3]);
             GameMng.I.stateMng.ShieldPos();
+            if (txt[2].Equals("0")) {
+                v_users[txt[1]]._anim.SetTrigger("Die");
+            }
             // GameMng.I.stateMng.ShieldPos();
         }
         else if (txt[0].Equals("PARTY_BUFF"))

@@ -40,7 +40,7 @@ public class DungeonMng : MonoBehaviour
         // _mapUI.SetActive(true);
         getNextWall = _nextWall;
 
-        StartCoroutine(showMapUI());
+        // StartCoroutine(showMapUI());
     }
 
     IEnumerator showMapUI()

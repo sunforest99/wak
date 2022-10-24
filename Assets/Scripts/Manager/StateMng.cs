@@ -342,9 +342,36 @@ public class StateMng : MonoBehaviour
         if (user_HP_Numerical.Hp <= 0)
         {
             // 사망
+            GameMng.I.character._anim.SetTrigger("Die");
+            GameMng.I._keyMode = KEY_MODE.UI_MODE;
+            Instantiate(GameMng.I.soulPrefab, GameMng.I.character.transform.position, Quaternion.identity);
+            GameMng.I.character.enabled = false;
+            GameMng.I.character.transform.parent.GetComponent<Rigidbody>().useGravity = false;
+            GameMng.I.character.transform.parent.GetComponent<BoxCollider>().enabled = false;
+
+            // 파티방이라면
+            if (NetworkMng.I.myRoom > ROOM_CODE._PARTY_MAP_) {
+                bool isAllDie = true;
+                for (int i = 0; i < 4; i++)
+                {
+                    if (Party_HP_Numerical[i].hpPer > 0)
+                    {
+                        isAllDie = false;
+                        break;
+                    }
+                }
+                // 모두 사망시 실패 UI
+                if (isAllDie)
+                    GameMng.I.dieUI.raidFail();
+            }
+            // 싱글룸
+            else {
+                // 마을로 가기 UI
+                GameMng.I.dieUI.dungeonDie();
+            }
         }
 
-        // TODO : 네트워크에 내 변경된 HP 보내기
+        // 네트워크에 내 변경된 HP 보내기 |  응답 메세지는 "PARTY_HP" 임
         NetworkMng.I.SendMsg(string.Format("CHANGE_HP:{0}:{1}", 
             user_HP_Numerical.Hp / (float)user_HP_Numerical.fullHp,
             shieldMount

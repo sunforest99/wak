@@ -60,6 +60,8 @@ public class LoadManager : MonoBehaviour
         // ==
 
         GameMng.I._loadAnim.SetTrigger("LoadDone");
+
+        // if (onlineMap)
         StartCoroutine(loadingDone());
     }
 
