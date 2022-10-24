@@ -91,16 +91,6 @@ public class DungeonMng_Wakgui : DungeonMng
             GameMng.I.userData.npc.Add(notGainNPC[rand]);
         }
     }
-    protected override void dungeonRest() {
-        campFire.SetActive(true);
-
-        // TODO : 배틀 아이템 초기화
-
-    }
-    protected override void dungeonShop() {
-        // Instantiate(npc_shop, new Vector3(0, 0.88f, 10), Quaternion.Euler(20, 0, 0));
-        npc_shop.SetActive(true);
-    }
     protected override void dungeonRandom() {}
 
     // public void someoneDamage(string name, int dmg)

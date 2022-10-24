@@ -552,9 +552,23 @@ public class NetworkMng : MonoBehaviour
         }
         else if (txt[0].Equals("BUFF"))
         {
-            // txt[1] : uniqueNumber
+            // txt[1] :  0 : 캐릭터의 버프 활성화
+            //           1 : 캐릭터의 버프 비활성화
+            //           2 : 보스의 버프 활성화
+            //           3 : 캐릭터의 디버프 모두 비활성화
             // txt[2] : 버프 종류
-            GameMng.I.stateMng.partyActiveBuff(v_party[txt[1]].partyNumber, txt[2]);
+            // txt[3] : uniqueNumber (보스때는 없음)
+            if (txt[1].Equals("0"))
+                GameMng.I.stateMng.partyActiveBuff(v_party[txt[3]].partyNumber, txt[2]);
+            else if (txt[1].Equals("1"))
+                GameMng.I.stateMng.partyRemoveBuff(v_party[txt[3]].partyNumber, txt[2]);
+            else if (txt[1].Equals("2"))
+                GameMng.I.boss.BuffActive( Resources.Load<BuffData>($"Buff/{txt[1]}") );
+            else if (txt[1].Equals("3"))
+                GameMng.I.stateMng.partyRemoveBuffAll(v_party[txt[3]].partyNumber);
+        }
+        else if (txt[0].Equals("BUFF_BOSS"))
+        {
         }
     }
 

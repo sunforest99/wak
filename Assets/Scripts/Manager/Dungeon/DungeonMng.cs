@@ -163,8 +163,25 @@ public class DungeonMng : MonoBehaviour
     protected virtual void dungeonMonster() {}
     protected virtual void dungeonMonsterPurple() {}
     protected virtual void dungeonNPC() {}
-    protected virtual void dungeonRest() {}
-    protected virtual void dungeonShop() {}
+    protected virtual void dungeonRest() {
+        campFire.SetActive(true);
+
+        // 배틀 아이템 초기화
+        for (int i = 0; i < Character.equipBattleItem.Length; i++)
+        {
+            Character.equipBattleItem[i].itemCount = Character.equipBattleItem[i].itemData.count;
+            GameMng.I.BattleItemUI.ItemText[i].text = Character.equipBattleItem[i].itemCount.ToString();
+            
+            // 기존에 쿨타임 중이던 것도 초기화 시키려면 아래 주석 해제. (But, 기존에 진행중이던 코루틴이 있다면 꼬이는 부분이 있음)
+            //GameMng.I.battleItem_Img[i].color = Color.white;
+            //GameMng.I.battleItem_Img[i].fillAmount = 1;
+            //Character.usingBattleItem[i] = false;
+            //GameMng.I.character.StopAllCoroutines();
+        }
+    }
+    protected virtual void dungeonShop() {
+        npc_shop.SetActive(true);
+    }
     protected virtual void dungeonRandom() {}
 
     public static void monsterDie()

@@ -38,7 +38,7 @@ public class Character : MonoBehaviour
     public SkillData[] skilldatas = new SkillData[5];
     public static SkillData usingSkill;
     private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
-    public bool[] usingBattleItem = new bool[3];
+    public static bool[] usingBattleItem = new bool[3];
     public int continuousAttack = 0;
 
     // 발자국 ====================================================================================================
@@ -515,7 +515,7 @@ public class Character : MonoBehaviour
                 StartCoroutine(DmgUp());
                 break;
             case ITEM_INDEX.SHIELDUP:
-                GameMng.I.stateMng.ActiveOwnBuff(Resources.Load<BuffData>("Buff/BUFF_NESIGYUNG"));
+                GameMng.I.stateMng.ActiveOwnBuff(Resources.Load<BuffData>("Buff/BUFF_SANPELLE"));
                 StartCoroutine(ShieldUp());
                 break;
         }

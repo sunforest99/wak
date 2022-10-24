@@ -259,7 +259,7 @@ public class StateMng : MonoBehaviour
             }
         }
         // Net 에 보내는 buffData.buffKind 값이 idx로 인지하는게 틀림
-        NetworkMng.I.SendMsg(string.Format("BUFF:{0}:{1}", NetworkMng.I.uniqueNumber, buffData.BuffKind.ToString()));
+        NetworkMng.I.SendMsg(string.Format("BUFF:0:{0}:{1}", buffData.BuffKind.ToString(), NetworkMng.I.uniqueNumber));
     }
 
     /**
@@ -380,9 +380,12 @@ public class StateMng : MonoBehaviour
 
     public void removeAllDebuff()
     {
+        NetworkMng.I.SendMsg(string.Format("BUFF:3:{0}", NetworkMng.I.uniqueNumber));
         for (int i = 0; i < partybuffGroups[0].userBuff.Length; i++)
         {
-            partybuffGroups[0].userBuff[i].isApply = false;
+            // 디버프 종류만 모두 지움
+            if (!partybuffGroups[0].userBuff[i].buffData.BuffKind.ToString().Substring(0, 4).Equals("BUFF"))
+                partybuffGroups[0].userBuff[i].isApply = false;
         }
     }
 
@@ -401,6 +404,30 @@ public class StateMng : MonoBehaviour
             int randIdx = Random.Range(0, debuffIdxList.Count);
 
             partybuffGroups[0].userBuff[ debuffIdxList[randIdx] ].isApply = false;
+            NetworkMng.I.SendMsg(string.Format("BUFF:1:{0}:{1}", partybuffGroups[0].userBuff[ debuffIdxList[randIdx] ].buffData.BuffKind.ToString(), NetworkMng.I.uniqueNumber));
+        }
+    }
+
+    public void partyRemoveBuff(int player, string buff)
+    {    
+        for (int j = 0; j < partybuffGroups[player].userBuff.Length; j++)
+        {
+            // 이미 활성화중인 버프가 다시 들어온거라면 시간 리셋
+            if (partybuffGroups[player].userBuff[j].isApply && partybuffGroups[player].userBuff[j].buffData.BuffKind.ToString() == buff)
+            {
+                partybuffGroups[player].userBuff[j].isApply = false;
+                break;
+            }
+        }
+    }
+
+    public void partyRemoveBuffAll(int player)
+    {
+        for (int i = 0; i < partybuffGroups[player].userBuff.Length; i++)
+        {
+            // 디버프 종류만 모두 지움
+            if (!partybuffGroups[player].userBuff[i].buffData.BuffKind.ToString().Substring(0, 4).Equals("BUFF"))
+                partybuffGroups[player].userBuff[i].isApply = false;
         }
     }
 

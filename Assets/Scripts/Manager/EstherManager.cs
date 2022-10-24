@@ -59,7 +59,7 @@ public class EstherManager : MonoBehaviour
     {
         if (gauge < 1f) {
             if (NetworkMng.I.roomOwner) {
-                addGauge(0.5f * Time.deltaTime);
+                // addGauge(0.5f * Time.deltaTime);
             }
             if (gauge >= 1f) {
                 estherAnim.SetBool("isFull", true);

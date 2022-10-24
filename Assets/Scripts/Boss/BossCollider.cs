@@ -67,7 +67,8 @@ public class BossCollider : MonoBehaviour
             // 버프 존재하는 스킬에 맞은건지 확인 ======================================================================================================================
             if (skillData && skillData.getBuffData && skillData.getBuffData.isBossDebuf)
             {
-                BuffActive(skillData.getBuffData);
+                boss.BuffActive(skillData.getBuffData);
+                NetworkMng.I.SendMsg($"BUFF:2:{skillData.getBuffData.BuffKind.ToString()}");
             }
 
             // 크리티컬 계산 ==========================================================================================================================================
@@ -85,7 +86,7 @@ public class BossCollider : MonoBehaviour
             if (skillData && skillData.isBackAttackSkill)
             {
                 // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 ===================================================================================================
-                if (this.transform.localRotation.y == 180 && this.transform.position.x + 1 > other.transform.parent.transform.position.x)
+                if (boss_o.parent.transform.localRotation.y.Equals(180) && this.transform.position.x + 1 > GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(
@@ -95,7 +96,7 @@ public class BossCollider : MonoBehaviour
                     ));
                 }
                 // 보스 좌측 바라보는 상태에서  콜리더가 우측에서 일어남 ====================================================================================================
-                else if (this.transform.localRotation.y == 0 && this.transform.position.x + 1 < other.transform.parent.transform.position.x)
+                else if (boss_o.parent.transform.localRotation.y.Equals(0) && this.transform.position.x + 1 < GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(
@@ -225,24 +226,6 @@ public class BossCollider : MonoBehaviour
         else
         {
             return false;
-        }
-    }
-
-    void BuffActive(BuffData hitbuffData)
-    {
-        for (int i = 0; i < boss.bossDeBuffs.Length; i++)
-        {
-            if (boss.bossDeBuffs[i].gameObject.activeInHierarchy && boss.bossDeBuffs[i].buffData.name == hitbuffData.name)
-            {
-                boss.bossDeBuffs[i].duration = hitbuffData.duration;
-                break;
-            }
-            else if (!boss.bossDeBuffs[i].gameObject.activeInHierarchy)
-            {
-                boss.bossDeBuffs[i].buffData = hitbuffData;
-                boss.bossDeBuffs[i].gameObject.SetActive(true);
-                break;
-            }
         }
     }
 }

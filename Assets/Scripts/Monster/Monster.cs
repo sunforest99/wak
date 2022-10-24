@@ -328,8 +328,9 @@ public class Monster : MonoBehaviour
             // 백어택 상관 있는 백어택 스킬들
             if (skillData && skillData.isBackAttackSkill)
             {
+                // Debug.Log("몬스터 위치 : " + _body.position)
                 // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 ===================================================================================================
-                if (this.transform.localRotation.y == 180 && this.transform.position.x + 1 > other.transform.parent.transform.position.x)
+                if (_body.rotation.y.Equals(180) && this.transform.position.x + 1 > GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(
@@ -339,7 +340,7 @@ public class Monster : MonoBehaviour
                     ));
                 }
                 // 보스 좌측 바라보는 상태에서  콜리더가 우측에서 일어남 ====================================================================================================
-                else if (this.transform.localRotation.y == 0 && this.transform.position.x + 1 < other.transform.parent.transform.position.x)
+                else if (_body.rotation.y.Equals(0) && this.transform.position.x + 1 < GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(
@@ -476,6 +477,8 @@ public class Monster : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
-        DungeonMng.monsterDie();
+        // 던전에서만 몬스터 사망 인식하게끔.  (사망후 씬 이동할때 인식 잘못하는 문제때문)
+        if (NetworkMng.I.myRoom < ROOM_CODE._WORLD_MAP_)
+            DungeonMng.monsterDie();
     }
 }

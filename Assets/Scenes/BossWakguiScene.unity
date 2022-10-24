@@ -11523,10 +11523,10 @@ RectTransform:
   m_Father: {fileID: 1721425712}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 95, y: -48.585003}
+  m_SizeDelta: {x: 150, y: 12.65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &530583561
 MonoBehaviour:
@@ -13930,10 +13930,10 @@ RectTransform:
   m_Father: {fileID: 1721425712}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 95, y: -28.630001}
+  m_SizeDelta: {x: 150, y: 17.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &688035928
 MonoBehaviour:
@@ -23307,7 +23307,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -140}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 190, y: 74.91}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1156217056
 MonoBehaviour:
@@ -25986,7 +25986,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1327367952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26011,12 +26011,8 @@ MonoBehaviour:
       shirts: 0
       pants: 0
     skills: []
-    main_quest:
-      quest_code: 0
-      quest_progress: 0
     sub_quest: []
     quest_done: 
-    slot: 
     upgrade: 
     love: 0
     npc: 
@@ -26039,6 +26035,7 @@ MonoBehaviour:
   - {fileID: 1722294880455484922, guid: 06c93946e55aaf6408984eb87033d2a4, type: 3}
   - {fileID: 2003640612720691984, guid: 77da5a3c1dce5d94b9076fc9d3fbc374, type: 3}
   - {fileID: 157997430140006651, guid: a04f25147b78fd94cb531c4775075255, type: 3}
+  soulPrefab: {fileID: 0}
   _loadAnim: {fileID: 0}
   npcUI: {fileID: 1783328711}
   BattleItemUI:
@@ -26059,9 +26056,12 @@ MonoBehaviour:
   - {fileID: 688035929}
   myQuestContent:
   - {fileID: 530583562}
+  questAlert: {fileID: 0}
+  questAlertTxt: {fileID: 0}
   questTypeSpr:
   - {fileID: 21300000, guid: 519b3a13f1257a6469963a32ea3035b5, type: 3}
   - {fileID: 21300000, guid: 73388207eaba0d943a49fbbf213fac9e, type: 3}
+  dieUI: {fileID: 0}
   cooltime_UI: []
   skill_Img: []
   battleItem_Img: []
@@ -31340,10 +31340,10 @@ RectTransform:
   m_Father: {fileID: 2039979923}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 190, y: 0}
+  m_SizeDelta: {x: 190, y: 74.91}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1721425713
 MonoBehaviour:
@@ -32137,7 +32137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1783328711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35724,7 +35724,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1997133627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36647,10 +36647,10 @@ RectTransform:
   m_Father: {fileID: 1156217055}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 190, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 190, y: 0}
+  m_SizeDelta: {x: 190, y: 74.91}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &2039979924
 CanvasRenderer:
@@ -36854,7 +36854,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -36912,7 +36912,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2056118812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36961,7 +36961,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2056768573
 MonoBehaviour:
   m_ObjectHideFlags: 0
