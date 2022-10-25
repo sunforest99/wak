@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2636916214723805013}
   - component: {fileID: 2636916214723805018}
   - component: {fileID: 2636916214723805019}
-  - component: {fileID: 3784386763795128031}
-  - component: {fileID: 2636916214723805017}
+  - component: {fileID: 1249607441741136260}
+  - component: {fileID: 6913132693913255035}
   m_Layer: 0
   m_Name: "\uBE44\uBC00\uC18C\uB140"
   m_TagString: Npc
@@ -66,25 +66,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 2.5, z: 0.5}
   m_Center: {x: 0, y: -0.2, z: 0}
---- !u!114 &3784386763795128031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2636916214723805014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 501478880808895469c7c31242d62527, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDialog: 0
-  speechTxt: {fileID: 7625138691019430972}
-  speechBG: {fileID: 7625138690407272809}
-  _anim: {fileID: 2636916214723805017}
-  favoriteItem: {fileID: 11400000, guid: b0023edbba06b2645b8328a5111cccd2, type: 2}
-  questIcon: {fileID: 2636916215843066240}
---- !u!95 &2636916214723805017
+--- !u!95 &1249607441741136260
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -94,7 +76,7 @@ Animator:
   m_GameObject: {fileID: 2636916214723805014}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 05da91d422c90424c8543d3e52a60b54, type: 2}
+  m_Controller: {fileID: 9100000, guid: b4cb12751481d6e4989b0ef681670a90, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -104,6 +86,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6913132693913255035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2636916214723805014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27aeab4b450730479ce74354489ff71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDialog: 0
+  speechTxt: {fileID: 7625138691019430972}
+  speechBG: {fileID: 7625138690407272809}
+  _anim: {fileID: 1249607441741136260}
+  favoriteItem: {fileID: 11400000, guid: 385bb4a7279e0504cbfef771d6ed0ba5, type: 2}
+  questIcon: {fileID: 2636916215843066240}
 --- !u!1 &2636916214953590945
 GameObject:
   m_ObjectHideFlags: 0

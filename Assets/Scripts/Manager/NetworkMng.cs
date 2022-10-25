@@ -488,6 +488,10 @@ public class NetworkMng : MonoBehaviour
             else
                 GameMng.I.createDamage(new Vector3(float.Parse(txt[1]), float.Parse(txt[2]), float.Parse(txt[3])));
         }
+        else if (txt[0].Equals("ESTHER_GAUGE"))
+        {
+            GameMng.I.estherManager.setGauge(float.Parse(txt[1]));
+        }
         else if (txt[0].Equals("RAID_START"))
         {
             GameMng.I.boss.Raid_Start();

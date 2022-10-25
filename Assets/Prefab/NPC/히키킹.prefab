@@ -685,8 +685,7 @@ GameObject:
   - component: {fileID: 6740089009788485648}
   - component: {fileID: 920204571072548602}
   - component: {fileID: 196302136396091911}
-  - component: {fileID: 6999526143183147697}
-  - component: {fileID: 8733381386221460242}
+  - component: {fileID: 1421927789538818201}
   m_Layer: 0
   m_Name: "\uD788\uD0A4\uD0B9"
   m_TagString: Npc
@@ -740,25 +739,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 2.5, z: 0.5}
   m_Center: {x: 0, y: -0.2, z: 0}
---- !u!114 &6999526143183147697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8386500778105668744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 501478880808895469c7c31242d62527, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDialog: 0
-  speechTxt: {fileID: 4461115922395010393}
-  speechBG: {fileID: 4461115923963402252}
-  _anim: {fileID: 8733381386221460242}
-  favoriteItem: {fileID: 11400000, guid: b0023edbba06b2645b8328a5111cccd2, type: 2}
-  questIcon: {fileID: 7101666813075464694}
---- !u!95 &8733381386221460242
+--- !u!95 &1421927789538818201
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -768,7 +749,7 @@ Animator:
   m_GameObject: {fileID: 8386500778105668744}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 05da91d422c90424c8543d3e52a60b54, type: 2}
+  m_Controller: {fileID: 9100000, guid: d5aa64ff828e8fb4b91fc843345d583e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -891,17 +872,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
---- !u!114 &4461115922395010393 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5569222582844021385, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
-  m_PrefabInstance: {fileID: 8115709889330925520}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &4461115922395010398 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5569222582844021390, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}

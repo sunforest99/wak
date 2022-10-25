@@ -25,26 +25,30 @@ public enum CHICKEN_ACTION
 
 public class Chicken : Boss
 {
-    [Header("패턴")]
+    [Header("[ 패턴 ]")]
     private int pattern_rand;
     [SerializeField] private GameObject rockTarget;
     private int baseAttackCount;
     public ChickenObjectPool objectPool = null;
 
-    [Header("오레하 패턴")]
+    [Header("[ 오레하 패턴 ]")]
+    [SerializeField] private GameObject Oreha = null;
     [SerializeField] private Animator remember = null;
 
-    [Header("납치 패턴")]
+    [Header("[ 납치 패턴 ]")]
     [SerializeField] private GameObject eggGame = null;
     [SerializeField] private List<Egg> eggs = new List<Egg>();
 
-    [Header("스핑크스")]
-    [SerializeField] private GameObject sphinx = null;
+    [Header("[ 스핑크스 ]")]
+    [SerializeField] private Sphinx[] sphinx = new Sphinx[2];       // 귀찮으니 
+    public TMPro.TextMeshPro question;
+
+    [Header("[ 보스 행동 ]")]
     [SerializeField] private CHICKEN_ACTION action;
-    public CHICKEN_ACTION getAction { get { return action; } }
+    public CHICKEN_ACTION getAction { get { return action; } set { action = value; } }
 
 
-    [Header("기타")]
+    [Header("[ 기타 ]")]
     [SerializeField] public bool isThink = false;
 
     void Start()
@@ -81,12 +85,6 @@ public class Chicken : Boss
             base.ChangeHpbar();
             base.RaidTimer();
             base.ChangeHpText();
-
-            // if (!isThink && base._targetDistance < 3.0f && _target != null)
-            // {
-            //     isThink = true;
-            //     Think();
-            // }
         }
         else
         {
@@ -151,44 +149,45 @@ public class Chicken : Boss
             // }
             // else
             // {
-            // pattern_rand = Random.Range((int)CHICKEN_ACTION.PATTERN_BIRDS, (int)CHICKEN_ACTION.PATTERN_REMEMBER + 1);
-            // pattern_rand = (int)CHICKEN_ACTION.PATTERN_REMEMBER;
-            // pattern_rand = (int)CHICKEN_ACTION.PATTERN_EGG;
-            // switch (pattern_rand)
-            // {
-            //     case (int)CHICKEN_ACTION.PATTERN_BIRDS:
-            //         rand = Random.Range(0, 4);
-            //         SendBossPattern(pattern_rand, rand.ToString());
-            //         baseAttackCount = 0;
-            //         break;
-            //     case (int)CHICKEN_ACTION.PATTERN_COUNTER_0:
-            //         SendBossPattern(pattern_rand);
-            //         baseAttackCount = 0;
-            //         break;
-            //     case (int)CHICKEN_ACTION.PATTERN_COUNTER_1:
-            //         SendBossPattern(pattern_rand);
-            //         baseAttackCount = 0;
-            //         break;
-            //     case (int)CHICKEN_ACTION.PATTERN_FALLING_ROCK:
-            //         SendBossPattern(pattern_rand);
-            //         baseAttackCount = 0;
-            //         break;
-            //     case (int)CHICKEN_ACTION.PATTERN_REMEMBER:
-            //         action = CHICKEN_ACTION.PATTERN_REMEMBER;
-            //         rand = Random.Range(0, 2);
-            //         SendBossPattern(pattern_rand, rand.ToString());
-            //         baseAttackCount = 0;
-            //         break;
-            //     case (int)CHICKEN_ACTION.PATTERN_EGG:
-            //         baseAttackCount = 0;
-            //         rand = Random.Range(0, 5);
-            //         SendBossPattern(pattern_rand, rand.ToString() + ":" + getTarget);
-            //         break;
+                // pattern_rand = Random.Range((int)CHICKEN_ACTION.PATTERN_BIRDS, (int)CHICKEN_ACTION.PATTERN_SPHINX + 1);
+                pattern_rand = (int)CHICKEN_ACTION.PATTERN_SPHINX;
+                switch (pattern_rand)
+                {
+                    case (int)CHICKEN_ACTION.PATTERN_BIRDS:
+                        rand = Random.Range(0, 4);
+                        SendBossPattern(pattern_rand, rand.ToString());
+                        baseAttackCount = 0;
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_COUNTER_0:
+                        SendBossPattern(pattern_rand);
+                        baseAttackCount = 0;
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_COUNTER_1:
+                        SendBossPattern(pattern_rand);
+                        baseAttackCount = 0;
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_FALLING_ROCK:
+                        SendBossPattern(pattern_rand);
+                        baseAttackCount = 0;
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_REMEMBER:
+                        action = CHICKEN_ACTION.PATTERN_REMEMBER;
+                        rand = Random.Range(0, 2);
+                        SendBossPattern(pattern_rand, rand.ToString());
+                        baseAttackCount = 0;
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_EGG:
+                        baseAttackCount = 0;
+                        rand = Random.Range(0, 5);
+                        SendBossPattern(pattern_rand, rand.ToString() + ":" + getTarget);
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_SPHINX:
+                        baseAttackCount = 0;
+                        rand = Random.Range(0, 4);
+                        SendBossPattern(pattern_rand, rand.ToString());
+                        break;
+                }
             // }
-            // }
-
-            pattern_rand = (int)CHICKEN_ACTION.PATTERN_SPHINX;
-            SendBossPattern(pattern_rand);
         }
     }
 
@@ -247,7 +246,7 @@ public class Chicken : Boss
                 Egg_Break(int.Parse(txt[2]));
                 break;
             case (int)CHICKEN_ACTION.PATTERN_SPHINX:
-                Pattern_Sphinx();
+                Pattern_Sphinx(int.Parse(txt[2]));
                 break;
         }
     }
@@ -294,7 +293,7 @@ public class Chicken : Boss
         action = CHICKEN_ACTION.BASE_WING;
         animator.SetTrigger("Wing");
     }
-    
+
     // 내려찍기
     void Base_JumpAttack()
     {
@@ -397,12 +396,12 @@ public class Chicken : Boss
     }
 
     // 오레하 패턴 대미지 모션? 필요
-    IEnumerator Pattern_Remember(int rand) 
+    IEnumerator Pattern_Remember(int rand)
     {
         action = CHICKEN_ACTION.PATTERN_REMEMBER;
         animator.SetTrigger("Fly");
+        Oreha.SetActive(true);
         yield return new WaitForSecondsRealtime(5.0f);
-
         switch (rand)
         {
             case 0:
@@ -444,7 +443,6 @@ public class Chicken : Boss
                 }
             }
         }
-
     }
 
     // 알 파괴
@@ -454,14 +452,34 @@ public class Chicken : Boss
         eggs[index].gameObject.SetActive(false);
     }
 
-    // TODO : 스핑크스 패턴 애니메이션 구현후 답 적용
-    void Pattern_Sphinx()
+    void Pattern_Sphinx(int rand)
     {
         action = CHICKEN_ACTION.PATTERN_SPHINX;
 
-        for (int i = 0; i < 4; i++)
+        question.gameObject.SetActive(true);
+        for (int i = 0; i < sphinx.Length; i++)
         {
-            GameObject temp = Instantiate(sphinx, new Vector3(-9.0f + (i * 6f), 1f, -6.59f), Quaternion.identity);
+            sphinx[i].gameObject.SetActive(true);
+        }
+
+        switch (rand)
+        {
+            case 0:
+                question.text = "문제 1";
+                sphinx[0]._isAnswer = true;
+                break;
+            case 1:
+                question.text = "문제 2";
+                sphinx[1]._isAnswer = true;
+                break;
+            case 2:
+                question.text = "문제 3";
+                sphinx[0]._isAnswer = true;
+                break;
+            case 3:
+                question.text = "문제 4";
+                sphinx[1]._isAnswer = true;
+                break;
         }
     }
 }

@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sphinx : DestroySelf
+public class Sphinx : MonoBehaviour
 {
-    [SerializeField] bool _isAnswer = false;
+    [SerializeField] Chicken chicken = null;
+    [SerializeField] private Vector3 pos;
+    public bool _isAnswer = false;
 
     [SerializeField] Collider[] colliders;
     private void Start()
@@ -38,7 +40,19 @@ public class Sphinx : DestroySelf
                 }
             }
         }
-        destroySelf();
+        this.gameObject.SetActive(false);
         yield return null;
+    }
+
+    void OnEnable()
+    {
+        this.transform.position = pos;
+    }
+
+    void OnDisable()
+    {
+        chicken.question.gameObject.SetActive(false);
+        chicken.getAction = CHICKEN_ACTION.IDLE;
+        _isAnswer = false;
     }
 }

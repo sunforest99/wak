@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3790170349527092476}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.335, y: 0.052000046, z: 0}
+  m_LocalPosition: {x: 0.335, y: 0.05200005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -601,8 +601,7 @@ GameObject:
   - component: {fileID: 3790170351063618387}
   - component: {fileID: 3790170351063618396}
   - component: {fileID: 3790170351063618397}
-  - component: {fileID: 2631651668625453785}
-  - component: {fileID: 3790170351063618399}
+  - component: {fileID: 3689067461476140083}
   m_Layer: 0
   m_Name: "\uD48D\uC2E0"
   m_TagString: Npc
@@ -656,25 +655,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 2.5, z: 0.5}
   m_Center: {x: 0, y: -0.2, z: 0}
---- !u!114 &2631651668625453785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3790170351063618384}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 501478880808895469c7c31242d62527, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDialog: 0
-  speechTxt: {fileID: 8777719858856325178}
-  speechBG: {fileID: 8777719859990052207}
-  _anim: {fileID: 3790170351063618399}
-  favoriteItem: {fileID: 11400000, guid: b0023edbba06b2645b8328a5111cccd2, type: 2}
-  questIcon: {fileID: 3790170350025850246}
---- !u!95 &3790170351063618399
+--- !u!95 &3689067461476140083
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -684,7 +665,7 @@ Animator:
   m_GameObject: {fileID: 3790170351063618384}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 05da91d422c90424c8543d3e52a60b54, type: 2}
+  m_Controller: {fileID: 9100000, guid: d148d64123aa0124687c533c1571f40d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -891,17 +872,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
---- !u!114 &8777719858856325178 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5569222582844021385, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
-  m_PrefabInstance: {fileID: 3790170349640198835}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &8777719858856325181 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5569222582844021390, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}

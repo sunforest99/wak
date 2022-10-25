@@ -23,6 +23,7 @@ public class EstherManager : MonoBehaviour
 {
     [SerializeField] Animator estherAnim;
     [SerializeField] UnityEngine.UI.Image gaugeImg;
+    float beforeGauge = 0f;
     float gauge = 0f;
     
     [SerializeField] GameObject appearEffect;       // 에스더 소환되는 이펙트
@@ -59,7 +60,7 @@ public class EstherManager : MonoBehaviour
     {
         if (gauge < 1f) {
             if (NetworkMng.I.roomOwner) {
-                // addGauge(0.5f * Time.deltaTime);
+                addGauge(0.5f * Time.deltaTime);
             }
             if (gauge >= 1f) {
                 estherAnim.SetBool("isFull", true);
@@ -166,16 +167,23 @@ public class EstherManager : MonoBehaviour
     }
 
 
-    void setGauge(float mount) {
+    public void setGauge(float mount) {
         gauge = mount;
+        beforeGauge = gauge;
         gaugeImg.fillAmount = gauge;
     }
 
     public void addGauge(float mount) {
         gauge += mount;
-        gaugeImg.fillAmount = gauge;
 
-        NetworkMng.I.SendMsg(string.Format("ESTHER_GAUGE:{0}", gauge));
+        // 잦은 에스더 충전 메세지를 방지하기 위해 일정 량 만큼만 킁가해야 메세지 보내도록함
+        //     (0.02 면 에스더 한번 충전에 50번 보냄)
+        if (gauge >= beforeGauge + 0.02f || gauge >= 1)
+        {
+            beforeGauge = gauge;
+            gaugeImg.fillAmount = gauge;
+            NetworkMng.I.SendMsg(string.Format("ESTHER_GAUGE:{0}", gauge));
+        }
     }
 
     Vector3 getMouseHitPoint()
