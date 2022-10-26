@@ -109,7 +109,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041770415594440621}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.271, y: 0.03, z: -0}
+  m_LocalPosition: {x: 0.271, y: 0.03, z: 0}
   m_LocalScale: {x: 0.8, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -263,8 +263,8 @@ GameObject:
   - component: {fileID: 2041770416026121303}
   - component: {fileID: 2041770416026121299}
   - component: {fileID: 2041770416026121300}
-  - component: {fileID: 2041770416026121301}
-  - component: {fileID: 2041770416026121302}
+  - component: {fileID: 7474860134954871674}
+  - component: {fileID: 2715156234422178313}
   m_Layer: 0
   m_Name: "\uB8B4\uD2B8\uAC8C\uB284"
   m_TagString: Npc
@@ -318,7 +318,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 2.5, z: 0.5}
   m_Center: {x: 0, y: -0.2, z: 0}
---- !u!95 &2041770416026121301
+--- !u!95 &7474860134954871674
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -328,7 +328,7 @@ Animator:
   m_GameObject: {fileID: 2041770416026121304}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ede6ed6d7f479754f9ad9d22a2057e28, type: 2}
+  m_Controller: {fileID: 9100000, guid: e81a44a9ae670fe41a875fd07d0ff6a8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -338,7 +338,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2041770416026121302
+--- !u!114 &2715156234422178313
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -347,14 +347,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2041770416026121304}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03b06a67f6cdbac499d894a114d72331, type: 3}
+  m_Script: {fileID: 11500000, guid: 9088c1897717e2e4a9d7353b8f10d55f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isDialog: 0
   speechTxt: {fileID: 5844556375387827850}
   speechBG: {fileID: 5844556374790415327}
-  _anim: {fileID: 2041770416026121301}
-  favoriteItem: {fileID: 11400000, guid: d1baa9eeec06d28498b32a5ae321dade, type: 2}
+  _anim: {fileID: 7474860134954871674}
+  favoriteItem: {fileID: 0}
   questIcon: {fileID: 2041770417440116100}
 --- !u!1 &2041770416187578620
 GameObject:
@@ -465,7 +465,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041770416620513575}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.786, z: -0}
+  m_LocalPosition: {x: 0, y: -0.786, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

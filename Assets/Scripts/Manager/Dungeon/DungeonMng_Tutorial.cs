@@ -6,7 +6,6 @@ public class DungeonMng_Tutorial : DungeonMng
 {
     [Space(20)][Header("[  몬스터 프리팹  ]")]  // ==========================================================================================================================
     [SerializeField] GameObject monster_seadu;          // 심해두 몬스터 prefab
-    [SerializeField] GameObject monster_seaduNew;       // 뉴심해두 몬스터 prefab
 
     [SerializeField] GameObject tutorial_npc;           // 튜토리얼에서 획득하는 npc (뢴트게늄)
 
@@ -61,7 +60,7 @@ public class DungeonMng_Tutorial : DungeonMng
             {
                 // 뉴심해두 몬스터 생성
                 Instantiate(
-                    monster_seaduNew,
+                    monster_seadu,
                     posArr[i],
                     Quaternion.identity
                 );
@@ -76,8 +75,5 @@ public class DungeonMng_Tutorial : DungeonMng
     protected override void dungeonNPC() {
         tutorial_npc.SetActive(true);
     }
-    protected override void dungeonShop() {
-        // Instantiate(npc_shop, new Vector3(0, 0.88f, 10), Quaternion.Euler(20, 0, 0));
-        npc_shop.SetActive(true);
-    }
+    
 }
