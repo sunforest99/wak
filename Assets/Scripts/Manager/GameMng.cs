@@ -31,9 +31,11 @@ public class GameMng : MonoBehaviour
     public GameObject[] characterPrefab = new GameObject[3];
     public GameObject[] magicianSkillPrefab = new GameObject[4];     // 기본공격, 바람, 용둔, 침스터콜
     public GameObject[] healerSkillPrefab = new GameObject[3];  // 기본공격, 나무, 레이저
+    public GameObject soulPrefab;
     // public bool isFocusing = true;      // 캐릭터에게 포커싱 맞출지 (카메라가 따라올지 유무)
 
     [Space(20)][Header("[  기본 UI 관리  ]")]  // ==========================================================================================================================
+    public Animator _loadAnim;          // 로딩 관리하는 UI Animator
     public NPCUI npcUI;                 // NPC 클릭시 선택 UI (대화UI, 선물UI)
     public ItemSlotUI BattleItemUI;     // (체력바 위) 배틀아이템 UI
     public Transform skillUI;           // (좌측하단) 스킬 UI들 부모
@@ -42,9 +44,11 @@ public class GameMng : MonoBehaviour
     public ChatMng chatMng;
     public TMPro.TextMeshProUGUI[] myQuestName;       // 내가 진행중인 퀘스트 이름 text
     public TMPro.TextMeshProUGUI[] myQuestContent;    // 내가 진행중인 퀘스트 내용 text
-    
+    public GameObject questAlert;           // 퀘스트 진행 완료등에 알려주는 UI
+    public TMPro.TextMeshProUGUI questAlertTxt;         // 
     public Sprite[] questTypeSpr;         // 메인퀘스트, 서브퀘스트 Sprite 파일
-
+    public DieUI dieUI;
+    
     /* 스킬 */
     [HideInInspector] public List<TMPro.TextMeshProUGUI> cooltime_UI = new List<TMPro.TextMeshProUGUI>();
     [HideInInspector] public List<UnityEngine.UI.Image> skill_Img = new List<UnityEngine.UI.Image>();
@@ -243,33 +247,45 @@ public class GameMng : MonoBehaviour
             Resources.Load<QuestData>($"QuestData/Sub/{subQuestName}") 
         );
         Character.sub_quest_progress[subQuestName] = 0;
+
+        int idx = 0;
+        foreach (var q in Character.sub_quest) {
+            // 메인퀘스트가 사라졌음. 만약 메인퀘가 다시 추가되면 i+1 이 되어야함
+            GameMng.I.myQuestName[idx].text = q.Value.questName;
+            GameMng.I.myQuestContent[idx].text = q.Value.progressContent[0];
+            GameMng.I.myQuestName[idx].transform.parent.parent.gameObject.SetActive(true);
+            if (idx++ >= 5) break;       // 퀘스트 UI에는 최대 5개 까지만 보여줌.
+        }
+        for (; idx < 5; idx++) {
+            GameMng.I.myQuestName[idx].transform.parent.parent.gameObject.SetActive(false);
+        }
     }
     /*
      * @brief 메인 퀘스트 진행률을 높일때 사용. 퀘스트 완료까지 체크함
      */
-    public void nextMainQuest()
-    {
-        // 대화를 모두 진행했다면 해당 퀘스트의 진행률을 올림
-        Character.main_quest_progress++;
+    // public void nextMainQuest()
+    // {
+    //     // 대화를 모두 진행했다면 해당 퀘스트의 진행률을 올림
+    //     Character.main_quest_progress++;
         
-        // 퀘스트마다 있는 진행률을 완료했다면 다음 퀘스트로 이동
-        if (Character.main_quest_progress >= Character.main_quest.progressContent.Length)
-        {
-            // 경험치 지급
-            // rewardExp(Character.main_quest.rewardExp);
+    //     // 퀘스트마다 있는 진행률을 완료했다면 다음 퀘스트로 이동
+    //     if (Character.main_quest_progress >= Character.main_quest.progressContent.Length)
+    //     {
+    //         // 경험치 지급
+    //         // rewardExp(Character.main_quest.rewardExp);
 
-            // 보상 아이템 지급
-            rewardItem(Character.main_quest.rewardItem);
+    //         // 보상 아이템 지급
+    //         rewardItem(Character.main_quest.rewardItem);
 
-            Character.main_quest = Resources.Load<QuestData>($"QuestData/Main/MAIN_{Character.main_quest.questCode + 1}");
-            Character.main_quest_progress = 0;
-        }
-        else
-        {
-            // 퀘스트 자체가 완료된것이 아니기 때문에 퀘스트 내용 UI만 변경함
-            myQuestContent[0].text = Character.main_quest.progressContent[Character.main_quest_progress];
-        }
-    }
+    //         Character.main_quest = Resources.Load<QuestData>($"QuestData/Main/MAIN_{Character.main_quest.questCode + 1}");
+    //         Character.main_quest_progress = 0;
+    //     }
+    //     else
+    //     {
+    //         // 퀘스트 자체가 완료된것이 아니기 때문에 퀘스트 내용 UI만 변경함
+    //         myQuestContent[0].text = Character.main_quest.progressContent[Character.main_quest_progress];
+    //     }
+    // }
 
     /*
      * @brief 서브 퀘스트 진행률을 높일때 사용. 퀘스트 완료까지 체크함
@@ -280,6 +296,8 @@ public class GameMng : MonoBehaviour
         string questName = questCode.ToString();
         
         Character.sub_quest_progress[questName]++;
+        GameMng.I.questAlertTxt.text = Character.sub_quest[questName].questName;
+        GameMng.I.questAlert.SetActive(true);
 
         if (Character.sub_quest_progress[questName] >= Character.sub_quest[questName].progressContent.Length)
         {
@@ -309,6 +327,17 @@ public class GameMng : MonoBehaviour
             //         break;
             //     }
             // }
+            int idx = 0;
+            foreach (var q in Character.sub_quest) {
+                // 메인퀘스트가 사라졌음. 만약 메인퀘가 다시 추가되면 i+1 이 되어야함
+                GameMng.I.myQuestName[idx].text = q.Value.questName;
+                GameMng.I.myQuestContent[idx].text = q.Value.progressContent[ Character.sub_quest_progress[q.Key] ];
+                GameMng.I.myQuestName[idx].transform.parent.parent.gameObject.SetActive(true);
+                if (idx++ >= 5) break;       // 퀘스트 UI에는 최대 5개 까지만 보여줌.
+            }
+            for (; idx < 5; idx++) {
+                GameMng.I.myQuestName[idx].transform.parent.parent.gameObject.SetActive(false);
+            }
         }
     }
 

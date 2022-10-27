@@ -20,10 +20,10 @@ public class TempleCanvas : MonoBehaviour
         // character.isMe();
         GameMng.I.createMe();
 
-        if (Character.main_quest.questCode.Equals(4))
-        {
-            GameMng.I.nextMainQuest();
-        }
+        // if (Character.main_quest.questCode.Equals(4))
+        // {
+        //     GameMng.I.nextMainQuest();
+        // }
     }
 
     public void SceneChange()

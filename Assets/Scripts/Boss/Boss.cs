@@ -222,6 +222,24 @@ public class Boss : MonoBehaviour
     }
 
 
+    public void BuffActive(BuffData hitbuffData)
+    {
+        for (int i = 0; i < bossDeBuffs.Length; i++)
+        {
+            if (bossDeBuffs[i].gameObject.activeInHierarchy && bossDeBuffs[i].buffData.name == hitbuffData.name)
+            {
+                bossDeBuffs[i].duration = hitbuffData.duration;
+                break;
+            }
+            else if (!bossDeBuffs[i].gameObject.activeInHierarchy)
+            {
+                bossDeBuffs[i].buffData = hitbuffData;
+                bossDeBuffs[i].gameObject.SetActive(true);
+                break;
+            }
+        }
+    }
+
     public virtual void Raid_Start() { }
     public virtual void Action(string msg) { }
 }

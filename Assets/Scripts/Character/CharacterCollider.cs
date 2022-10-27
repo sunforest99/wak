@@ -13,7 +13,7 @@ public class CharacterCollider : MonoBehaviour
      */
     void itemSetting(int n, Item _item)
     {
-        if (n == 1)
+        if (n == 0)
         {
             Character.haveItem[n].Add(_item);
             GameMng.I.userData.inventory[n].Add(new Item_Schema((int)_item.itemData.itemIndex, _item.itemCount));
@@ -55,8 +55,8 @@ public class CharacterCollider : MonoBehaviour
         else
             GameMng.I.getItemPool[idx].EXP_Text.text = item.itemData.itemName;
 
-            GameMng.I.getItemPool[idx].EXP_Game.SetActive(false);
-            GameMng.I.getItemPool[idx].EXP_Game.SetActive(true);
+        GameMng.I.getItemPool[idx].EXP_Game.SetActive(false);
+        GameMng.I.getItemPool[idx].EXP_Game.SetActive(true);
         // for (int i = idx; i >= 0; i--) {
         //     GameMng.I.getItemPool[i].EXP_Game.SetActive(false);
         //     GameMng.I.getItemPool[i].EXP_Game.SetActive(true);
@@ -69,7 +69,6 @@ public class CharacterCollider : MonoBehaviour
         if (other.CompareTag("Boss_Weapon"))
         {
             GameMng.I.stateMng.takeDamage(GameMng.I.boss.bossData.getDamage());
-            NetworkMng.I.SendMsg(string.Format("CHANGE_HP:{0}", GameMng.I.stateMng.user_HP_Numerical.Hp / GameMng.I.stateMng.user_HP_Numerical.fullHp));
         }
     }
     void OnCollisionEnter(Collision other)
@@ -86,14 +85,17 @@ public class CharacterCollider : MonoBehaviour
                 case ITEM_TYPE.WEAPON_ITEM:
                 case ITEM_TYPE.SHIRTS_ITEM:
                 case ITEM_TYPE.PANTS_ITEM:
+                    itemSetting(0, item);
+                    break;
+                case ITEM_TYPE.FAVORITE_ITEM:
                     itemSetting(1, item);
                     break;
                 case ITEM_TYPE.CONSUMABLE_ITEM:
                     itemSetting(2, item);
                     break;
-                case ITEM_TYPE.FAVORITE_ITEM:
-                case ITEM_TYPE.UNUSEFUL_ITEM:
-                    itemSetting(3, item);
+                default:
+                    if (item.itemData.itemIndex.Equals(ITEM_INDEX.NONE))
+                        GameMng.I.userData.coin += item.itemCount;
                     break;
             }
             

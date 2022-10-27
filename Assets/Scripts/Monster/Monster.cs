@@ -228,29 +228,30 @@ public class Monster : MonoBehaviour
             // 가장 피 적은 캐릭터
             case 3:
             case 4:
-                compareValue = GameMng.I.stateMng.user_HP_Numerical.Hp;
-                for (int i = 0; i < 4; i++)
-                {
-                    // 파티원들 중
-                    if (GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.activeSelf)
-                    {
-                        // 체력이 가장 적은
-                        if (GameMng.I.stateMng.Party_HP_Numerical[i].Hp < compareValue)
-                        {
-                            compareValue = GameMng.I.stateMng.Party_HP_Numerical[i].Hp;
-                            chooseTarget = GameMng.I.stateMng.PartyName[i].text;        // 닉네임 가져옴
-                        }
-                    }
-                }
-                // 찾은 유저 닉네임을 고유 번호로 변환하기 위해 검색
-                foreach (var user in NetworkMng.I.v_party)
-                {
-                    if (user.Value.nickName.Equals(chooseTarget))
-                    {
-                        chooseTarget = user.Key;
-                        break;
-                    }
-                }
+                Debug.LogError("여길 들어온다고?");
+                // compareValue = GameMng.I.stateMng.user_HP_Numerical.Hp;
+                // for (int i = 0; i < 4; i++)
+                // {
+                //     // 파티원들 중
+                //     if (GameMng.I.stateMng.PartyHPImg[i].transform.parent.gameObject.activeSelf)
+                //     {
+                //         // 체력이 가장 적은
+                //         if (GameMng.I.stateMng.Party_HP_Numerical[i].Hp < compareValue)
+                //         {
+                //             compareValue = GameMng.I.stateMng.Party_HP_Numerical[i].Hp;
+                //             chooseTarget = GameMng.I.stateMng.PartyName[i].text;        // 닉네임 가져옴
+                //         }
+                //     }
+                // }
+                // // 찾은 유저 닉네임을 고유 번호로 변환하기 위해 검색
+                // foreach (var user in NetworkMng.I.v_party)
+                // {
+                //     if (user.Value.nickName.Equals(chooseTarget))
+                //     {
+                //         chooseTarget = user.Key;
+                //         break;
+                //     }
+                // }
                 break;
         }
         NetworkMng.I.SendMsg(string.Format("MONSTER_PATTERN:{0}:{1}:{2}", name, 0, chooseTarget));
@@ -263,7 +264,6 @@ public class Monster : MonoBehaviour
     {
         float criticalrand = Random.Range(0.0f, 100.0f);
         float criticalPer = Character._stat.criticalPer;
-
 
         if (buffDatas.ContainsKey(BUFF.BUFF_GAL))
         {
@@ -328,8 +328,9 @@ public class Monster : MonoBehaviour
             // 백어택 상관 있는 백어택 스킬들
             if (skillData && skillData.isBackAttackSkill)
             {
+                // Debug.Log("몬스터 위치 : " + _body.position)
                 // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 ===================================================================================================
-                if (this.transform.localRotation.y == 180 && this.transform.position.x + 1 > other.transform.parent.transform.position.x)
+                if (_body.rotation.y.Equals(180) && this.transform.position.x + 1 > GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(
@@ -339,7 +340,7 @@ public class Monster : MonoBehaviour
                     ));
                 }
                 // 보스 좌측 바라보는 상태에서  콜리더가 우측에서 일어남 ====================================================================================================
-                else if (this.transform.localRotation.y == 0 && this.transform.position.x + 1 < other.transform.parent.transform.position.x)
+                else if (_body.rotation.y.Equals(0) && this.transform.position.x + 1 < GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(
@@ -434,7 +435,7 @@ public class Monster : MonoBehaviour
                 );
                 coinObj.GetComponent<ItemObj>().saveItem = 
                     new Item(
-                        Resources.Load<ItemData>("ItemData/coin"),
+                        Resources.Load<ItemData>("ItemData/COIN"),
                         1
                     );
                 coinObj.SetActive(true);
@@ -476,6 +477,8 @@ public class Monster : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
-        DungeonMng.monsterDie();
+        // 던전에서만 몬스터 사망 인식하게끔.  (사망후 씬 이동할때 인식 잘못하는 문제때문)
+        if (NetworkMng.I.myRoom < ROOM_CODE._WORLD_MAP_)
+            DungeonMng.monsterDie();
     }
 }

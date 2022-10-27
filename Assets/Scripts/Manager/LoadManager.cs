@@ -32,6 +32,12 @@ public class LoadManager : MonoBehaviour
             }    
         }
 
+        // 보유중이던 배틀 아이템 초기화
+        for (int i = 0; i < Character.equipBattleItem.Length; i++)
+        {
+            Character.equipBattleItem[i].itemCount = Character.equipBattleItem[i].itemData.count;
+            GameMng.I.BattleItemUI.ItemText[i].text = Character.equipBattleItem[i].itemCount.ToString();
+        }
         
         // TEST용
         // GameMng.I.noticeMessage.text = NetworkMng.I.v_users.Count + " : " +  NetworkMng.I.v_party.Count + "";
@@ -58,5 +64,19 @@ public class LoadManager : MonoBehaviour
 
         // 로딩  끝
         // ==
+
+        GameMng.I._loadAnim.SetTrigger("LoadDone");
+
+        // if (onlineMap)
+        StartCoroutine(loadingDone());
+    }
+
+    IEnumerator loadingDone()
+    {
+        yield return new WaitForSeconds(3);
+
+        // MCamera.I.loadDone();
+
+        GameMng.I._keyMode = KEY_MODE.PLAYER_MODE;
     }
 }

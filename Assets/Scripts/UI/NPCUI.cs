@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class NPCUI : MonoBehaviour
 {
     [SerializeField] Canvas _canvas;
-    public GameObject _startLoad;
+    // public GameObject _startLoad;
 
     public UnityEngine.UI.Image npcFavoriteItemImg;
 

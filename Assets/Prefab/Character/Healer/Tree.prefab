@@ -194,7 +194,6 @@ GameObject:
   - component: {fileID: 2121599237351496536}
   - component: {fileID: 2577316076947078374}
   - component: {fileID: 1029138380695890157}
-  - component: {fileID: 906458608}
   - component: {fileID: 6481383630779849801}
   m_Layer: 0
   m_Name: Tree
@@ -259,7 +258,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -833444747
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e7dc64ad838e0df44b60e06989d7bb90, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -292,18 +291,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &906458608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1722294880455484922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5354593f40f5ec34683a44c3ac0418e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6481383630779849801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,3 +303,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b300bf883d4eb65488ada5cbfa063fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillLevel: 1

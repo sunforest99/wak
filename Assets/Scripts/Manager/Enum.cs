@@ -96,9 +96,12 @@ public enum ITEM_INDEX
 public enum QUEST_CODE
 {
     /* 서브 퀘스트 이름 */
-    TEMP_QUEST_0
+    TEMP_QUEST_0,
+    PURPLE_LIGHT,
+    R_U_HUMAN
 }
 
+// 새로 추가되면 무조건 종류상관없이 뒤에 
 public enum BUFF
 {
     BUFF_GAL = 0,
@@ -106,7 +109,12 @@ public enum BUFF
     DEBUFF_BUPAE,
     DEBUFF_CHIMSIK,
     DEBUFF_JAMSIK,
-    DEBUFF_SHIELD
+    DEBUFF_SHIELD,
+    BUFF_NESIGYUNG,
+    BUFF_SANPELLE,
+    BUFF_GOSEGU,
+    BUFF_COTTON
+    
 }
 
 public enum JOB
@@ -154,19 +162,21 @@ public enum ROOM_CODE
 
     // _LOCAL_MAP_,  ////////////// 이 아래 부터 로컬 전용 맵 (네트워크 통신 안함)
 
-    HOME = 0,
+    NONE = 0,
     // TEMPLE,         // 직업 선택 (초기 회원가입때 소켓 연결전에 들어오게 변경됨)
     DUNGEON_0,      // 던전 0
     DUNGEON_1,      // 던전 1
 
     _WORLD_MAP_,    /////////////// 이 아래 부터 월드 전용 맵 (네트워크 들어가며 모든 유저들 있을수 있음)
 
-    SQUARE,         // 광장(대도시)
+    HOME,         // 광장(대도시)
     
     _PARTY_MAP_,    /////////////// 이 아래 부터 파티 전용 맵
 
     RAID_0,         // 레이드 0
     RAID_0_REPAIR,  // 레이드 0 정비소
     RAID_1,         // 레이드 1
-    RAID_1_REPAIR   // 레이드 1 정비소
+    RAID_1_REPAIR,  // 레이드 1 정비소
+    RAID_2,         // 레이드 2
+    RAID_2_REPAIR   // 레이드 2 정비소
 }

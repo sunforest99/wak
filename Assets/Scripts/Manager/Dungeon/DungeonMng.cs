@@ -37,8 +37,17 @@ public class DungeonMng : MonoBehaviour
     protected virtual void Start()
     {
         GameMng.I._keyMode = KEY_MODE.UI_MODE;
-        _mapUI.SetActive(true);
+        // _mapUI.SetActive(true);
         getNextWall = _nextWall;
+
+        // StartCoroutine(showMapUI());
+    }
+
+    IEnumerator showMapUI()
+    {
+        yield return new WaitForSeconds(2);
+
+        _mapUI.SetActive(true);
     }
 
     DUNGEON_TYPE randomDungeon()
@@ -109,6 +118,12 @@ public class DungeonMng : MonoBehaviour
         _dungeon_Type = DUNGEON_TYPE.MONSTER_PURPLER;
         resetDungeon();
         initDungeon();
+
+        // [퍼플라이트]퀘스트 0단계 (퍼플라이트 던전방문하기)를 진행하고 있었다면 클리어
+        if (Character.sub_quest.ContainsKey(QUEST_CODE.PURPLE_LIGHT.ToString())) {
+            if (Character.sub_quest_progress[QUEST_CODE.PURPLE_LIGHT.ToString()].Equals(0))
+                GameMng.I.nextSubQuest(QUEST_CODE.PURPLE_LIGHT);
+        }
     }
     public void selectNPCDungeon(Transform clickedBT) {
         curLocationUI.transform.position = clickedBT.position;
@@ -148,8 +163,25 @@ public class DungeonMng : MonoBehaviour
     protected virtual void dungeonMonster() {}
     protected virtual void dungeonMonsterPurple() {}
     protected virtual void dungeonNPC() {}
-    protected virtual void dungeonRest() {}
-    protected virtual void dungeonShop() {}
+    protected virtual void dungeonRest() {
+        campFire.SetActive(true);
+
+        // 배틀 아이템 초기화
+        for (int i = 0; i < Character.equipBattleItem.Length; i++)
+        {
+            Character.equipBattleItem[i].itemCount = Character.equipBattleItem[i].itemData.count;
+            GameMng.I.BattleItemUI.ItemText[i].text = Character.equipBattleItem[i].itemCount.ToString();
+            
+            // 기존에 쿨타임 중이던 것도 초기화 시키려면 아래 주석 해제. (But, 기존에 진행중이던 코루틴이 있다면 꼬이는 부분이 있음)
+            //GameMng.I.battleItem_Img[i].color = Color.white;
+            //GameMng.I.battleItem_Img[i].fillAmount = 1;
+            //Character.usingBattleItem[i] = false;
+            //GameMng.I.character.StopAllCoroutines();
+        }
+    }
+    protected virtual void dungeonShop() {
+        npc_shop.SetActive(true);
+    }
     protected virtual void dungeonRandom() {}
 
     public static void monsterDie()

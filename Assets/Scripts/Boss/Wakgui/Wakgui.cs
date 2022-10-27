@@ -109,13 +109,17 @@ public class Wakgui : Boss
     {
         if (_currentHp >= 0)
         {
+            // TODO : 보스 시작전에 target null 이여서 아래 자꾸 에러 로그 떠서 넣었음. 이렇게해서 일부 패턴 작동안하면 고려할 것 !!
+            if (!_target)
+                return;
+
             _targetDistance = Vector3.Distance(_target.position, this.transform.position);
             
             base.ChangeHpbar();
             base.RaidTimer();
             base.ChangeHpText();
 
-            if(base._targetDistance < 6f && !isThink && _target != null)
+            if (base._targetDistance < 6f && !isThink && _target != null)
             {
                 Think();
             }
@@ -289,6 +293,9 @@ public class Wakgui : Boss
 
     public override void Raid_Start()
     {
+        Debug.Log(" 현재 유저 수 : " + NetworkMng.I.v_users.Count);
+        Debug.Log(" 현재 파티 수 : " + NetworkMng.I.v_party.Count);
+
         NetworkMng.I.v_users.Add(NetworkMng.I.uniqueNumber, GameMng.I.character);
         
         foreach (var trans in NetworkMng.I.v_users)

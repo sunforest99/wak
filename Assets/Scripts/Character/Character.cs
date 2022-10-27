@@ -38,7 +38,7 @@ public class Character : MonoBehaviour
     public SkillData[] skilldatas = new SkillData[5];
     public static SkillData usingSkill;
     private bool[] checkSkill = new bool[7];    // 스킬5개 + 대쉬 + 기상기
-    public bool[] usingBattleItem = new bool[3];
+    public static bool[] usingBattleItem = new bool[3];
     public int continuousAttack = 0;
 
     // 발자국 ====================================================================================================
@@ -48,7 +48,7 @@ public class Character : MonoBehaviour
     // 아이템 ====================================================================================================
     public static Item[] equipBattleItem = new Item[3];
     public static List<List<Item>> haveItem = new List<List<Item>>();       // 소유중인 인벤토리 데이터 (나중에 위치 옮기기)
-    public static QuestData main_quest;                                     // 메인 퀘스트 데이터 (나중에 위치 옮기기)
+    // public static QuestData main_quest;                                     // 메인 퀘스트 데이터 (나중에 위치 옮기기)
     public static Dictionary<string, QuestData> sub_quest = new Dictionary<string, QuestData>();        // 서브 퀘스트들 데이터 (나중에 위치 옮기기)
     public static int main_quest_progress = 0;
     public static Dictionary<string, int> sub_quest_progress = new Dictionary<string, int>();
@@ -121,6 +121,7 @@ public class Character : MonoBehaviour
         }
         
         // 에스더 버프 중이라면 쿨타임 -1 감소 버프
+        if (GameMng.I.estherManager)
         if (GameMng.I.estherManager._esther_buff_state.Equals(ESTHER_BUFF.COTTON_BUFF))
         {
             cooltime -= 1;
@@ -467,31 +468,55 @@ public class Character : MonoBehaviour
             item.apply_count = 0;
     }
 
+    
+    IEnumerator DmgUp()
+    {        
+        Character._stat.minDamage = Mathf.FloorToInt(Character._stat.minDamage * 1.25f);
+        Character._stat.maxDamage = Mathf.FloorToInt(Character._stat.maxDamage * 1.25f);
+
+        yield return new WaitForSeconds(5.0f);
+
+        Character._stat.minDamage = Mathf.CeilToInt(Character._stat.minDamage / 1.25f);
+        Character._stat.maxDamage = Mathf.CeilToInt(Character._stat.maxDamage / 1.25f);
+    }
+    IEnumerator ShieldUp()
+    {
+        Character._stat.takenDamagePer = Character._stat.takenDamagePer * 0.8f;
+
+        yield return new WaitForSeconds(5.0f);
+
+        Character._stat.takenDamagePer = Character._stat.takenDamagePer / 0.8f;
+    }
+
     void useItem(ITEM_INDEX kind)
     {
         switch (kind)
         {
             case ITEM_INDEX.POTION:
-                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.33);
+                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.33 * Character._stat.takenHealPer);
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
                 break;
             case ITEM_INDEX.POTION_2:
-                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.24);
+                GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.24 * Character._stat.takenHealPer);
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
                 break;
             case ITEM_INDEX.CLEANSER:
-                if (GameMng.I.stateMng.nPlayerDeBuffCount > 0)
-                {
-                    int rand = Random.Range(1, GameMng.I.stateMng.nPlayerDeBuffCount + 1);
-                }
+                GameMng.I.stateMng.removeRandomDebuff();
                 break;
             case ITEM_INDEX.SHIELD:
+                GameMng.I.stateMng.user_Shield_Numerical.Add(
+                    new ShieldBuff(5, Mathf.FloorToInt(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.3f))
+                );
                 break;
             case ITEM_INDEX.DMGUP:
+                GameMng.I.stateMng.ActiveOwnBuff(Resources.Load<BuffData>("Buff/BUFF_NESIGYUNG"));
+                StartCoroutine(DmgUp());
                 break;
             case ITEM_INDEX.SHIELDUP:
+                GameMng.I.stateMng.ActiveOwnBuff(Resources.Load<BuffData>("Buff/BUFF_SANPELLE"));
+                StartCoroutine(ShieldUp());
                 break;
         }
     }

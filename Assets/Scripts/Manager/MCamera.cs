@@ -23,6 +23,7 @@ public class MCamera : MonoBehaviour
         I = this;
         _vCamera = GetComponent<CinemachineVirtualCamera>();
         cPerlin = _vCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        // _vCamera.m_Lens.FieldOfView = 24;
     }
 
     private void Start() {
@@ -139,6 +140,17 @@ public class MCamera : MonoBehaviour
         // zoomFrom = 20;
         zoomFrom = _vCamera.m_Lens.FieldOfView;
         zoomTo = 20;
+    }
+
+    /*
+     * @breif 로딩 완료되어 카메라 효과주기
+     */
+    public void loadDone()
+    {
+        zoomTimer = 0.3f;
+        zoomTimerTotal = 0.3f;
+        zoomFrom = 24;
+        zoomTo = 30;
     }
 
     // void Start()

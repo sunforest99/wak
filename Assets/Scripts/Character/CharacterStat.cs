@@ -272,6 +272,16 @@ public struct Stat
             case ITEM_INDEX.PANTS_2:
                 break;
         }
+
+        
+        // GameMng.I.stateMng.Party_HP_Numerical[0].Hp =
+        //     GameMng.I.stateMng.Party_HP_Numerical[0].fullHp =
+        //     GameMng.I.stateMng.Party_HP_Numerical[0].fullShield =
+            GameMng.I.stateMng.user_HP_Numerical.Hp =
+                GameMng.I.stateMng.user_HP_Numerical.fullHp = Mathf.FloorToInt(942477 * incHPPer);
+            GameMng.I.stateMng.Party_HP_Numerical[0].hpPer = 1;
+            GameMng.I.stateMng.ShieldPos();
+            GameMng.I.stateMng.PlayerHP();
     }
 }
 

@@ -119,12 +119,10 @@ public class Inventory : MonoBehaviour
         getSlots(kind);
         if (Character.haveItem[kind].Count == 0)
         {
-            Debug.Log("NO ITEM");
             contentOnOff(false);
         }
         else
         {
-            Debug.Log(Character.haveItem[kind].Count);
             contentOnOff(true);
             contentSet(getActiveObject().itemData);
             getClickIndex = getActiveObject().itemData;
@@ -215,7 +213,7 @@ public class Inventory : MonoBehaviour
             slotTemp.gameObject.SetActive(true);
             slotTemp.itemData = Character.haveItem[kind][i].itemData;
             slotTemp.itemImg.sprite = slotTemp.itemData.itemSp;
-            slotTemp.transform.parent = inventoryBase[kind].transform;
+            slotTemp.transform.SetParent(inventoryBase[kind].transform);
             slotTemp.transform.SetAsLastSibling();
             slotTemp.inventorySc = this;
             if (slotTemp.itemData.itemType != ITEM_TYPE.WEAPON_ITEM && slotTemp.itemData.itemType != ITEM_TYPE.SHIRTS_ITEM && slotTemp.itemData.itemType != ITEM_TYPE.PANTS_ITEM)

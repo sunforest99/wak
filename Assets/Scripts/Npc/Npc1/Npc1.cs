@@ -24,10 +24,10 @@ public class Npc1 : Npcdata
 
             }
             // 선행 (메인)퀘스트를 했는지?   // 선행퀘 조건 없는 퀘스트라면 지워도 상관 없음
-            if (GameMng.I.userData.main_quest.quest_code > 10)
-            {
+            // if (GameMng.I.userData.main_quest.quest_code > 10)
+            // {
 
-            }
+            // }
             // 생성?
             // 자식?
         }
