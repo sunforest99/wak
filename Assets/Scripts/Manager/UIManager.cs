@@ -54,6 +54,7 @@ public class UIManager : MonoBehaviour
 
     private void Update() {
 
+        try {
         if (Input.GetMouseButtonDown(1) && GameMng.I._keyMode.Equals(KEY_MODE.PLAYER_MODE))
         {
             // RaycastHit[] hits;
@@ -77,7 +78,22 @@ public class UIManager : MonoBehaviour
             // if (Physics.Raycast(ray.origin, ray.direction * 10000, out hit)) {
                 if (hit.transform.CompareTag("Npc"))        // NPC 우선순위
                 {
-                    if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 2)
+                    if (hit.transform.name.Equals("Angel")) {
+                        GameMng.I.npcData = hit.transform.GetComponent<Npcdata>();
+                        GameMng.I.npcUI.npcFavoriteItemImg.sprite = null;
+
+                        // 이미 선택모드인지 체크
+                        if (!GameMng.I.npcUI.npcSelectUI.activeSelf)
+                        {
+                            GameMng.I._keyMode = KEY_MODE.UI_MODE;
+
+                            MCamera.I.setTargetChange(hit.transform);
+                            MCamera.I.zoomIn();
+
+                            GameMng.I.npcUI.activeSelectUI(false);
+                        }
+                    }
+                    else if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 2)
                     {
                         // 저장된 dialog 실행
                         // 근데 dialog 저장 방식이 맞는지 일단 확인
@@ -104,7 +120,7 @@ public class UIManager : MonoBehaviour
                             // MCamera.I._vCamera.
                             Camera.main.cullingMask = ~(1 << LayerMask.NameToLayer("UI_Base"));
 
-                            GameMng.I.npcUI.npcSelectUI.SetActive(true);
+                            GameMng.I.npcUI.activeSelectUI();
                         }
                     }
                     else
@@ -161,7 +177,10 @@ public class UIManager : MonoBehaviour
                 }
                 selectPlayerName.transform.parent.gameObject.SetActive(false);
             }
-        }  
+        }
+        } catch(System.NullReferenceException e) {
+            Debug.Log(e);
+        }
     }
 
     private void OnEnable() {
@@ -220,7 +239,7 @@ public class UIManager : MonoBehaviour
         
         Debug.Log(3);
         MCamera.I.zoomOut3();
-        GameMng.I.npcUI.npcSelectUI.SetActive(true);
+        GameMng.I.npcUI.activeSelectUI();
     }
 
 
@@ -230,10 +249,18 @@ public class UIManager : MonoBehaviour
 
         GameMng.I._keyMode = KEY_MODE.PLAYER_MODE;
 
-        // UI 레이어 다시 ON
-        Camera.main.cullingMask |= 1 << LayerMask.NameToLayer("UI_Base");
+        try {
+            if (!GameMng.I.npcUI.npcFavoriteItemImg.sprite.Equals(null)) {
+                // UI 레이어 다시 ON
+                Camera.main.cullingMask |= 1 << LayerMask.NameToLayer("UI_Base");
 
-        MCamera.I.setTargetChange(GameMng.I.character.transform);
+                MCamera.I.setTargetChange(GameMng.I.character.transform);
+            } else {
+                MCamera.I.setTargetChange(GameMng.I.npcData.GetComponent<NpcAngel>().soul);
+            }
+        } catch (System.NullReferenceException e) {
+            Debug.Log(e);
+        }
         MCamera.I.zoomOut();
     }
 

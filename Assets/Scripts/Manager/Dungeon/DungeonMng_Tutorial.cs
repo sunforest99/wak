@@ -9,27 +9,35 @@ public class DungeonMng_Tutorial : DungeonMng
 
     [SerializeField] GameObject tutorial_npc;           // 튜토리얼에서 획득하는 npc (뢴트게늄)
 
+    [SerializeField] GameObject tut_msg;            // 처음들어올때 도움말 오브젝트들
+
     // [SerializeField]
 
     int monsterStage = 0;
 
-    protected override void Start()
-    {
-        // 플레이어 생성
-        // 다른 씬과는 다르게 만들어져 있는 캐릭터를 커마 수정함
+    // protected override void Start()
+    // {
+    //     // 플레이어 생성
+    //     // 다른 씬과는 다르게 만들어져 있는 캐릭터를 커마 수정함
 
-        // GameMng.I.createMe();
-        // GameMng.I.character.transform.position = new Vector3(-54, 0, 8.5f);
+    //     // GameMng.I.createMe();
+    //     // GameMng.I.character.transform.position = new Vector3(-54, 0, 8.5f);
 
-        GameMng.I._keyMode = KEY_MODE.UI_MODE;
-        // base.Start();
+    //     GameMng.I._keyMode = KEY_MODE.UI_MODE;
         
-        // GameMng.I.character.setMoveDir(1, 0);
-        // GameMng.I.character.startMove();
-    }
+    //     // UI 레이어 다시 ON
+    //     // Camera.main.cullingMask |= 1 << LayerMask.NameToLayer("UI_Base");
+
+    //     // base.Start();
+        
+    //     // GameMng.I.character.setMoveDir(1, 0);
+    //     // GameMng.I.character.startMove();
+    // }
 
     protected override void dungeonMonster()
     {
+        tut_msg.SetActive(false);
+
         if (monsterStage.Equals(0))
         {
             Vector3[] posArr = {
@@ -39,12 +47,13 @@ public class DungeonMng_Tutorial : DungeonMng
 
             for (int i = 0; i < posArr.Length; i++)
             {
-                // 뉴심해두 몬스터 생성
-                Instantiate(
+                // 심해두 몬스터 생성
+                Monster m = Instantiate(
                     monster_seadu,
                     posArr[i],
                     Quaternion.identity
-                );
+                ).GetComponent<Monster>();
+                m.makeWeek();
             }
 
             _leftMonster = posArr.Length;
@@ -58,12 +67,13 @@ public class DungeonMng_Tutorial : DungeonMng
 
             for (int i = 0; i < posArr.Length; i++)
             {
-                // 뉴심해두 몬스터 생성
-                Instantiate(
+                // 심해두 몬스터 생성
+                Monster m = Instantiate(
                     monster_seadu,
                     posArr[i],
                     Quaternion.identity
-                );
+                ).GetComponent<Monster>();
+                m.makeWeek();
             }
 
             _leftMonster = posArr.Length;

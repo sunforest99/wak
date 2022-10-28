@@ -106,15 +106,16 @@ public enum BUFF
 {
     BUFF_GAL = 0,
     BUFF_THIEF,
-    DEBUFF_BUPAE,
-    DEBUFF_CHIMSIK,
-    DEBUFF_JAMSIK,
-    DEBUFF_SHIELD,
+    DEBUFF_BUPAE,           // 귀상어두 - 부패
+    DEBUFF_CHIMSIK,         // 귀상어두 - 침식
+    DEBUFF_JAMSIK,          // 계륵 - 잠식
+    DEBUFF_SHIELD,          // 보스 - 뎀감(상시버프)
     BUFF_NESIGYUNG,
     BUFF_SANPELLE,
     BUFF_GOSEGU,
-    BUFF_COTTON
-    
+    BUFF_COTTON,
+    DEBUFF_ZILSIK,          // 마녀두 - 질식
+    DEBUFF_SMELL            // 계륵 - 으 냄시        
 }
 
 public enum JOB

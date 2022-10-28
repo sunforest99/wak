@@ -71,7 +71,7 @@ public class Npcdata : MonoBehaviour
         return true;
     }
 
-    public void ExitDialog()
+    public virtual void ExitDialog()
     {
         // Destroy(tempDialog);
         isDialog = false;

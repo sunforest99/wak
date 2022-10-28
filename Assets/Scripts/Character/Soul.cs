@@ -21,7 +21,9 @@ public class Soul : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 moveDist = _moveDir.normalized;
-        _rigidBody.velocity = new Vector3(moveDist.x, _rigidBody.velocity.y, moveDist.y) * MOVE_SPEED; 
+        if (GameMng.I._keyMode.Equals(KEY_MODE.PLAYER_MODE)) {
+            Vector3 moveDist = _moveDir.normalized;
+            _rigidBody.velocity = new Vector3(moveDist.x, _rigidBody.velocity.y, moveDist.y) * MOVE_SPEED; 
+        }
     }
 }

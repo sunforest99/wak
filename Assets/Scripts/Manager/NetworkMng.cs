@@ -61,11 +61,12 @@ public class NetworkMng : MonoBehaviour
     static Socket socket = null;
     public string address = "127.0.0.1";    // 주소, 서버 주소와 같게 할 것
     int port = 10000;                       // 포트 번호, 서버포트와 같게 할 것
+    public static string DB_URL = "localhost:3000/";
     byte[] buf = new byte[4096];
     int recvLen = 0;
 
     // 유저 데이터 =========================================================================================================
-    public ROOM_CODE myRoom = ROOM_CODE.HOME;                  // 현재 내 위치
+    public ROOM_CODE myRoom = ROOM_CODE.NONE;                  // 현재 내 위치
     public string uniqueNumber = "";        // 나 자신을 가리키는 고유 숫자
     public Dictionary<string, Character> v_users = new Dictionary<string, Character>();        // 맵에 같이 있는 유저들
     public Dictionary<string, PartyData> v_party = new Dictionary<string, PartyData>();        // 파티원들  (v_users안에도 파티원들이 있긴함)
@@ -571,9 +572,6 @@ public class NetworkMng : MonoBehaviour
             else if (txt[1].Equals("3"))
                 GameMng.I.stateMng.partyRemoveBuffAll(v_party[txt[3]].partyNumber);
         }
-        else if (txt[0].Equals("BUFF_BOSS"))
-        {
-        }
     }
 
     /**
@@ -890,5 +888,15 @@ public class NetworkMng : MonoBehaviour
         {
             GameMng.I.stateMng.PartyHPImg[0].transform.parent.gameObject.SetActive(false);   // 파티원 제거
         }
+    }
+
+    public bool isRaidRoom()
+    {
+        return myRoom.Equals(ROOM_CODE.RAID_0) || myRoom.Equals(ROOM_CODE.RAID_1) || myRoom.Equals(ROOM_CODE.RAID_2);
+    }
+
+    public bool isOnlineRoom()
+    {
+        return myRoom > ROOM_CODE._WORLD_MAP_;
     }
 }

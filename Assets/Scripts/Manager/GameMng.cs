@@ -113,7 +113,15 @@ public class GameMng : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        DontDestroyOnLoad(this);        // <! 필요하면 쓰장
+        DontDestroyOnLoad(this);
+
+        for (int i = 0; i < skillUI.transform.childCount; i++)
+        {
+            skill_Img.Add(skillUI.GetChild(i).transform.GetChild(0).GetComponent<UnityEngine.UI.Image>());
+            cooltime_UI.Add(skillUI.GetChild(i).transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>());
+        }
+        for (int i = 0; i < itemSlot.transform.childCount; i++)
+            battleItem_Img.Add(itemSlot.GetChild(i).transform.GetChild(0).GetComponent<UnityEngine.UI.Image>());
     }
 
     private void Start()
@@ -186,16 +194,27 @@ public class GameMng : MonoBehaviour
         if (userData.job.Equals(0))     // 무직(초반 캐릭터)는 스킬과 아이템이 없음
             return;
         
-        for (int i = 0; i < skillUI.transform.childCount; i++)
-        {
-            skill_Img.Add(skillUI.GetChild(i).transform.GetChild(0).GetComponent<UnityEngine.UI.Image>());
-            cooltime_UI.Add(skillUI.GetChild(i).transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>());
-        }
-        for (int i = 0; i < itemSlot.transform.childCount; i++)
-            battleItem_Img.Add(itemSlot.GetChild(i).transform.GetChild(0).GetComponent<UnityEngine.UI.Image>());
-
         for (int i = 0; i < character.skilldatas.Length; i++)
             skill_Img[i].sprite = character.skilldatas[i].getSkllImg;
+
+        // 스킬 UI 초기화
+        for (int i = 0; i < skill_Img.Count; i++) {
+            cooltime_UI[i].gameObject.SetActive(false);
+            skill_Img[i].fillAmount = 1;
+            skill_Img[i].color = Color.white;
+            Character.usingSkill = null;
+        }
+        skill_Img[5].transform.parent.gameObject.SetActive(false);
+        skill_Img[6].transform.parent.gameObject.SetActive(false);
+
+        // 배틀아이템 UI 초기화
+        for (int i = 0; i < Character.usingBattleItem.Length; i++) {
+            Character.usingBattleItem[i] = false;
+            battleItem_Img[i].color = Color.white;
+            battleItem_Img[i].fillAmount = 1;
+            Character.equipBattleItem[i].itemCount = Character.equipBattleItem[i].itemData.count;
+            BattleItemUI.ItemText[i].text = Character.equipBattleItem[i].itemCount.ToString();
+        }
 
         // for (int i = 0; i < Character.equipBattleItem.Length; i++)
         //     battleItem_Img[i].sprite = Character.equipBattleItem[i].itemData.itemSp;

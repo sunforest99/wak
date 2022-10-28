@@ -292,6 +292,15 @@ public class Monster : MonoBehaviour
         }
     }
 
+    /**
+     * @brief 약하게 만들때 사용합니다. ex) 튜토
+     */
+    public void makeWeek()
+    {
+        this._fullHp /= 2;
+        this._hp = this._fullHp;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         // Weapon : 캐릭터에게 붙어있는 공격 콜리더 (전사 기본공격 + 전사 스킬들) (힐러 겨울봄)

@@ -66,6 +66,11 @@ public class Buff : Tooltips, IPointerEnterHandler, IPointerExitHandler
         // TODO : 중첩 하기
         if (!buffData.isBuff && buffData.check_nesting)
             Mount.text = 'x' + count.ToString();
+
+         if (NetworkMng.I.isRaidRoom())
+            if (buffData.BuffKind.Equals(BUFF.DEBUFF_SMELL)) {
+                GameMng.I.stateMng.takeDamage(Mathf.FloorToInt(1234 * (1 + 0.2f * count)));
+            }
     }
 
     public IEnumerator Blink(float time)

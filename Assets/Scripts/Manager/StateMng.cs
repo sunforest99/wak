@@ -241,7 +241,20 @@ public class StateMng : MonoBehaviour
         {
             if (ownBuff[i].isApply && ownBuff[i].buffData.BuffKind == buffData.BuffKind && buffData.check_nesting)
             {
-                ownBuff[i].count++;
+                // TODO : 모든 버프 중첩은 최대 5
+                if (ownBuff[i].count < 5)
+                    ownBuff[i].count++;
+
+                // '질식 디버프' - 5스택시 즉시 사망
+                if (ownBuff[i].count.Equals(5) && buffData.BuffKind.Equals(BUFF.DEBUFF_ZILSIK)) {
+                    forcedDeath();
+                }
+
+                // '잠식 디버프' - 디버프 획득때마다 피해를 입음 (이 피해는 스택에 따라 커짐)
+                if (buffData.BuffKind.Equals(BUFF.DEBUFF_JAMSIK)) {
+                    takeDamage(12345 * ownBuff[i].count);
+                }
+
                 ownBuff[i].duration = buffData.duration;
                 break;
             }
@@ -291,6 +304,18 @@ public class StateMng : MonoBehaviour
         }
     }
 
+    public int checkDebuff(BUFF findBuff)
+    {
+        for (int i = 0; i < ownBuff.Length; i++)
+        {
+            if (ownBuff[i].isApply && ownBuff[i].buffData.BuffKind.Equals(findBuff))
+            {
+                return ownBuff[i].count;
+            }
+        }
+        return 0;
+    }
+
     public void forcedDeath()
     {
         user_HP_Numerical.Hp = 0;
@@ -301,6 +326,15 @@ public class StateMng : MonoBehaviour
     {
         // 받는 피해 감소 적용
         dmg = Mathf.FloorToInt(dmg * Character._stat.takenDamagePer);
+
+        // 레이드에서만 추가되는 디버프
+        if (NetworkMng.I.myRoom > ROOM_CODE._PARTY_MAP_) {
+            // '부패 디버프' - 받는 피해 증가 적용
+            int c = checkDebuff(BUFF.DEBUFF_BUPAE);
+            if (c > 0) {
+                dmg = Mathf.FloatToHalf(dmg * (1 + c * 0.05f));
+            }
+        }
 
         int temp = -1;
         for (int j = 0; j < user_Shield_Numerical.Count; j++)
@@ -384,8 +418,17 @@ public class StateMng : MonoBehaviour
         for (int i = 0; i < partybuffGroups[0].userBuff.Length; i++)
         {
             // 디버프 종류만 모두 지움
-            if (!partybuffGroups[0].userBuff[i].buffData.BuffKind.ToString().Substring(0, 4).Equals("BUFF"))
+            if (isDebuff(partybuffGroups[0].userBuff[i].buffData.BuffKind)) {
                 partybuffGroups[0].userBuff[i].isApply = false;
+            }
+        }
+
+        for (int i = 0; i < ownBuff.Length; i++) {
+            if (isDebuff(ownBuff[i].buffData.BuffKind)) {
+                ownBuff[i].isApply = false;
+                if (ownBuff[i].buffData.check_nesting)
+                    ownBuff[i].count = 0;
+            }
         }
     }
 
@@ -404,6 +447,15 @@ public class StateMng : MonoBehaviour
             int randIdx = Random.Range(0, debuffIdxList.Count);
 
             partybuffGroups[0].userBuff[ debuffIdxList[randIdx] ].isApply = false;
+
+            for (int j = 0; j < ownBuff.Length; j++) {
+                if (ownBuff[j].buffData.BuffKind.Equals(partybuffGroups[0].userBuff[debuffIdxList[randIdx]].buffData.BuffKind)) {
+                    if (ownBuff[j].buffData.check_nesting)
+                        ownBuff[j].count = 0;
+                    break;
+                }
+            }
+
             NetworkMng.I.SendMsg(string.Format("BUFF:1:{0}:{1}", partybuffGroups[0].userBuff[ debuffIdxList[randIdx] ].buffData.BuffKind.ToString(), NetworkMng.I.uniqueNumber));
         }
     }

@@ -142,6 +142,13 @@ public class BossCollider : MonoBehaviour
                     isBackAttack
                 );
                 
+                int chimsikCount = GameMng.I.stateMng.checkDebuff(BUFF.DEBUFF_CHIMSIK);
+
+                // 만약 '디버프 침식'을 소유중이라면 데미지 감소
+                if (chimsikCount > 0) {
+                    damageTemp = Mathf.FloorToInt(damageTemp * (1 - 0.08f * chimsikCount));
+                }
+
                 // 에스더 버프 중이라면 데미지 증가 120% 증가 버프
                 if (GameMng.I.estherManager._esther_buff_state.Equals(ESTHER_BUFF.COTTON_BUFF))
                 {
