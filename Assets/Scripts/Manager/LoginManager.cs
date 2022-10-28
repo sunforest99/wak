@@ -239,8 +239,8 @@ public class LoginManager : MonoBehaviour
         {
             loadStart.SetActive(true);
             // 마을로!
-            SceneManager.LoadScene("TutorialDungeon");
-            // NetworkMng.I.changeRoom(ROOM_CODE.HOME);
+            // SceneManager.LoadScene("TutorialDungeon");
+            NetworkMng.I.changeRoom(ROOM_CODE.HOME);
         }
     }
 

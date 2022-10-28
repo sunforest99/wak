@@ -6,6 +6,7 @@ public class DieUI : MonoBehaviour
 {
     [SerializeField] GameObject dungeonDieUI;
     [SerializeField] GameObject raidFailUI;
+    // [SerializeField] GameObject dungeonClearUI;
     
     /**
      * @brief 던전에서 사망했을때
@@ -14,6 +15,7 @@ public class DieUI : MonoBehaviour
     {
         dungeonDieUI.SetActive(true);
     }
+
     /**
      * @brief 레이드시 전원 사망했을때
      */
@@ -35,6 +37,14 @@ public class DieUI : MonoBehaviour
         else if (NetworkMng.I.myRoom.Equals(ROOM_CODE.RAID_2))
             NetworkMng.I.changeRoom(ROOM_CODE.RAID_2_REPAIR);
     }
+
+    /**
+     * @brief 던전클리어
+     */
+    // public void dungeonClear()
+    // {
+    //     dungeonClearUI.SetActive(true);
+    // }
 
     /**
      * @brief 마을로 돌아가기

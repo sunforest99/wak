@@ -86,7 +86,7 @@ public class BossCollider : MonoBehaviour
             if (skillData && skillData.isBackAttackSkill)
             {
                 // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 ===================================================================================================
-                if (boss_o.parent.transform.localRotation.y.Equals(180) && this.transform.position.x + 1 > GameMng.I.character.transform.parent.position.x)
+                if (boss_o.parent.transform.localEulerAngles.x.Equals(-20) && this.transform.position.x > GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(
@@ -96,7 +96,7 @@ public class BossCollider : MonoBehaviour
                     ));
                 }
                 // 보스 좌측 바라보는 상태에서  콜리더가 우측에서 일어남 ====================================================================================================
-                else if (boss_o.parent.transform.localRotation.y.Equals(0) && this.transform.position.x + 1 < GameMng.I.character.transform.parent.position.x)
+                else if (boss_o.parent.transform.localEulerAngles.x.Equals(20) && this.transform.position.x < GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(

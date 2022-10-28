@@ -88,6 +88,7 @@ public class GameMng : MonoBehaviour
     public Queue<GameObject> removeEffPool = new Queue<GameObject>();   // 사라지는 이펙트 풀
     public Material[] materials = new Material[2];
     public GameObject itemGetEff;       // 아이템 획득 이펙트
+    public GameObject footprintObj;
 
     [Space(20)][Header("[  아이템 관리  ]")]  // ==============================================================================================================================
     public GameObject itemObj;
@@ -407,7 +408,7 @@ public class GameMng : MonoBehaviour
      */
     public void createEffect(bool isBackAttack, Vector3 pos)
     {
-        showEff(isBackAttack ? EFF_TYPE.EFF : EFF_TYPE.BACK_EFF, pos);
+        showEff(isBackAttack ? EFF_TYPE.BACK_EFF : EFF_TYPE.EFF, pos);
     }
 
     /*

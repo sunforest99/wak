@@ -5,7 +5,7 @@ using UnityEngine;
 public class LoadManager : MonoBehaviour
 {
     // 나중에 맵 변경 될때마다 해당 Text UI에 맵 이름 뜨게 함
-    [SerializeField] UnityEngine.UI.Text mapNameTxt;        // !< GameObject가 관리해도 괜찮아 보임
+    [SerializeField] TMPro.TextMeshProUGUI mapNameTxt;        // !< GameObject가 관리해도 괜찮아 보임
     [SerializeField] string mapName = "";
     // [SerializeField] bool isFocusingMap = true;
     [SerializeField] bool onlineMap = true;
@@ -56,9 +56,6 @@ public class LoadManager : MonoBehaviour
 
         SoundMng.I.PlayAudio(mapBG);
 
-
-        // mapNameTxt.text = mapName;
-
         GameMng.I.initAllEff();
 
 
@@ -73,8 +70,12 @@ public class LoadManager : MonoBehaviour
 
     IEnumerator loadingDone()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2f);
 
+        mapNameTxt.text = mapName;
+        mapNameTxt.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
         // MCamera.I.loadDone();
 
         GameMng.I._keyMode = KEY_MODE.PLAYER_MODE;

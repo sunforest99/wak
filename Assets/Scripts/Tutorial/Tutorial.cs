@@ -61,9 +61,11 @@ public class Tutorial : MonoBehaviour
 
     IEnumerator showCredit()
     {
+        yield return new WaitForSeconds(3);
+
         l_head.gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(2);
 
         r_head.gameObject.SetActive(true);
 

@@ -131,9 +131,10 @@ public enum NPC
     BUJUNG,         // 부정형
     CHUNSIK,        // 곽춘식
     GWONMIN,        // 권민
-    MANDOO,         // 김치만두
+    SHRIMP,         // 새우튀김
     BUG,            // 단답벌레
     WAKPAGO,        // 왁파고
+    HODD,           // 호드
     __NONE__
 }
 

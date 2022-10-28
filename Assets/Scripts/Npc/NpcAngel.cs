@@ -7,6 +7,7 @@ public class NpcAngel : Npcdata
 {
     [SerializeField] GameObject questBook;
     public Transform soul;       // 캐릭터, 플레이어
+    [SerializeField] GameObject loadStart;          // 게임 시작 후 마을로 갈때 로딩
 
     int questProgress = 0;
 
@@ -81,7 +82,7 @@ public class NpcAngel : Npcdata
 
     protected IEnumerator Talk_MainQuest_2()
     {
-        if (GameMng.I.userData.job > 0)
+        if (GameMng.I.userData.job.Equals(0))
         {
             yield return "앞의 책을 통해 전직해주세요..";
             yield return ";;";
@@ -102,7 +103,15 @@ public class NpcAngel : Npcdata
         yield return "준비가 되셨나요?";
         yield return "행운을 빕니다.";
 
-        // TODO : 튜토리얼 던전
+        // 튜토리얼 던전
+        GameMng.I._loadAnim.SetTrigger("LoadStart");
+        loadStart.SetActive(true);
+        StartCoroutine(changingScene());
+    }
+    IEnumerator changingScene()
+    {
+        yield return new WaitForSeconds(4);
+
         SceneManager.LoadScene("TutorialDungeon");
     }
 

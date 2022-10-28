@@ -27,6 +27,8 @@ public class MCamera : MonoBehaviour
     }
 
     private void Start() {
+        _vCamera.m_Lens.FieldOfView = 15;
+        zoomOut(3);
         StartCoroutine(foundFollowTarget());
     }
 
