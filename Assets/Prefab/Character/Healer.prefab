@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 1593039552555025062}
   - component: {fileID: 3511742544416225990}
   - component: {fileID: 4338948595877513808}
+  - component: {fileID: 4224711326315930407}
   m_Layer: 6
   m_Name: Healer
   m_TagString: Character
@@ -160,6 +161,18 @@ SortingGroup:
   m_SortingLayerID: -833444747
   m_SortingLayer: 5
   m_SortingOrder: 0
+--- !u!114 &4224711326315930407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3166886962787460030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20d8436141c86384ba542ce76c68513b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3159612134546611409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -317,6 +330,7 @@ PrefabInstance:
     - {fileID: 5970163516168801231, guid: c96a0de85e755c44e9c20fab5d4ad84c, type: 3}
     - {fileID: 5970163516168801228, guid: c96a0de85e755c44e9c20fab5d4ad84c, type: 3}
     - {fileID: 5970163515849946501, guid: c96a0de85e755c44e9c20fab5d4ad84c, type: 3}
+    - {fileID: 2847659667890998860, guid: c96a0de85e755c44e9c20fab5d4ad84c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c96a0de85e755c44e9c20fab5d4ad84c, type: 3}
 --- !u!212 &1646610264756238454 stripped
 SpriteRenderer:

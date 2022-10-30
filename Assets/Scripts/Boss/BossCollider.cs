@@ -86,7 +86,7 @@ public class BossCollider : MonoBehaviour
             if (skillData && skillData.isBackAttackSkill)
             {
                 // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 ===================================================================================================
-                if (boss_o.parent.transform.localRotation.y.Equals(180) && this.transform.position.x + 1 > GameMng.I.character.transform.parent.position.x)
+                if (boss_o.parent.transform.localEulerAngles.x.Equals(-20) && this.transform.position.x > GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(
@@ -96,7 +96,7 @@ public class BossCollider : MonoBehaviour
                     ));
                 }
                 // 보스 좌측 바라보는 상태에서  콜리더가 우측에서 일어남 ====================================================================================================
-                else if (boss_o.parent.transform.localRotation.y.Equals(0) && this.transform.position.x + 1 < GameMng.I.character.transform.parent.position.x)
+                else if (boss_o.parent.transform.localEulerAngles.x.Equals(20) && this.transform.position.x < GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(
@@ -142,6 +142,13 @@ public class BossCollider : MonoBehaviour
                     isBackAttack
                 );
                 
+                int chimsikCount = GameMng.I.stateMng.checkDebuff(BUFF.DEBUFF_CHIMSIK);
+
+                // 만약 '디버프 침식'을 소유중이라면 데미지 감소
+                if (chimsikCount > 0) {
+                    damageTemp = Mathf.FloorToInt(damageTemp * (1 - 0.08f * chimsikCount));
+                }
+
                 // 에스더 버프 중이라면 데미지 증가 120% 증가 버프
                 if (GameMng.I.estherManager._esther_buff_state.Equals(ESTHER_BUFF.COTTON_BUFF))
                 {

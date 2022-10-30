@@ -25,7 +25,8 @@ public class DungeonMng : MonoBehaviour
     protected static int _leftMonster = 0;                              // 현재 남아있는 잔여 몬스터
     protected static GameObject getNextWall;                            // _nextWall 이 Start때 들어감
     [SerializeField] GameObject _nextWall;                              // 다음 던전으로 넘어갈 수 있는 문을 막고 있는 벽 (몬스터 0마리 되면 false 해서 길 열어주기)
-
+    [SerializeField] GameObject _nextPortal;                            // 던전 다음 포탈
+    [SerializeField] GameObject _clearPortal;                           // 던전 클리어 포탈
 
     [Space(20)][Header("[  던전 공용 프리팹  ]")]  // ==========================================================================================================================
     [SerializeField] protected GameObject purpleLight;                  // 몬스터 강화 오브젝트
@@ -158,6 +159,14 @@ public class DungeonMng : MonoBehaviour
         _dungeon_Type = DUNGEON_TYPE.RANDOM;
         resetDungeon();
         initDungeon();
+    }
+
+    /**
+     * @brief 던전의 마지막 스테이지 눌렀을때
+     */
+    public void lastDungeon() {
+        _nextPortal.SetActive(false);
+        _clearPortal.SetActive(true);
     }
 
     protected virtual void dungeonMonster() {}

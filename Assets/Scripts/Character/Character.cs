@@ -43,21 +43,21 @@ public class Character : MonoBehaviour
 
     // 발자국 ====================================================================================================
     int footprintIdx = 0;
-    [SerializeField] GameObject[] footprints;
+    GameObject[] footprints = new GameObject[3];
 
     // 아이템 ====================================================================================================
     public static Item[] equipBattleItem = new Item[3];
     public static List<List<Item>> haveItem = new List<List<Item>>();       // 소유중인 인벤토리 데이터 (나중에 위치 옮기기)
     // public static QuestData main_quest;                                     // 메인 퀘스트 데이터 (나중에 위치 옮기기)
     public static Dictionary<string, QuestData> sub_quest = new Dictionary<string, QuestData>();        // 서브 퀘스트들 데이터 (나중에 위치 옮기기)
-    public static int main_quest_progress = 0;
+    // public static int main_quest_progress = 0;
     public static Dictionary<string, int> sub_quest_progress = new Dictionary<string, int>();
     
     void Start()
     {
         for (int i = 0; i < 3; i++)
         {
-            footprints[i] = Instantiate(footprints[3], Vector3.zero, Quaternion.identity) as GameObject;
+            footprints[i] = Instantiate(GameMng.I.footprintObj, Vector3.zero, Quaternion.identity) as GameObject;
         }
         //GameMng.I.character = this;
         // GameMng.I.stateMng.targetList.Add(this);        // 파티를 들어갔을떄
@@ -496,11 +496,13 @@ public class Character : MonoBehaviour
                 GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.33 * Character._stat.takenHealPer);
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
+                GameMng.I.stateMng.PlayerHP();
                 break;
             case ITEM_INDEX.POTION_2:
                 GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.24 * Character._stat.takenHealPer);
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
+                GameMng.I.stateMng.PlayerHP();
                 break;
             case ITEM_INDEX.CLEANSER:
                 GameMng.I.stateMng.removeRandomDebuff();
@@ -509,6 +511,7 @@ public class Character : MonoBehaviour
                 GameMng.I.stateMng.user_Shield_Numerical.Add(
                     new ShieldBuff(5, Mathf.FloorToInt(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.3f))
                 );
+                GameMng.I.stateMng.ShieldPos();
                 break;
             case ITEM_INDEX.DMGUP:
                 GameMng.I.stateMng.ActiveOwnBuff(Resources.Load<BuffData>("Buff/BUFF_NESIGYUNG"));

@@ -106,10 +106,10 @@ public class Monster : MonoBehaviour
     {
         if (isMoving)
         {
-            if (_target.position.x < transform.position.x)
-                _body.transform.rotation = Quaternion.Euler(20, 0, 0);
-            else
-                _body.transform.rotation = Quaternion.Euler(-20, 180, 0);
+            // if (_target.position.x < transform.position.x)
+            //     _body.transform.rotation = Quaternion.Euler(20, 0, 0);
+            // else
+            //     _body.transform.rotation = Quaternion.Euler(-20, 180, 0);
                 
             // _target 한테 move
             if (Vector3.Distance(_target.position, transform.position) > _nearness)
@@ -165,6 +165,13 @@ public class Monster : MonoBehaviour
     void endAct()
     {
         _damage = 0;
+        StartCoroutine(thinkDelay());
+    }
+
+    IEnumerator thinkDelay()
+    {
+        yield return new WaitForSeconds(2);
+        
         isMoving = true;
         StartCoroutine(think());
     }
@@ -292,6 +299,15 @@ public class Monster : MonoBehaviour
         }
     }
 
+    /**
+     * @brief 약하게 만들때 사용합니다. ex) 튜토
+     */
+    public void makeWeek()
+    {
+        this._fullHp /= 2;
+        this._hp = this._fullHp;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         // Weapon : 캐릭터에게 붙어있는 공격 콜리더 (전사 기본공격 + 전사 스킬들) (힐러 겨울봄)
@@ -328,24 +344,23 @@ public class Monster : MonoBehaviour
             // 백어택 상관 있는 백어택 스킬들
             if (skillData && skillData.isBackAttackSkill)
             {
-                // Debug.Log("몬스터 위치 : " + _body.position)
-                // 보스 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 ===================================================================================================
-                if (_body.rotation.y.Equals(180) && this.transform.position.x + 1 > GameMng.I.character.transform.parent.position.x)
+                // 몬스터 우측 바라보는 상태에서  콜리더가 좌측에서 일어남 ===================================================================================================
+                if (_body.localEulerAngles.x.Equals(-20) && this.transform.position.x  > GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(
-                        transform.position.x + Random.Range(-2f, 1f),
-                        other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f),
+                        transform.position.x + Random.Range(-2f, 0),
+                        other.ClosestPoint(transform.position).y + Random.Range(0.5f, 1.2f),
                         transform.position.z
                     ));
                 }
-                // 보스 좌측 바라보는 상태에서  콜리더가 우측에서 일어남 ====================================================================================================
-                else if (_body.rotation.y.Equals(0) && this.transform.position.x + 1 < GameMng.I.character.transform.parent.position.x)
+                // 몬스터 좌측 바라보는 상태에서  콜리더가 우측에서 일어남 ====================================================================================================
+                else if (_body.localEulerAngles.x.Equals(20) && this.transform.position.x  < GameMng.I.character.transform.parent.position.x)
                 {
                     isBackAttack = true;
                     GameMng.I.createEffect(isBackAttack, new Vector3(
-                        transform.position.x + Random.Range(1.2f, 2.2f),
-                        other.ClosestPoint(transform.position).y + Random.Range(1f, 1.2f),
+                        transform.position.x + Random.Range(0, 2f),
+                        other.ClosestPoint(transform.position).y + Random.Range(0.5f, 1.2f),
                         transform.position.z
                     ));
                 }

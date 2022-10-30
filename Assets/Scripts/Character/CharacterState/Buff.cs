@@ -12,7 +12,7 @@ public class Buff : Tooltips, IPointerEnterHandler, IPointerExitHandler
     public UnityEngine.UI.Image BuffImg;
 
     public int duration;                     // 버프가 유지된 카운트
-    public int count;                           // 중첩 갯수
+    public int count = 1;                           // 중첩 갯수
 
     public bool isApply;
 
@@ -60,12 +60,17 @@ public class Buff : Tooltips, IPointerEnterHandler, IPointerExitHandler
             //     StateMngSc.nPlayerDeBuffCount--;
             GameMng.I.stateMng.nPlayerBuffCount--;
             isApply = false;
-            count = 0;
+            count = 1;
             gameObject.SetActive(false);
         }
         // TODO : 중첩 하기
         if (!buffData.isBuff && buffData.check_nesting)
             Mount.text = 'x' + count.ToString();
+
+         if (NetworkMng.I.isRaidRoom())
+            if (buffData.BuffKind.Equals(BUFF.DEBUFF_SMELL)) {
+                GameMng.I.stateMng.takeDamage(Mathf.FloorToInt(1234 * (1 + 0.2f * count)));
+            }
     }
 
     public IEnumerator Blink(float time)

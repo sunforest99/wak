@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ShieldBuff : MonoBehaviour
+public class ShieldBuff
 {
     // BuffData의 데이터
     public int duration;                        // 지속시간 (카운트를 위해 정수)
@@ -75,9 +75,11 @@ public class StateMng : MonoBehaviour
     [SerializeField] TextMeshProUGUI PlayerHPText;                                          // 중하단 플레이어 체력 텍스트
     public Player_HP_Numerical[] Party_HP_Numerical = new Player_HP_Numerical[4]; // 좌측 UI 플레이어 수치
     public User_HP_Numerical user_HP_Numerical;
-    public List<ShieldBuff> user_Shield_Numerical;
+    public List<ShieldBuff> user_Shield_Numerical = new List<ShieldBuff>();
     // public ShieldBuff user_shield = new Shil[4]_;
     
+    public GameObject partyExitBT;
+
     public int nPlayerBuffCount;                                                                   // 플레이어의 버프 갯수
     public int nPlayerDeBuffCount;
     public BuffData b;
@@ -120,7 +122,7 @@ public class StateMng : MonoBehaviour
         //         }
         //     }
         // }
-        for (int j = user_Shield_Numerical.Count - 1; j >= 0; j--)
+        for (int j = 0; j < user_Shield_Numerical.Count; j++)
         {
             user_Shield_Numerical[j].countdown += Time.deltaTime;
             if (user_Shield_Numerical[j].countdown >= user_Shield_Numerical[j].duration) {
@@ -211,6 +213,21 @@ public class StateMng : MonoBehaviour
                 }
             }
         }
+        for (int i = 0; i < ownBuff.Length; i++)
+        {
+            if (ownBuff[i].isApply && ownBuff[i].buffData.BuffKind == buffData.BuffKind)
+            {
+                ownBuff[i].duration = buffData.duration;
+                break;
+            }
+            else if (!ownBuff[i].isApply)
+            {
+                ownBuff[i].buffData = buffData;
+                ownBuff[i].gameObject.SetActive(true);
+                ownBuff[i].isApply = true;
+                break;
+            }
+        }
     }
 
     /**
@@ -241,7 +258,20 @@ public class StateMng : MonoBehaviour
         {
             if (ownBuff[i].isApply && ownBuff[i].buffData.BuffKind == buffData.BuffKind && buffData.check_nesting)
             {
-                ownBuff[i].count++;
+                // TODO : 모든 버프 중첩은 최대 5
+                if (ownBuff[i].count < 5)
+                    ownBuff[i].count++;
+
+                // '질식 디버프' - 5스택시 즉시 사망
+                if (ownBuff[i].count.Equals(5) && buffData.BuffKind.Equals(BUFF.DEBUFF_ZILSIK)) {
+                    forcedDeath();
+                }
+
+                // '잠식 디버프' - 디버프 획득때마다 피해를 입음 (이 피해는 스택에 따라 커짐)
+                if (buffData.BuffKind.Equals(BUFF.DEBUFF_JAMSIK)) {
+                    takeDamage(12345 * ownBuff[i].count);
+                }
+
                 ownBuff[i].duration = buffData.duration;
                 break;
             }
@@ -291,16 +321,58 @@ public class StateMng : MonoBehaviour
         }
     }
 
+    public int checkDebuff(BUFF findBuff)
+    {
+        for (int i = 0; i < ownBuff.Length; i++)
+        {
+            if (ownBuff[i].isApply && ownBuff[i].buffData.BuffKind.Equals(findBuff))
+            {
+                return ownBuff[i].count;
+            }
+        }
+        return 0;
+    }
+
     public void forcedDeath()
     {
+        // 즉사 애니메이션 보여줌
+        GameMng.I.dieUI.mustDieAnim();
+
         user_HP_Numerical.Hp = 0;
         user_Shield_Numerical.Clear();
+
+        // 캐릭터 사망
+        // GameMng.I.character._anim.SetTrigger("Die");
+        GameMng.I._keyMode = KEY_MODE.UI_MODE;
+        Instantiate(GameMng.I.soulPrefab, GameMng.I.character.transform.position, Quaternion.identity);
+        // GameMng.I.character.enabled = false;
+        // 전멸기는 파티원들도 모두 사망 판정이기에 모두 죽이기
+        foreach (var party in NetworkMng.I.v_users) {
+            if (party.Value.enabled) {
+                party.Value._anim.SetTrigger("Die");
+                party.Value.enabled = false;
+            }
+        }
+        GameMng.I.character.transform.parent.GetComponent<Rigidbody>().useGravity = false;
+        GameMng.I.character.transform.parent.GetComponent<BoxCollider>().enabled = false;
+
+        // 레이드 실패 UI
+        GameMng.I.dieUI.raidFail();
     }
 
     public void takeDamage(int dmg)
     {
         // 받는 피해 감소 적용
         dmg = Mathf.FloorToInt(dmg * Character._stat.takenDamagePer);
+
+        // 레이드에서만 추가되는 디버프
+        if (NetworkMng.I.myRoom > ROOM_CODE._PARTY_MAP_) {
+            // '부패 디버프' - 받는 피해 증가 적용
+            int c = checkDebuff(BUFF.DEBUFF_BUPAE);
+            if (c > 0) {
+                dmg = Mathf.FloatToHalf(dmg * (1 + c * 0.05f));
+            }
+        }
 
         int temp = -1;
         for (int j = 0; j < user_Shield_Numerical.Count; j++)
@@ -339,7 +411,7 @@ public class StateMng : MonoBehaviour
         PlayerHP();
 
 
-        if (user_HP_Numerical.Hp <= 0)
+        if (user_HP_Numerical.Hp <= 0 && GameMng.I.character.enabled)
         {
             // 사망
             GameMng.I.character._anim.SetTrigger("Die");
@@ -384,8 +456,19 @@ public class StateMng : MonoBehaviour
         for (int i = 0; i < partybuffGroups[0].userBuff.Length; i++)
         {
             // 디버프 종류만 모두 지움
-            if (!partybuffGroups[0].userBuff[i].buffData.BuffKind.ToString().Substring(0, 4).Equals("BUFF"))
+            if (isDebuff(partybuffGroups[0].userBuff[i].buffData.BuffKind)) {
                 partybuffGroups[0].userBuff[i].isApply = false;
+                partybuffGroups[0].userBuff[i].duration = 0;
+            }
+        }
+
+        for (int i = 0; i < ownBuff.Length; i++) {
+            if (isDebuff(ownBuff[i].buffData.BuffKind)) {
+                ownBuff[i].isApply = false;
+                if (ownBuff[i].buffData.check_nesting)
+                    ownBuff[i].count = 1;       // 디버프 해제 : 1
+                ownBuff[i].duration = 0;
+            }
         }
     }
 
@@ -404,6 +487,16 @@ public class StateMng : MonoBehaviour
             int randIdx = Random.Range(0, debuffIdxList.Count);
 
             partybuffGroups[0].userBuff[ debuffIdxList[randIdx] ].isApply = false;
+
+            for (int j = 0; j < ownBuff.Length; j++) {
+                if (ownBuff[j].buffData.BuffKind.Equals(partybuffGroups[0].userBuff[debuffIdxList[randIdx]].buffData.BuffKind)) {
+                    if (ownBuff[j].buffData.check_nesting)
+                        ownBuff[j].count = 1;       // 디버프 해제 : 1
+                    ownBuff[j].duration = 0;
+                    break;
+                }
+            }
+
             NetworkMng.I.SendMsg(string.Format("BUFF:1:{0}:{1}", partybuffGroups[0].userBuff[ debuffIdxList[randIdx] ].buffData.BuffKind.ToString(), NetworkMng.I.uniqueNumber));
         }
     }
@@ -434,5 +527,25 @@ public class StateMng : MonoBehaviour
     public bool isDebuff(BUFF b)
     {
         return b.Equals(BUFF.DEBUFF_BUPAE) || b.Equals(BUFF.DEBUFF_CHIMSIK) || b.Equals(BUFF.DEBUFF_JAMSIK) || b.Equals(BUFF.DEBUFF_SHIELD);
+    }
+
+    public void partyExit()
+    {
+        // 홈에서만 파티탈퇴가 가능함
+        if (!NetworkMng.I.myRoom.Equals(ROOM_CODE.HOME))
+            return;
+        
+        NetworkMng.I.roomOwner = false;
+        
+        for (int i = 0; i < 4; i++) {
+            PartyHPImg[i].transform.parent.gameObject.SetActive(false);
+            // TODO : 창 false 해버리면 활성화되어있던 버프들 쿨돌던것도 멈춰서 이후 파티 다시 받았을때 재활성화 되어버림
+            //   duration 을 모두 0으로 해버러셔 1초안에  스스로 비활성화하게 하거나 직접 코루틴 모두 중단해야함
+        }
+
+        NetworkMng.I.v_party.Clear();
+        NetworkMng.I.SendMsg(string.Format("EXIT_PARTY:{0}", NetworkMng.I.roomOwner ? 1 : 0));
+
+
     }
 }

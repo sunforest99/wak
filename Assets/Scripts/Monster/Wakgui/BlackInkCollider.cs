@@ -12,7 +12,7 @@ public class BlackInkCollider : DestroySelf
     {   
         if (DungeonMng._dungeon_Type.Equals(DUNGEON_TYPE.MONSTER_PURPLER))
         {
-            damage *= Mathf.FloorToInt(damage * 1.5f);
+            damage = Mathf.FloorToInt(damage * 1.5f);
         }
     }
 

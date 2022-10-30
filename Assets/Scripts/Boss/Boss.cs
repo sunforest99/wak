@@ -71,6 +71,10 @@ public class Boss : MonoBehaviour
         }
     }
 
+    // 보스 사망 관련 =================================================================================================
+    [SerializeField] GameObject clearUI;
+    [SerializeField] GameObject clearEff;
+
     /**
      * @brief 보스 초기화
      */
@@ -98,6 +102,10 @@ public class Boss : MonoBehaviour
 
         _baseUI.bosshpText.text = string.Format("{0} / {1}", 0, bossdata.getStartHp);
         _baseUI.nestingHp.text = string.Format("X {0}", 0);
+
+        animator.SetTrigger("Die");
+        clearUI.SetActive(true);
+        clearEff.SetActive(true);
     }
 
     /**
@@ -238,6 +246,11 @@ public class Boss : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void removeTarget(string target)
+    {
+        targetList.Remove(target);
     }
 
     public virtual void Raid_Start() { }

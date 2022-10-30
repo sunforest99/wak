@@ -61,11 +61,12 @@ public class NetworkMng : MonoBehaviour
     static Socket socket = null;
     public string address = "127.0.0.1";    // 주소, 서버 주소와 같게 할 것
     int port = 10000;                       // 포트 번호, 서버포트와 같게 할 것
+    public static string DB_URL = "localhost:3000/";
     byte[] buf = new byte[4096];
     int recvLen = 0;
 
     // 유저 데이터 =========================================================================================================
-    public ROOM_CODE myRoom = ROOM_CODE.HOME;                  // 현재 내 위치
+    public ROOM_CODE myRoom = ROOM_CODE.NONE;                  // 현재 내 위치
     public string uniqueNumber = "";        // 나 자신을 가리키는 고유 숫자
     public Dictionary<string, Character> v_users = new Dictionary<string, Character>();        // 맵에 같이 있는 유저들
     public Dictionary<string, PartyData> v_party = new Dictionary<string, PartyData>();        // 파티원들  (v_users안에도 파티원들이 있긴함)
@@ -363,9 +364,12 @@ public class NetworkMng : MonoBehaviour
                 Debug.Log("&&&&&&&&&&&&&&&&&&&& 여기 뜰 ");
                 SomeoneExitParty(txt[1]);
             }
+            try {
+                Destroy(v_users[txt[1]].gameObject);
+                v_users.Remove(txt[1]);
+            } catch(KeyNotFoundException e) {
 
-            Destroy(v_users[txt[1]].gameObject);
-            v_users.Remove(txt[1]);
+            }
         }
         else if (txt[0].Equals("PARTY_HP"))
         {
@@ -377,12 +381,11 @@ public class NetworkMng : MonoBehaviour
             GameMng.I.stateMng.ShieldPos();
             if (txt[2].Equals("0")) {
                 v_users[txt[1]]._anim.SetTrigger("Die");
+                v_users[txt[1]].enabled = false;
+
+                GameMng.I.boss.removeTarget(txt[1]);
             }
             // GameMng.I.stateMng.ShieldPos();
-        }
-        else if (txt[0].Equals("PARTY_BUFF"))
-        {
-
         }
         else if (txt[0].Equals("INVITE_PARTY"))
         {
@@ -431,7 +434,7 @@ public class NetworkMng : MonoBehaviour
             else
                 voteRefuse++;
             
-            GameMng.I.alertMessage.text = string.Format("파티원이 맵 이동을 권유합니다. \n 수락 : {0}  거절 : {1}", voteAgree, voteRefuse);
+            setAlertMessage((ROOM_CODE)Enum.Parse(typeof(ROOM_CODE), GameMng.I.alertMessage.name));
             
             // 모두 투표
             if (voteAgree + voteRefuse == v_party.Count + 1)
@@ -449,6 +452,8 @@ public class NetworkMng : MonoBehaviour
                     // 반대가 있음 -> 거절됨
                     GameMng.I.showNotice("맵 이동을 모두 찬성해야 합니다.");
                 }
+                voteAgree = 0;
+                voteRefuse = 0;
             }
             //!! 일반적으로 방 변경할때는 CHANGE_ROOM이나, 레이드 정비소 및 보스재입장 시에는 CHANGE_ROOM_PARTY 을 호출해야함
         }
@@ -570,9 +575,6 @@ public class NetworkMng : MonoBehaviour
                 GameMng.I.boss.BuffActive( Resources.Load<BuffData>($"Buff/{txt[1]}") );
             else if (txt[1].Equals("3"))
                 GameMng.I.stateMng.partyRemoveBuffAll(v_party[txt[3]].partyNumber);
-        }
-        else if (txt[0].Equals("BUFF_BOSS"))
-        {
         }
     }
 
@@ -728,6 +730,7 @@ public class NetworkMng : MonoBehaviour
         switch (roomCode)
         {
             case ROOM_CODE.HOME:
+                GameMng.I.stateMng.partyExitBT.SetActive(true);
                 SceneManager.LoadScene("MainScene");
                 break;
             case ROOM_CODE.DUNGEON_0:
@@ -737,6 +740,7 @@ public class NetworkMng : MonoBehaviour
                 SceneManager.LoadScene("BossWakguiScene");
                 break;
             case ROOM_CODE.RAID_0_REPAIR:
+                GameMng.I.stateMng.partyExitBT.SetActive(false);
                 SceneManager.LoadScene("BossWakguiReadyScene");
                 break;
             case ROOM_CODE.RAID_1:
@@ -764,17 +768,35 @@ public class NetworkMng : MonoBehaviour
     public void VoteChangeScene(ROOM_CODE roomCode)
     {
         if (GameMng.I.alertMessage.transform.parent.gameObject.activeSelf) {
-            GameMng.I.showNotice("방 변경을 투표하지 못하는 상황입니다.");
+            GameMng.I.showNotice("맵 이동을 투표하지 못하는 상황입니다.");
         }
         SendMsg(string.Format("REQ_VOTE_ROOM_CHANGE:{0}", (int)roomCode));
         
         voteAgree = 1;
         voteRefuse = 0;
         GameMng.I.alertMessage.name = (int)roomCode + "";       // 변경할 방 코드 임시 저장
-        GameMng.I.alertMessage.text = "파티원에게 맵 이동 권유중... \n 수락 : 1  거절 : 0";
+        setAlertMessage(roomCode);
         GameMng.I.alertMessage.transform.parent.gameObject.SetActive(true);
         GameMng.I.agreeBT.interactable = false;
         GameMng.I.refuseBT.interactable = false;
+    }
+
+    public void setAlertMessage(ROOM_CODE roomCode)
+    {
+        switch (roomCode) {
+            case ROOM_CODE.HOME:
+                GameMng.I.alertMessage.text = $"마을로 이동 투표중... \n 수락 : {voteAgree}  거절 : {voteRefuse}";
+                break;
+            case ROOM_CODE.RAID_0_REPAIR:
+            case ROOM_CODE.RAID_1_REPAIR:
+                GameMng.I.alertMessage.text = $"정비소로 이동합니다... \n 수락 : {voteAgree}  거절 : {voteRefuse}";
+                break;
+            case ROOM_CODE.RAID_0:
+            case ROOM_CODE.RAID_1:
+            case ROOM_CODE.RAID_2:
+                GameMng.I.alertMessage.text = $"레이드 입장 준비중... \n 수락 : {voteAgree}  거절 : {voteRefuse}";
+                break;
+        }
     }
 
     /**
@@ -890,5 +912,15 @@ public class NetworkMng : MonoBehaviour
         {
             GameMng.I.stateMng.PartyHPImg[0].transform.parent.gameObject.SetActive(false);   // 파티원 제거
         }
+    }
+
+    public bool isRaidRoom()
+    {
+        return myRoom.Equals(ROOM_CODE.RAID_0) || myRoom.Equals(ROOM_CODE.RAID_1) || myRoom.Equals(ROOM_CODE.RAID_2);
+    }
+
+    public bool isOnlineRoom()
+    {
+        return myRoom > ROOM_CODE._WORLD_MAP_;
     }
 }

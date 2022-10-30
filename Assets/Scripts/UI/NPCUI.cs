@@ -69,4 +69,11 @@ public class NPCUI : MonoBehaviour
         }
     }
 
+    public void activeSelectUI(bool isFvItemOn = true)
+    {
+        npcFavoriteItemImg.transform.parent.gameObject.SetActive(isFvItemOn);
+        
+        npcSelectUI.SetActive(true);
+    }
+
 }

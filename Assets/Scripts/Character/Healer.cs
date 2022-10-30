@@ -111,6 +111,7 @@ public class Healer : Character
         GameMng.I.stateMng.user_Shield_Numerical.Add(
             new ShieldBuff(5, Mathf.FloorToInt(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.3f))
         );
+        GameMng.I.stateMng.ShieldPos();
         
         GameMng.I.stateMng.ActiveBuff(
             skilldatas[1].getBuffData

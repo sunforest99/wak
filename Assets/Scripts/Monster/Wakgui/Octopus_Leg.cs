@@ -10,12 +10,13 @@ public class Octopus_Leg : MonoBehaviour
     {   
         if (DungeonMng._dungeon_Type.Equals(DUNGEON_TYPE.MONSTER_PURPLER))
         {
-            damage *= Mathf.FloorToInt(damage * 1.5f);
+            damage = Mathf.FloorToInt(damage * 1.5f);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(damage);
         if (other.CompareTag("Player"))
         {
             // TODO : 기절 추가할지 고민
