@@ -193,6 +193,7 @@ public class UIManager : MonoBehaviour
     
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         _canvas.worldCamera = Camera.main;
+        GameMng.I.chatMng.ChatReset();
         // GameMng.I.npcUI._startLoad.SetActive(true);
     }
 

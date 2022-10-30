@@ -16,7 +16,6 @@ public class ChatMng : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             //if (!chatPanel.activeSelf)
-
             // 채팅모드가 아닐때 엔터를 누르면 채팅 모드로 전환
             if (!GameMng.I._keyMode.Equals(KEY_MODE.TYPING_MODE))
             {
@@ -53,6 +52,16 @@ public class ChatMng : MonoBehaviour
                 chatInput.text = "";
             }
         }
+    }
+
+    public void ChatReset()
+    {
+        chatAnim.ResetTrigger("ChatOpen");
+        chatAnim.ResetTrigger("ChatClose");
+        chatAnim.ResetTrigger("MessageOpen");
+        chatAnim.SetTrigger("Reset");
+        myChatField = "";
+        chatInput.text = "";
     }
 
     public void InputChat()

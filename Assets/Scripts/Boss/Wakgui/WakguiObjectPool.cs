@@ -83,6 +83,7 @@ public class WakguiObjectPool : MonoBehaviour
 
     public void setWaveObject(float posX, float posZ)
     {
+        try {
         for (int i = 0; i < wavesPool.Count; i++)
         {
             if (!wavesPool[i].gameObject.activeSelf)
@@ -92,6 +93,9 @@ public class WakguiObjectPool : MonoBehaviour
                 wavesPool[i].gameObject.SetActive(true);
                 break;
             }
+        }
+        } catch (System.ArgumentOutOfRangeException e) {
+            Debug.Log("TODO : 인덱스 에러  고쳐야함 " + e);
         }
     }
 

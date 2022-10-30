@@ -52,7 +52,7 @@ public class EstherManager : MonoBehaviour
         // TODO : 클라마다 Start와 Update 시작이 다름. 방장만 게이지 관리
         setGauge(0);
        
-        NetworkMng.I.myRoom = ROOM_CODE.RAID_1; // TODO : 나중에는 무조건 변경된 이후에야 이곳이 열리기 때문에 지워도 됨
+        // NetworkMng.I.myRoom = ROOM_CODE.RAID_0; // TODO : 나중에는 무조건 변경된 이후에야 이곳이 열리기 때문에 지워도 됨
         // if (NetworkMng.I.myRoom.Equals(ROOM_CODE.RAID_0))
     }
 
@@ -259,7 +259,11 @@ public class EstherManager : MonoBehaviour
             // 피가 0 이상이면, (살아있으면)
             // if 
             // 아이네 이펙트 생성하고 그 캐릭터한테 붙이기 (쉴드)
-            Instantiate(estherSkill[1], transform.position, Quaternion.identity, user.Value.transform);
+            if (user.Value.enabled) {
+                GameObject ob = Instantiate(estherSkill[1], user.Value.transform);
+                ob.transform.localPosition = Vector3.zero;
+                // ob.transform.localScale = new Vector3(2, 2, 2);
+            }
         }
         
         GameMng.I.stateMng.user_Shield_Numerical.Add(
@@ -288,10 +292,13 @@ public class EstherManager : MonoBehaviour
         {
             // 피가 0 이상이면, (살아있으면)
             // 주르르 이펙트 생성하고 그 캐릭터한테 붙이기 (쿨감 & 뎀감)
-            if (GameMng.I.stateMng.Party_HP_Numerical[ NetworkMng.I.v_party[user.Key].partyNumber ].hpPer > 0)
-                Instantiate(estherSkill[2], transform.position, Quaternion.identity, user.Value.transform);
+            if (user.Value.enabled) {
+                GameObject ob = Instantiate(estherSkill[2], user.Value.transform);
+                ob.transform.localPosition = Vector3.zero;
+                ob.transform.localScale = new Vector3(2, 2, 2);
+            }
         }
-        GameMng.I.stateMng.ActiveBuff(estherBuffDatas[1]);
+        GameMng.I.stateMng.ActiveBuff(estherBuffDatas[0]);
     }
 
     /*

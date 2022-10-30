@@ -179,7 +179,7 @@ public class Wakgui : Boss
         {
             if (baseAttackCount < 4)
             {
-                pattern_rand = Random.Range((int)WAKGUI_ACTION.BASE_STAP, (int)WAKGUI_ACTION.BASE_RUSH + 1);
+                pattern_rand = Random.Range((int)WAKGUI_ACTION.IDLE, (int)WAKGUI_ACTION.BASE_RUSH + 1);
                 switch (pattern_rand)
                 {
                     case (int)WAKGUI_ACTION.IDLE:
@@ -207,7 +207,7 @@ public class Wakgui : Boss
 
             else
             {
-                // pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
+                pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
                 pattern_rand = (int)WAKGUI_ACTION.PATTERN_WAVE;
                 switch (pattern_rand)
                 {

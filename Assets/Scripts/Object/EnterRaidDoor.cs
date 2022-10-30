@@ -18,4 +18,16 @@ public class EnterRaidDoor : MonoBehaviour
             }
         }
     }
+
+
+    /**
+     * @brief 레이드 도전 중단 UI
+     */
+    public void stopRaid()
+    {
+        if (!NetworkMng.I.v_party.Count.Equals(0))
+            NetworkMng.I.VoteChangeScene(ROOM_CODE.HOME);
+        else
+            NetworkMng.I.changeRoom(ROOM_CODE.HOME);
+    }
 }

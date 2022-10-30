@@ -496,11 +496,13 @@ public class Character : MonoBehaviour
                 GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.33 * Character._stat.takenHealPer);
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
+                GameMng.I.stateMng.PlayerHP();
                 break;
             case ITEM_INDEX.POTION_2:
                 GameMng.I.stateMng.user_HP_Numerical.Hp += (int)(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.24 * Character._stat.takenHealPer);
                 if (GameMng.I.stateMng.user_HP_Numerical.Hp > GameMng.I.stateMng.user_HP_Numerical.fullHp)
                     GameMng.I.stateMng.user_HP_Numerical.Hp = GameMng.I.stateMng.user_HP_Numerical.fullHp;
+                GameMng.I.stateMng.PlayerHP();
                 break;
             case ITEM_INDEX.CLEANSER:
                 GameMng.I.stateMng.removeRandomDebuff();
@@ -509,6 +511,7 @@ public class Character : MonoBehaviour
                 GameMng.I.stateMng.user_Shield_Numerical.Add(
                     new ShieldBuff(5, Mathf.FloorToInt(GameMng.I.stateMng.user_HP_Numerical.fullHp * 0.3f))
                 );
+                GameMng.I.stateMng.ShieldPos();
                 break;
             case ITEM_INDEX.DMGUP:
                 GameMng.I.stateMng.ActiveOwnBuff(Resources.Load<BuffData>("Buff/BUFF_NESIGYUNG"));

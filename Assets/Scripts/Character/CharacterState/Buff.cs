@@ -12,7 +12,7 @@ public class Buff : Tooltips, IPointerEnterHandler, IPointerExitHandler
     public UnityEngine.UI.Image BuffImg;
 
     public int duration;                     // 버프가 유지된 카운트
-    public int count;                           // 중첩 갯수
+    public int count = 1;                           // 중첩 갯수
 
     public bool isApply;
 
@@ -60,7 +60,7 @@ public class Buff : Tooltips, IPointerEnterHandler, IPointerExitHandler
             //     StateMngSc.nPlayerDeBuffCount--;
             GameMng.I.stateMng.nPlayerBuffCount--;
             isApply = false;
-            count = 0;
+            count = 1;
             gameObject.SetActive(false);
         }
         // TODO : 중첩 하기

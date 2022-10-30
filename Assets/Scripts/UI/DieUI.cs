@@ -7,7 +7,8 @@ public class DieUI : MonoBehaviour
     [SerializeField] GameObject dungeonDieUI;
     [SerializeField] GameObject raidFailUI;
     // [SerializeField] GameObject dungeonClearUI;
-    
+    [SerializeField] GameObject mustDieUI;
+
     /**
      * @brief 던전에서 사망했을때
      */
@@ -52,5 +53,13 @@ public class DieUI : MonoBehaviour
     public void backToSquare()
     {
         NetworkMng.I.changeRoom(ROOM_CODE.HOME);
+    }
+
+    /**
+     * @brief 즉시사망 (UI 애니메이션 실행)
+     */
+    public void mustDieAnim()
+    {
+        mustDieUI.SetActive(true);
     }
 }
