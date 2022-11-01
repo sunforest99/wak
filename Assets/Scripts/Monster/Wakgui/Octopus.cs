@@ -13,8 +13,8 @@ public class Octopus : Monster
     protected override void Awake()
     {
         base.Awake();
-        _hp = 30000000;
-        _fullHp = 30000000;
+        _hp = 30000;
+        _fullHp = 30000;
         _nearness = 2;
         _moveSpeed = 0.1f;
 
@@ -73,27 +73,24 @@ public class Octopus : Monster
 
     protected override IEnumerator think()
     {
-        yield return new WaitForSecondsRealtime(Random.Range(3f, 5f));
+        yield return new WaitForSecondsRealtime(Random.Range(2f, 3f));
 
         int pattern = decideAct();
         doSomething(pattern);
     }
     
+    int beforeAct = 1;
     protected override int decideAct()
     {
         float distance = getDistanceFromTarget(_target.position);
-        int rand = Random.Range(0, 100);
 
-        /*
-            문어두 패턴
-
-            50 : 기본 공격
-            50 : 패턴1
-            대상과 거리가 멀다면
-        */
-        if (rand < 50)
-            return 1;
-        return 2;               // 패턴 1
+        if (beforeAct.Equals(1))
+        {
+            beforeAct = 2;
+            return 2;
+        }
+        beforeAct = 1;
+        return 1;
     }
 
     protected override void OnDestroy() {

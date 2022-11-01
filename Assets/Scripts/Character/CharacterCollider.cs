@@ -68,6 +68,11 @@ public class CharacterCollider : MonoBehaviour
     {   
         if (other.CompareTag("Boss_Weapon"))
         {
+            GameMng.I.showEff(EFF_TYPE.TAKEN_EFF, new Vector3(
+                transform.position.x + Random.Range(-0.1f, 0.1f),
+                other.ClosestPoint(transform.position).y,
+                transform.position.z
+            ));
             GameMng.I.stateMng.takeDamage(GameMng.I.boss.bossData.getDamage());
         }
     }
