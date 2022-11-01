@@ -45,6 +45,8 @@ public class Bird : MonoBehaviour
     {
         // if(other.CompareTag("Player"))
         // {
+            
+            // GameMng.I.showEff(EFF_TYPE.TAKEN_EFF, this.transform.localPosition);
         //     GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.boss.bossData.getBuffs[2]);
         //     GameMng.I.stateMng.takeDamage(damage);
         // }

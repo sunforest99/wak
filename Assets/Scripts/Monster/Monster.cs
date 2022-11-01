@@ -106,10 +106,10 @@ public class Monster : MonoBehaviour
     {
         if (isMoving)
         {
-            // if (_target.position.x < transform.position.x)
-            //     _body.transform.rotation = Quaternion.Euler(20, 0, 0);
-            // else
-            //     _body.transform.rotation = Quaternion.Euler(-20, 180, 0);
+            if (_target.position.x < transform.position.x)
+                _body.transform.rotation = Quaternion.Euler(20, 0, 0);
+            else
+                _body.transform.rotation = Quaternion.Euler(-20, 180, 0);
                 
             // _target 한테 move
             if (Vector3.Distance(_target.position, transform.position) > _nearness)

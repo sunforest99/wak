@@ -10,6 +10,7 @@ public class Bird_1_Attack : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            GameMng.I.showEff(EFF_TYPE.TAKEN_EFF, transform.position);
             GameMng.I.stateMng.takeDamage(damage);
         }
     }

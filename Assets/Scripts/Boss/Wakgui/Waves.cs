@@ -62,12 +62,13 @@ public class Waves : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
+            GameMng.I.showEff(EFF_TYPE.TAKEN_EFF, this.transform.position);
             GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.boss.bossData.getBuffs[2]);
             GameMng.I.stateMng.takeDamage(damage);
         }
         else if(other.CompareTag("Map_Wall"))
         {
-            GameMng.I.showEff(EFF_TYPE.REMOVE_EFF, this.transform.localPosition);
+            GameMng.I.showEff(EFF_TYPE.REMOVE_EFF, this.transform.position);
             this.transform.localPosition = Vector3.zero;
             this.transform.localRotation =Quaternion.identity;
             this.gameObject.SetActive(false);

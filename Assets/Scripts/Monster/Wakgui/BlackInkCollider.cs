@@ -21,6 +21,8 @@ public class BlackInkCollider : DestroySelf
         if (other.CompareTag("Player"))
         {
             contactTime = 0;
+            
+            GameMng.I.showEff(EFF_TYPE.TAKEN_EFF, other.transform.position);
             GameMng.I.stateMng.takeDamage(damage);
         }
     }
@@ -31,6 +33,7 @@ public class BlackInkCollider : DestroySelf
         {
             contactTime += Time.deltaTime;
             if (contactTime >= 0.1f) {
+                GameMng.I.showEff(EFF_TYPE.TAKEN_EFF, other.transform.position);
                 GameMng.I.stateMng.takeDamage(damage);
                 // 디버프를 줄 지 고민중
                 contactTime -= 0.1f;

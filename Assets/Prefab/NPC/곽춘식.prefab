@@ -685,8 +685,8 @@ GameObject:
   - component: {fileID: 8760205243968359121}
   - component: {fileID: 8760205243968359125}
   - component: {fileID: 8760205243968359122}
-  - component: {fileID: 8760205243968359123}
   - component: {fileID: 8760205243968359120}
+  - component: {fileID: 3858143683266890229}
   m_Layer: 0
   m_Name: "\uACFD\uCD98\uC2DD"
   m_TagString: Npc
@@ -740,26 +740,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 2.5, z: 0.5}
   m_Center: {x: 0, y: -0.2, z: 0}
---- !u!95 &8760205243968359123
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8760205243968359134}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ede6ed6d7f479754f9ad9d22a2057e28, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &8760205243968359120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -775,9 +755,29 @@ MonoBehaviour:
   isDialog: 0
   speechTxt: {fileID: 3808737070308954124}
   speechBG: {fileID: 3808737071191579993}
-  _anim: {fileID: 8760205243968359123}
+  _anim: {fileID: 0}
   favoriteItem: {fileID: 11400000, guid: d1baa9eeec06d28498b32a5ae321dade, type: 2}
   questIcon: {fileID: 8760205242562753282}
+--- !u!95 &3858143683266890229
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8760205243968359134}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9d8c2c800bf7b0f4cb83893065a50e11, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &8760205242036963973
 PrefabInstance:
   m_ObjectHideFlags: 0

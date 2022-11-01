@@ -21,6 +21,12 @@ public class Octopus_Leg : MonoBehaviour
         {
             // TODO : 기절 추가할지 고민
             // GameMng.I.character.sleep();
+            
+            GameMng.I.showEff(EFF_TYPE.TAKEN_EFF, new Vector3(
+                other.transform.position.x,
+                other.transform.position.y + 1,
+                other.transform.position.z
+            ));
             GameMng.I.stateMng.takeDamage(damage);
         }
     }

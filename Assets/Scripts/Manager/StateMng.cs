@@ -410,6 +410,8 @@ public class StateMng : MonoBehaviour
         ShieldPos();
         PlayerHP();
 
+        MCamera.I.shake(3, .1f);
+
 
         if (user_HP_Numerical.Hp <= 0 && GameMng.I.character.enabled)
         {

@@ -277,7 +277,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7232264985915250681}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.808, z: -0}
+  m_LocalPosition: {x: 0, y: -0.808, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -433,8 +433,7 @@ GameObject:
   - component: {fileID: 7232264986423921289}
   - component: {fileID: 7232264986423921293}
   - component: {fileID: 7232264986423921290}
-  - component: {fileID: 7232264986423921291}
-  - component: {fileID: 7232264986423921288}
+  - component: {fileID: 6443133165034854658}
   m_Layer: 0
   m_Name: "\uBD80\uC815\uD615"
   m_TagString: Npc
@@ -451,7 +450,7 @@ Transform:
   m_GameObject: {fileID: 7232264986423921286}
   m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
   m_LocalPosition: {x: 0.738, y: 0.77, z: 12.9}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_LocalScale: {x: 1.1666666, y: 1.1666666, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7232264986590422253}
@@ -488,7 +487,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 2.5, z: 0.5}
   m_Center: {x: 0, y: -0.2, z: 0}
---- !u!95 &7232264986423921291
+--- !u!95 &6443133165034854658
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -498,7 +497,7 @@ Animator:
   m_GameObject: {fileID: 7232264986423921286}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ede6ed6d7f479754f9ad9d22a2057e28, type: 2}
+  m_Controller: {fileID: 9100000, guid: e047d24b561f44c46be5de41c5c7694c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -508,24 +507,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7232264986423921288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7232264986423921286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03b06a67f6cdbac499d894a114d72331, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDialog: 0
-  speechTxt: {fileID: 2961099992641835092}
-  speechBG: {fileID: 2961099993488350465}
-  _anim: {fileID: 7232264986423921291}
-  favoriteItem: {fileID: 11400000, guid: d1baa9eeec06d28498b32a5ae321dade, type: 2}
-  questIcon: {fileID: 7232264985009927002}
 --- !u!1 &7232264986590422250
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,17 +877,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5569222582844021390, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
   m_PrefabInstance: {fileID: 7232264985535335133}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2961099992641835092 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5569222582844021385, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
-  m_PrefabInstance: {fileID: 7232264985535335133}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2961099993488350465 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5569222583424686044, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
