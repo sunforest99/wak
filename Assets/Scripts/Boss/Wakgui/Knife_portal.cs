@@ -1,30 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Knife_portal : MonoBehaviour
 {
     int damage;
     [SerializeField] Animator animator;
+    [SerializeField] IObjectPool<Knife_portal> knifePool;
 
     void Start()
     {
-        damage = GameMng.I.boss.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_KNIFE);
+        damage = 1000;
+        Invoke("HoxyDestory", 10.0f);
     }
 
-    // void Update()
-    // {
-    //     if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 2.0f)
-    //     {
-    //         this.transform.localPosition = Vector3.zero;
-    //         this.gameObject.SetActive(false);
-    //     }
-    // }
+    public void setPool(IObjectPool<Knife_portal> pool)
+    {
+        knifePool = pool;
+    }
     
     void animationDone()
     {
         this.transform.localPosition = Vector3.zero;
-        this.gameObject.SetActive(false);
+        knifePool.Release(this);
+    }
+
+    void HoxyDestory()
+    {
+        knifePool.Release(this);
     }
 
     private void OnTriggerEnter(Collider other)

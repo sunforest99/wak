@@ -1,12 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Bullet : MonoBehaviour
 {
     [SerializeField] Rigidbody _rigidbody;
 
     [SerializeField] float speed = 5.0f;
+
+    [SerializeField] IObjectPool<Bullet> bulletPool;
+    
+    public void setPool(IObjectPool<Bullet> pool)
+    {
+        bulletPool = pool;
+    }
+
     int damage;
     void Start()
     {
@@ -20,8 +29,7 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-        {
-            
+        {   
             GameMng.I.showEff(EFF_TYPE.TAKEN_EFF, this.transform.position);
             GameMng.I.stateMng.takeDamage(damage);
             ActiveFalse();
@@ -41,6 +49,6 @@ public class Bullet : MonoBehaviour
     {
         this.transform.localPosition = Vector3.zero;
         this.transform.localRotation = Quaternion.identity;
-        this.gameObject.SetActive(false);
+        bulletPool.Release(this);
     }
 }

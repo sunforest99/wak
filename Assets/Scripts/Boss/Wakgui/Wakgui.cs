@@ -28,11 +28,11 @@ public enum WAKGUI_ACTION
 public class Wakgui : Boss
 {
     [System.Serializable]
-    struct pattenObj
+    public struct pattenObj
     {
-        public GameObject knife;        // <! 칼날 공격
-        public GameObject waves;        // <! 파도 공격
-        public GameObject cristal;      // <! 닷지류 수정 생성
+        // public Knife_portal knife;        // <! 칼날 공격
+        // public Waves waves;        // <! 파도 공격
+        // public CristalPool cristal;      // <! 닷지류 수정 생성
         public GameObject poo;
         public GameObject[] circle;
         public GameObject outcast;
@@ -40,6 +40,7 @@ public class Wakgui : Boss
     }
     // 패턴 ======================================================================================================
     [Header("패턴")]
+    public List<int> waveRand = new List<int>() ;       // 파도 랜덤값
     private int pattern_rand;       // <! 패턴 랜덤값
     public WAKGUI_ACTION action;    // 현재 패턴
     [SerializeField] private int baseAttackCount;       // <! 기본패턴 몇번 후 패턴 사용할 것인지 (나중에 바꿀듯)
@@ -76,7 +77,7 @@ public class Wakgui : Boss
     public List<Vector3> spawnPattenVec = new List<Vector3>();
     public bool jump;
 
-    public WakguiObjectPool objectPool;
+    // public WakguiObjectPool objectPool;
 
     void Start()
     {
@@ -100,9 +101,9 @@ public class Wakgui : Boss
     {
         if (_currentHp >= 0 && action == WAKGUI_ACTION.IDLE && _target != null)
             base.BossMove();
-        
+
         else if (jump)
-                this.transform.localPosition = new Vector3(_target.transform.localPosition.x, this.transform.localPosition.y, _target.transform.localPosition.z);
+            this.transform.localPosition = new Vector3(_target.transform.localPosition.x, this.transform.localPosition.y, _target.transform.localPosition.z);
     }
 
     void Update()
@@ -114,7 +115,7 @@ public class Wakgui : Boss
                 return;
 
             _targetDistance = Vector3.Distance(_target.position, this.transform.position);
-            
+
             base.ChangeHpbar();
             base.RaidTimer();
             base.ChangeHpText();
@@ -207,8 +208,8 @@ public class Wakgui : Boss
 
             else
             {
-                pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
-                pattern_rand = (int)WAKGUI_ACTION.PATTERN_WAVE;
+                // pattern_rand = Random.Range((int)WAKGUI_ACTION.PATTERN_POO, (int)WAKGUI_ACTION.PATTERN_COUNTER + 1);
+                pattern_rand = (int)WAKGUI_ACTION.PATTERN_CRISTAL;
                 switch (pattern_rand)
                 {
                     case (int)WAKGUI_ACTION.PATTERN_POO:      // <! 똥 생성
@@ -297,7 +298,7 @@ public class Wakgui : Boss
         Debug.Log(" 현재 파티 수 : " + NetworkMng.I.v_party.Count);
 
         NetworkMng.I.v_users.Add(NetworkMng.I.uniqueNumber, GameMng.I.character);
-        
+
         foreach (var trans in NetworkMng.I.v_users)
         {
             targetList.Add(trans.Key);
@@ -365,7 +366,7 @@ public class Wakgui : Boss
                 marblelist[int.Parse(txt[2])].gameObject.SetActive(false);
                 break;
             case (int)WAKGUI_ACTION.CRISTAL_BROKEN:
-                objectPool.enableCirstal(int.Parse(txt[2]));
+                // objectPool.enableCirstal(int.Parse(txt[2]));
                 break;
             case (int)WAKGUI_ACTION.PATTERN_OUTCAST:      // <! 전멸기 토템 페턴
                 outcastRand = int.Parse(txt[2]);
@@ -432,7 +433,6 @@ public class Wakgui : Boss
         spawnPattenVec.Clear();
         for (int i = 2; i < txt.Length - 1; i += 2)
             spawnPattenVec.Add(new Vector3(float.Parse(txt[i]), 0, float.Parse(txt[i + 1])));
-        // objectPool.setKnifeActive(posX, posZ);
     }
 
     /**
@@ -454,11 +454,11 @@ public class Wakgui : Boss
         animator.SetTrigger("Cristal");
 
         spawnPattenVec.Clear();
-        objectPool.rand.Clear();
+        // objectPool.rand.Clear();
         for (int i = 2; i < txt.Length - 2; i += 3)
         {
             spawnPattenVec.Add(new Vector3(float.Parse(txt[i]), 0, float.Parse(txt[i + 1])));
-            objectPool.rand.Add(int.Parse(txt[i + 2]));
+            // objectPool.rand.Add(int.Parse(txt[i + 2]));
         }
         // objectPool.setCristalActive(posX, posZ);
     }
@@ -471,11 +471,11 @@ public class Wakgui : Boss
         animator.SetTrigger("Wave");
 
         spawnPattenVec.Clear();
-        objectPool.rand.Clear();
+        waveRand.Clear();
         for (int i = 2; i < txt.Length - 2; i += 3)
         {
             spawnPattenVec.Add(new Vector3(float.Parse(txt[i]), 0, float.Parse(txt[i + 1])));
-            objectPool.rand.Add(int.Parse(txt[i + 2]));
+            waveRand.Add(int.Parse(txt[i + 2]));
         }
         // objectPool.WaveObject(posX, posZ, rand);
     }

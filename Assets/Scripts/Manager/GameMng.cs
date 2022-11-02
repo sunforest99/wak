@@ -475,7 +475,7 @@ public class GameMng : MonoBehaviour
                 break;
         }
         obj.transform.position = pos;
-        obj.gameObject.SetActive(true);
+        obj.SetActive(true);
     }
 
     public void endEff(EFF_TYPE type, GameObject obj)

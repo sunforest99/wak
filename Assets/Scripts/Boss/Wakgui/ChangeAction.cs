@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ChangeAction : MonoBehaviour
 {
+    [SerializeField] CristalPool cristalPool;
+    [SerializeField] KnifePool knifePool;
+    [SerializeField] WavePool wavePool;
+    [SerializeField] BulletPool bulletPool;
+
     [SerializeField] private Wakgui wakgui;
     [SerializeField] private GameObject shadow;
 
@@ -108,7 +113,7 @@ public class ChangeAction : MonoBehaviour
     {
         for(int i = 0; i < wakgui.spawnPattenVec.Count; i++)
         {
-            wakgui.objectPool.setWaveObject(wakgui.spawnPattenVec[i].x,wakgui.spawnPattenVec[i].z);
+            wavePool.Create(wakgui.spawnPattenVec[i].x,wakgui.spawnPattenVec[i].z, wakgui.waveRand[i]);
         }
     }
 
@@ -116,7 +121,7 @@ public class ChangeAction : MonoBehaviour
     {
        for(int i = 0; i < wakgui.spawnPattenVec.Count; i++)
         {
-            wakgui.objectPool.setCristalActive(wakgui.spawnPattenVec[i].x,wakgui.spawnPattenVec[i].z, i);
+            cristalPool.Create(wakgui.spawnPattenVec[i].x,wakgui.spawnPattenVec[i].z, i);
         }
     }
 
@@ -124,7 +129,7 @@ public class ChangeAction : MonoBehaviour
     {
         for(int i = 0; i < wakgui.spawnPattenVec.Count; i++)
         {
-            wakgui.objectPool.setKnifeActive(wakgui.spawnPattenVec[i].x,wakgui.spawnPattenVec[i].z);
+            knifePool.Create(wakgui.spawnPattenVec[i].x,wakgui.spawnPattenVec[i].z);
         }
     }
 
