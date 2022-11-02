@@ -1,19 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Bird : MonoBehaviour
 {
     [SerializeField] Rigidbody _rigidbody;
+    [SerializeField] IObjectPool<Bird> birdPool;
 
     public int rand;
     int damage;
 
     void Start()
     {
-        // damage = GameMng.I.boss.bossData.getDamage((int)WAKGUI_ACTION.PATTERN_WAVE);
 
-        // _rigidbody.velocity = transform.TransformDirection(Vector3.left * 3f);
+    }
+
+    public void setPool(IObjectPool<Bird> pool)
+    {
+        birdPool = pool;
     }
 
     private void OnEnable()
@@ -27,7 +32,6 @@ public class Bird : MonoBehaviour
             case (int)POS.DOWN:
                 this.transform.localRotation = Quaternion.Euler(90.0f, 0, 90.0f);
                 break;
-
 
             case (int)POS.RIGHT:
                 this.transform.localRotation = Quaternion.Euler(90.0f, 0, 180.0f);
@@ -43,6 +47,7 @@ public class Bird : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // 여기 왜 주석?
         // if(other.CompareTag("Player"))
         // {
             
@@ -59,7 +64,7 @@ public class Bird : MonoBehaviour
             GameMng.I.showEff(EFF_TYPE.REMOVE_EFF, this.transform.localPosition);
             this.transform.localPosition = Vector3.zero;
             this.transform.localRotation = Quaternion.identity;
-            this.gameObject.SetActive(false);
+            birdPool.Release(this);
         }
     }
 }

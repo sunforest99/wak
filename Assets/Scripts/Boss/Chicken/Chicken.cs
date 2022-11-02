@@ -29,7 +29,8 @@ public class Chicken : Boss
     private int pattern_rand;
     [SerializeField] private GameObject rockTarget;
     private int baseAttackCount;
-    public ChickenObjectPool objectPool = null;
+    [SerializeField] BirdPool birdPool;
+    [SerializeField] RockPool rockPool;
 
     [Header("[ 오레하 패턴 ]")]
     [SerializeField] private GameObject Oreha = null;
@@ -149,44 +150,44 @@ public class Chicken : Boss
             // }
             // else
             // {
-                // pattern_rand = Random.Range((int)CHICKEN_ACTION.PATTERN_BIRDS, (int)CHICKEN_ACTION.PATTERN_SPHINX + 1);
-                pattern_rand = (int)CHICKEN_ACTION.PATTERN_SPHINX;
-                switch (pattern_rand)
-                {
-                    case (int)CHICKEN_ACTION.PATTERN_BIRDS:
-                        rand = Random.Range(0, 4);
-                        SendBossPattern(pattern_rand, rand.ToString());
-                        baseAttackCount = 0;
-                        break;
-                    case (int)CHICKEN_ACTION.PATTERN_COUNTER_0:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount = 0;
-                        break;
-                    case (int)CHICKEN_ACTION.PATTERN_COUNTER_1:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount = 0;
-                        break;
-                    case (int)CHICKEN_ACTION.PATTERN_FALLING_ROCK:
-                        SendBossPattern(pattern_rand);
-                        baseAttackCount = 0;
-                        break;
-                    case (int)CHICKEN_ACTION.PATTERN_REMEMBER:
-                        action = CHICKEN_ACTION.PATTERN_REMEMBER;
-                        rand = Random.Range(0, 2);
-                        SendBossPattern(pattern_rand, rand.ToString());
-                        baseAttackCount = 0;
-                        break;
-                    case (int)CHICKEN_ACTION.PATTERN_EGG:
-                        baseAttackCount = 0;
-                        rand = Random.Range(0, 5);
-                        SendBossPattern(pattern_rand, rand.ToString() + ":" + getTarget);
-                        break;
-                    case (int)CHICKEN_ACTION.PATTERN_SPHINX:
-                        baseAttackCount = 0;
-                        rand = Random.Range(0, 4);
-                        SendBossPattern(pattern_rand, rand.ToString());
-                        break;
-                }
+            // pattern_rand = Random.Range((int)CHICKEN_ACTION.PATTERN_BIRDS, (int)CHICKEN_ACTION.PATTERN_SPHINX + 1);
+            pattern_rand = (int)CHICKEN_ACTION.PATTERN_BIRDS;
+            switch (pattern_rand)
+            {
+                case (int)CHICKEN_ACTION.PATTERN_BIRDS:
+                    rand = Random.Range(0, 4);
+                    SendBossPattern(pattern_rand, rand.ToString());
+                    baseAttackCount = 0;
+                    break;
+                case (int)CHICKEN_ACTION.PATTERN_COUNTER_0:
+                    SendBossPattern(pattern_rand);
+                    baseAttackCount = 0;
+                    break;
+                case (int)CHICKEN_ACTION.PATTERN_COUNTER_1:
+                    SendBossPattern(pattern_rand);
+                    baseAttackCount = 0;
+                    break;
+                case (int)CHICKEN_ACTION.PATTERN_FALLING_ROCK:
+                    SendBossPattern(pattern_rand);
+                    baseAttackCount = 0;
+                    break;
+                case (int)CHICKEN_ACTION.PATTERN_REMEMBER:
+                    action = CHICKEN_ACTION.PATTERN_REMEMBER;
+                    rand = Random.Range(0, 2);
+                    SendBossPattern(pattern_rand, rand.ToString());
+                    baseAttackCount = 0;
+                    break;
+                case (int)CHICKEN_ACTION.PATTERN_EGG:
+                    baseAttackCount = 0;
+                    rand = Random.Range(0, 5);
+                    SendBossPattern(pattern_rand, rand.ToString() + ":" + getTarget);
+                    break;
+                case (int)CHICKEN_ACTION.PATTERN_SPHINX:
+                    baseAttackCount = 0;
+                    rand = Random.Range(0, 4);
+                    SendBossPattern(pattern_rand, rand.ToString());
+                    break;
+            }
             // }
         }
     }
@@ -330,7 +331,8 @@ public class Chicken : Boss
 
         yield return new WaitForSecondsRealtime(1.0f);
 
-        objectPool.setBridActive(rand);
+        // 여기
+        birdPool.Create(this.transform, rand);
     }
 
     // 반격 패턴
@@ -377,21 +379,25 @@ public class Chicken : Boss
         }
     }
 
-    // 패턴 낙석 생성되면 캐릭터 자식에서 빼주기
+    // 네트워크 테스트 해보기
     IEnumerator Pattern_FallingRock()
     {
         foreach (var trans in NetworkMng.I.v_users.Values)
         {
-            GameObject temp = Instantiate(rockTarget, trans.transform.position, Quaternion.identity);
-            temp.transform.SetParent(trans.transform);      // 낙석 오브젝트를 캐릭터 자식으로 넣음
-
-            yield return new WaitForSecondsRealtime(1.0f);      // 에니메이션 
+            GameObject temp = Instantiate(rockTarget, Vector3.zero, Quaternion.Euler(90f, 0f, 0f));
+            temp.transform.SetParent(trans.transform.parent);
+            temp.transform.localPosition = new Vector3(0, 0.0f, -0.5f);
+            yield return new WaitForSecondsRealtime(1.0f);      // 1초 뒤에 꺼지게하고
+            Destroy(temp);
         }
 
         for (int i = 0; i < 3; i++)
         {
-            yield return new WaitForSecondsRealtime(2.0f);
-            objectPool.setRockActive();
+            yield return new WaitForSecondsRealtime(1.0f);   // 돌 생성 2초간격으로
+            foreach (var trans in NetworkMng.I.v_users.Values)
+            {
+                rockPool.Create(trans.transform);
+            }
         }
     }
 
