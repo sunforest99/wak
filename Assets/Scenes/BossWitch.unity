@@ -15631,7 +15631,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &766440945
 Transform:
   m_ObjectHideFlags: 0
@@ -15807,6 +15807,7 @@ GameObject:
   - component: {fileID: 788297092}
   - component: {fileID: 788297094}
   - component: {fileID: 788297093}
+  - component: {fileID: 788297095}
   m_Layer: 0
   m_Name: lazer (1)
   m_TagString: Untagged
@@ -15894,6 +15895,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &788297095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788297091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 443336303ead5ce4d92825773e3fac80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &788910038
 GameObject:
   m_ObjectHideFlags: 0
@@ -21962,6 +21975,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3543f5bb4ed1bf14082b60474c473d6f, type: 3}
   warningLineObj: {fileID: 468157635}
   exploObj: {fileID: 1488970117}
+  magicCircle: {fileID: 766440944}
   marbles:
   - {fileID: 985072887}
   - {fileID: 1202718874}
@@ -29302,6 +29316,7 @@ GameObject:
   - component: {fileID: 1212697330}
   - component: {fileID: 1212697332}
   - component: {fileID: 1212697331}
+  - component: {fileID: 1212697333}
   m_Layer: 0
   m_Name: lazer (0)
   m_TagString: Untagged
@@ -29389,6 +29404,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1212697333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212697329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 443336303ead5ce4d92825773e3fac80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1220953148
 GameObject:
   m_ObjectHideFlags: 0
@@ -33146,6 +33173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1411963353}
   - component: {fileID: 1411963354}
+  - component: {fileID: 1411963355}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -33181,6 +33209,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 15, y: 1, z: 9}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1411963355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411963352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84173a6fb4639e14fb394e9358cbf281, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1417165838
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34774,7 +34814,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1488970117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39590032a8246984c9914bd34982ae1a, type: 3}
+  m_Script: {fileID: 11500000, guid: 6242b9c7ee4e102469eef6308920ed80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1493607544
@@ -44442,7 +44482,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2035761211}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: "GameObject(\uBD90\uBFDC\uAE30... \uC784\uC2DC)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

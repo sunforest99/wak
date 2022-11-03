@@ -15,7 +15,7 @@ MonoBehaviour:
   _startHp: 142424426
   _name: "\uACC4\uB975"
   _moveSpeed: 3
-  _damage: 0000000001000000010000000100000001000000010000000100000001000000
+  _damage: 00000000401f0000b80b0000b80b0000b80b000088130000204e000010270000102700001027000010270000
   _radetime: 600
   _barColor:
   - {r: 0.60784316, g: 0.06666667, b: 0.11764706, a: 1}
@@ -26,4 +26,5 @@ MonoBehaviour:
   - {r: 0.54509807, g: 0, b: 1, a: 1}
   _maxNesting: 130
   _bossAction: 0
-  _buffdata: []
+  _buffdata:
+  - {fileID: 11400000, guid: 7de0bc46473645b44a3c50ba3e551d5d, type: 2}
