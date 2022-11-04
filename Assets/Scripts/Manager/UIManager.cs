@@ -291,20 +291,39 @@ public class UIManager : MonoBehaviour
         {
             for(int j = 0; j < Character.haveItem[i].Count; j++)
             {
-                GameMng.I.userData.inventory[i][j].item_code = (int)Character.haveItem[i][j].itemData.itemIndex;
-                GameMng.I.userData.inventory[i][j].mount = Character.haveItem[i][j].itemCount;
+                //GameMng.I.userData.inventory[i][j].item_code = (int)Character.haveItem[i][j].itemData.itemIndex;
+                //GameMng.I.userData.inventory[i][j].mount = Character.haveItem[i][j].itemCount;
             }
         }
     }
 
     void itemLoad()
     {
-        for (int i = 0; i < GameMng.I.userData.inventory.Count; i++)
+        for (int i = 0; i < 3; i++)
         {
-            for (int j = 0; j < GameMng.I.userData.inventory[i].Count; j++)
-            {
-                Character.haveItem[i].Add(new Item(Resources.Load<ItemData>($"ItemData/{((ITEM_INDEX)GameMng.I.userData.inventory[i][j].item_code).ToString()}"), GameMng.I.userData.inventory[i][j].mount));
-            }
+            Character.haveItem.Add(new List<Item>());
+        }
+
+        for (int i = 0; i < GameMng.I.userData.eq_inventory.Count; i++)
+        {
+            Character.haveItem[0].Add(new Item(
+                Resources.Load<ItemData>($"ItemData/{((ITEM_INDEX)GameMng.I.userData.eq_inventory[i].item_code).ToString()}"),
+                GameMng.I.userData.eq_inventory[i].mount
+            ));
+        }
+        for (int i = 0; i < GameMng.I.userData.fv_inventory.Count; i++)
+        {
+            Character.haveItem[1].Add(new Item(
+                Resources.Load<ItemData>($"ItemData/{((ITEM_INDEX)GameMng.I.userData.fv_inventory[i].item_code).ToString()}"),
+                GameMng.I.userData.fv_inventory[i].mount
+            ));
+        }
+        for (int i = 0; i < GameMng.I.userData.cs_inventory.Count; i++)
+        {
+            Character.haveItem[2].Add(new Item(
+                Resources.Load<ItemData>($"ItemData/{((ITEM_INDEX)GameMng.I.userData.cs_inventory[i].item_code).ToString()}"),
+                GameMng.I.userData.cs_inventory[i].mount
+            ));
         }
 
         Character.equipBattleItem[0] = new Item(

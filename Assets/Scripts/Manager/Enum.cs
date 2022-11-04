@@ -97,8 +97,9 @@ public enum QUEST_CODE
 {
     /* 서브 퀘스트 이름 */
     TEMP_QUEST_0,
-    PURPLE_LIGHT,
-    R_U_HUMAN
+    PURPLE_LIGHT,           // 퍼플라이트를 폐기해야해
+    R_U_HUMAN,              // 너 사람이지
+    GOHON,                  // 고백해서 혼내주기
 }
 
 // 새로 추가되면 무조건 종류상관없이 뒤에 

@@ -81,18 +81,18 @@ public class Inventory : MonoBehaviour
             equipBT[0].SetActive(true);
         }
 
-        // TODO : 배틀아이템 선택 UI 띄워주는 위치
-        for (int i = 0; i < Character.equipBattleItem.Length; i++)
-        {
-            if (Character.equipBattleItem[i] == null)
-                continue;
-            if (Character.equipBattleItem[i].itemData.itemIndex == getClickIndex.itemIndex)
-            {
-                // selectBattleItems[i].transform.position = 
-                // descBattleImage.
-                break;
-            }
-        }
+        // // TODO : 배틀아이템 선택 UI 띄워주는 위치
+        // for (int i = 0; i < Character.equipBattleItem.Length; i++)
+        // {
+        //     if (Character.equipBattleItem[i] == null)
+        //         continue;
+        //     if (Character.equipBattleItem[i].itemData.itemIndex == getClickIndex.itemIndex)
+        //     {
+        //         // selectBattleItems[i].transform.position = 
+        //         // descBattleImage.
+        //         break;
+        //     }
+        // }
     }
     void OnDisable()
     {

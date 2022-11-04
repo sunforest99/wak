@@ -62793,6 +62793,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 887da3e807a107f4f9f6fa0f3f291be5, type: 3}
+--- !u!212 &4050329133153596099 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8509770792555188975, guid: 887da3e807a107f4f9f6fa0f3f291be5, type: 3}
+  m_PrefabInstance: {fileID: 4050329133153596098}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4050329133153596100 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4274229527668068870, guid: 887da3e807a107f4f9f6fa0f3f291be5, type: 3}
+  m_PrefabInstance: {fileID: 4050329133153596098}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4050329133153596101 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4274229528801894227, guid: 887da3e807a107f4f9f6fa0f3f291be5, type: 3}
+  m_PrefabInstance: {fileID: 4050329133153596098}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &4050329133153596102 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8509770791458470969, guid: 887da3e807a107f4f9f6fa0f3f291be5, type: 3}
+  m_PrefabInstance: {fileID: 4050329133153596098}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4050329133153596103 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7516597640497627885, guid: 887da3e807a107f4f9f6fa0f3f291be5, type: 3}
+  m_PrefabInstance: {fileID: 4050329133153596098}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4279878747204227067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -63417,6 +63448,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8509770791458470970, guid: 887da3e807a107f4f9f6fa0f3f291be5, type: 3}
   m_PrefabInstance: {fileID: 4050329133153596098}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5633281380389048057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4050329133153596102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d76bdeb638cb44c9840cae1930c885, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDialog: 0
+  speechTxt: {fileID: 4050329133153596101}
+  speechBG: {fileID: 4050329133153596100}
+  _anim: {fileID: 4050329133153596103}
+  favoriteItem: {fileID: 11400000, guid: e10f45aff04df1745b8ee961ac4277aa, type: 2}
+  questIcon: {fileID: 4050329133153596099}
 --- !u!1001 &5722547669401252489
 PrefabInstance:
   m_ObjectHideFlags: 0

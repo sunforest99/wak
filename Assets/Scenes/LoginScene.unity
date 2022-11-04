@@ -13056,8 +13056,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 914506778}
-  npcFavoriteItemImg: {fileID: 1832892053}
   dialogBT: {fileID: 93443124}
+  npcFavoriteItemImg: {fileID: 1832892053}
+  favoriteBT: {fileID: 248385227}
   dialogUI: {fileID: 2009893739}
   npcSelectUI: {fileID: 696901052}
   isDialog: 0
@@ -19956,6 +19957,9 @@ MonoBehaviour:
       weapon: 105
       shirts: 152
       pants: 171
+    eq_inventory: []
+    fv_inventory: []
+    cs_inventory: []
     skills: []
     sub_quest: []
     quest_done: 
@@ -20057,6 +20061,7 @@ MonoBehaviour:
   itemObj: {fileID: 5358752772899639577, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
   boss: {fileID: 0}
   estherManager: {fileID: 0}
+  mainMap: {fileID: 0}
 --- !u!4 &1413478100
 Transform:
   m_ObjectHideFlags: 0

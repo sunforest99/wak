@@ -64,11 +64,6 @@ public class Character : MonoBehaviour
         // GameMng.I.stateMng.targetList.Add(this);        // 파티를 들어갔을떄
         _action = CHARACTER_ACTION.IDLE;
         init();
-        for (int i = 0; i < 4; i++)
-        {
-            haveItem.Add(new List<Item>());
-            GameMng.I.userData.inventory.Add(new List<Item_Schema>());
-        }
     }
     public float footprintDist = 0;
 

@@ -377,7 +377,35 @@ public class GameMng : MonoBehaviour
 
     void rewardItem(ItemData[] reward)
     {
-        // 아이템 지급
+        for (int i = 0; i < reward.Length; i++)
+        {
+            // 아이템 지급
+            Item item = new Item(reward[i], 1);
+            switch (item.itemData.itemType)
+            {
+                // 배틀 아이템은 이제 획득 아이템이 아니게 되었음
+                // case ITEM_TYPE.BATTLE_ITEM:
+                //     itemSetting(0, item);
+                //     break;
+                case ITEM_TYPE.WEAPON_ITEM:
+                case ITEM_TYPE.SHIRTS_ITEM:
+                case ITEM_TYPE.PANTS_ITEM:
+                    CharacterCollider.itemSetting(0, item);
+                    break;
+                case ITEM_TYPE.FAVORITE_ITEM:
+                    CharacterCollider.itemSetting(1, item);
+                    break;
+                case ITEM_TYPE.CONSUMABLE_ITEM:
+                    CharacterCollider.itemSetting(2, item);
+                    break;
+                default:
+                    if (item.itemData.itemIndex.Equals(ITEM_INDEX.NONE))
+                        GameMng.I.userData.coin += item.itemCount;
+                    break;
+            }
+            
+            CharacterCollider.getItemEXP(item, i);
+        }
     }
 
     
@@ -441,6 +469,10 @@ public class GameMng : MonoBehaviour
                     );
             }
         }
+        if (userData.job.Equals((int)JOB.MAGICIAN))
+        backEffPool.Enqueue(
+            Instantiate(backEff, Vector3.zero, Quaternion.Euler(20, 0, 0))
+        );
         for (int i = 0; i < 10; i++)
         {
             removeEffPool.Enqueue(

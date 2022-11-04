@@ -40,7 +40,10 @@ public class UserData
     public string user_nickname; 
     public int job; 
     public Character_Schema character;
-    public List<List<Item_Schema>> inventory = new List<List<Item_Schema>>();
+    // public List<List<Item_Schema>> inventory = new List<List<Item_Schema>>();
+    public List<Item_Schema> eq_inventory = new List<Item_Schema>();
+    public List<Item_Schema> fv_inventory = new List<Item_Schema>();
+    public List<Item_Schema> cs_inventory = new List<Item_Schema>();
     public List<Skill_Schema> skills = new List<Skill_Schema>();
     // public Quest_Schema main_quest;
     public List<Quest_Schema> sub_quest;
@@ -54,10 +57,13 @@ public class UserData
     { 
         Debug.Log("User_OID : " + _id + " , Nickname : " + user_nickname);
         Debug.Log("Hair : " + character.hair + " , weapon : " + character.weapon);
-        for (int i = 0; i < inventory.Count; i++)
+        for (int i = 0; i < eq_inventory.Count; i++)
         {
-            for (int j = 0; j < inventory[i].Count; j++)
-                Debug.Log(" _ " + inventory[i][j].item_code + " _ " + inventory[i][j].mount);
+                Debug.Log(" _ " + eq_inventory[i].item_code + " _ " + eq_inventory[i].mount);
+        }
+        for (int i = 0; i < fv_inventory.Count; i++)
+        {
+                Debug.Log(" _ " + fv_inventory[i].item_code + " _ " + fv_inventory[i].mount);
         }
     } 
 } 
@@ -140,14 +146,13 @@ public class LoginManager : MonoBehaviour
                 
                 UserDataPacket dataPacket = JsonUtility.FromJson<UserDataPacket>(msg);
 
+                // 로그인 성공
                 if (dataPacket.success) {
                     
                     dataPacket.data.printData();
 
-                    // 로그인 성공
-                    for (int i = 0; i < managers.Length; i++) {
-                        managers[i].SetActive(true);
-                    }
+                    // GameMng 먼저 활성화
+                    managers[0].SetActive(true);
                     
                     GameMng.I.userData = dataPacket.data;
                     
@@ -173,6 +178,11 @@ public class LoginManager : MonoBehaviour
                     // {
                     //     // 마을로!
                     // }
+
+                    // 나머지 매니저 활성화
+                    for (int i = 1; i < managers.Length; i++) {
+                        managers[i].SetActive(true);
+                    }
 
                 } else {
                     // 실패

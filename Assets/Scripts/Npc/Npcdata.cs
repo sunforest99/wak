@@ -87,7 +87,8 @@ public class Npcdata : MonoBehaviour
 
     public virtual void ExitDialog()
     {
-        // checkQuest();
+        checkQuest();
+        
         GameMng.I.npcData = null;
         GameMng.I.npcUI.isDialog = false;
         GameMng.I.npcUI.dialogUI.gameObject.SetActive(false);

@@ -8,28 +8,29 @@ public class CharacterCollider : MonoBehaviour
 
     /*
      * @brief 아이템 획득시 인벤토리 새로고침
-     * @param n 아이템 타입 (0:배틀아이템)(1:장비)(2:호감도)(3:사용아이템)
+     * @param n 아이템 타입 (0:장비)(1:호감도)(2:사용아이템)
      * @param _item 아이템 정보
      */
-    void itemSetting(int n, Item _item)
+    public static void itemSetting(int n, Item _item)
     {
         if (n == 0)
         {
             Character.haveItem[n].Add(_item);
-            GameMng.I.userData.inventory[n].Add(new Item_Schema((int)_item.itemData.itemIndex, _item.itemCount));
+            // GameMng.I.userData.inventory[n].Add(new Item_Schema((int)_item.itemData.itemIndex, _item.itemCount));
         }
         else
         {
-            int index = Character.haveItem[n].FindIndex(name => name.itemData.itemName == _item.itemData.itemName);
+            int index = Character.haveItem[n].FindIndex(name => name.itemData.itemIndex == _item.itemData.itemIndex);
             if (index == -1)
             {
                 Character.haveItem[n].Add(_item);
-                GameMng.I.userData.inventory[n].Add(new Item_Schema((int)_item.itemData.itemIndex, _item.itemCount));
+                // GameMng.I.userData.inventory[n].Add(new Item_Schema((int)_item.itemData.itemIndex, _item.itemCount));
             }
             else
             {
                 Character.haveItem[n][index].itemCount += _item.itemCount;
-                GameMng.I.userData.inventory[n][index].mount += _item.itemCount;
+                // GameMng.I.userData.inventory[n][index].mount += _item.itemCount;
+
                 // if (_item.itemData.itemType == ITEM_TYPE.BATTLE_ITEM)
                 // {
                 //     for (int i = 0; i < Character.equipBattleItem.Length; i++)
@@ -47,7 +48,7 @@ public class CharacterCollider : MonoBehaviour
         }
     }
 
-    void getItemEXP(Item item, int idx)
+    public static void getItemEXP(Item item, int idx)
     {
         GameMng.I.getItemPool[idx].EXP_Img.sprite = item.itemData.itemSp;
         if (item.itemData.itemType != ITEM_TYPE.WEAPON_ITEM && item.itemData.itemType != ITEM_TYPE.SHIRTS_ITEM && item.itemData.itemType != ITEM_TYPE.PANTS_ITEM)
