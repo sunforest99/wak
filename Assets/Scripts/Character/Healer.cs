@@ -80,7 +80,7 @@ public class Healer : Character
         spawnPos.y = 0.3f;
 
         GameObject attObj = Instantiate(GameMng.I.healerSkillPrefab[0], spawnPos, Quaternion.Euler(90, 0, lookAngle)) as GameObject;
-        attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 5);
+        attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 9);
         if (isMe)
             attObj.tag = "Weapon_disposable_me";
 

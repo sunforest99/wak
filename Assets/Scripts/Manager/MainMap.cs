@@ -2,9 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum M_NPC
+{
+    HIKIKING
+}
+
 public class MainMap : MonoBehaviour
 {
     [SerializeField] GameObject[] npcs;     // 획득시 생겨날 npc 들 (망령)   // Enum의 NPC 데이터와 같아야함
+
+    public Npcdata[] npcdatas;
+
+    void Awake()
+    {
+        GameMng.I.mainMap = this;
+    }
 
     void Start()
     {

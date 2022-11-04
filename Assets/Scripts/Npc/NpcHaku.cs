@@ -15,7 +15,7 @@ public class NpcHaku : Npcdata
      * @brief 이 NPC가 가지고 있을 퀘스트
      * @desc 대화 내용 및 아이콘을 출력하기 위해 Awake나 선행 퀘스트를 마쳤을때마다 호출해서 갱신해야함
      */
-    void checkQuest()
+    public override void checkQuest()
     {
         StopCoroutine(checkPlayerDistance());
         
@@ -29,12 +29,13 @@ public class NpcHaku : Npcdata
                 if (Character.sub_quest_progress[QUEST_CODE.PURPLE_LIGHT.ToString()].Equals(0))
                 {
                     base.dialogs = null;
+                    setQuestIcon();
                 }
                 else
                 {
                     base.dialogs = Quest_Purplelight_Done();
+                    setQuestIcon(QUEST_TYPE.SUB);
                 }
-                setQuestIcon();
                 setSpeech("퍼플라이트...");
             }
             // 퀘스트 수령도 안한 상태

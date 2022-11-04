@@ -11,6 +11,7 @@ public class Character : MonoBehaviour
     public Rigidbody _rigidBody;
     // [SerializeField] BoxCollider _collider;
     [SerializeField] GameObject _attackCollider;
+    public TMPro.TextMeshPro _nickTxt;
 
     // 캐릭터 커스터마이징 =======================================================================================
     public SpriteRenderer _hair, _face, _shirts, _pants, _weapon;

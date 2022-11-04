@@ -9,14 +9,33 @@ public class NPCUI : MonoBehaviour
     // public GameObject _startLoad;
 
     public UnityEngine.UI.Image npcFavoriteItemImg;
+    public GameObject dialogBT;
 
     public DialogUI dialogUI;
     public GameObject npcSelectUI;
+    
+    public bool isDialog = false;
+
+    
 
     void Awake()
     {
         DontDestroyOnLoad(this);
     }
+
+    void Update()
+    {
+        if (isDialog)
+        {
+            if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+                    && !GameMng.I.npcUI.dialogUI.selectBlock.activeSelf
+                    && GameMng.I.npcData)
+            {
+                GameMng.I.npcData.NextDialog();
+            }
+        }
+    }
+
 
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -69,10 +88,15 @@ public class NPCUI : MonoBehaviour
         }
     }
 
-    public void activeSelectUI(bool isFvItemOn = true)
+    public void activeSelectUI(bool dg = true, bool fv = true)
     {
-        npcFavoriteItemImg.transform.parent.gameObject.SetActive(isFvItemOn);
-        
+        if (GameMng.I.npcData.dialogs == null) {
+            dg = false;
+        }
+
+        dialogBT.SetActive(dg);
+        npcFavoriteItemImg.transform.parent.gameObject.SetActive(fv);
+
         npcSelectUI.SetActive(true);
     }
 

@@ -162,9 +162,25 @@ public class NetworkMng : MonoBehaviour
      * @brief 채팅
      * @param input 내용
      */
-    public void Chat(InputField input)
+    public void Chat(string input)
     {
-        SendMsg(string.Format("CHAT:{0}", input.text));
+        SendMsg(string.Format("CHAT:{0}", input));
+
+        // 홈에서 '너사람이지'퀘스트 수행중에 쓰레기통과 거리가 가까이 있을때 대사 입력시 퀘스트 완료
+        Debug.Log(Vector3.Distance(GameMng.I.character.transform.parent.position, new Vector3(-17.5f, 0.485f, -2)));
+
+        if (myRoom.Equals(ROOM_CODE.HOME)) {
+            if (Character.sub_quest.ContainsKey(QUEST_CODE.R_U_HUMAN.ToString()))
+                if (input.Replace(" ", "").Equals("너사람이지"))
+                    if (Character.sub_quest_progress[QUEST_CODE.R_U_HUMAN.ToString()].Equals(0))
+                        if (Vector3.Distance(GameMng.I.character.transform.parent.position, new Vector3(-17.5f, 0.485f, -2)) < 5)
+                        {
+                            GameMng.I.npcData = GameMng.I.mainMap.npcdatas[(int)M_NPC.HIKIKING];
+                            GameMng.I.nextSubQuest(QUEST_CODE.R_U_HUMAN);
+                            GameMng.I.npcData.actSomething();
+                            GameMng.I.npcData.checkQuest();
+                        }
+        }
     }
 
     /**
