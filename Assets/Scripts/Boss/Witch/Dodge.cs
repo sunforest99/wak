@@ -24,6 +24,7 @@ public class Dodge : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             GameMng.I.showEff(EFF_TYPE.TAKEN_EFF, this.transform.position);
+            GameMng.I.stateMng.ActiveOwnBuff(GameMng.I.boss.bossData.getBuffs[0]);
             GameMng.I.stateMng.takeDamage(damage);
             ActiveFalse();
             // 디버프!

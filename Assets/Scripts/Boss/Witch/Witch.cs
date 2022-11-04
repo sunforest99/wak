@@ -336,12 +336,14 @@ public class Witch : Boss
         );
     }
 
+    [SerializeField] GameObject magicCircle;
     public Dictionary<int, string> checkMarbleDic = new Dictionary<int, string>();
     void Marble()
     {
         checkMarble = false;
         _action = WITCH_ACTION.MARBLE;
         animator.SetTrigger("Marble");
+        magicCircle.SetActive(true);
         
         StartCoroutine(CreateMarble());
     }
@@ -363,7 +365,9 @@ public class Witch : Boss
         }
 
         yield return new WaitForSeconds(4);
-
+        
+        magicCircle.SetActive(false);
+        
         for (int i = 0; i < 4; i++) {
             if (checkMarbleDic.ContainsKey(i) && checkMarbleDic.ContainsKey(i + 4)) {
                 if (checkMarbleDic[i] == checkMarbleDic[i + 4]) {

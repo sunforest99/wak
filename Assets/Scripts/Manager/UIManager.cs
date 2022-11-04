@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] TMPro.TextMeshProUGUI selectPlayerName;
     [SerializeField] UnityEngine.UI.Button selectPlayerInviteBT;
 
-
+    [SerializeField] GameObject settingUI;
 
     private void Awake()
     {
@@ -90,7 +90,7 @@ public class UIManager : MonoBehaviour
                             MCamera.I.setTargetChange(hit.transform);
                             MCamera.I.zoomIn();
 
-                            GameMng.I.npcUI.activeSelectUI(false);
+                            GameMng.I.npcUI.activeSelectUI(true, false);
                         }
                     }
                     else if (Vector3.Distance(hit.transform.position, GameMng.I.character.transform.position) < 2)
@@ -178,6 +178,13 @@ public class UIManager : MonoBehaviour
                 selectPlayerName.transform.parent.gameObject.SetActive(false);
             }
         }
+        else if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (settingUI.activeSelf) {
+                settingUI.SetActive(false);
+            } else {
+                settingUI.SetActive(true);
+            }
+        }
         } catch(System.NullReferenceException e) {
             Debug.Log(e);
         }
@@ -197,6 +204,14 @@ public class UIManager : MonoBehaviour
         // GameMng.I.npcUI._startLoad.SetActive(true);
     }
 
+    public void NameTagSetting(bool val)
+    {
+        if (val)
+            Camera.main.cullingMask |= 1 << LayerMask.NameToLayer("Character_Name");
+        else
+            Camera.main.cullingMask = ~(1 << LayerMask.NameToLayer("Character_Name"));
+    }
+
     // void setSkillIcons()
     // {
     //     if (GameMng.I.userData.job == 0)
@@ -213,11 +228,16 @@ public class UIManager : MonoBehaviour
 
     public void selectDialog()
     {
+        if (GameMng.I.npcData.dialogs == null) {
+            GameMng.I.showNotice("대화할 내용이 없습니다.");
+            return;
+        }
+
         GameMng.I.npcUI.showDialog();
         
         MCamera.I.zoomIn2();
 
-        GameMng.I.npcData.isDialog = true;
+        GameMng.I.npcUI.isDialog = true;
     }
 
     public void selectGift()
@@ -271,20 +291,39 @@ public class UIManager : MonoBehaviour
         {
             for(int j = 0; j < Character.haveItem[i].Count; j++)
             {
-                GameMng.I.userData.inventory[i][j].item_code = (int)Character.haveItem[i][j].itemData.itemIndex;
-                GameMng.I.userData.inventory[i][j].mount = Character.haveItem[i][j].itemCount;
+                //GameMng.I.userData.inventory[i][j].item_code = (int)Character.haveItem[i][j].itemData.itemIndex;
+                //GameMng.I.userData.inventory[i][j].mount = Character.haveItem[i][j].itemCount;
             }
         }
     }
 
     void itemLoad()
     {
-        for (int i = 0; i < GameMng.I.userData.inventory.Count; i++)
+        for (int i = 0; i < 3; i++)
         {
-            for (int j = 0; j < GameMng.I.userData.inventory[i].Count; j++)
-            {
-                Character.haveItem[i].Add(new Item(Resources.Load<ItemData>($"ItemData/{((ITEM_INDEX)GameMng.I.userData.inventory[i][j].item_code).ToString()}"), GameMng.I.userData.inventory[i][j].mount));
-            }
+            Character.haveItem.Add(new List<Item>());
+        }
+
+        for (int i = 0; i < GameMng.I.userData.eq_inventory.Count; i++)
+        {
+            Character.haveItem[0].Add(new Item(
+                Resources.Load<ItemData>($"ItemData/{((ITEM_INDEX)GameMng.I.userData.eq_inventory[i].item_code).ToString()}"),
+                GameMng.I.userData.eq_inventory[i].mount
+            ));
+        }
+        for (int i = 0; i < GameMng.I.userData.fv_inventory.Count; i++)
+        {
+            Character.haveItem[1].Add(new Item(
+                Resources.Load<ItemData>($"ItemData/{((ITEM_INDEX)GameMng.I.userData.fv_inventory[i].item_code).ToString()}"),
+                GameMng.I.userData.fv_inventory[i].mount
+            ));
+        }
+        for (int i = 0; i < GameMng.I.userData.cs_inventory.Count; i++)
+        {
+            Character.haveItem[2].Add(new Item(
+                Resources.Load<ItemData>($"ItemData/{((ITEM_INDEX)GameMng.I.userData.cs_inventory[i].item_code).ToString()}"),
+                GameMng.I.userData.cs_inventory[i].mount
+            ));
         }
 
         Character.equipBattleItem[0] = new Item(

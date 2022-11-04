@@ -16,7 +16,8 @@ public class Witch_Marble : MonoBehaviour
         if (-0.1f < transform.position.x && transform.position.x < 0.1f && 
             -0.1f < transform.position.z && transform.position.z < 0.1f)
         {
-            this.gameObject.SetActive(false);
+            // this.gameObject.SetActive(false);
+            Destroy(this.gameObject);
         } else {
             _rigid.velocity = dir * Time.deltaTime;
         }
@@ -25,10 +26,12 @@ public class Witch_Marble : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Player")) {
             _witch.checkMarbleDic.Add(type, other.name);
-            this.gameObject.SetActive(false);
+            // this.gameObject.SetActive(false);
+            Destroy(this.gameObject);
         } else if (other.CompareTag("Character")) {
             _witch.checkMarbleDic.Add(type, other.name);
-            this.gameObject.SetActive(false);
+            // this.gameObject.SetActive(false);
+            Destroy(this.gameObject);
         }
     }
 }

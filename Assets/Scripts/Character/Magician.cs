@@ -120,12 +120,12 @@ public class Magician : Character
 
         attObj = Instantiate(GameMng.I.magicianSkillPrefab[1], spawnPos, Quaternion.Euler(90, 0, lookAngle)) as GameObject;
         // TODO : 기본 공격 스피드 조절 (스탯에 따라서?)
-        attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 7);
+        attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 13);
 
         attObj.transform.GetChild(0).rotation = Quaternion.Euler(20, 0, 0);
         if (isMe)
         {
-            attObj.tag = "Skill_disposable_me";
+            attObj.tag = "Skill";
             attObj.name = "0";
         }
 
@@ -151,7 +151,7 @@ public class Magician : Character
         spawnPos.y = 0.3f;
 
         attObj = Instantiate(GameMng.I.magicianSkillPrefab[2], spawnPos, Quaternion.Euler(90, 0, lookAngle)) as GameObject;
-        attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 5);
+        attObj.GetComponent<Rigidbody>().velocity = attObj.transform.TransformDirection(Vector3.right * 9);
         if (isMe)
         {
             attObj.tag = "Skill_disposable_me";

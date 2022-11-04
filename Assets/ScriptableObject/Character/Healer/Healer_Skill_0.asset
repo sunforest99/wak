@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c28efc45f09d0fc4ebb8d6cb65db5950, type: 3}
   m_Name: Healer_Skill_0
   m_EditorClassIdentifier: 
+  skillIdx: 0
   _name: "\uBC45\uC628\uAC01\uACE0\uBB34\uB9DB\uB098\uBB34"
   _skillDamge: 0
-  _collDown: 5
+  _coolTime: 0
   isCanBack: 0
-  critical: 0
   _skillImg: {fileID: 21300000, guid: 60c4bf6a0f4fd6e47be8e65a0f8c2a53, type: 3}
-  skillLevel: 1.2
-  _buffdata: {fileID: 11400000, guid: bc94caa5509e733418b7fddc57cce851, type: 2}
+  _buffdata: {fileID: 0}
+  _intensity: 0
+  _shakeTime: 0

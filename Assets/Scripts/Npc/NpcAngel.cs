@@ -22,7 +22,7 @@ public class NpcAngel : Npcdata
      * @brief 이 NPC가 가지고 있을 퀘스트
      * @desc 대화 내용 및 아이콘을 출력하기 위해 Awake나 선행 퀘스트를 마쳤을때마다 호출해서 갱신해야함
      */
-    void checkQuest()
+    public override void checkQuest()
     {
         questBook.SetActive(false);
         StopCoroutine(checkPlayerDistance());
@@ -124,7 +124,7 @@ public class NpcAngel : Npcdata
     public override void ExitDialog()
     {
         // Destroy(tempDialog);
-        isDialog = false;
+        GameMng.I.npcUI.isDialog = false;
         GameMng.I.npcUI.dialogUI.gameObject.SetActive(false);
         GameMng.I._keyMode = KEY_MODE.PLAYER_MODE;
 

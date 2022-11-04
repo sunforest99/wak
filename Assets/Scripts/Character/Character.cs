@@ -11,6 +11,7 @@ public class Character : MonoBehaviour
     public Rigidbody _rigidBody;
     // [SerializeField] BoxCollider _collider;
     [SerializeField] GameObject _attackCollider;
+    public TMPro.TextMeshPro _nickTxt;
 
     // 캐릭터 커스터마이징 =======================================================================================
     public SpriteRenderer _hair, _face, _shirts, _pants, _weapon;
@@ -63,11 +64,6 @@ public class Character : MonoBehaviour
         // GameMng.I.stateMng.targetList.Add(this);        // 파티를 들어갔을떄
         _action = CHARACTER_ACTION.IDLE;
         init();
-        for (int i = 0; i < 4; i++)
-        {
-            haveItem.Add(new List<Item>());
-            GameMng.I.userData.inventory.Add(new List<Item_Schema>());
-        }
     }
     public float footprintDist = 0;
 

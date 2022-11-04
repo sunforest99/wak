@@ -8,15 +8,35 @@ public class NPCUI : MonoBehaviour
     [SerializeField] Canvas _canvas;
     // public GameObject _startLoad;
 
+    public GameObject dialogBT;
     public UnityEngine.UI.Image npcFavoriteItemImg;
+    public UnityEngine.UI.Button favoriteBT;
 
     public DialogUI dialogUI;
     public GameObject npcSelectUI;
+    
+    public bool isDialog = false;
+
+    
 
     void Awake()
     {
         DontDestroyOnLoad(this);
     }
+
+    void Update()
+    {
+        if (isDialog)
+        {
+            if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+                    && !GameMng.I.npcUI.dialogUI.selectBlock.activeSelf
+                    && GameMng.I.npcData)
+            {
+                GameMng.I.npcData.NextDialog();
+            }
+        }
+    }
+
 
     private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -40,7 +60,7 @@ public class NPCUI : MonoBehaviour
     public void amIHaveFavoriteItem()
     {
         // TODO : haveItem 의 idx가 ITEM_INDEX 순서와 맞게
-        int idx = Character.haveItem[2].FindIndex(name => name.itemData.itemName == GameMng.I.npcData.favoriteItem.itemIndex.ToString());
+        int idx = Character.haveItem[1].FindIndex(name => name.itemData.itemIndex == GameMng.I.npcData.favoriteItem.itemIndex);
         
         // 못찾으면
         if (idx < 0)
@@ -56,23 +76,41 @@ public class NPCUI : MonoBehaviour
     public void giveFavoriteItem()
     {
         // TODO : haveItem 의 idx가 ITEM_INDEX 순서와 맞게
-        int idx = Character.haveItem[2].FindIndex(name => name.itemData.itemName == GameMng.I.npcData.favoriteItem.itemIndex.ToString());
+        int idx = Character.haveItem[1].FindIndex(name => name.itemData.itemIndex == GameMng.I.npcData.favoriteItem.itemIndex);
 
         // 아이템 개수가 안맞으면 이 함수에 들어올수 없지만 혹시 모르니
         if (idx >= 0)
         {
-            GameMng.I.userData.love += Character.haveItem[2][idx].itemCount;
+            GameMng.I.userData.love += Character.haveItem[1][idx].itemCount;
             
-            Character.haveItem[2].RemoveAt(idx);
-            GameMng.I.userData.inventory[2].RemoveAt(idx);
-
+            Character.haveItem[1].RemoveAt(idx);
+            // GameMng.I.userData.inventory[2].RemoveAt(idx);
         }
     }
 
-    public void activeSelectUI(bool isFvItemOn = true)
+    public void activeSelectUI(bool dg = true, bool fv = true)
     {
-        npcFavoriteItemImg.transform.parent.gameObject.SetActive(isFvItemOn);
-        
+        if (GameMng.I.npcData.dialogs == null) {
+            dg = false;
+        }
+
+        dialogBT.SetActive(dg);
+        npcFavoriteItemImg.transform.parent.gameObject.SetActive(fv);
+
+        if (fv) {
+            try {
+                int idx = Character.haveItem[1].FindIndex(name => name.itemData.itemIndex == GameMng.I.npcData.favoriteItem.itemIndex);
+
+                // 아이템 개수가 안맞으면 비활성화
+                if (idx < 0) {
+                    favoriteBT.interactable = false;
+                } else {
+                    favoriteBT.interactable = true;
+                }
+            } catch(System.IndexOutOfRangeException e) {
+            }
+        }
+
         npcSelectUI.SetActive(true);
     }
 

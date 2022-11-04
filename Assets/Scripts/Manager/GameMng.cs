@@ -97,7 +97,7 @@ public class GameMng : MonoBehaviour
     public Boss boss = null;                    // 보스 정보 //!< 이거 여기 없이 사용할 방법이 있다면 좋음
     public EstherManager estherManager = null;  // 에스더 정보  //!< bossData와 같이 보스맵에서 나갈때마다 초기화 해주어야 함
     // public Dictionary<string, Monster> _monsters = new Dictionary<string, Monster>();
-
+    public MainMap mainMap;
 
     public static GameMng I
     {
@@ -178,6 +178,7 @@ public class GameMng : MonoBehaviour
         GameObject temp = Instantiate(characterPrefab[job], new Vector3(posX, 0, posY), Quaternion.identity);
         Character cha = temp.transform.GetChild(0).GetComponent<Character>();
         cha.nickName = nickName;
+        cha._nickTxt.text = nickName;
         cha.initCharacter(hair, face, shirts, pants, weapon);
         temp.name = nickName + ":" + uniqueNumber;
 
@@ -327,15 +328,16 @@ public class GameMng : MonoBehaviour
             // 보상 아이템 지급
             rewardItem(Character.sub_quest[questName].rewardItem);
 
-            Character.sub_quest.Remove(questName);
-            Character.sub_quest_progress.Remove(questName);
-
             userData.quest_done.Add(
                 Character.sub_quest[questName].questCode
             );
+
+            Character.sub_quest.Remove(questName);
+            Character.sub_quest_progress.Remove(questName);
         }
         else
         {
+        }
             // TODO : 지금은 퀘스트 제목이 같은걸 찾아서 검색함. 크게 상관없으나 좋은 방법이 있다면 변경해보기
             // 퀘스트 자체가 완료된것이 아니기 때문에 퀘스트 내용 UI만 변경함
             // 서브 퀘스트 아직 표시 안해서 주석처리함
@@ -347,6 +349,9 @@ public class GameMng : MonoBehaviour
             //         break;
             //     }
             // }
+
+
+            // 퀘스트 UI 새로고침
             int idx = 0;
             foreach (var q in Character.sub_quest) {
                 // 메인퀘스트가 사라졌음. 만약 메인퀘가 다시 추가되면 i+1 이 되어야함
@@ -358,7 +363,6 @@ public class GameMng : MonoBehaviour
             for (; idx < 5; idx++) {
                 GameMng.I.myQuestName[idx].transform.parent.parent.gameObject.SetActive(false);
             }
-        }
     }
 
     // void rewardExp(float reward)
@@ -373,7 +377,35 @@ public class GameMng : MonoBehaviour
 
     void rewardItem(ItemData[] reward)
     {
-        // 아이템 지급
+        for (int i = 0; i < reward.Length; i++)
+        {
+            // 아이템 지급
+            Item item = new Item(reward[i], 1);
+            switch (item.itemData.itemType)
+            {
+                // 배틀 아이템은 이제 획득 아이템이 아니게 되었음
+                // case ITEM_TYPE.BATTLE_ITEM:
+                //     itemSetting(0, item);
+                //     break;
+                case ITEM_TYPE.WEAPON_ITEM:
+                case ITEM_TYPE.SHIRTS_ITEM:
+                case ITEM_TYPE.PANTS_ITEM:
+                    CharacterCollider.itemSetting(0, item);
+                    break;
+                case ITEM_TYPE.FAVORITE_ITEM:
+                    CharacterCollider.itemSetting(1, item);
+                    break;
+                case ITEM_TYPE.CONSUMABLE_ITEM:
+                    CharacterCollider.itemSetting(2, item);
+                    break;
+                default:
+                    if (item.itemData.itemIndex.Equals(ITEM_INDEX.NONE))
+                        GameMng.I.userData.coin += item.itemCount;
+                    break;
+            }
+            
+            CharacterCollider.getItemEXP(item, i);
+        }
     }
 
     
@@ -437,6 +469,10 @@ public class GameMng : MonoBehaviour
                     );
             }
         }
+        if (userData.job.Equals((int)JOB.MAGICIAN))
+        backEffPool.Enqueue(
+            Instantiate(backEff, Vector3.zero, Quaternion.Euler(20, 0, 0))
+        );
         for (int i = 0; i < 10; i++)
         {
             removeEffPool.Enqueue(

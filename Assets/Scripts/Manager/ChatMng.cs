@@ -46,7 +46,7 @@ public class ChatMng : MonoBehaviour
                 chatInput.readOnly = true;
                 GameMng.I._keyMode = beforeKeyMode;
                 chatAnim.SetTrigger("MessageOpen");
-                NetworkMng.I.SendMsg(string.Format("CHAT:{0}", myChatField));
+                NetworkMng.I.Chat(myChatField);
                 chatLogs.text += string.Format("\n[{0}] : {1} ({2})", GameMng.I.userData.user_nickname, myChatField, System.DateTime.Now.Hour + ":" + System.DateTime.Now.Minute);
                 myChatField = "";
                 chatInput.text = "";

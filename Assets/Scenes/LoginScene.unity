@@ -13056,9 +13056,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvas: {fileID: 914506778}
+  dialogBT: {fileID: 93443124}
   npcFavoriteItemImg: {fileID: 1832892053}
+  favoriteBT: {fileID: 248385227}
   dialogUI: {fileID: 2009893739}
   npcSelectUI: {fileID: 696901052}
+  isDialog: 0
 --- !u!114 &914506776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19075,7 +19078,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1397036476}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: NameTagSetting
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &1293577312
 GameObject:
@@ -19801,6 +19816,7 @@ MonoBehaviour:
   _canvas: {fileID: 1397036478}
   selectPlayerName: {fileID: 639896912}
   selectPlayerInviteBT: {fileID: 1259650072}
+  settingUI: {fileID: 1700692434}
 --- !u!224 &1397036477
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19941,6 +19957,9 @@ MonoBehaviour:
       weapon: 105
       shirts: 152
       pants: 171
+    eq_inventory: []
+    fv_inventory: []
+    cs_inventory: []
     skills: []
     sub_quest: []
     quest_done: 
@@ -20042,6 +20061,7 @@ MonoBehaviour:
   itemObj: {fileID: 5358752772899639577, guid: 77f7b65afbbdf4141b0171a973b07482, type: 3}
   boss: {fileID: 0}
   estherManager: {fileID: 0}
+  mainMap: {fileID: 0}
 --- !u!4 &1413478100
 Transform:
   m_ObjectHideFlags: 0

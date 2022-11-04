@@ -21,17 +21,17 @@ public class Npcdata : MonoBehaviour
     [SerializeField]
     protected SpriteRenderer questIcon;
 
-    void Update()
-    {
-        if (isDialog)
-        {
-            if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
-                    && !GameMng.I.npcUI.dialogUI.selectBlock.activeSelf)
-            {
-                NextDialog();
-            }
-        }
-    }
+    // void Update()
+    // {
+    //     if (isDialog)
+    //     {
+    //         if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+    //                 && !GameMng.I.npcUI.dialogUI.selectBlock.activeSelf)
+    //         {
+    //             NextDialog();
+    //         }
+    //     }
+    // }
 
     public bool NextDialog()
     {
@@ -71,10 +71,26 @@ public class Npcdata : MonoBehaviour
         return true;
     }
 
+    /**
+     * @brief 퀘스트 체크
+     */
+    public virtual void checkQuest()
+    {
+    }
+
+    /**
+     * @brief 어떤 행동을 명령할때 사용
+     */
+    public virtual void actSomething()
+    {
+    }
+
     public virtual void ExitDialog()
     {
-        // Destroy(tempDialog);
-        isDialog = false;
+        checkQuest();
+        
+        GameMng.I.npcData = null;
+        GameMng.I.npcUI.isDialog = false;
         GameMng.I.npcUI.dialogUI.gameObject.SetActive(false);
         GameMng.I._keyMode = KEY_MODE.PLAYER_MODE;
 
@@ -107,7 +123,7 @@ public class Npcdata : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
 
-        if (Vector2.Distance(GameMng.I.character.transform.position, transform.position) < 10)
+        if (Vector2.Distance(GameMng.I.character.transform.parent.position, transform.position) < 10)
         {
             speechTxt.gameObject.SetActive(true);
             yield return new WaitForSeconds(4);

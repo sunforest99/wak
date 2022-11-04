@@ -409,6 +409,12 @@ public class Monster : MonoBehaviour
 
             getDamage(damageTemp);
         }
+        
+        // 일회용 공격이면 제거 =========================================================================================================================================
+        if (other.gameObject.CompareTag("Weapon_disposable") || other.gameObject.CompareTag("Weapon_disposable_me") || other.gameObject.CompareTag("Skill_disposable_me"))
+        {
+            Destroy(other.gameObject);
+        }
     }
 
     /**
