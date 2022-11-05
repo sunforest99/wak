@@ -17,6 +17,8 @@ public class SoundMng : MonoBehaviour
     // 대부분의 오디오 클립은 자기 자신이 가지고 있음.
     // UI 효과음이나 캐릭터 같이 모든 씬에 존재하는 특별한 것이 아니라면 여기에 포함시키지 말 것
     [SerializeField] AudioClip[] effectClip;
+    // 0 : 핑
+    // 1 : 풀 파괴
 
 
     private static SoundMng _instance = null;
@@ -58,5 +60,13 @@ public class SoundMng : MonoBehaviour
     public void PlayEffect(AudioClip effClip)
     {
         _effect.PlayOneShot(effClip, _effectVolume);
+    }
+    public void PlayEffectPing()
+    {
+        _effect.PlayOneShot(effectClip[0], _effectVolume);
+    }
+    public void PlayEffectGrass()
+    {
+        _effect.PlayOneShot(effectClip[1], _effectVolume);
     }
 }

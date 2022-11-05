@@ -9,7 +9,6 @@ public class Person : Character
     {
         _job = JOB.NONE;
         // DASH_SPEED = 20;
-        MOVE_SPEED = 6;
         // DASH_COOLTIME = 6;
         // WAKEUP_COOLTIME = 10;
     
@@ -17,7 +16,7 @@ public class Person : Character
             1       /* 받는 피해량 퍼센트 */,
             5       /* 대쉬 쿨타임 */,
             10      /* 기상기 쿨타임 */,
-            9       /* 이동 속도 */
+            11       /* 이동 속도 */
         );
     }
     

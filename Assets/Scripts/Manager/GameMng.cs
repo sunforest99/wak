@@ -165,10 +165,10 @@ public class GameMng : MonoBehaviour
             return Random.Range(Character._stat.minDamage / 20, Character._stat.maxDamage / 20);
     }
 
-
     public void createPing(Vector3 pos)
     {
         Instantiate(pingPrefab, pos, Quaternion.identity);
+        SoundMng.I.PlayEffectPing();
     }
 
     public Character createPlayer(string uniqueNumber, int job, string nickName, 
@@ -375,7 +375,7 @@ public class GameMng : MonoBehaviour
     //     // userData.level += reward;
     // }
 
-    void rewardItem(ItemData[] reward)
+    public void rewardItem(ItemData[] reward)
     {
         for (int i = 0; i < reward.Length; i++)
         {
@@ -395,6 +395,7 @@ public class GameMng : MonoBehaviour
                 case ITEM_TYPE.FAVORITE_ITEM:
                     CharacterCollider.itemSetting(1, item);
                     break;
+                case ITEM_TYPE.UNUSEFUL_ITEM:
                 case ITEM_TYPE.CONSUMABLE_ITEM:
                     CharacterCollider.itemSetting(2, item);
                     break;

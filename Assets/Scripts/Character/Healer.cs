@@ -10,7 +10,6 @@ public class Healer : Character
     {
         _job = JOB.HEALER;
         DASH_SPEED = 12;
-        MOVE_SPEED = 9;
         
         fanservice = Instantiate(GameMng.I.healerSkillPrefab[3], Vector3.zero, Quaternion.Euler(90, 0, 0));
         fanservice.GetComponent<FanService>().parent = this.transform.parent;
@@ -158,7 +157,7 @@ public class Healer : Character
         _anim.SetTrigger("Skill_Music");
     }
     
-    void settingStat()
+    public override void settingStat()
     {
         _stat = new Stat(
             1       /* 받는 피해량 퍼센트 */,
