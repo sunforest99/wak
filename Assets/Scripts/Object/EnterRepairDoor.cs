@@ -14,10 +14,10 @@ public class EnterRepairDoor : MonoBehaviour
             if (!NetworkMng.I.v_party.Count.Equals(0))
                 NetworkMng.I.VoteChangeScene(ROOM_CODE.RAID_0_REPAIR);
             else {
-                // NetworkMng.I.changeRoom(ROOM_CODE.TEMPLE);
-                NetworkMng.I.changeRoom(moveTo);
+                GameMng.I.showNotice("파티를 해제해주세요. 싱글던전입니다.");
 
-                // SceneManager.LoadScene("BossWakguiScene");
+                // TODO : 아래 삭제
+                NetworkMng.I.changeRoom(moveTo);
             }
         }
     }

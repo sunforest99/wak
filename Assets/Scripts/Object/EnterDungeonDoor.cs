@@ -13,14 +13,10 @@ public class EnterDungeonDoor : MonoBehaviour
         {
             if (!NetworkMng.I.v_party.Count.Equals(0))
             {
-                // TODO : 파티 해제 요청. 파티 상태면 못들어가는 던전임
-                
+                GameMng.I.showNotice("파티를 해제해주세요. 싱글던전입니다.");
             }
             else {
-                // NetworkMng.I.changeRoom(ROOM_CODE.TEMPLE);
                 NetworkMng.I.changeRoom(moveTo);
-
-                // SceneManager.LoadScene("BossWakguiScene");
             }
         }
     }
