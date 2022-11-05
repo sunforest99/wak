@@ -39,7 +39,9 @@ public class BirdPool : MonoBehaviour
     {
         var temp = birdPool.Get();
         temp.transform.position = bossPos.position;
-        temp.rand = pos;
+        // temp.rand = pos;
         temp.gameObject.SetActive(true);
+        temp.Init(pos);
+        // StartCoroutine(BridsetActive(temp));
     }
 }

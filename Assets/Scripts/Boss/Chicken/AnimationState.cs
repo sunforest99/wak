@@ -16,7 +16,7 @@ public class AnimationState : StateMachineBehaviour
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") && chicken.getAction == CHICKEN_ACTION.IDLE && !chicken.isThink && chicken._targetDistance < 3.0f)
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") && chicken.getAction == CHICKEN_ACTION.IDLE && !chicken.isThink && chicken._targetDistance < 1.5f)
         {
             chicken.isThink = true;
             chicken.Think();
@@ -27,7 +27,6 @@ public class AnimationState : StateMachineBehaviour
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-            Debug.Log("true");
             chicken.Setidle();
         }
     }

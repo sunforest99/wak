@@ -10,7 +10,6 @@ public class Magician : Character
     {
         _job = JOB.MAGICIAN;
         DASH_SPEED = 12;
-        MOVE_SPEED = 9;
 
         // if 이게 내꺼라면
         if (_isPlayer)
@@ -210,7 +209,7 @@ public class Magician : Character
         addForceImpulse(new Vector3(transform.rotation.x < 100 ? 7 : -7, 0, 0));
     }
 
-    void settingStat()
+    public override void settingStat()
     {
         _stat = new Stat(
             1       /* 받는 피해량 퍼센트 */,

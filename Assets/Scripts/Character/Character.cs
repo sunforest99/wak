@@ -25,7 +25,7 @@ public class Character : MonoBehaviour
     /*========= 직업에 따라서 아래 수치가 다름 =========*/
     public static Stat _stat;
     protected float DASH_SPEED = 20;
-    protected float MOVE_SPEED = 5;
+    // public float MOVE_SPEED = 5;
     // protected static float DASH_COOLTIME = 3;
     // protected static float WAKEUP_COOLTIME = 10;
 
@@ -191,16 +191,20 @@ public class Character : MonoBehaviour
         if (curDashTime >= MAX_DASH_TIME)
         {
             // _rigidBody.MovePosition(_rigidBody.position + new Vector3(moveDist.x, 0, moveDist.y) * MOVE_SPEED);
-            _rigidBody.velocity = new Vector3(moveDist.x, _rigidBody.velocity.y, moveDist.y) * MOVE_SPEED; 
+            _rigidBody.velocity = new Vector3(moveDist.x, _rigidBody.velocity.y, moveDist.y) * _stat.MOVE_SPEED; 
         }
         // 대시 이동
         else {
             curDashTime += Time.deltaTime;
             // _rigidBody.MovePosition(_rigidBody.position + new Vector3(moveDist.x, 0, moveDist.y) * (MOVE_SPEED + DASH_SPEED));
-            _rigidBody.velocity = new Vector3(moveDist.x, _rigidBody.velocity.y, moveDist.y) *  (MOVE_SPEED + DASH_SPEED); 
+            _rigidBody.velocity = new Vector3(moveDist.x, _rigidBody.velocity.y, moveDist.y) *  (_stat.MOVE_SPEED + DASH_SPEED); 
         }
     }
 
+    public void setMoveSpeed(float speed)
+    {
+        _stat.MOVE_SPEED = speed;
+    }
     public void setMoveDir(float changeDirX, float changeDirY)
     {
         _moveDir.x = changeDirX;
@@ -277,7 +281,7 @@ public class Character : MonoBehaviour
         if (_moveDirBefore != _moveDir)
             if (_moveDirBefore.x.Equals(0) && _moveDirBefore.y.Equals(0)) {
                 startMove();
-                NetworkMng.I.SendMsg(string.Format("MOVE_START:{0}:{1}", _moveDir.x, _moveDir.y));
+                NetworkMng.I.SendMsg(string.Format("MOVE_START:{0}:{1}:{2}", _moveDir.x, _moveDir.y, _stat.MOVE_SPEED));
             }
             else if (_moveDir.x.Equals(0) && _moveDir.y.Equals(0)) {
                 stopMove();
@@ -449,7 +453,7 @@ public class Character : MonoBehaviour
         if (apply_count >= 1)
             StartCoroutine(SpeedUp(apply_count - 1, saveSpeed));
         else if (apply_count == 0)
-            MOVE_SPEED = saveSpeed;
+            _stat.MOVE_SPEED = saveSpeed;
     }
 
     IEnumerator itemCool(Item item)
@@ -591,6 +595,9 @@ public class Character : MonoBehaviour
         this._weapon.sprite = Resources.Load<Sprite>($"Character/Weapon/{weapon}");
     }
     
+    public virtual void settingStat() {
+    }
+
     void OnDestroy()
     {
         for (int i = 0; i < 3; i++)

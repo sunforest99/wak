@@ -22,7 +22,7 @@ public struct Stat
     public float incHPPer;              // 체력 증가량 퍼센트
     public float takenHealPer;          // 받는 회복량 퍼센트
     
-    public float moveSpeedPer;          // 이동 속도 퍼센트
+    public float MOVE_SPEED;          // 이동 속도 퍼센트
     public int dashCool;              // 대쉬 쿨타임
     public int wakeUpCool;            // 기상기 쿨타임
 
@@ -32,7 +32,7 @@ public struct Stat
     // 데미지 증가량 (기본 1~1.2), 받는 피해량 (기본 1), 대쉬 쿨타임, 기상 쿨타임, 이동 속도
     public Stat(
         float takenDamagePer, 
-        int dashCool, int wakeUpCool, float moveSpeedPer        
+        int dashCool, int wakeUpCool, float moveSpeedBase      
     )
     {
         /**********************************************************************
@@ -120,13 +120,13 @@ public struct Stat
         else if (GameMng.I.userData.upgrade.Contains(Skill_TREE.WAKEUP_1))
             this.wakeUpCool -= 1;
 
-        this.moveSpeedPer = moveSpeedPer;
+        this.MOVE_SPEED = moveSpeedBase;
         if (GameMng.I.userData.upgrade.Contains(Skill_TREE.SPEED_3))
-            this.moveSpeedPer *= 1.3f;
+            this.MOVE_SPEED *= 1.3f;
         else if (GameMng.I.userData.upgrade.Contains(Skill_TREE.SPEED_2))
-            this.moveSpeedPer *= 1.2f;
+            this.MOVE_SPEED *= 1.2f;
         else if (GameMng.I.userData.upgrade.Contains(Skill_TREE.SPEED_1))
-            this.moveSpeedPer *= 1.1f;
+            this.MOVE_SPEED *= 1.1f;
         
 
         /**********************************************************************
@@ -187,7 +187,7 @@ public struct Stat
                 // 크리티컬 확률 15% 증가
                 this.criticalPer += 15;
                 // 이속 10% 감소
-                this.moveSpeedPer *= 0.9f;
+                this.MOVE_SPEED *= 0.9f;
                 break;
             case ITEM_INDEX.BAT:
                 // 백어택 피해량 15% 증가
@@ -212,7 +212,7 @@ public struct Stat
                 this.minDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
                 this.maxDamage = Mathf.FloorToInt(this.minDamage * 1.1f);
                 // 이속 10% 감소
-                this.moveSpeedPer *= 0.9f;
+                this.MOVE_SPEED *= 0.9f;
                 break;
             case ITEM_INDEX.ROSE:
                 // 전체 DMG 10% 증가
@@ -231,7 +231,8 @@ public struct Stat
                 // 백어택 피해량 15% 증가
                 this.incBackattackPer += 0.15f;
                 // 이속 10% 감소
-                this.moveSpeedPer *= 0.9f;
+                this.MOVE_SPEED *= 2;
+                // this.MOVE_SPEED *= 0.9f;
                 break;                
             // case ITEM_INDEX.:
                 // // 전체 DMG 10% 증가
@@ -252,7 +253,7 @@ public struct Stat
                 // 체력 2% 증가
                 this.incHPPer += 0.02f;
                 // 이속 4% 증가
-                this.moveSpeedPer *= 1.04f;
+                this.MOVE_SPEED *= 1.04f;
                 break;
                 
             case ITEM_INDEX.SHIRTS_1:

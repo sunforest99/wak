@@ -487,7 +487,7 @@ public class Wakgui : Boss
     {
         int tempDmg = _currentHp;
         animator.SetTrigger("Counter");
-        yield return new WaitForSecondsRealtime(1.0f);
+        yield return new WaitForSecondsRealtime(0.8f);
         while (action == WAKGUI_ACTION.PATTERN_COUNTER)
         {
             if (tempDmg - _currentHp > 1000000)

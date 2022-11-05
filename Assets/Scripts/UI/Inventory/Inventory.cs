@@ -198,6 +198,7 @@ public class Inventory : MonoBehaviour
             GameMng.I.character._pants.sprite = getClickIndex.itemSp;
             NetworkMng.I.SendMsg(string.Format("CHANGE_CLOTHES:1:{0}", (int)getClickIndex.itemIndex));
         }
+        GameMng.I.character.settingStat();
     }
 
     public void useConsumableItemBtn()

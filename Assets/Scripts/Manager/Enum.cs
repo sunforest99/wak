@@ -89,7 +89,8 @@ public enum ITEM_INDEX
 
     _CONSUMABLE_ITEM_INDEX_ = 300,
     REDMUSHROOM,
-
+    MANJU,
+    
     NONE
 }
 
@@ -100,6 +101,7 @@ public enum QUEST_CODE
     PURPLE_LIGHT,           // 퍼플라이트를 폐기해야해
     R_U_HUMAN,              // 너 사람이지
     GOHON,                  // 고백해서 혼내주기
+    MANJU,                  // 소중한 만쥬
 }
 
 // 새로 추가되면 무조건 종류상관없이 뒤에 

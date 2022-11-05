@@ -324,7 +324,8 @@ public class NetworkMng : MonoBehaviour
         }
         else if (txt[0].Equals("MOVE_START"))
         {
-            // MOVE_START : 유저uniqueNumber : 방향x좌표 : 방향y좌표
+            // MOVE_START : 유저uniqueNumber : 방향x좌표 : 방향y좌표 : 이동속도
+            v_users[txt[1]].setMoveSpeed(float.Parse(txt[4]));
             v_users[txt[1]].setMoveDir(int.Parse(txt[2]), int.Parse(txt[3]));
             v_users[txt[1]].startMove();
         }
