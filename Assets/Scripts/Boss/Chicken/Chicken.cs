@@ -57,7 +57,7 @@ public class Chicken : Boss
         base.BossInitialize();
         GameMng.I.boss = this;
 
-        base._minDistance = 2.0f;
+        base._minDistance = 1.5f;
 
         if (NetworkMng.I.roomOwner)
         {
@@ -106,89 +106,89 @@ public class Chicken : Boss
         {
             // if (baseAttackCount < 9)
             // {
-            //     pattern_rand = Random.Range((int)CHICKEN_ACTION.IDLE + 1, (int)CHICKEN_ACTION.BASE_RETREAT + 1);
-            //     // pattern_rand = (int)CHICKEN_ACTION.BASE_SPEAR;
-            //     switch (pattern_rand)
-            //     {
-            //         case (int)CHICKEN_ACTION.IDLE:
-            //             SendBossPattern(pattern_rand, getTarget);
-            //             // isThink = false;
-            //             break;
-            //         case (int)CHICKEN_ACTION.BASE_SPEAR:
-            //             SendBossPattern(pattern_rand);
-            //             baseAttackCount++;
-            //             break;
-            //         case (int)CHICKEN_ACTION.BASE_OBA:
-            //             SendBossPattern(pattern_rand);
-            //             baseAttackCount++;
-            //             break;
-            //         case (int)CHICKEN_ACTION.BASE_ROAR:
-            //             SendBossPattern(pattern_rand);
-            //             baseAttackCount++;
-            //             break;
-            //         case (int)CHICKEN_ACTION.BASE_WING:
-            //             SendBossPattern(pattern_rand);
-            //             baseAttackCount++;
-            //             break;
-            //         case (int)CHICKEN_ACTION.BASE_JUMP_ATTACK:
-            //             SendBossPattern(pattern_rand);
-            //             baseAttackCount++;
-            //             break;
-            //         case (int)CHICKEN_ACTION.BASE_FOOT:
-            //             SendBossPattern(pattern_rand);
-            //             baseAttackCount++;
-            //             break;
-            //         case (int)CHICKEN_ACTION.BASE_FART:
-            //             SendBossPattern(pattern_rand);
-            //             baseAttackCount++;
-            //             break;
-            //         case (int)CHICKEN_ACTION.BASE_RETREAT:
-            //             SendBossPattern(pattern_rand);
-            //             baseAttackCount++;
-            //             break;
-            //     }
+            // pattern_rand = Random.Range((int)CHICKEN_ACTION.IDLE + 1, (int)CHICKEN_ACTION.BASE_RETREAT + 1);
+            // pattern_rand = (int)CHICKEN_ACTION.BASE_RETREAT;
+            // switch (pattern_rand)
+            // {
+            //     case (int)CHICKEN_ACTION.IDLE:
+            //         SendBossPattern(pattern_rand, getTarget);
+            //         // isThink = false;
+            //         break;
+            //     case (int)CHICKEN_ACTION.BASE_SPEAR:
+            //         SendBossPattern(pattern_rand);
+            //         baseAttackCount++;
+            //         break;
+            //     case (int)CHICKEN_ACTION.BASE_OBA:
+            //         SendBossPattern(pattern_rand);
+            //         baseAttackCount++;
+            //         break;
+            //     case (int)CHICKEN_ACTION.BASE_ROAR:
+            //         SendBossPattern(pattern_rand);
+            //         baseAttackCount++;
+            //         break;
+            //     case (int)CHICKEN_ACTION.BASE_WING:
+            //         SendBossPattern(pattern_rand);
+            //         baseAttackCount++;
+            //         break;
+            //     case (int)CHICKEN_ACTION.BASE_JUMP_ATTACK:
+            //         SendBossPattern(pattern_rand);
+            //         baseAttackCount++;
+            //         break;
+            //     case (int)CHICKEN_ACTION.BASE_FOOT:
+            //         SendBossPattern(pattern_rand);
+            //         baseAttackCount++;
+            //         break;
+            //     case (int)CHICKEN_ACTION.BASE_FART:
+            //         SendBossPattern(pattern_rand);
+            //         baseAttackCount++;
+            //         break;
+            //     case (int)CHICKEN_ACTION.BASE_RETREAT:
+            //         SendBossPattern(pattern_rand);
+            //         baseAttackCount++;
+            //         break;
+            // }
             // }
             // else
-            // {
-            // pattern_rand = Random.Range((int)CHICKEN_ACTION.PATTERN_BIRDS, (int)CHICKEN_ACTION.PATTERN_SPHINX + 1);
-            pattern_rand = (int)CHICKEN_ACTION.PATTERN_BIRDS;
-            switch (pattern_rand)
             {
-                case (int)CHICKEN_ACTION.PATTERN_BIRDS:
-                    rand = Random.Range(0, 4);
-                    SendBossPattern(pattern_rand, rand.ToString());
-                    baseAttackCount = 0;
-                    break;
-                case (int)CHICKEN_ACTION.PATTERN_COUNTER_0:
-                    SendBossPattern(pattern_rand);
-                    baseAttackCount = 0;
-                    break;
-                case (int)CHICKEN_ACTION.PATTERN_COUNTER_1:
-                    SendBossPattern(pattern_rand);
-                    baseAttackCount = 0;
-                    break;
-                case (int)CHICKEN_ACTION.PATTERN_FALLING_ROCK:
-                    SendBossPattern(pattern_rand);
-                    baseAttackCount = 0;
-                    break;
-                case (int)CHICKEN_ACTION.PATTERN_REMEMBER:
-                    action = CHICKEN_ACTION.PATTERN_REMEMBER;
-                    rand = Random.Range(0, 2);
-                    SendBossPattern(pattern_rand, rand.ToString());
-                    baseAttackCount = 0;
-                    break;
-                case (int)CHICKEN_ACTION.PATTERN_EGG:
-                    baseAttackCount = 0;
-                    rand = Random.Range(0, 5);
-                    SendBossPattern(pattern_rand, rand.ToString() + ":" + getTarget);
-                    break;
-                case (int)CHICKEN_ACTION.PATTERN_SPHINX:
-                    baseAttackCount = 0;
-                    rand = Random.Range(0, 4);
-                    SendBossPattern(pattern_rand, rand.ToString());
-                    break;
+                // pattern_rand = Random.Range((int)CHICKEN_ACTION.PATTERN_BIRDS, (int)CHICKEN_ACTION.PATTERN_SPHINX + 1);
+                pattern_rand = (int)CHICKEN_ACTION.PATTERN_BIRDS;
+                switch (pattern_rand)
+                {
+                    case (int)CHICKEN_ACTION.PATTERN_BIRDS:
+                        rand = Random.Range(0, 4);
+                        SendBossPattern(pattern_rand, rand.ToString());
+                        baseAttackCount = 0;
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_COUNTER_0:
+                        SendBossPattern(pattern_rand);
+                        baseAttackCount = 0;
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_COUNTER_1:
+                        SendBossPattern(pattern_rand);
+                        baseAttackCount = 0;
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_FALLING_ROCK:
+                        SendBossPattern(pattern_rand);
+                        baseAttackCount = 0;
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_REMEMBER:
+                        action = CHICKEN_ACTION.PATTERN_REMEMBER;
+                        rand = Random.Range(0, 2);
+                        SendBossPattern(pattern_rand, rand.ToString());
+                        baseAttackCount = 0;
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_EGG:
+                        baseAttackCount = 0;
+                        rand = Random.Range(0, 5);
+                        SendBossPattern(pattern_rand, rand.ToString() + ":" + getTarget);
+                        break;
+                    case (int)CHICKEN_ACTION.PATTERN_SPHINX:
+                        baseAttackCount = 0;
+                        rand = Random.Range(0, 4);
+                        SendBossPattern(pattern_rand, rand.ToString());
+                        break;
+                }
             }
-            // }
         }
     }
 
@@ -340,7 +340,7 @@ public class Chicken : Boss
     {
         int tempDmg = _currentHp;
 
-        yield return new WaitForSecondsRealtime(1.0f);
+        yield return new WaitForSecondsRealtime(0.8f);
 
         if (action == (int)CHICKEN_ACTION.PATTERN_COUNTER_0)        // 반격
         {
@@ -382,17 +382,20 @@ public class Chicken : Boss
     // 네트워크 테스트 해보기
     IEnumerator Pattern_FallingRock()
     {
-        foreach (var trans in NetworkMng.I.v_users.Values)
-        {
-            GameObject temp = Instantiate(rockTarget, Vector3.zero, Quaternion.Euler(90f, 0f, 0f));
-            temp.transform.SetParent(trans.transform.parent);
-            temp.transform.localPosition = new Vector3(0, 0.0f, -0.5f);
-            yield return new WaitForSecondsRealtime(1.0f);      // 1초 뒤에 꺼지게하고
-            Destroy(temp);
-        }
+        action = CHICKEN_ACTION.PATTERN_FALLING_ROCK;
+
+        animator.SetTrigger("FallingRock");
 
         for (int i = 0; i < 3; i++)
         {
+            foreach (var trans in NetworkMng.I.v_users.Values)
+            {
+                GameObject temp = Instantiate(rockTarget, Vector3.zero, Quaternion.Euler(90f, 0f, 0f));
+                temp.transform.SetParent(trans.transform.parent);
+                temp.transform.localPosition = new Vector3(0, 0.0f, -0.5f);
+                yield return new WaitForSecondsRealtime(1f);      // 1초 뒤에 꺼지게하고
+                Destroy(temp);
+            }
             yield return new WaitForSecondsRealtime(1.0f);   // 돌 생성 2초간격으로
             foreach (var trans in NetworkMng.I.v_users.Values)
             {
@@ -424,7 +427,8 @@ public class Chicken : Boss
     {
         for (int i = 0; i < 4; i++)
         {
-            GameObject temp = Instantiate(eggGame, new Vector3(-9.0f + (i * 6f), 1f, -6.59f), Quaternion.identity);
+            GameObject temp = Instantiate(eggGame, new Vector3(-11.0f + (i * 7f), 1f, -6.59f), Quaternion.identity);
+            temp.transform.localScale = new Vector3(2f, 2f, 2f);
             eggs.Add(temp.GetComponent<Egg>());
             eggs[i].uniqueNum = i;
             if (i == eggNum)

@@ -8,7 +8,7 @@ public class Bird : MonoBehaviour
     [SerializeField] Rigidbody _rigidbody;
     [SerializeField] IObjectPool<Bird> birdPool;
 
-    public int rand;
+    // public int rand;
     int damage;
 
     void Start()
@@ -21,7 +21,7 @@ public class Bird : MonoBehaviour
         birdPool = pool;
     }
 
-    private void OnEnable()
+    public void Init(int rand)
     {
         switch (rand)
         {
