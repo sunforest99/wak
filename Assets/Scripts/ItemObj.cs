@@ -20,6 +20,8 @@ public class ItemObj : MonoBehaviour
             transform.localScale = new Vector3(0.7f, 0.7f, 1);
         else if (saveItem.itemData.itemType.Equals(ITEM_TYPE.PANTS_ITEM))
             transform.localScale = new Vector3(0.9f, 0.9f, 1);
+        else if (saveItem.itemData.itemType.Equals(ITEM_TYPE.UNUSEFUL_ITEM))
+            transform.localScale = new Vector3(2, 2, 1);
         _rigidbody.AddForce(new Vector3(Random.Range(-1.5f, 1.5f), 10, Random.Range(-1.5f, 1.5f)), ForceMode.Impulse);
     }
 

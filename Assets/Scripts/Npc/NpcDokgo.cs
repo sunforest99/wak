@@ -50,13 +50,9 @@ public class NpcDokgo : Npcdata
         }
     }
 
-    public override void actSomething()
-    {
-    }
-
     protected IEnumerator Quest_Manju()
     {
-        yield return "고백으로 혼내주기... ";
+        yield return "소중한 만쥬...";
         yield return "던전내 가끔씩 나타나는 현상인데 몬스터들을 더욱 무섭게 만든다고 합니다!";
         yield return "퍼플라이트를 폐기해야합니다 !!";
 
