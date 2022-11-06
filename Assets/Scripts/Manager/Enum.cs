@@ -107,6 +107,7 @@ public enum ITEM_INDEX
     GAMJATOK,
     SSALGUKSU,
     BAZIRAK_REHOI,
+    GOBONGBAP,
     
     NONE
 }
@@ -120,6 +121,9 @@ public enum QUEST_CODE
     GOHON,                  // 고백해서 혼내주기
     MANJU,                  // 소중한 만쥬
     FISH,                   // 무의식 낚시
+    GODOK_MISIK,            // 고독한 미식가
+    HANSOT,                 // 평생 왁솥 먹으면서 -
+    BAEDAL,                 // 일일알바 - 배달
 }
 
 // 새로 추가되면 무조건 종류상관없이 뒤에 

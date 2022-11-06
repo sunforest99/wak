@@ -124,7 +124,7 @@ public class NetworkMng : MonoBehaviour
             }
             catch (SocketException err)
             {
-                GameMng.I.noticeMessage.text = "------------------- ERROR 여기 들어오면 메세지 받기가 이제 안됨 ";
+                // GameMng.I.noticeMessage.text = "------------------- ERROR 여기 들어오면 메세지 받기가 이제 안됨 ";
                 Debug.LogError(" 메세지 이상 " + err.ToString());
                 
 
@@ -136,7 +136,7 @@ public class NetworkMng : MonoBehaviour
             {
                 Debug.Log("ERROR 개반자에게 문의 : " + ex.ToString());
                 
-                GameMng.I.noticeMessage.text = "------------------- ERROR 개반자에게 문의 : " + ex.ToString();
+                // GameMng.I.noticeMessage.text = "------------------- ERROR 개반자에게 문의 : " + ex.ToString();
 
                 SendMsg("LOG:Exception err", true);
                 Logout();

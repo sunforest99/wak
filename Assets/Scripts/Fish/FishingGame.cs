@@ -90,9 +90,9 @@ public class FishingGame : MonoBehaviour
 
         countTingTime += Time.deltaTime;
         if (upAndDown)
-            fishTargetObj.transform.position += new Vector3(0, Time.deltaTime / 2, 0);
+            fishTargetObj.transform.position += new Vector3(0, Time.deltaTime * 0.3f, 0);
         else
-            fishTargetObj.transform.position -= new Vector3(0, Time.deltaTime / 2, 0);
+            fishTargetObj.transform.position -= new Vector3(0, Time.deltaTime * 0.3f, 0);
         if (countTingTime > 1) {
             countTingTime = 0;
             upAndDown = !upAndDown;

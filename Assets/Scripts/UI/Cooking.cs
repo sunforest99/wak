@@ -8,10 +8,12 @@ public class Cooking : MonoBehaviour
         ITEM_INDEX.GAMJA,
         ITEM_INDEX.GOSU,
         ITEM_INDEX.BAZIRAK,
+        ITEM_INDEX.GOBONGBAP,
     };
     ITEM_INDEX[] ingList_1 = {
         ITEM_INDEX.GOLDEN_POO,
         ITEM_INDEX.JANDI,
+        ITEM_INDEX.GOOL,
         ITEM_INDEX.GOOL,
     };
     [SerializeField] ItemData[] resultCooks;

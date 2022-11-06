@@ -7,7 +7,7 @@ public class NpcDophamin : Npcdata
 {
     void Start()
     {
-        base.npcname = "도파민";
+        base.npcname = "도파민 박사";
         checkQuest();
     }
 
@@ -21,26 +21,24 @@ public class NpcDophamin : Npcdata
         
         // 만약 (서브)퀘스트의 경우는 아래처럼 contains 확인과 선행 퀘스트도 확인해야함
         // (메인)퀘스트는 순서가 있는 단일 퀘스트지만 (서브)퀘스트는 선행 퀘스트가 순서대로가 아니기 때문
-        if (!GameMng.I.userData.quest_done.Contains( (int)QUEST_CODE.PURPLE_LIGHT ))
+        if (!GameMng.I.userData.quest_done.Contains( (int)QUEST_CODE.HANSOT ))
         {
             // 퀘스트를 완료한건 아니지만 퀘스트 수령은 한 상태
-            if (Character.sub_quest.ContainsKey(QUEST_CODE.PURPLE_LIGHT.ToString()))
+            if (Character.sub_quest.ContainsKey(QUEST_CODE.HANSOT.ToString()))
             {
-                if (Character.sub_quest_progress[QUEST_CODE.PURPLE_LIGHT.ToString()].Equals(0))
+                // 진행도 0  =>  퀘스트 수령만 하고 진행 하나도 안함
+                if (Character.sub_quest_progress[QUEST_CODE.HANSOT.ToString()].Equals(0))
                 {
-                    base.dialogs = null;
+                    base.dialogs = Quest_Hansot_Check();
+                    setQuestIcon(QUEST_TYPE.SUB);
                 }
-                else
-                {
-                    base.dialogs = Quest_Purplelight_Done();
-                }
-                setQuestIcon();
-                setSpeech("퍼플라이트...");
+
+                setSpeech("이..");
             }
             // 퀘스트 수령도 안한 상태
             else
             {
-                base.dialogs = Quest_Purplelight();
+                base.dialogs = Quest_Hansot();
                 setQuestIcon(QUEST_TYPE.SUB);
             }
         }
@@ -52,23 +50,50 @@ public class NpcDophamin : Npcdata
         }
     }
 
-    protected IEnumerator Quest_Purplelight()
+    public override void actSomething()
     {
-        yield return "혹시 " + GameMng.I.userData.user_nickname + "님, 퍼플라이트라고 들어 보셨나요?";
+    }
+
+    protected IEnumerator Quest_Hansot()
+    {
+        yield return "평생 왁솥만 먹기";
         yield return "던전내 가끔씩 나타나는 현상인데 몬스터들을 더욱 무섭게 만든다고 합니다!";
         yield return "퍼플라이트를 폐기해야합니다 !!";
 
         // 대화 시작과 동시에 서브 퀘스트 시작함을 알림
         setQuestIcon();
-        GameMng.I.StartSubQuest(QUEST_CODE.PURPLE_LIGHT);
-        // GameMng.I.nextSubQuest(QUEST_CODE.PURPLE_LIGHT);
+        GameMng.I.StartSubQuest(QUEST_CODE.HANSOT);
+        
     }
 
-    protected IEnumerator Quest_Purplelight_Done()
+    protected IEnumerator Quest_Hansot_Check()
     {
-        yield return "세상에 퍼플라이트 던전에 정말 다녀온신겁니까?";
-        yield return "용케 살아돌아오신 겁니다!!";
+        bool check = false;
 
-        GameMng.I.nextSubQuest(QUEST_CODE.PURPLE_LIGHT);
+        try {
+            int idx = Character.haveItem[1].FindIndex(name => name.itemData.itemIndex == ITEM_INDEX.HANSOT);
+
+            // 아이템 개수가 안맞으면 이 함수에 들어올수 없지만 혹시 모르니
+            if (idx >= 0)
+            {
+                if (Character.haveItem[2][idx].itemCount > 1) {
+                    Character.haveItem[2][idx].itemCount--;
+                } else if (Character.haveItem[2][idx].itemCount == 1) {
+                    Character.haveItem[2].RemoveAt(idx);
+                }
+                check = true;
+            }
+        } catch(System.IndexOutOfRangeException e) {
+        }
+
+        if (check) {
+            yield return "아니 이것만 있으면 성공할수 있단겐가!";
+            yield return "정말 고 맙 네. 내 보답이 서운하지 않았음 하군";
+
+            GameMng.I.nextSubQuest(QUEST_CODE.HANSOT);
+        } else {
+            yield return "...";
+            yield return "아직 멀은건가?";
+        }
     }
 }
