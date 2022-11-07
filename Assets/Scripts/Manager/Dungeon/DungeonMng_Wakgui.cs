@@ -9,65 +9,133 @@ public class DungeonMng_Wakgui : DungeonMng
     [SerializeField] GameObject monster_seaduNew;       // 뉴심해두 몬스터 prefab
     [SerializeField] GameObject monster_octopusdu;      // 문어두 몬스터 prefab
     
-
-
     protected override void dungeonMonster()
     {
-        // TODO : 좌표 여러개 추가하기
-        Vector3[] posArr = {
-            new Vector3(-4.16f, 1.325f, 10)
-        };
-
-        // TODO : 몬스터 다르게 하기 등록
-        for (int i = 0; i < posArr.Length; i++)
+        switch (Random.Range(0, 8))
         {
-            // 뉴심해두 몬스터 생성
-            Instantiate(
-                monster_seaduNew,
-                posArr[i],
-                Quaternion.identity
-            );
+            case 0:         // 뉴심해두 2
+                Vector3[] posArr = {
+                    new Vector3(-4.16f, 1.325f, 10),
+                    new Vector3(4.16f, 1.325f, 11)
+                };
+
+                for (int i = 0; i < posArr.Length; i++)
+                {
+                    Instantiate(
+                        monster_seaduNew,
+                        posArr[i],
+                        Quaternion.identity
+                    );
+                }
+
+                _leftMonster = posArr.Length;
+                break;
+            case 1:         // 심해두1 뉴심해두 1
+                Instantiate(
+                    monster_seaduNew,
+                    new Vector3(-4.6f, 1.325f, 11),
+                    Quaternion.identity
+                );
+                Instantiate(
+                    monster_seadu,
+                    new Vector3(5f, 1.26f, 9.2f),
+                    Quaternion.identity
+                );
+
+                _leftMonster = 2;
+                break;
+            case 2:         // 심해두 2
+                Vector3[] posArr2 = {
+                    new Vector3(-3f, 1.26f, 9),
+                    new Vector3(3f, 1.26f, 9.2f)
+                };
+                for (int i = 0; i < posArr2.Length; i++)
+                {
+                    Instantiate(
+                        monster_seadu,
+                        posArr2[i],
+                        Quaternion.identity
+                    );
+                }
+
+                _leftMonster = posArr2.Length;
+                break;
+            case 3:             // 문어두 1
+                Instantiate(
+                    monster_octopusdu,
+                    new Vector3(3f, 1.26f, 9.2f),
+                    Quaternion.identity
+                );
+                _leftMonster = 1;
+                break;
+            case 4:             // 심해두 1 문어두 1
+                Instantiate(
+                    monster_octopusdu,
+                    new Vector3(-3f, 1.26f, 11),
+                    Quaternion.identity
+                );
+                Instantiate(
+                    monster_seadu,
+                    new Vector3(5f, 1.26f, 9.2f),
+                    Quaternion.identity
+                );
+
+                _leftMonster = 2;
+                break;
+            case 5:             // 뉴심해두 1 문어두 1
+                Instantiate(
+                    monster_octopusdu,
+                    new Vector3(-3f, 1.26f, 11),
+                    Quaternion.identity
+                );
+                Instantiate(
+                    monster_seaduNew,
+                    new Vector3(4.9f, 1.325f, 10),
+                    Quaternion.identity
+                );
+
+                _leftMonster = 2;
+                break;
+            case 6:             // 심해두1 뉴심해두 1
+                Instantiate(
+                    monster_seaduNew,
+                    new Vector3(5.3f, 1.325f, 10),
+                    Quaternion.identity
+                );
+                Instantiate(
+                    monster_seadu,
+                    new Vector3(-5f, 1.26f, 9f),
+                    Quaternion.identity
+                );
+
+                _leftMonster = 2;
+                break;
+            case 7:             // 뉴심해두 3
+                Vector3[] posArr3 = {
+                    new Vector3(-5.4f, 1.325f, 8),
+                    new Vector3(5.16f, 1.325f, 8),
+                    new Vector3(-0.2f, 1.325f, 13)
+                };
+
+                for (int i = 0; i < posArr3.Length; i++)
+                {
+                    Instantiate(
+                        monster_seaduNew,
+                        posArr3[i],
+                        Quaternion.identity
+                    );
+                }
+
+                _leftMonster = posArr3.Length;
+                break;
         }
 
-        _leftMonster = posArr.Length;
+        
     }
     protected override void dungeonMonsterPurple() {
-        // Instantiate(purpleLight, new Vector3(0, 0.88f, 10), Quaternion.Euler(20, 0, 0));
+        Instantiate(purpleLight, new Vector3(0, 0.88f, 10), Quaternion.Euler(20, 0, 0));
 
-        // // TODO : 몬스터 만들면서 강화 및 회복 능력 부여
-        // Vector3[] posArr = {
-        //     new Vector3(-3f, 1.26f, 9),
-        //     new Vector3(3f, 1.26f, 9.2f)
-        // };
-
-        // // TODO : 몬스터 다르게 하기 등록
-        // for (int i = 0; i < posArr.Length; i++)
-        // {
-        //     // 뉴심해두 몬스터 생성
-        //     Instantiate(
-        //         monster_seadu,
-        //         posArr[i],
-        //         Quaternion.identity
-        //     );
-        // }
-        
-        // _leftMonster = posArr.Length;
-
-        Vector3[] posArr = {
-            new Vector3(3f, 1.26f, 9.2f)
-        };
-
-        for (int i = 0; i < posArr.Length; i++)
-        {
-            // 뉴심해두 몬스터 생성
-            Instantiate(
-                monster_octopusdu,
-                posArr[i],
-                Quaternion.identity
-            );
-        }
-        
-        _leftMonster = posArr.Length;
+        dungeonMonster();
     }
     protected override void dungeonNPC() {
         prison.SetActive(true);
