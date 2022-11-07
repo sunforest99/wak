@@ -13,8 +13,8 @@ public class Octopus : Monster
     protected override void Awake()
     {
         base.Awake();
-        _hp = 30000;
-        _fullHp = 30000;
+        _hp = 33299540;
+        _fullHp = 33299540;
         _nearness = 2;
         _moveSpeed = 0.1f;
 

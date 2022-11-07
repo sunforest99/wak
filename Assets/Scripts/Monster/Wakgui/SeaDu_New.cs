@@ -12,8 +12,8 @@ public class SeaDu_New : Monster
     protected override void Awake()
     {
         base.Awake();
-        _hp = 300000;
-        _fullHp = 300000;
+        _hp = 25849540;
+        _fullHp = 25849540;
         _nearness = 2;
         _moveSpeed = 3f;
 
