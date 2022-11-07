@@ -69,7 +69,6 @@ public enum ITEM_INDEX
     SCIENCE_AWARD,
     LANOVEL,
     AIR,
-    FISH,
     MAGIC_WAND,
     WINE,
     NINJA,
@@ -85,11 +84,30 @@ public enum ITEM_INDEX
     DONGGASSE,
     SWIP_SHIRT,
     ROBOT,
+    BATTERY,
+    SHIRMP,
     _FAVORITE_ITEM_INDEX_END_,
 
     _CONSUMABLE_ITEM_INDEX_ = 300,
     REDMUSHROOM,
     MANJU,
+    WAKPAGO,
+    POO,
+    GOLDEN_POO,
+    BAZIRAK,
+    WATERMELLON,
+    GOOL,
+    DDURUDDUDDU,
+    GOSU,
+    BUNGUHPPANG,
+    GAMJA,
+    JANDI,
+    HANSOT,
+    BOKUH,
+    GAMJATOK,
+    SSALGUKSU,
+    BAZIRAK_REHOI,
+    GOBONGBAP,
     
     NONE
 }
@@ -102,6 +120,10 @@ public enum QUEST_CODE
     R_U_HUMAN,              // 너 사람이지
     GOHON,                  // 고백해서 혼내주기
     MANJU,                  // 소중한 만쥬
+    FISH,                   // 무의식 낚시
+    GODOK_MISIK,            // 고독한 미식가
+    HANSOT,                 // 평생 왁솥 먹으면서 -
+    BAEDAL,                 // 일일알바 - 배달
 }
 
 // 새로 추가되면 무조건 종류상관없이 뒤에 

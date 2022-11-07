@@ -22,7 +22,7 @@ public class DungeonMng : MonoBehaviour
 
     [Space(20)][Header("[  던전 공용 데이터  ]")]  // ==========================================================================================================================
     public static DUNGEON_TYPE _dungeon_Type = DUNGEON_TYPE.MONSTER;    // 현재 들어가 있는 던전의 타입
-    protected static int _leftMonster = 0;                              // 현재 남아있는 잔여 몬스터
+    public static int _leftMonster = 0;                              // 현재 남아있는 잔여 몬스터
     protected static GameObject getNextWall;                            // _nextWall 이 Start때 들어감
     [SerializeField] GameObject _nextWall;                              // 다음 던전으로 넘어갈 수 있는 문을 막고 있는 벽 (몬스터 0마리 되면 false 해서 길 열어주기)
     [SerializeField] GameObject _nextPortal;                            // 던전 다음 포탈
@@ -34,6 +34,9 @@ public class DungeonMng : MonoBehaviour
     [SerializeField] protected GameObject campFire;                     // 휴식 오브젝트
     [SerializeField] protected GameObject npc_shop;                     // 상점 npc  (소피아(왁귀) | 캘리칼리(계륵))
     [SerializeField] protected GameObject prison;                       // NPC 갇혀있는 감옥
+    [SerializeField] protected GameObject[] grasses;
+    GameObject grass;
+    int grassIdx = 0;
 
     protected virtual void Start()
     {
@@ -42,6 +45,7 @@ public class DungeonMng : MonoBehaviour
         getNextWall = _nextWall;
 
         // StartCoroutine(showMapUI());
+        grass = Instantiate(grasses[grassIdx++], Vector3.zero, Quaternion.identity);
     }
 
     IEnumerator showMapUI()
@@ -70,6 +74,11 @@ public class DungeonMng : MonoBehaviour
         _leftMonster = 0;
         campFire.SetActive(false);
         npc_shop.SetActive(false);
+        
+        Destroy(grass);
+        grassIdx++;
+        if (grassIdx >= grasses.Length) grassIdx = 0;
+        grass = Instantiate(grasses[grassIdx], Vector3.zero, Quaternion.identity);
 
         if (_dungeon_Type.Equals(DUNGEON_TYPE.RANDOM))
             _dungeon_Type = randomDungeon();

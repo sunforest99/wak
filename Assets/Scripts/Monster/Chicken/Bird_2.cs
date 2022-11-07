@@ -11,8 +11,8 @@ public class Bird_2 : Monster
     protected override void Awake()
     {
         base.Awake();
-        _hp = 300000;
-        _fullHp = 300000;
+        _hp = 18349540;
+        _fullHp = 18349540;
         _nearness = 3.5f;
         _moveSpeed = 0.1f;
 

@@ -69,7 +69,7 @@ public class NpcHikiking : Npcdata
 
     protected IEnumerator Quest_RUPeople()
     {
-        yield return "혹시 " + GameMng.I.userData.user_nickname + "님, 퍼플라이트라고 들어 보셨나요?";
+        yield return "너 사람이지";
         yield return "던전내 가끔씩 나타나는 현상인데 몬스터들을 더욱 무섭게 만든다고 합니다!";
         yield return "퍼플라이트를 폐기해야합니다 !!";
 
@@ -87,6 +87,6 @@ public class NpcHikiking : Npcdata
 
         GameMng.I.nextSubQuest(QUEST_CODE.R_U_HUMAN);
         if (questObjects != null)
-            questObjects.SetActive(false);
+            Destroy(questObjects);
     }
 }
