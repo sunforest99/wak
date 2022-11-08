@@ -147,4 +147,9 @@ public class Npcdata : MonoBehaviour
         x = (x > 3) ? 3.5f : x + 0.5f;
         speechBG.transform.localScale = new Vector2(x, speechTxt.preferredHeight + 0.5f);
     }
+
+    public void ActiveOffSelf()
+    {
+        this.gameObject.SetActive(false);
+    }
 }

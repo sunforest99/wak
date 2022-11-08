@@ -67,7 +67,7 @@ public enum ITEM_INDEX
 
     _FAVORITE_ITEM_INDEX_ = 200,
     SCIENCE_AWARD,
-    LANOVEL,
+    RED_HOOD,       // 뢴트게늄
     AIR,
     MAGIC_WAND,
     WINE,
@@ -77,7 +77,7 @@ public enum ITEM_INDEX
     YANG_GANG,
     STORYBOOK,
     DRAGON_BALL,
-    MONEY,
+    SUKRYU,
     MOVEY_DVD,
     ARMY,
     TOOTH,

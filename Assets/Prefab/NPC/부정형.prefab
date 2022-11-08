@@ -434,6 +434,7 @@ GameObject:
   - component: {fileID: 7232264986423921293}
   - component: {fileID: 7232264986423921290}
   - component: {fileID: 6443133165034854658}
+  - component: {fileID: 2204910469217562152}
   m_Layer: 0
   m_Name: "\uBD80\uC815\uD615"
   m_TagString: Npc
@@ -507,6 +508,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2204910469217562152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7232264986423921286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b561b028e1a4754a97f36a69d06bd96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDialog: 0
+  speechTxt: {fileID: 2961099992641835092}
+  speechBG: {fileID: 2961099993488350465}
+  _anim: {fileID: 6443133165034854658}
+  favoriteItem: {fileID: 11400000, guid: 24baf4ebef6693a4e96162382a9b5400, type: 2}
+  questIcon: {fileID: 7232264985009927002}
 --- !u!1 &7232264986590422250
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,6 +896,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5569222582844021390, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
   m_PrefabInstance: {fileID: 7232264985535335133}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2961099992641835092 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5569222582844021385, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
+  m_PrefabInstance: {fileID: 7232264985535335133}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2961099993488350465 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5569222583424686044, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}

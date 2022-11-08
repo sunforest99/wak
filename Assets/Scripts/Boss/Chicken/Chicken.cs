@@ -97,61 +97,77 @@ public class Chicken : Boss
     {
         if (_currentHp >= 0 && action == CHICKEN_ACTION.IDLE && _target != null)
             base.BossMove();
+        else if (_currentHp >= 0 && action == CHICKEN_ACTION.BASE_OBA && _target != null)
+            BossMoveHorizon();
     }
+
+    /**
+     * @brief 보스 이동 (좌우만)
+     */
+    protected void BossMoveHorizon()
+    {
+        Vector3 dir = Vector3.right * (isRFlip ? 3 : -3);
+
+        rigid.MovePosition(Vector3.MoveTowards(
+            this.transform.position,
+            this.transform.position + dir,
+            bossdata.getMoveSpeed * Time.deltaTime));
+    }
+
 
     public void Think()
     {
         int rand = 0;
         if (NetworkMng.I.roomOwner)
         {
-            // if (baseAttackCount < 9)
-            // {
-            // pattern_rand = Random.Range((int)CHICKEN_ACTION.IDLE + 1, (int)CHICKEN_ACTION.BASE_RETREAT + 1);
-            // pattern_rand = (int)CHICKEN_ACTION.BASE_RETREAT;
-            // switch (pattern_rand)
-            // {
-            //     case (int)CHICKEN_ACTION.IDLE:
-            //         SendBossPattern(pattern_rand, getTarget);
-            //         // isThink = false;
-            //         break;
-            //     case (int)CHICKEN_ACTION.BASE_SPEAR:
-            //         SendBossPattern(pattern_rand);
-            //         baseAttackCount++;
-            //         break;
-            //     case (int)CHICKEN_ACTION.BASE_OBA:
-            //         SendBossPattern(pattern_rand);
-            //         baseAttackCount++;
-            //         break;
-            //     case (int)CHICKEN_ACTION.BASE_ROAR:
-            //         SendBossPattern(pattern_rand);
-            //         baseAttackCount++;
-            //         break;
-            //     case (int)CHICKEN_ACTION.BASE_WING:
-            //         SendBossPattern(pattern_rand);
-            //         baseAttackCount++;
-            //         break;
-            //     case (int)CHICKEN_ACTION.BASE_JUMP_ATTACK:
-            //         SendBossPattern(pattern_rand);
-            //         baseAttackCount++;
-            //         break;
-            //     case (int)CHICKEN_ACTION.BASE_FOOT:
-            //         SendBossPattern(pattern_rand);
-            //         baseAttackCount++;
-            //         break;
-            //     case (int)CHICKEN_ACTION.BASE_FART:
-            //         SendBossPattern(pattern_rand);
-            //         baseAttackCount++;
-            //         break;
-            //     case (int)CHICKEN_ACTION.BASE_RETREAT:
-            //         SendBossPattern(pattern_rand);
-            //         baseAttackCount++;
-            //         break;
-            // }
-            // }
-            // else
+            if (baseAttackCount < 9)
             {
-                // pattern_rand = Random.Range((int)CHICKEN_ACTION.PATTERN_BIRDS, (int)CHICKEN_ACTION.PATTERN_SPHINX + 1);
-                pattern_rand = (int)CHICKEN_ACTION.PATTERN_BIRDS;
+            pattern_rand = Random.Range((int)CHICKEN_ACTION.IDLE + 1, (int)CHICKEN_ACTION.BASE_RETREAT + 1);
+            // pattern_rand = (int)CHICKEN_ACTION.BASE_RETREAT;
+            switch (pattern_rand)
+            {
+                case (int)CHICKEN_ACTION.IDLE:
+                    SendBossPattern(pattern_rand, getTarget);
+                    // isThink = false;
+                    break;
+                case (int)CHICKEN_ACTION.BASE_SPEAR:
+                    SendBossPattern(pattern_rand);
+                    baseAttackCount++;
+                    break;
+                case (int)CHICKEN_ACTION.BASE_OBA:
+                    SendBossPattern(pattern_rand);
+                    baseAttackCount++;
+                    break;
+                case (int)CHICKEN_ACTION.BASE_ROAR:
+                    SendBossPattern(pattern_rand);
+                    baseAttackCount++;
+                    break;
+                case (int)CHICKEN_ACTION.BASE_WING:
+                    SendBossPattern(pattern_rand);
+                    baseAttackCount++;
+                    break;
+                case (int)CHICKEN_ACTION.BASE_JUMP_ATTACK:
+                    SendBossPattern(pattern_rand);
+                    baseAttackCount++;
+                    break;
+                case (int)CHICKEN_ACTION.BASE_FOOT:
+                    SendBossPattern(pattern_rand);
+                    baseAttackCount++;
+                    break;
+                case (int)CHICKEN_ACTION.BASE_FART:
+                    SendBossPattern(pattern_rand);
+                    baseAttackCount++;
+                    break;
+                case (int)CHICKEN_ACTION.BASE_RETREAT:
+                    SendBossPattern(pattern_rand);
+                    baseAttackCount++;
+                    break;
+            }
+            }
+            else
+            {
+                pattern_rand = Random.Range((int)CHICKEN_ACTION.PATTERN_BIRDS, (int)CHICKEN_ACTION.PATTERN_SPHINX + 1);
+                // pattern_rand = (int)CHICKEN_ACTION.PATTERN_BIRDS;
                 switch (pattern_rand)
                 {
                     case (int)CHICKEN_ACTION.PATTERN_BIRDS:
@@ -281,6 +297,19 @@ public class Chicken : Boss
     {
         action = CHICKEN_ACTION.BASE_OBA;
         animator.SetTrigger("EggBomb");
+        
+        if (this.transform.position.x > 0 && !isRFlip)
+        {
+            isRFlip = true;
+            isLFlip = false;
+            this.bossO.localRotation = Quaternion.Euler(-20, 180, 0);
+        }
+        else if (this.transform.position.x < 0 && !isLFlip)
+        {
+            isLFlip = true;
+            isRFlip = false;
+            this.bossO.localRotation = Quaternion.Euler(new Vector3(20f, 0, 0));
+        }
     }
 
     // 표효
@@ -491,5 +520,11 @@ public class Chicken : Boss
                 sphinx[1]._isAnswer = true;
                 break;
         }
+    }
+
+    [SerializeField] GameObject eggBomb;
+    void EggBombSpawn()
+    {
+        Instantiate(eggBomb, new Vector3(transform.position.x, 0.324f, transform.position.z), Quaternion.Euler(20, 0, 0));
     }
 }

@@ -20,7 +20,7 @@ public class Boss : MonoBehaviour
     [SerializeField] protected BossData bossdata;
     public BossData bossData { get { return bossdata; } }
     [SerializeField] protected Animator animator = null;
-    [SerializeField] Transform bossO;      // 본체, (첫번째 자식)
+    [SerializeField] protected Transform bossO;      // 본체, (첫번째 자식)
     [SerializeField] public Rigidbody rigid;
     public float _targetDistance;
     [SerializeField] protected float _minDistance;      // 보스가 최대한 갈수 있는 거리
@@ -43,9 +43,9 @@ public class Boss : MonoBehaviour
 
 
     // 시간 관리 ===================================================================================================
-    private float _radetime;        // 레이드 시간
+    public float _raidtime;        // 레이드 시간
     private float min, sec;         // 초
-    [SerializeField] private bool _isBerserk;        // 광폭화
+    public bool _isBerserk = false;        // 광폭화
 
 
     // 체력 ======================================================================================================
@@ -81,7 +81,7 @@ public class Boss : MonoBehaviour
     protected void BossInitialize()
     {
         this._targetDistance = 9999;
-        this._radetime = bossdata.radetime;
+        this._raidtime = bossdata.radetime;
         this._baseUI.bossnameText.text = bossdata.getName;
         this._currentHp = bossdata.getStartHp;
 
@@ -161,9 +161,12 @@ public class Boss : MonoBehaviour
      */
     protected void RaidTimer()
     {
-        _radetime -= Time.deltaTime;
-        min = _radetime / 60;
-        sec = _radetime % 60;
+        if (_raidtime <= 0)
+            return;
+        
+        _raidtime -= Time.deltaTime;
+        min = _raidtime / 60;
+        sec = _raidtime % 60;
         _baseUI.timer.text = string.Format("{0:00} : {1:00}", Mathf.Floor(min), Mathf.Floor(sec));
         if (min <= 0 && sec <= 0 && !_isBerserk)
         {

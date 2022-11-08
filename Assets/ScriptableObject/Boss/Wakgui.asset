@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startHp: 142424426
   _name: "\uC641\uADC0\uC0C1\uC5B4"
-  _moveSpeed: 15
+  _moveSpeed: 4
   _damage: 00000000e8030000d0070000b80b0000a00f00008813000070170000581b0000401f000028230000
   _radetime: 600
   _barColor:
@@ -25,10 +25,7 @@ MonoBehaviour:
   - {r: 0, g: 0.6392157, b: 0.8235294, a: 1}
   - {r: 0.54509807, g: 0, b: 1, a: 1}
   _maxNesting: 128
-  _maxKnife: 8
-  _maxCristal: 4
-  _maxWave: 8
-  _bossAction: 0
+  _bossAction: 4
   _buffdata:
   - {fileID: 11400000, guid: 1863f364f1f6d654f8d97ed39b33c65b, type: 2}
   - {fileID: 11400000, guid: aab56d51708068f4f80c0453cea7b0b2, type: 2}

@@ -226,6 +226,13 @@ public class BossCollider : MonoBehaviour
             }
         }
 
+        // 고세구 버프가 있다면 40퍼
+        if (GameMng.I.estherManager)
+            if (GameMng.I.estherManager._esther_buff_state.Equals(ESTHER_BUFF.GOSEGU_BUFF))
+            {
+                criticalPer += 40;
+            }
+
         if (criticalrand <= criticalPer)
         {
             return true;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Prison : MonoBehaviour
 {
+    [SerializeField] DungeonMng _dMng;
     [SerializeField] Animator _anim;
 
     int count = 5;
@@ -24,5 +25,13 @@ public class Prison : MonoBehaviour
                 _anim.SetTrigger("Hit");
             }
         }
+    }
+
+    IEnumerator gainAnimNPC()
+    {
+        yield return new WaitForSeconds(1);
+            
+        if (_dMng.npcAnim)
+            _dMng.npcAnim.SetTrigger("Gain");
     }
 }

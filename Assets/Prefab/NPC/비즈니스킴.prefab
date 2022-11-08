@@ -264,6 +264,7 @@ GameObject:
   - component: {fileID: 8509770791458470965}
   - component: {fileID: 8509770791458470964}
   - component: {fileID: 7516597640497627885}
+  - component: {fileID: 5633281380389048057}
   m_Layer: 0
   m_Name: "\uBE44\uC988\uB2C8\uC2A4\uD0B4"
   m_TagString: Npc
@@ -337,6 +338,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5633281380389048057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8509770791458470969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d76bdeb638cb44c9840cae1930c885, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDialog: 0
+  speechTxt: {fileID: 4274229528801894227}
+  speechBG: {fileID: 4274229527668068870}
+  _anim: {fileID: 7516597640497627885}
+  favoriteItem: {fileID: 11400000, guid: e10f45aff04df1745b8ee961ac4277aa, type: 2}
+  questIcon: {fileID: 8509770792555188975}
 --- !u!1 &8509770791817536488
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,6 +1084,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyRenderer: {fileID: 4274229527668068868}
+--- !u!114 &4274229528801894227 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5569222582844021385, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
+  m_PrefabInstance: {fileID: 8509770791799784922}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4274229528801894228 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5569222582844021390, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1497100751152271076}
   - component: {fileID: 1497100751152271072}
   - component: {fileID: 1497100751152271079}
-  - component: {fileID: 1497100751152271077}
   - component: {fileID: 5941182727861768697}
+  - component: {fileID: 1158535559551026901}
   m_Layer: 0
   m_Name: "\uD638\uB450"
   m_TagString: Npc
@@ -66,24 +66,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 2.5, z: 0.5}
   m_Center: {x: 0, y: -0.2, z: 0}
---- !u!114 &1497100751152271077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1497100751152271083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03b06a67f6cdbac499d894a114d72331, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDialog: 0
-  speechTxt: {fileID: 6453411277115610169}
-  speechBG: {fileID: 6453411276216670572}
-  _anim: {fileID: 0}
-  favoriteItem: {fileID: 11400000, guid: d1baa9eeec06d28498b32a5ae321dade, type: 2}
-  questIcon: {fileID: 1497100752557897527}
 --- !u!95 &5941182727861768697
 Animator:
   serializedVersion: 4
@@ -104,6 +86,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1158535559551026901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497100751152271083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f09097a3f3c5ed4d9d975f30b21abdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDialog: 0
+  speechTxt: {fileID: 6453411277115610169}
+  speechBG: {fileID: 6453411276216670572}
+  _anim: {fileID: 5941182727861768697}
+  favoriteItem: {fileID: 11400000, guid: 5ff1c9e11e62d2d4088cc3cf6f909c26, type: 2}
+  questIcon: {fileID: 1497100752557897527}
 --- !u!1 &1497100751540232783
 GameObject:
   m_ObjectHideFlags: 0

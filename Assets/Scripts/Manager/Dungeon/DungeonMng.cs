@@ -27,6 +27,7 @@ public class DungeonMng : MonoBehaviour
     [SerializeField] GameObject _nextWall;                              // 다음 던전으로 넘어갈 수 있는 문을 막고 있는 벽 (몬스터 0마리 되면 false 해서 길 열어주기)
     [SerializeField] GameObject _nextPortal;                            // 던전 다음 포탈
     [SerializeField] GameObject _clearPortal;                           // 던전 클리어 포탈
+    public Animator npcAnim;                                            // NPC 획득시 해당 NPC 가 들어감.
 
     [Space(20)][Header("[  던전 공용 프리팹  ]")]  // ==========================================================================================================================
     [SerializeField] protected GameObject purpleLight;                  // 몬스터 강화 오브젝트
@@ -37,6 +38,7 @@ public class DungeonMng : MonoBehaviour
     [SerializeField] protected GameObject[] grasses;
     GameObject grass;
     int grassIdx = 0;
+
 
     protected virtual void Start()
     {
