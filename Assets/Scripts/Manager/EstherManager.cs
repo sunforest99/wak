@@ -299,6 +299,9 @@ public class EstherManager : MonoBehaviour
             }
         }
         GameMng.I.stateMng.ActiveBuff(estherBuffDatas[0]);
+
+        _esther_buff_state = ESTHER_BUFF.COTTON_BUFF;
+        StartCoroutine(removeEstherBuff());
     }
 
     /*
@@ -351,6 +354,8 @@ public class EstherManager : MonoBehaviour
         // 4. 에스더 공격 (일러 애니메이션 도중
         estherSkill[4].transform.position = spawnPos;
         estherSkill[4].SetActive(true);
+        
+        GameMng.I.stateMng.removeAllDebuff();
     }
 
     /*
@@ -370,5 +375,23 @@ public class EstherManager : MonoBehaviour
 
         // 4. 버프 적용
         GameMng.I.stateMng.ActiveBuff(estherBuffDatas[1]);
+
+        if (GameMng.I.boss)
+            if (GameMng.I.boss._raidtime > 0)
+                GameMng.I.boss._raidtime += 30;
+        
+        _esther_buff_state = ESTHER_BUFF.GOSEGU_BUFF;
+        StartCoroutine(removeEstherBuff());
+    }
+    
+    /*
+     * @brief 주르르, 고세구 버프 유지시관 관리 
+     */
+    IEnumerator removeEstherBuff()
+    {
+        // TODO : 유지시간 고치기
+        yield return new WaitForSeconds(10);
+
+        _esther_buff_state = ESTHER_BUFF.NONE;
     }
 }

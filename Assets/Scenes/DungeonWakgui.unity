@@ -9013,6 +9013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c0df2d30b9125344a444d9a5d2734c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dMng: {fileID: 1757820443}
   _anim: {fileID: 970183214}
 --- !u!95 &970183214
 Animator:
@@ -9246,7 +9247,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1111963814}
   m_LocalRotation: {x: 0.17364816, y: -0, z: -0, w: 0.9848078}
-  m_LocalPosition: {x: 1.2, y: 2.23, z: 4.0299997}
+  m_LocalPosition: {x: 1.2, y: 2.86, z: 4.0299997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16654,7 +16655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4933285718809823685, guid: 6a1f0d99cac4cb84196a64322e7182ef, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.9699998
+      value: 3.51
       objectReference: {fileID: 0}
     - target: {fileID: 4933285718809823685, guid: 6a1f0d99cac4cb84196a64322e7182ef, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17792,14 +17793,16 @@ MonoBehaviour:
   _nextWall: {fileID: 1183853811}
   _nextPortal: {fileID: 139496245}
   _clearPortal: {fileID: 1268094844}
+  npcAnim: {fileID: 0}
   purpleLight: {fileID: 5849361018205292489, guid: e14b916ce2c3a1f43b4084210c5231c8, type: 3}
   npc:
-  - {fileID: 4723054551740063541, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-  - {fileID: 4723054551740063541, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-  - {fileID: 4723054551740063541, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-  - {fileID: 4723054551740063541, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-  - {fileID: 4723054551740063541, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
-  - {fileID: 4723054551740063541, guid: 8c6c3b48bb6da3c4a9c513a103bdba99, type: 3}
+  - {fileID: 7232264986423921286, guid: aff9df472ef93dc45b8decf0f88fc274, type: 3}
+  - {fileID: 8760205243968359134, guid: 96cdfc3952643424dab0844d547473cf, type: 3}
+  - {fileID: 8423767627745727397, guid: ec4df12823a864249b3b56c8caefb0d2, type: 3}
+  - {fileID: 9099774789840982234, guid: 51a2d999dc5151245b3025227c8c1a77, type: 3}
+  - {fileID: 8685842644843861102, guid: dd4f77d01a420344ca0f332e8afeb84f, type: 3}
+  - {fileID: 541193579044198958, guid: b2d6624e7b780674c9f127568b431566, type: 3}
+  - {fileID: 1497100751152271083, guid: ecf471801acdeec4a9035e77ec40698c, type: 3}
   campFire: {fileID: 1316147116}
   npc_shop: {fileID: 1371846131}
   prison: {fileID: 970183209}

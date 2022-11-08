@@ -347,8 +347,7 @@ GameObject:
   - component: {fileID: 7382790558615304224}
   - component: {fileID: 7382790558615304228}
   - component: {fileID: 7382790558615304227}
-  - component: {fileID: 7382790558615304226}
-  - component: {fileID: 7382790558615304225}
+  - component: {fileID: 2846899107242097765}
   m_Layer: 0
   m_Name: "\uCE98\uB9AC\uCE7C\uB9AC"
   m_TagString: Npc
@@ -402,7 +401,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 2.5, z: 0.5}
   m_Center: {x: 0, y: -0.2, z: 0}
---- !u!95 &7382790558615304226
+--- !u!95 &2846899107242097765
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -412,7 +411,7 @@ Animator:
   m_GameObject: {fileID: 7382790558615304239}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ede6ed6d7f479754f9ad9d22a2057e28, type: 2}
+  m_Controller: {fileID: 9100000, guid: 8728bb594a1a388448c60b289a032eec, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -422,24 +421,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7382790558615304225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7382790558615304239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03b06a67f6cdbac499d894a114d72331, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDialog: 0
-  speechTxt: {fileID: 3115693295070634749}
-  speechBG: {fileID: 3115693293906472872}
-  _anim: {fileID: 7382790558615304226}
-  favoriteItem: {fileID: 11400000, guid: d1baa9eeec06d28498b32a5ae321dade, type: 2}
-  questIcon: {fileID: 7382790559482986995}
 --- !u!1 &7382790559178237264
 GameObject:
   m_ObjectHideFlags: 0
@@ -919,14 +900,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5569222582844021390, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
   m_PrefabInstance: {fileID: 7382790558932023412}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3115693295070634749 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5569222582844021385, guid: b180a16de80c1db4fbc49e016a8e49c3, type: 3}
-  m_PrefabInstance: {fileID: 7382790558932023412}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -99,6 +99,9 @@ public class UIManager : MonoBehaviour
                         // 근데 dialog 저장 방식이 맞는지 일단 확인
                         GameMng.I.npcData = hit.transform.GetComponent<Npcdata>();
                         
+                        if (GameMng.I.npcData == null)
+                            return;
+
                         GameMng.I.npcUI.npcFavoriteItemImg.sprite = GameMng.I.npcData.favoriteItem.itemSp;
 
                         // 대화 거리가 없으면 그냥 닫기

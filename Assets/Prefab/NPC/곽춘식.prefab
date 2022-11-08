@@ -685,8 +685,8 @@ GameObject:
   - component: {fileID: 8760205243968359121}
   - component: {fileID: 8760205243968359125}
   - component: {fileID: 8760205243968359122}
-  - component: {fileID: 8760205243968359120}
   - component: {fileID: 3858143683266890229}
+  - component: {fileID: 8340768160090527973}
   m_Layer: 0
   m_Name: "\uACFD\uCD98\uC2DD"
   m_TagString: Npc
@@ -740,24 +740,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 2.5, z: 0.5}
   m_Center: {x: 0, y: -0.2, z: 0}
---- !u!114 &8760205243968359120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8760205243968359134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03b06a67f6cdbac499d894a114d72331, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDialog: 0
-  speechTxt: {fileID: 3808737070308954124}
-  speechBG: {fileID: 3808737071191579993}
-  _anim: {fileID: 0}
-  favoriteItem: {fileID: 11400000, guid: d1baa9eeec06d28498b32a5ae321dade, type: 2}
-  questIcon: {fileID: 8760205242562753282}
 --- !u!95 &3858143683266890229
 Animator:
   serializedVersion: 4
@@ -778,6 +760,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8340768160090527973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8760205243968359134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4874e97ce3b4632439d3106ce9a34662, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDialog: 0
+  speechTxt: {fileID: 3808737070308954124}
+  speechBG: {fileID: 3808737071191579993}
+  _anim: {fileID: 3858143683266890229}
+  favoriteItem: {fileID: 11400000, guid: 29ad279063bc4c346b87fb3a3bc77bc2, type: 2}
+  questIcon: {fileID: 8760205242562753282}
 --- !u!1001 &8760205242036963973
 PrefabInstance:
   m_ObjectHideFlags: 0

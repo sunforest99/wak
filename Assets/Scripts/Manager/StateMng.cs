@@ -372,6 +372,11 @@ public class StateMng : MonoBehaviour
             if (c > 0) {
                 dmg = Mathf.FloatToHalf(dmg * (1 + c * 0.05f));
             }
+
+            // 보스 광폭화 상태라면 1.5배
+            if (GameMng.I.boss)
+                if (GameMng.I.boss._isBerserk)
+                    dmg = Mathf.FloatToHalf(dmg * 1.5f);
         }
 
         int temp = -1;
@@ -521,14 +526,20 @@ public class StateMng : MonoBehaviour
         for (int i = 0; i < partybuffGroups[player].userBuff.Length; i++)
         {
             // 디버프 종류만 모두 지움
-            if (!partybuffGroups[player].userBuff[i].buffData.BuffKind.ToString().Substring(0, 4).Equals("BUFF"))
+            if (isDebuff(partybuffGroups[player].userBuff[i].buffData.BuffKind)) {
                 partybuffGroups[player].userBuff[i].isApply = false;
+                partybuffGroups[player].userBuff[i].duration = 0;
+            }
         }
     }
 
     public bool isDebuff(BUFF b)
     {
-        return b.Equals(BUFF.DEBUFF_BUPAE) || b.Equals(BUFF.DEBUFF_CHIMSIK) || b.Equals(BUFF.DEBUFF_JAMSIK) || b.Equals(BUFF.DEBUFF_SHIELD);
+        return b.Equals(BUFF.DEBUFF_BUPAE) || b.Equals(BUFF.DEBUFF_CHIMSIK) ||      // 귀상어두
+                b.Equals(BUFF.DEBUFF_JAMSIK) || b.Equals(BUFF.DEBUFF_SMELL) ||      // 계륵
+                b.Equals(BUFF.DEBUFF_ZILSIK) ||     // 마녀두
+                b.Equals(BUFF.DEBUFF_SHIELD)        // 보스 기본
+                ;
     }
 
     public void partyExit()
