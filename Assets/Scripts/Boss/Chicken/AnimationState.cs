@@ -25,9 +25,9 @@ public class AnimationState : StateMachineBehaviour
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-            chicken.Setidle();
+             chicken.SetIdle();
         }
     }
 }

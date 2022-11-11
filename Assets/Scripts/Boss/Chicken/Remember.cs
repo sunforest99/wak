@@ -10,6 +10,6 @@ public class Remember : MonoBehaviour
     void EndAnimation()
     {
         animator.SetTrigger("idle");
-        chicken.Setidle();
+        chicken.SetIdle();
     }
 }

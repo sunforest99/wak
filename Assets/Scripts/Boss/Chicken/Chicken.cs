@@ -65,8 +65,14 @@ public class Chicken : Boss
         }
     }
 
-    public void Setidle()
+    public void SetIdle()
     {
+        StartCoroutine(setIdle());
+
+    }
+    IEnumerator setIdle()
+    {
+        yield return new WaitForSecondsRealtime(1.5f);
         this.isThink = false;
         action = CHICKEN_ACTION.IDLE;
     }

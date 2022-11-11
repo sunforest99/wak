@@ -1210,7 +1210,7 @@ PrefabInstance:
     - target: {fileID: 8293110764893212365, guid: 0ac0b93498a32f244939d3ae524154af, type: 3}
       propertyPath: objectPool
       value: 
-      objectReference: {fileID: 881532814}
+      objectReference: {fileID: 0}
     - target: {fileID: 8293110764893212365, guid: 0ac0b93498a32f244939d3ae524154af, type: 3}
       propertyPath: _baseUI.timer
       value: 
@@ -12745,7 +12745,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 881532813}
-  - component: {fileID: 881532814}
   m_Layer: 0
   m_Name: ObjectPool
   m_TagString: Untagged
@@ -12770,18 +12769,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &881532814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 881532812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28c2c6858c60f254a8af6ffb1707e9a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &892782474
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17325,6 +17312,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1131164193}
+  - component: {fileID: 1131164194}
   m_Layer: 0
   m_Name: BirdsParent
   m_TagString: Untagged
@@ -17347,6 +17335,19 @@ Transform:
   m_Father: {fileID: 881532813}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1131164194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131164192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fadc2c695d6764551bf134a46f56943d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bird: {fileID: 0}
 --- !u!1 &1139987249
 GameObject:
   m_ObjectHideFlags: 0
@@ -36286,6 +36287,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1954394066}
+  - component: {fileID: 1954394067}
   m_Layer: 0
   m_Name: RockParent
   m_TagString: Untagged
@@ -36308,6 +36310,19 @@ Transform:
   m_Father: {fileID: 881532813}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1954394067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954394065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ed9e9cb2b804a4fafd3d8000847f0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rock: {fileID: 0}
 --- !u!1 &1960268540
 GameObject:
   m_ObjectHideFlags: 0

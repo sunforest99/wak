@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3485370258396869264}
+  - component: {fileID: 3328533865095630368}
   m_Layer: 0
   m_Name: BulletParent
   m_TagString: Untagged
@@ -31,6 +32,19 @@ Transform:
   m_Father: {fileID: 3485370259959524405}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3328533865095630368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485370258396869271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0dd6c7918129274880d969573977791, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 3404429404524190604, guid: ac9ed990329665240b3a3c93078d8621, type: 3}
 --- !u!1 &3485370258412446575
 GameObject:
   m_ObjectHideFlags: 0
@@ -40,6 +54,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3485370258412446568}
+  - component: {fileID: 6976675307985178258}
   m_Layer: 0
   m_Name: KnifeParent
   m_TagString: Untagged
@@ -62,6 +77,19 @@ Transform:
   m_Father: {fileID: 3485370259959524405}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6976675307985178258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485370258412446575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a85aba29c25914bb7b9153c3ff5eaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knife: {fileID: 6764173356626473394, guid: 2f290773b0d5836429c7eee396fe6a2c, type: 3}
 --- !u!1 &3485370258775271554
 GameObject:
   m_ObjectHideFlags: 0
@@ -71,6 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3485370258775271555}
+  - component: {fileID: 5104992571941941970}
   m_Layer: 0
   m_Name: CristalParent
   m_TagString: Untagged
@@ -93,6 +122,20 @@ Transform:
   m_Father: {fileID: 3485370259959524405}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5104992571941941970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485370258775271554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4494a59a1beb1b641b371b3452817a97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cristal: {fileID: 4149327133582245270, guid: 8d4d05a3952149e4787e41afb97d4206, type: 3}
+  bulletPool: {fileID: 3328533865095630368}
 --- !u!1 &3485370258881623679
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,6 +145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3485370258881623672}
+  - component: {fileID: 2741764950006625032}
   m_Layer: 0
   m_Name: WaveParent
   m_TagString: Untagged
@@ -124,6 +168,19 @@ Transform:
   m_Father: {fileID: 3485370259959524405}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2741764950006625032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485370258881623679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933b8f4b84fe8c54499f35f9ef1ec0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wave: {fileID: 327530268008972816, guid: 686d9457d67e2294fbe4d062563dd1dd, type: 3}
 --- !u!1 &3485370259959524404
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +190,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3485370259959524405}
-  - component: {fileID: 3485370259959524406}
   m_Layer: 0
   m_Name: WakguiObjectPool
   m_TagString: Untagged
@@ -160,27 +216,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3485370259959524406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3485370259959524404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fca427f20382ca44eb125af12df41dda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waves: {fileID: 6208016705338286250, guid: 686d9457d67e2294fbe4d062563dd1dd, type: 3}
-  knife: {fileID: 7722266466619245020, guid: 2f290773b0d5836429c7eee396fe6a2c, type: 3}
-  cristal: {fileID: 3645903444284595895, guid: 8d4d05a3952149e4787e41afb97d4206, type: 3}
-  bullet: {fileID: 3098892713799647088, guid: ac9ed990329665240b3a3c93078d8621, type: 3}
-  waveParent: {fileID: 3485370258881623672}
-  knifeParent: {fileID: 3485370258412446568}
-  cristalParent: {fileID: 3485370258775271555}
-  bulletParent: {fileID: 3485370258396869264}
-  wavesPool: []
-  knifePool: []
-  cristalPool: []
-  bulletPool: []

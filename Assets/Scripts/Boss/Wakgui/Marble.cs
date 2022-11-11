@@ -7,8 +7,12 @@ public class Marble : DestroySelf
     public int uniqueNum;
     int hp = 2;
     public bool answer;
+    
+    [SerializeField] Wakgui wakgui;
+
     void Start()
     {
+        wakgui = GameMng.I.boss.GetComponent<Wakgui>();
         StartCoroutine(timeEnd());
     }
 
@@ -25,6 +29,7 @@ public class Marble : DestroySelf
     IEnumerator timeEnd()
     {
         yield return new WaitForSeconds(20);
+        wakgui.action = WAKGUI_ACTION.IDLE;
         if (!answer)
         {
             Debug.Log("전멸");

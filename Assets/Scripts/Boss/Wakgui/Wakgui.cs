@@ -522,7 +522,6 @@ public class Wakgui : Boss
         animator.SetInteger("RandCircle", circle_answer);
 
         yield return new WaitForSecondsRealtime(15.0f);
-        action = WAKGUI_ACTION.IDLE;
         _isAnnihilation = false;
         checkPattern = false;
 

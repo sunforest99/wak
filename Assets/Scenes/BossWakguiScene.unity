@@ -432,6 +432,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28466962}
   m_CullTransparentMesh: 1
+--- !u!114 &29223249 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3328533865095630368, guid: 51e347027c455d149a7caeb9f0734282, type: 3}
+  m_PrefabInstance: {fileID: 624031525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0dd6c7918129274880d969573977791, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &33520364 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3514095204066703073, guid: 6ba3144cf747bb6409d42e4f83fa0a2a, type: 3}
@@ -5230,6 +5241,17 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &260354134 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6976675307985178258, guid: 51e347027c455d149a7caeb9f0734282, type: 3}
+  m_PrefabInstance: {fileID: 624031525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a85aba29c25914bb7b9153c3ff5eaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &260378644
 GameObject:
   m_ObjectHideFlags: 0
@@ -9188,6 +9210,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.38, y: 0.67000026, z: 0.20000012}
   m_Center: {x: 0, y: 0.28200755, z: -0.0000023673767}
+--- !u!114 &389979622 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5104992571941941970, guid: 51e347027c455d149a7caeb9f0734282, type: 3}
+  m_PrefabInstance: {fileID: 624031525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4494a59a1beb1b641b371b3452817a97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &396616207
 GameObject:
   m_ObjectHideFlags: 0
@@ -17682,6 +17715,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e1c5377c71a17142aff24def2fb7942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &986830262 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2741764950006625032, guid: 51e347027c455d149a7caeb9f0734282, type: 3}
+  m_PrefabInstance: {fileID: 624031525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933b8f4b84fe8c54499f35f9ef1ec0ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &997320593
@@ -32132,17 +32176,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.38, y: 0.67000026, z: 0.20000015}
   m_Center: {x: 0, y: 0.28200886, z: 0.0000067093383}
---- !u!114 &1569956282 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3485370259959524406, guid: 51e347027c455d149a7caeb9f0734282, type: 3}
-  m_PrefabInstance: {fileID: 624031525}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fca427f20382ca44eb125af12df41dda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1571925075
 GameObject:
   m_ObjectHideFlags: 0
@@ -40615,6 +40648,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 29.815
       objectReference: {fileID: 0}
+    - target: {fileID: 5758825220011627942, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
+      propertyPath: wavePool
+      value: 
+      objectReference: {fileID: 986830262}
+    - target: {fileID: 5758825220011627942, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
+      propertyPath: knifePool
+      value: 
+      objectReference: {fileID: 260354134}
+    - target: {fileID: 5758825220011627942, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
+      propertyPath: bulletPool
+      value: 
+      objectReference: {fileID: 29223249}
+    - target: {fileID: 5758825220011627942, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
+      propertyPath: cristalPool
+      value: 
+      objectReference: {fileID: 389979622}
     - target: {fileID: 5878381619995106462, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -40782,7 +40831,7 @@ PrefabInstance:
     - target: {fileID: 8004185915449101089, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
       propertyPath: objectPool
       value: 
-      objectReference: {fileID: 1569956282}
+      objectReference: {fileID: 0}
     - target: {fileID: 8004185915449101089, guid: da2ef19833d8ebd43b5464d0a3e764dc, type: 3}
       propertyPath: _baseUI.timer
       value: 
